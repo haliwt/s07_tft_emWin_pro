@@ -48,13 +48,13 @@ Purpose     : Configures emWins abilities, fonts etc.
 *
 *       Multi layer/display support
 */
-#define GUI_NUM_LAYERS            2    // Maximum number of available layers
+#define GUI_NUM_LAYERS            1    // Maximum number of available layers
 
 /*********************************************************************
 *
 *       Multi tasking support
 */
-#define GUI_OS                    (1)  // Compile with multitasking support
+#define GUI_OS                    (0)  // Compile with multitasking support
 
 /*********************************************************************
 *

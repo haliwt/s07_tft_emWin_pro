@@ -72,7 +72,7 @@ Purpose     : Configures emWins abilities, fonts etc.
 *
 *         Configuration of available packages
 */
-#define GUI_SUPPORT_MOUSE    1    // Mouse support
+#define GUI_SUPPORT_MOUSE    0    // Mouse support
 #define GUI_WINSUPPORT       1    // Use Window Manager
 #define GUI_SUPPORT_MEMDEV   1    // Use Memory Devices
 #define GUI_SUPPORT_DEVICES  1    // Enable use of device pointers
