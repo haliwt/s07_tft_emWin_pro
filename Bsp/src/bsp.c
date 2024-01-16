@@ -22,3 +22,4 @@ void bsp_Idle(void)
 	/* 例如 uIP 协议，可以插入uip轮询函数 */
 	//TOUCH_CapScan();
 }
+

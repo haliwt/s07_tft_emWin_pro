@@ -22,6 +22,12 @@
 #include "bsp_lcd.h"
 #include "bsp_usart.h"
 
+/* 定义 BSP 版本号 */
+#define __STM33G030C8T6_BSP_VERSION		"0.1"
+
+/* 开关全局中断的宏 */
+#define ENABLE_INT()	__set_PRIMASK(0)	/* 使能全局中断 */
+#define DISABLE_INT()	__set_PRIMASK(1)	/* 禁止全局中断 */
 
 
 void bsp_Idle(void);

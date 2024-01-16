@@ -2,7 +2,7 @@
 #include "bsp.h"
 
 
-
+#if 0
 static void LED_POWER_OFF(void);
 static void Delay(int16_t count);
 
@@ -127,3 +127,4 @@ void Backlight_Off(void)
 
 }
 
+#endif 

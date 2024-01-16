@@ -12,7 +12,7 @@ int8_t set_timer_dispTime_hours;
   * key interrupt call back function 
 
 */
-
+#if 0
 void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 {
 
@@ -196,6 +196,6 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 }
 
-
+#endif 
 
 

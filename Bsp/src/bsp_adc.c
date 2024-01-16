@@ -5,6 +5,8 @@ static uint16_t Get_Adc_Channel(uint32_t ch) ;
 
 static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times);
 
+#if 0
+
 /*****************************************************************
 *
 	*Function Name: static uint16_t Get_Adc(uint32_t ch)  
@@ -77,27 +79,6 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 }
 
 
-/*****************************************************************
-	*
-	*Function Name: void Judge_PTC_Temperature_Value(void)
-	*Function: PTC adc read voltage
-	*Input Ref: NO
-	*Return Ref: No
-	*
-	*
-*****************************************************************/
-//void Judge_PTC_Temperature_Value(void)
-//{
-//  
-//  if(run_t.ptc_temp_voltage < 373 || run_t.ptc_temp_voltage ==373){ //87 degree
-//  
-//	    gctl_t.plasma_flag = 0; //turn off
-//	    PTC_SetLow(); //turn off
-//        Buzzer_Ptc_Error_Sound();
-//   	      
-//   }
-//   
-//}
 
 /*****************************************************************
 	*
@@ -142,6 +123,6 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
      }
 }
 
-    
+#endif 
 
 
