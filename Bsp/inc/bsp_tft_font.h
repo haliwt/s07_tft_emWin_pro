@@ -13,13 +13,6 @@ extern const char* font2424_table;
 extern const unsigned char bmp_logo[];
 
 
-
-
-
-
-
-
-
 #endif 
 
 

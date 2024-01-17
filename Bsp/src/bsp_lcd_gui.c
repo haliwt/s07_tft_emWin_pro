@@ -5,6 +5,26 @@
 uint16_t BACK_COLOR=BLACK;
 uint16_t  POINT_COLOR=WHITE;
 
+static uint32_t lcd_pow(uint8_t m, uint8_t n);
+
+
+
+/**
+ * @brief       平方函数, m^n
+ * @param       m: 底数
+ * @param       n: 指数
+ * @retval      m的n次方
+ */
+static uint32_t lcd_pow(uint8_t m, uint8_t n)
+{
+    uint32_t result = 1;
+
+    while (n--)result *= m;
+
+    return result;
+}
+
+
 
 /**************************************************************************
 *
@@ -22,7 +42,7 @@ void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color)
    LCD_Write_Cmd(0x2b);
    LCD_Write_Data(y);
 
-   LCDE_Write_Cmd(0x2c);
+   LCD_Write_Cmd(0x2c);
    LCD_Write_Data(color);
 }
 /**************************************************************************
@@ -78,7 +98,7 @@ void TFT_St7789_SetBGColor(uint32_t color)
 void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,uint32_t color)
 {
     uint32_t i,j;
-    SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
+    TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
     for(i=0;i<block_width;i++){
         for(j=0;j<block_height;j++){
             LCD_Write_16bit_Data(color);
@@ -98,7 +118,7 @@ void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width
 {
    uint32_t i,j;
     
-   SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
+   TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
 
    for(i=0;i<block_width;i++){
        for(j=0;j<block_height;j++){
@@ -124,10 +144,10 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 
     chr=chr-' ';//得到偏移后的值
 
-    if(fw==6&&fh==8)        p = (u8 *)asc2_0608[chr];        //调用0608ascii字体
-    else if(fw==6&&fh==12)  p = (u8 *)asc2_0612[chr];        //调用0612ascii字体
-    else if(fw==8&&fh==16)  p = (u8 *)asc2_0816[chr];        //调用0612ascii字体
-    else if(fw==12&&fh==24) p = (u8 *)asc2_1224[chr];   //调用1224ascii字体
+    if(fw==6&&fh==8)        p = (uint8_t *)asc2_0608[chr];        //调用0608ascii字体
+    else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];        //调用0612ascii字体
+    else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];        //调用0612ascii字体
+    else if(fw==12&&fh==24) p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
     else return;        //没有的字库
     
     #if 0
@@ -171,7 +191,7 @@ void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8
     uint8_t enshow=0;
     for(t=0; t<len; t++)
     {
-        temp=(num/mypow(10,len-t-1))%10;
+        temp=(num/lcd_pow(10,len-t-1))%10;
         if(enshow==0&&t<(len-1))
         {
             if(temp==0)
@@ -274,7 +294,7 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
  *            mode: 0 normal . 1->叠加
  * 
 *********************************************************************/
-void TFT_ShowText(uitn16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
+void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
 {
     while(*str!=0)
     {
@@ -296,6 +316,7 @@ void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t p
     uint8_t y0=y;
     uint8_t width=pw;
     uint8_t high=ph;
+	uint16_t color;
 
     if(x+pw>LCD_Width)width=LCD_Width-pw;//实际显示宽度
    
@@ -310,7 +331,7 @@ void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t p
             temp = p[col+row*exp_col_bytes];
             for(i=0; i<8; i++)
             {
-                u16 color;
+              
                 
                 if(temp & 0x80)color = POINT_COLOR;
                 else color = BACK_COLOR;

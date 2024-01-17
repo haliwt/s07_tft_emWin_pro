@@ -23,6 +23,7 @@
 #include "bsp_usart.h"
 #include "bsp_lcd_gui.h"
 
+
 /* ���� BSP �汾�� */
 #define __STM33G030C8T6_BSP_VERSION		"0.1"
 

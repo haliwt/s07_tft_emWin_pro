@@ -39,11 +39,11 @@ static void LCD_GPIO_Reset(void)
  * Return Ref: NO
  * 
 ***********************************************************************************/
-static void LCD_Write_Cmd(uint8_t cmd)
+void LCD_Write_Cmd(uint8_t cmd)
 {
 
     LCD_NSS_SetLow(); //To write command to TFT is low level 
-    SPI_WriteByte(&cdm,1);
+    SPI_WriteByte(&cmd,1);
 
 }
 
@@ -57,9 +57,9 @@ void LCD_Write_16bit_Data(uint16_t data)
 {
     uint8_t temp_data;
     LCD_NSS_SetHigh(); //To write data to TFT is high level
-    SPI_WriteByte(&data,1);
+    SPI_WriteByte((uint8_t *)data,1);
     temp_data = data >>8;
-    SPI_WriteByte(&temp_data,1);
+    SPI_WriteByte((uint8_t *)temp_data,1);
 
 }
 /*******************************************************************************
@@ -137,7 +137,7 @@ static void LCD_Clear(uint16_t color)
     /* 指定显存操作地址为全屏幕 */
     LCD_Address_Set(0, 0, LCD_Width - 1, LCD_Height - 1);
     /* 指定接下来的数据为数据 */
-    LCD_WR_RS(1);
+     LCD_NSS_SetHigh();//LCD_WR_RST(1);
     /* 将显存缓冲区的数据全部写入缓冲区 */
     for(i = 0; i < (LCD_TOTAL_BUF_SIZE / LCD_Buf_Size); i++)
     {
