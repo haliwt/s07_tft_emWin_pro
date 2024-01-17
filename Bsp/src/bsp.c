@@ -23,3 +23,12 @@ void bsp_Idle(void)
 	//TOUCH_CapScan();
 }
 
+
+void Main_Process_Handler(void)
+{
+
+
+
+
+}
+

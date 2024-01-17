@@ -1,6 +1,9 @@
 #ifndef __BSP_H
 #define __BSP_H
 #include "main.h"
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "adc.h"
 #include "dma.h"

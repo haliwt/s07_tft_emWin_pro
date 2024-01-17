@@ -678,7 +678,7 @@ void Json_Parse_Command_Fun(void)
 			HAL_Delay(350);
            gctl_t.plasma_flag=1;
 			
-			SendWifiCmd_To_Order(WIFI_KILL_ON);
+		//	SendWifiCmd_To_Order(WIFI_KILL_ON);
 	  	   HAL_Delay(5);
 	  	}
          wifi_t.wifi_power_on_flag=0;
@@ -693,7 +693,7 @@ void Json_Parse_Command_Fun(void)
 				HAL_Delay(350);
             gctl_t.ultrasoinc_flag=0;
 	
-			SendWifiCmd_To_Order(WIFI_SONIC_OFF);
+		//	SendWifiCmd_To_Order(WIFI_SONIC_OFF);
 			HAL_Delay(5);
         }
          wifi_t.wifi_power_on_flag=0;
@@ -708,7 +708,7 @@ void Json_Parse_Command_Fun(void)
 			 	HAL_Delay(350);
             gctl_t.ultrasoinc_flag=1;
 		
-			SendWifiCmd_To_Order(WIFI_SONIC_ON);
+			//SendWifiCmd_To_Order(WIFI_SONIC_ON);
 			HAL_Delay(5);
         }
          wifi_t.wifi_power_on_flag=0;
@@ -813,7 +813,7 @@ void Json_Parse_Command_Fun(void)
 			   HAL_Delay(350);
 				gctl_t.rx_command_tag= 2;
 			  // gctl_t.RunCommand_Label=POWER_ON;
-			   SendWifiCmd_To_Order(WIFI_POWER_ON);
+			  // SendWifiCmd_To_Order(WIFI_POWER_ON);
 			   HAL_Delay(10);
                 wifi_t.wifi_power_on_flag=0;
 			   buzzer_temp_on=0;
@@ -833,7 +833,7 @@ void Json_Parse_Command_Fun(void)
 			gctl_t.rx_command_tag= 2;
 	       //  gctl_t.RunCommand_Label=POWER_OFF;
 
-			SendWifiCmd_To_Order(WIFI_POWER_OFF);
+		//	SendWifiCmd_To_Order(WIFI_POWER_OFF);
 			HAL_Delay(10);
              wifi_t.wifi_power_on_flag=0;
 		      buzzer_temp_on=0;
