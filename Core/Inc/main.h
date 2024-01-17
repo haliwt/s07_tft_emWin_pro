@@ -95,6 +95,8 @@ void Error_Handler(void);
 #define V_TX_GPIO_Port GPIOA
 #define V_RX_Pin GPIO_PIN_10
 #define V_RX_GPIO_Port GPIOA
+#define TFT_NSS_Pin GPIO_PIN_15
+#define TFT_NSS_GPIO_Port GPIOA
 #define FAN_CTL_2_Pin GPIO_PIN_0
 #define FAN_CTL_2_GPIO_Port GPIOD
 #define FAN_CTL_1_Pin GPIO_PIN_1
