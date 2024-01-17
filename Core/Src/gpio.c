@@ -50,19 +50,19 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, WIFI_EN_Pin|KEY_LED_CTL_Pin|KEY_POWER_LED_Pin|PLASMA_CTL_Pin
+  HAL_GPIO_WritePin(GPIOA, WIFI_EN_Pin|LED_KEY_TIM_Pin|LED_POWER_Pin|PLASMA_CTL_Pin
                           |TFT_NSS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY_CTL_Pin|PTC_LED_Pin|RAT_LED_Pin|WIFI_LED_Pin
-                          |KILL_LED_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RELAY_CTL_Pin|LED_PTC_Pin|LED_RAT_Pin|LED_WIFI_Pin
+                          |LED_KILL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, FAN_CTL_2_Pin|FAN_CTL_1_Pin|TEMP_SENSOR_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PAPin PAPin PAPin PAPin
                            PAPin */
-  GPIO_InitStruct.Pin = WIFI_EN_Pin|KEY_LED_CTL_Pin|KEY_POWER_LED_Pin|PLASMA_CTL_Pin
+  GPIO_InitStruct.Pin = WIFI_EN_Pin|LED_KEY_TIM_Pin|LED_POWER_Pin|PLASMA_CTL_Pin
                           |TFT_NSS_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
@@ -71,15 +71,15 @@ void MX_GPIO_Init(void)
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin */
-  GPIO_InitStruct.Pin = RELAY_CTL_Pin|PTC_LED_Pin|RAT_LED_Pin|WIFI_LED_Pin
-                          |KILL_LED_Pin;
+  GPIO_InitStruct.Pin = RELAY_CTL_Pin|LED_PTC_Pin|LED_RAT_Pin|LED_WIFI_Pin
+                          |LED_KILL_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = POWER_KEY_Pin|MODE_KEY_Pin|ADD_KEY_Pin|DEC_KEY_Pin;
+  GPIO_InitStruct.Pin = KEY_POWER_Pin|KEY_MODE_Pin|KEY_ADD_Pin|KEY_DEC_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);

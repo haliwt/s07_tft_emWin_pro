@@ -3,11 +3,11 @@
 #include "main.h"
 
 //IO��������
-#define DHT11_DATA_IO_IN()      {GPIOB->MODER&=0XFFFFFFFC;GPIOB->MODER|=0<<0;}  //0x00 input mode
-#define DHT11_DATA_IO_OUT()     {GPIOB->MODER&=0XFFFFFFFC;GPIOB->MODER|=1<<0;}   //0x01 output  mode 
+#define DHT11_DATA_IO_IN()      {GPIOD->MODER&=0XFFFFFFFC;GPIOD->MODER|=0<<0;}  //0x00 input mode
+#define DHT11_DATA_IO_OUT()     {GPIOD->MODER&=0XFFFFFFFC;GPIOD->MODER|=1<<0;}   //0x01 output  mode 
 
-#define DHT11_DATA      GPIO_PIN_13
-#define DHT11_GPIO      GPIOB
+#define DHT11_DATA      GPIO_PIN_2
+#define DHT11_GPIO      GPIOD
 
 #define DHT11_DATA_SetHigh()            HAL_GPIO_WritePin(DHT11_GPIO,DHT11_DATA,GPIO_PIN_SET)    // output high level
 #define DHT11_DATA_SetLow()             HAL_GPIO_WritePin(DHT11_GPIO,DHT11_DATA,GPIO_PIN_RESET)    // output low level
@@ -16,9 +16,9 @@
 
 /* �궨�� -------------------------------------------------------------------*/
 /***********************   DHT11 �������Ŷ���  **************************/
-#define DHT11_Dout_GPIO_CLK_ENABLE()              __HAL_RCC_GPIOB_CLK_ENABLE()//__HAL_RCC_GPIOA_CLK_ENABLE()
-#define DHT11_Dout_PORT                           GPIOB
-#define DHT11_Dout_PIN                            GPIO_PIN_13
+#define DHT11_Dout_GPIO_CLK_ENABLE()              __HAL_RCC_GPIOD_CLK_ENABLE()//__HAL_RCC_GPIOA_CLK_ENABLE()
+#define DHT11_Dout_PORT                           GPIOD
+#define DHT11_Dout_PIN                            GPIO_PIN_2
 
 /***********************   DHT11 �����궨��  ****************************/
 #define DHT11_Dout_LOW()                          HAL_GPIO_WritePin(DHT11_Dout_PORT, DHT11_Dout_PIN, GPIO_PIN_RESET)
@@ -47,6 +47,9 @@ typedef struct
 //void DHT11_Init( void );
 //uint8_t DHT11_Read_TempAndHumidity(DHT11_Data_TypeDef * DHT11_Data);
 void Update_DHT11_Value(void);
+
+void Update_Dht11_Totencent_Value(void);
+
 
 
 

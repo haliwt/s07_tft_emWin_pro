@@ -1,7 +1,7 @@
-#ifndef __ESP8266_H_
-#define __ESP8266_H_
+#ifndef __BSP_ESP8266_H_
+#define __BSP_ESP8266_H_
 #include "main.h"
-#include "gpio.h"
+
 
 #define SSID                    "UYIKIA"
 #define PASSWD                  "20329263"
@@ -36,42 +36,11 @@ typedef enum _esp8266_para{
 }esp8266_para;
 
 
-typedef struct ESP8266_DATA
-{
-    uint8_t data[512];
-    uint8_t  data_size;
-    uint8_t flag;
-	uint8_t wifi_RunState;
-	uint8_t esp8266_smartphone_flag;
-	uint8_t esp8266_link_cloud_flag;
-	uint8_t soft_ap_config_success;
-	uint8_t esp8266_login_cloud_success;
 
-	uint8_t subscribe_cloud_success;
-	
-	
-	uint8_t esp8266_dynamic_reg_flag;
-    uint8_t subscribe_flag;
-	uint8_t subscribe_rx_flag;
-    uint8_t subscribe_rxCloud_flag;
-	uint8_t esp8266_data_rx_success;
-	uint8_t rx_data_success ;
-	uint8_t  rx_counter ;
-	uint8_t  rx_data_state;
-	uint8_t getCloudValue_unit ;
-	uint8_t getCloudValue_decade;
-	uint8_t rx_data_len;
-	uint8_t rx_data_name_len;
-	uint8_t linking_tencent_cloud_doing;
-    uint8_t cmp_flag;
-	uint8_t send_tencent_cloud_data_lable;
-    uint8_t subscrible_receive_data_label;
-	
-}ESP8266DATATypedef;
 
 void InitWifiModule_Hardware(void);
 
-extern ESP8266DATATypedef esp8266data;
+
 
 void InitWifiModule(void);
 

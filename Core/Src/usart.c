@@ -132,7 +132,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX
     */
-    GPIO_InitStruct.Pin = V_TX_Pin|V_RX_Pin;
+    GPIO_InitStruct.Pin = VOICE_TX_Pin|VOICE_RX_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -185,7 +185,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     PA9     ------> USART1_TX
     PA10     ------> USART1_RX
     */
-    HAL_GPIO_DeInit(GPIOA, V_TX_Pin|V_RX_Pin);
+    HAL_GPIO_DeInit(GPIOA, VOICE_TX_Pin|VOICE_RX_Pin);
 
   /* USER CODE BEGIN USART1_MspDeInit 1 */
 

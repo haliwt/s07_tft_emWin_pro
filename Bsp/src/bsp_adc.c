@@ -66,7 +66,7 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 
 
 	#ifdef DEBUG
-      printf("ptc= %d",run_t.ptc_temp_voltage);
+      printf("ptc= %d",gctl_t.ptc_temp_voltage);
 	#endif 
 
 	if(ptc_temp_voltage < 373 || ptc_temp_voltage ==373){ //87 degree
@@ -103,7 +103,7 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
 	if(fan_detect_voltage >300 &&  fan_detect_voltage < 1400){
            detect_error_times=0;
 		   #ifdef DEBUG
-             printf("adc= %d",run_t.fan_detect_voltage);
+             printf("adc= %d",gctl_t.fan_detect_voltage);
 		   #endif 
            gctl_t.fan_warning = 0;
     }

@@ -1,5 +1,5 @@
-#ifndef __SUBSCRIPTION_H_
-#define __SUBSCRIPTION_H_
+#ifndef __BSP_SUBSCRIPTION_H_
+#define __BSP_SUBSCRIPTION_H_
 #include "main.h"
 
 typedef enum DISPLAY_STATE_T{

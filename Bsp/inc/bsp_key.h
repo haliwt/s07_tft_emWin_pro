@@ -57,6 +57,47 @@ typedef enum
 }KEYState_TypeDef;
 
 
+typedef enum{
+
+  set_temperature,
+  set_timer_timing
+  
+}key_state_en;
+
+typedef enum{
+
+   power_off,
+   power_on,
+   wifi_fun_on,
+   set_timer_fun_on,
+   mode_id,
+   mode_ai,
+   mode_no_ai,
+   add_key,
+   dec_key,
+   power_id
+   
+
+}key_input_state;
+
+typedef enum{
+
+    run_update_data =0x01,
+	power_off_fan_pro
+	
+
+}process_state;
+
+typedef enum{
+
+ link_net =0x01,
+ ask_link_state,
+
+
+}wifi_cmd;
+
+
+
 
 
 

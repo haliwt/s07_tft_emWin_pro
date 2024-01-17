@@ -1,5 +1,5 @@
-#ifndef __PUBLISH_H_
-#define __PUBLISH_H_
+#ifndef __BSP_PUBLISH_H_
+#define __BSP_PUBLISH_H_
 #include "main.h"
 
 enum pub_Signal {                   /* enumeration for CParser signals */
