@@ -28,14 +28,21 @@
 
 #define LCD_NSS_SetLow()    (HAL_GPIO_WritePin(TFT_NSS_GPIO_Port,TFT_NSS_Pin,GPIO_PIN_RESET))
 
+void LCD_Init(void);
 
 void LCD_Display_BacklightOn(void);
+
 void LCD_Display_BacklightOff(void);
-uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
+
+void LCD_Write_Cmd(uint8_t cmd);
+
+void LCD_Write_Data(uint8_t data);
+
+void LCD_Write_16bit_Data(uint16_t data);
 
 void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
 
-void LCD_Init(void);
+
 
 
 #endif 

@@ -21,13 +21,14 @@
 #include "bsp_ctl.h"
 #include "bsp_lcd.h"
 #include "bsp_usart.h"
+#include "bsp_lcd_gui.h"
 
-/* ¶¨Òå BSP °æ±¾ºÅ */
+/* ï¿½ï¿½ï¿½ï¿½ BSP ï¿½æ±¾ï¿½ï¿½ */
 #define __STM33G030C8T6_BSP_VERSION		"0.1"
 
-/* ¿ª¹ØÈ«¾ÖÖÐ¶ÏµÄºê */
-#define ENABLE_INT()	__set_PRIMASK(0)	/* Ê¹ÄÜÈ«¾ÖÖÐ¶Ï */
-#define DISABLE_INT()	__set_PRIMASK(1)	/* ½ûÖ¹È«¾ÖÖÐ¶Ï */
+/* ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½Ð¶ÏµÄºï¿½ */
+#define ENABLE_INT()	__set_PRIMASK(0)	/* Ê¹ï¿½ï¿½È«ï¿½ï¿½ï¿½Ð¶ï¿½ */
+#define DISABLE_INT()	__set_PRIMASK(1)	/* ï¿½ï¿½Ö¹È«ï¿½ï¿½ï¿½Ð¶ï¿½ */
 
 
 void bsp_Idle(void);

@@ -4,10 +4,10 @@
 #define LCD_TOTAL_BUF_SIZE  (240*320*2)
 #define LCD_Buf_Size 1152
 
+static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 static uint8_t lcd_buf[LCD_Buf_Size];
 
 static void LCD_GPIO_Reset(void);
-static void LCD_Write_Cmd(uint8_t cmd);
 static void LCD_Clear(uint16_t color);
 
 /*******************************************************************************
@@ -18,7 +18,7 @@ static void LCD_Clear(uint16_t color);
  * Return Ref: 0--success 1 - fail
  * 
 ***********************************************************************************/
-uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
+static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
 
   return HAL_SPI_Transmit_DMA(&hspi1,txdata,size);
@@ -42,16 +42,25 @@ static void LCD_GPIO_Reset(void)
 static void LCD_Write_Cmd(uint8_t cmd)
 {
 
-    LCD_NSS_SetLow(); //chip of selection
+    LCD_NSS_SetLow(); //To write command to TFT is low level 
     SPI_WriteByte(&cdm,1);
 
 }
 
-static void LCD_Write_Data(uint8_t data)
+void LCD_Write_Data(uint8_t data)
 {
-
-    LCD_NSS_SetHigh(); //chip of selection
+    LCD_NSS_SetHigh(); //To write data to TFT is high level
     SPI_WriteByte(&data,1);
+}
+
+void LCD_Write_16bit_Data(uint16_t data)
+{
+    uint8_t temp_data;
+    LCD_NSS_SetHigh(); //To write data to TFT is high level
+    SPI_WriteByte(&data,1);
+    temp_data = data >>8;
+    SPI_WriteByte(&temp_data,1);
+
 }
 /*******************************************************************************
  * 
@@ -227,10 +236,9 @@ void LCD_Init(void)
     LCD_Clear(WHITE);
 
     /*打开显示*/
-    LCD_PWR(1);
+    LCD_Display_BacklightOn();
 
 }
-
 
 
 
