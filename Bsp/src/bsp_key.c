@@ -234,7 +234,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 //               K1++;
 //			   if(K1 > 60000){
 //                  K1= 0;
-//				 // gctl_t.gWifi_flag =1;
+//				 //gctl_t.wifi_flag =1;
 //				  gctl_t.gKey_value = wifi_fun_on;
 //                  return ;
 //              
@@ -333,7 +333,7 @@ uint8_t ReadKey(void)
 //			K1++;
 //			if(K1 > 1990000 && gctl_t.gPower_On ==power_on){
 //	               K1= 0;
-//				// gctl_t.gWifi_flag =1;
+//				//gctl_t.wifi_flag =1;
 //				  gctl_t.long_key_flag =1;
 //				  gctl_t.gKey_value = wifi_fun_on;
 //	              return   wifi_fun_on;
@@ -496,10 +496,10 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 	 
 	  if(K1 > 400000 && gctl_t.gPower_On == power_on && gctl_t.long_key_flag ==0){
 	  	 K1 =0;
-		  SendData_Set_Wifi(0x01);
+		//  SendData_Set_Wifi(0x01);
 		  gctl_t.long_key_flag =1;
 		  gctl_t.wifi_led_fast_blink_flag=0;
-		  gctl_t.gWifi_flag =0;
+		 gctl_t.wifi_flag =0;
 		 return KEY_POWER_LONG_DOWN;
 
 

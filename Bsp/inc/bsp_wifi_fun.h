@@ -87,9 +87,18 @@ typedef struct _WIFI_FUN{
 	uint8_t wifi_run_set_restart_flag;
 	uint8_t auto_link_cloud_flag;
 	uint8_t response_wifi_signal_label;
+	uint8_t reconnect_tencent_cloud_flag;
+	uint8_t wifi_power_on_flag;
     //sensor dht11 
 	uint8_t gDht11_temperature;
 	uint8_t gDht11_humidity;
+	uint8_t set_temperature_value ;
+
+	//fan
+	uint8_t set_wind_speed_value;
+
+	//config
+	uint8_t wifi_config_net_lable;
 
     //real time 
     uint8_t real_hours;

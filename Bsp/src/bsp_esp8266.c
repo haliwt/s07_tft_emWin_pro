@@ -42,8 +42,8 @@ uint8_t at_send_data(uint8_t* pdata, uint16_t len)
 void InitWifiModule(void)
 {
 	
-	if(gctl_t.wifi_config_net_lable==0){
-		 gctl_t.wifi_config_net_lable++;
+	if(wifi_t.wifi_config_net_lable==0){
+		 wifi_t.wifi_config_net_lable++;
 			
 			WIFI_IC_ENABLE();
 	
@@ -98,14 +98,14 @@ void Wifi_SoftAP_Config_Handler(void)
     device_massage = (uint8_t *)malloc(128);
 
 
-   switch (gctl_t.wifi_config_net_lable)
+   switch (wifi_t.wifi_config_net_lable)
   {
 
     case wifi_set_restor:
            //InitWifiModule();
            ReConnect_Wifi_Net_ATReset_Hardware();//InitWifiModule_Hardware();
 		   HAL_Delay(1000);
-           gctl_t.wifi_config_net_lable =wifi_set_cwmode;
+           wifi_t.wifi_config_net_lable =wifi_set_cwmode;
 	break;
 
 
@@ -117,7 +117,7 @@ void Wifi_SoftAP_Config_Handler(void)
 			HAL_Delay(1000);
             Decode_Function();
 			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
-			gctl_t.wifi_config_net_lable =wifi_set_softap;
+			wifi_t.wifi_config_net_lable =wifi_set_softap;
 			gctl_t.randomName[0]=HAL_GetUIDw0();
 		
 
@@ -135,7 +135,7 @@ void Wifi_SoftAP_Config_Handler(void)
 			HAL_Delay(1000);
             Decode_Function();
 	        
-			gctl_t.wifi_config_net_lable=wifi_set_tcdevreg;
+			wifi_t.wifi_config_net_lable=wifi_set_tcdevreg;
 		
 	
 
@@ -152,7 +152,7 @@ void Wifi_SoftAP_Config_Handler(void)
         Decode_Function();
 
 	  
-	     gctl_t.wifi_config_net_lable=wifi_set_tcsap;
+	     wifi_t.wifi_config_net_lable=wifi_set_tcsap;
 
 	 break;
 
@@ -176,7 +176,7 @@ void Wifi_SoftAP_Config_Handler(void)
 			 wifi_t.soft_ap_config_flag =1;
 			 wifi_t.linking_tencent_cloud_doing =1; //enable usart2 receive wifi  data
 			 wifi_t.wifi_uart_counter=0;
-			 gctl_t.wifi_config_net_lable=0xff;
+			 wifi_t.wifi_config_net_lable=0xff;
 			
 	 break;
 

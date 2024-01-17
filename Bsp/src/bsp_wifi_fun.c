@@ -339,15 +339,15 @@ static void AutoReconnect_Wifi_Neware_Function(void)
 	if(wifi_t.wifi_reconnect_read_flag == 1 && det_no_wifi_net==0){
 
 		det_no_wifi_net++;
-		gctl_t.auto_link_cloud_flag=0;
-		SendWifiData_To_Cmd(0x0) ;
+		wifi_t.auto_link_cloud_flag=0;
+		//SendWifiData_To_Cmd(0x0) ;
 
 
 		wifi_t.esp8266_login_cloud_success=0;
 
 	}
 
-	if(wifi_t.wifi_reconnect_read_flag == 1 && gctl_t.auto_link_cloud_flag==0 ){
+	if(wifi_t.wifi_reconnect_read_flag == 1 && wifi_t.auto_link_cloud_flag==0 ){
 
 		AutoRepeate_Link_Tencent_Cloud();
 		wifi_t.runCommand_order_lable= wifi_publish_update_tencent_cloud_data;
@@ -357,11 +357,11 @@ static void AutoReconnect_Wifi_Neware_Function(void)
 
 		if(wifi_t.esp8266_login_cloud_success==1){
 			det_no_wifi_net=0;
-			gctl_t.reconnect_tencent_cloud_flag=0;
-			gctl_t.auto_link_cloud_flag=0xff;
+			wifi_t.reconnect_tencent_cloud_flag=0;
+			wifi_t.auto_link_cloud_flag=0xff;
 			wifi_t.linking_tencent_cloud_doing =0;
 
-			SendWifiData_To_Cmd(0x01) ;
+			//SendWifiData_To_Cmd(0x01) ;
 			HAL_Delay(30);
 
 

@@ -51,6 +51,9 @@ typedef struct _bsp_ctl{
    uint8_t gTimer_mode_flag;
    uint8_t key_set_timer_flag;
 
+   //command
+   uint8_t rx_command_tag;
+
  
 
    //temperature and humidity

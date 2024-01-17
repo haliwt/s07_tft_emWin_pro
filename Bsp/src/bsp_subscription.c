@@ -6,7 +6,8 @@
 
 uint8_t TCMQTTRCVPUB[40];
 
-char wifi_t[1];
+uint8_t sub_array[1];
+
 
 
  
@@ -90,7 +91,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       case 0:  //#0
 
             
-         if((wifi_t[0] == '"') ||wifi_t[0]=='+') //hex :54 - "T" -fixed
+         if((sub_array[0]== '"') ||sub_array[0]=='+') //hex :54 - "T" -fixed
             wifi_t.rx_data_state=1; //=1
           else{
                wifi_t.rx_counter=0;
@@ -100,7 +101,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
       case 1:
       
-         if((wifi_t[0] == 'p')  ||wifi_t[0]=='T')//hex :54 - "T" -fixed
+         if((sub_array[0]== 'p')  ||sub_array[0]=='T')//hex :54 - "T" -fixed
             wifi_t.rx_data_state=2; //=1
           else{
                wifi_t.rx_counter=0;
@@ -109,7 +110,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
             
          break;
       case 2: //#1
-             if((wifi_t[0] == 'a')||wifi_t[0]=='C')  //hex :4B - "K" -fixed
+             if((sub_array[0]== 'a')||sub_array[0]=='C')  //hex :4B - "K" -fixed
             wifi_t.rx_data_state=3; //=1
          else{
             wifi_t.rx_data_state =0;
@@ -118,7 +119,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
          break;
             
         case 3:
-            if((wifi_t[0] == 'r')||wifi_t[0]=='M')    //hex :4B - "K" -fixed
+            if((sub_array[0]== 'r')||sub_array[0]=='M')    //hex :4B - "K" -fixed
             wifi_t.rx_data_state=4; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -128,7 +129,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
         break;
         
         case 4:
-            if((wifi_t[0] == 'a')  ||wifi_t[0]=='Q')  //hex :4B - "K" -fixed
+            if((sub_array[0]== 'a')  ||sub_array[0]=='Q')  //hex :4B - "K" -fixed
             wifi_t.rx_data_state=5; //=1
          else{
             wifi_t.rx_data_state =0;
@@ -138,7 +139,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
         break;
 
       case 5:
-       if((wifi_t[0] == 'm') ||wifi_t[0]=='T')   //hex :4B - "K" -fixed
+       if((sub_array[0]== 'm') ||sub_array[0]=='T')   //hex :4B - "K" -fixed
          wifi_t.rx_data_state=6; //=1
          else{
            wifi_t.rx_data_state=0;
@@ -149,7 +150,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
       
       case 6:
-       if((wifi_t[0] == 's')||wifi_t[0]=='T')    //hex :4B - "K" -fixed
+       if((sub_array[0]== 's')||sub_array[0]=='T')    //hex :4B - "K" -fixed
          wifi_t.rx_data_state=7; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -159,10 +160,10 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
       case 7:
-       if((wifi_t[0] == '"')||wifi_t[0]=='R' ||wifi_t[0]=='C' ){  //hex :4B - "K" -fixed
+       if((sub_array[0]== '"')||sub_array[0]=='R' ||sub_array[0]=='C' ){  //hex :4B - "K" -fixed
          wifi_t.rx_data_state=8; //=1
     	}
-		else if(wifi_t[0]==':' ){
+		else if(sub_array[0]==':' ){
 
              wifi_t.rx_data_state=8;
 			 det_wifi_link=1;//wifi_t.wifi_reconnect_read_flag = wifi_t[0];
@@ -175,7 +176,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
        case 8:
-       if((wifi_t[0] == ':') ||wifi_t[0]=='E' ||wifi_t[0]=='O' ) //hex :4B - "K" -fixed
+       if((sub_array[0]== ':') ||sub_array[0]=='E' ||sub_array[0]=='O' ) //hex :4B - "K" -fixed
          wifi_t.rx_data_state=9; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -188,7 +189,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
 
       case 9:
-       if((wifi_t[0] == '{') ||wifi_t[0]=='C' ||wifi_t[0]=='N'){ //hex :4B - "K" -fixed
+       if((sub_array[0]== '{') ||sub_array[0]=='C' ||sub_array[0]=='N'){ //hex :4B - "K" -fixed
          wifi_t.rx_data_state=10; //=1
        	}
          else{
@@ -202,12 +203,12 @@ void Subscribe_Rx_Interrupt_Handler(void)
         
          if(wifi_t.rx_data_success==0){
 		 	
-         	wifi_t.wifi_data[wifi_t.rx_counter] = wifi_t[0];
+         	wifi_t.wifi_data[wifi_t.rx_counter] = sub_array[0];
             wifi_t.rx_counter++ ;
 	
 		    
             
-         if(wifi_t[0]=='}' || wifi_t[0]==0x0A) //0x7D='}' // end
+         if(sub_array[0]=='}' || sub_array[0]==0x0A) //0x7D='}' // end
          {
             wifi_t.rx_data_success=1;
             wifi_t.rx_data_state=0;
@@ -216,7 +217,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
             
           
          }
-		 else if(wifi_t[0]=='O' || wifi_t[0]=='N'){ //auto reconect be detected 
+		 else if(sub_array[0]=='O' || sub_array[0]=='N'){ //auto reconect be detected 
 
                   wifi_t.rx_data_state=11; //=1
 
@@ -239,7 +240,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
 
 	  case 11:
-		if(wifi_t[0]=='N' ||wifi_t[0]==':'){
+		if(sub_array[0]=='N' ||sub_array[0]==':'){
 		
 			wifi_t.rx_data_state=12; //=1
 		
@@ -253,7 +254,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
       case 12:
-		if(wifi_t[0]=='N' || wifi_t[0]=='O'){
+		if(sub_array[0]=='N' || sub_array[0]=='O'){
 		
 			wifi_t.rx_data_state=13; //=1
 		
@@ -267,13 +268,13 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 13:
-		if(wifi_t[0]=='E' ){
+		if(sub_array[0]=='E' ){
 		
 			wifi_t.rx_data_state=14; //=1
 		
 		
 		}
-		else if(wifi_t[0]=='K'){
+		else if(sub_array[0]=='K'){
 
 
             wifi_t.wifi_reconnect_read_flag = 0;
@@ -289,7 +290,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 14:
-		if(wifi_t[0]=='C'){
+		if(sub_array[0]=='C'){
 		
 			wifi_t.rx_data_state=15; //=1
 		
@@ -303,7 +304,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 15:
-		if(wifi_t[0]=='T'){
+		if(sub_array[0]=='T'){
 		
 			wifi_t.rx_data_state=16; //=1
 		
@@ -317,7 +318,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 16:
-		if(wifi_t[0]=='I'){
+		if(sub_array[0]=='I'){
 		
 			wifi_t.rx_data_state=17; //=1
 		
@@ -331,7 +332,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 17:
-		if(wifi_t[0]=='N'){
+		if(sub_array[0]=='N'){
 		
 				wifi_t.rx_data_state=18; //=1
 		
@@ -345,7 +346,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 18:
-		if(wifi_t[0]=='G'){
+		if(sub_array[0]=='G'){
 		
 			wifi_t.wifi_reconnect_read_flag = 1;
 		    wifi_t.rx_data_state =0;
@@ -495,7 +496,7 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"Anion\":0")){
           if(gctl_t.gPower_On ==POWER_ON){
-	          //  gctl_t.gPlasma=0;
+	          // gctl_t.plasma_flag=0;
 			wifi_t.response_wifi_signal_label = ANION_OFF_ITEM;
 		    
              }
@@ -520,7 +521,7 @@ void Tencent_Cloud_Rx_Handler(void)
     }
     else if(strstr((char *)wifi_t.wifi_data,"sonic\":1")){
             if(gctl_t.gPower_On ==POWER_ON){
-            gctl_t.ultrasonic_flag=1;
+            gctl_t.ultrasoinc_flag=1;
 			wifi_t.response_wifi_signal_label = SONIC_ON_ITEM;
        
            }
@@ -555,7 +556,7 @@ void Tencent_Cloud_Rx_Handler(void)
 
 		 if(gctl_t.gPower_On ==POWER_ON){
 
-			gctl_t.response_wifi_signal_label= FAN_ITEM;
+			wifi_t.response_wifi_signal_label= FAN_ITEM;
 		}
 	}
  
@@ -573,8 +574,8 @@ void Json_Parse_Command_Fun(void)
 	static uint8_t buzzer_temp_on;
 
 
-   switch(gctl_t.response_wifi_signal_label){
-       gctl_t.set_beijing_time_flag =0;
+   switch(wifi_t.response_wifi_signal_label){
+       wifi_t.set_beijing_time_flag =0;
 	   wifi_t.get_rx_beijing_time_enable=0; //enab
 	
 
@@ -586,9 +587,9 @@ void Json_Parse_Command_Fun(void)
 
 			gctl_t.rx_command_tag= POWER_OFF;//RUN_COMMAND;
 	       // gctl_t.RunCommand_Label=POWER_OFF;
-            SendWifiCmd_To_Order(WIFI_POWER_OFF);
+         //   SendWifiCmd_To_Order(WIFI_POWER_OFF);
 			HAL_Delay(5);
-            gctl_t.wifi_power_on_flag=0;
+            wifi_t.gctl_t.wifi_power_on_flag=0;
 			buzzer_temp_on=0;
 	
            }
@@ -605,11 +606,11 @@ void Json_Parse_Command_Fun(void)
 
 		gctl_t.ptc_warning =0;
 		gctl_t.fan_warning =0;
-		gctl_t.ptc_remove_warning_send_data =0;
+		//gctl_t.ptc_remove_warning_send_data =0;
 		gctl_t.rx_command_tag= POWER_ON;
-	    SendWifiCmd_To_Order(WIFI_POWER_ON);
+	   // SendWifiCmd_To_Order(WIFI_POWER_ON);
 		HAL_Delay(5);
-        gctl_t.wifi_power_on_flag =1;
+        wifi_t.wifi_power_on_flag =1;
 		buzzer_temp_on=0;
 		wifi_t.response_wifi_signal_label = 0xff;
 
@@ -622,7 +623,7 @@ void Json_Parse_Command_Fun(void)
 	  	 HAL_Delay(350);
 	     gctl_t.ptc_flag=1;
 		
-		 SendWifiCmd_To_Order(WIFI_PTC_ON);
+		// SendWifiCmd_To_Order(WIFI_PTC_ON);
 		 HAL_Delay(5);
 		
 	     }
@@ -630,12 +631,12 @@ void Json_Parse_Command_Fun(void)
 			gctl_t.ptc_flag=0;
 			MqttData_Publish_SetPtc(0);
 		     HAL_Delay(350);
-			SendWifiCmd_To_Order(WIFI_PTC_OFF);
+		//	SendWifiCmd_To_Order(WIFI_PTC_OFF);
             HAL_Delay(5);
 		 }
-           gctl_t.wifi_power_on_flag=0;  
+           wifi_t.wifi_power_on_flag=0;  
 		  buzzer_temp_on=0;
-          gctl_t.response_wifi_signal_label=0xff;
+          wifi_t.response_wifi_signal_label=0xff;
 	  	}
 	    
 	   break;
@@ -647,9 +648,9 @@ void Json_Parse_Command_Fun(void)
 		 HAL_Delay(350);
 	     gctl_t.ptc_flag=0;
 		
-		 SendWifiCmd_To_Order(WIFI_PTC_OFF);
+		 //SendWifiCmd_To_Order(WIFI_PTC_OFF);
          HAL_Delay(5);
-	  	 gctl_t.wifi_power_on_flag=0;
+	  	 wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
 	     wifi_t.response_wifi_signal_label = 0xff;
 
@@ -661,12 +662,12 @@ void Json_Parse_Command_Fun(void)
 			// Buzzer_KeySound();
             MqttData_Publish_SetPlasma(0);
 			HAL_Delay(350);
-            gctl_t.gPlasma=0;
+           gctl_t.plasma_flag=0;
 			
-			SendWifiCmd_To_Order(WIFI_KILL_OFF);
+		//	SendWifiCmd_To_Order(WIFI_KILL_OFF);
 	  	   HAL_Delay(5);
 	  	}
-         gctl_t.wifi_power_on_flag=0;
+         wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
 	   wifi_t.response_wifi_signal_label = 0xff;
 	   break;
@@ -675,14 +676,14 @@ void Json_Parse_Command_Fun(void)
 	  	if(gctl_t.gPower_On ==POWER_ON){
             MqttData_Publish_SetPlasma(1);
 			HAL_Delay(350);
-            gctl_t.gPlasma=1;
+           gctl_t.plasma_flag=1;
 			
 			SendWifiCmd_To_Order(WIFI_KILL_ON);
 	  	   HAL_Delay(5);
 	  	}
-         gctl_t.wifi_power_on_flag=0;
+         wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
-	   gctl_t.response_wifi_signal_label=0xff;
+	   wifi_t.response_wifi_signal_label=0xff;
 	    break;
 
 	  case SONIC_OFF_ITEM://ultransonic off
@@ -690,14 +691,14 @@ void Json_Parse_Command_Fun(void)
 
             MqttData_Publish_SetUltrasonic(0);
 				HAL_Delay(350);
-            gctl_t.ultrasonic_flag=0;
+            gctl_t.ultrasoinc_flag=0;
 	
 			SendWifiCmd_To_Order(WIFI_SONIC_OFF);
 			HAL_Delay(5);
         }
-         gctl_t.wifi_power_on_flag=0;
+         wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
-	   gctl_t.response_wifi_signal_label=0xff;
+	   wifi_t.response_wifi_signal_label=0xff;
 	  	break;
 
 	  case SONIC_ON_ITEM://ultransonic off
@@ -705,14 +706,14 @@ void Json_Parse_Command_Fun(void)
 		
              MqttData_Publish_SetUltrasonic(1);
 			 	HAL_Delay(350);
-            gctl_t.ultrasonic_flag=1;
+            gctl_t.ultrasoinc_flag=1;
 		
 			SendWifiCmd_To_Order(WIFI_SONIC_ON);
 			HAL_Delay(5);
         }
-         gctl_t.wifi_power_on_flag=0;
+         wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
-	   gctl_t.response_wifi_signal_label=0xff;
+	   wifi_t.response_wifi_signal_label=0xff;
 	  	break;
 
 	  case STATE_TIMER_MODEL_ITEM:
@@ -721,10 +722,10 @@ void Json_Parse_Command_Fun(void)
             MqttData_Publish_SetState(2);
 			HAL_Delay(350);
         
-			SendWifiCmd_To_Order(WIFI_MODE_2);
+			//SendWifiCmd_To_Order(WIFI_MODE_2);
 		   HAL_Delay(5);
         }
-        gctl_t.wifi_power_on_flag=0;
+        wifi_t.wifi_power_on_flag=0;
 	    buzzer_temp_on=0;
 	   wifi_t.response_wifi_signal_label = 0xff;
 	  break;
@@ -736,10 +737,10 @@ void Json_Parse_Command_Fun(void)
             MqttData_Publish_SetState(1);
 			HAL_Delay(350);
           
-			SendWifiCmd_To_Order(WIFI_MODE_1);
+			//SendWifiCmd_To_Order(WIFI_MODE_1);
 		   HAL_Delay(5);
         }
-        gctl_t.wifi_power_on_flag=0;
+        wifi_t.wifi_power_on_flag=0;
 		buzzer_temp_on=0;
 	   wifi_t.response_wifi_signal_label = 0xff;
 	  	break;
@@ -750,16 +751,16 @@ void Json_Parse_Command_Fun(void)
 
             temp_decade=wifi_t.wifi_data[14]-0x30;
             temp_unit=wifi_t.wifi_data[15]-0x30;
-            gctl_t.set_temperature_value = temp_decade*10 +  temp_unit;
-            if( gctl_t.set_temperature_value > 40)  gctl_t.set_temperature_value=40;
-            if( gctl_t.set_temperature_value <20 )  gctl_t.set_temperature_value=20;
-            MqttData_Publis_SetTemp(gctl_t.set_temperature_value);
+            wifi_t.set_temperature_value = temp_decade*10 +  temp_unit;
+            if( wifi_t.set_temperature_value > 40)  wifi_t.set_temperature_value=40;
+            if( wifi_t.set_temperature_value <20 )  wifi_t.set_temperature_value=20;
+            MqttData_Publis_SetTemp(wifi_t.set_temperature_value);
 			HAL_Delay(350);
-			SendWifiData_To_WifiSetTemp(gctl_t.set_temperature_value);
+			//SendWifiData_To_WifiSetTemp(wifi_t.set_temperature_value);
 			HAL_Delay(10);
           
        }
-      gctl_t.wifi_power_on_flag=0;
+      wifi_t.wifi_power_on_flag=0;
 	  buzzer_temp_on=0;
 	  wifi_t.response_wifi_signal_label = 0xff;
 	  break;
@@ -773,35 +774,35 @@ void Json_Parse_Command_Fun(void)
 	       		 wind_decade=wifi_t.wifi_data[8]-0x30;
                  wind_unit = wifi_t.wifi_data[9]-0x30;
             
-                if(wind_hundred ==1 && wind_decade==0 && wind_unit==0)gctl_t.set_wind_speed_value=100;
+                if(wind_hundred ==1 && wind_decade==0 && wind_unit==0) wifi_t.set_wind_speed_value=100;
                 else
-                     gctl_t.set_wind_speed_value = wind_hundred*10 + wind_decade;
+                      wifi_t.set_wind_speed_value = wind_hundred*10 + wind_decade;
 			
          
-			MqttData_Publis_SetFan(gctl_t.set_wind_speed_value);
+			MqttData_Publis_SetFan( wifi_t.set_wind_speed_value);
 			HAL_Delay(350);
-    		SendWifiData_To_PanelWindSpeed(gctl_t.set_wind_speed_value);
+    	//	SendWifiData_To_PanelWindSpeed( wifi_t.set_wind_speed_value);
 			HAL_Delay(10);
           
 		    }
 			else{
-				gctl_t.set_wind_speed_value=0;
+				 wifi_t.set_wind_speed_value=0;
 
-			    MqttData_Publis_SetFan(gctl_t.set_wind_speed_value);
+			    MqttData_Publis_SetFan( wifi_t.set_wind_speed_value);
 				HAL_Delay(350);
 
 
 			}
             
 		}
-         gctl_t.wifi_power_on_flag=0;
+         wifi_t.gctl_t.wifi_power_on_flag=0;
 	  	buzzer_temp_on=0;
 	    wifi_t.response_wifi_signal_label = 0xff;
 	  	break;
 
 	  case APP_TIMER_POWER_ON_REF :
 
-	       gctl_t.set_beijing_time_flag=0;
+	       wifi_t.set_beijing_time_flag=0;
 		   wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
 	  	
 		   if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
@@ -814,7 +815,7 @@ void Json_Parse_Command_Fun(void)
 			   gctl_t.RunCommand_Label=POWER_ON;
 			   SendWifiCmd_To_Order(WIFI_POWER_ON);
 			   HAL_Delay(10);
-                gctl_t.wifi_power_on_flag=0;
+                wifi_t.gctl_t.wifi_power_on_flag=0;
 			   buzzer_temp_on=0;
 		         
 
@@ -834,12 +835,12 @@ void Json_Parse_Command_Fun(void)
 
 			SendWifiCmd_To_Order(WIFI_POWER_OFF);
 			HAL_Delay(10);
-             gctl_t.wifi_power_on_flag=0;
+             wifi_t.gctl_t.wifi_power_on_flag=0;
 		      buzzer_temp_on=0;
 				
 			}
 
-	     gctl_t.response_wifi_signal_label=0xff;
+	     wifi_t.response_wifi_signal_label=0xff;
 
 	  break;
 
@@ -847,14 +848,14 @@ void Json_Parse_Command_Fun(void)
    }
 
 
-   if(gctl_t.response_wifi_signal_label==0xff){
+   if(wifi_t.response_wifi_signal_label==0xff){
         
-        if(buzzer_temp_on ==0 &&  gctl_t.wifi_power_on_flag ==0){
+        if(buzzer_temp_on ==0 &&  wifi_t.gctl_t.wifi_power_on_flag ==0){
 			buzzer_temp_on++;
    	       Buzzer_KeySound();
         }
          
-		gctl_t.response_wifi_signal_label=0xf0;
+		wifi_t.response_wifi_signal_label=0xf0;
 
 		for(i=0;i<20;i++){
 		   wifi_t.wifi_data[i]=0;
@@ -877,9 +878,9 @@ void Wifi_Rx_Beijing_Time_Handler(void)
       case 0:  //#0
 
             
-         if(wifi_t[0] == 0x01 || wifi_t[0] == 0x02 ||wifi_t[0] == 0x03 ||wifi_t[0] == 0x04 
-		 	|| wifi_t[0] == 0x05 ||wifi_t[0] == 0x06 ||wifi_t[0] == 0x07 ||wifi_t[0] == 0x08 
-		 	|| wifi_t[0] == 0x09 ||wifi_t[0] == 0x0a ||wifi_t[0] == 0x0b ||wifi_t[0] == 0x0c ){ 
+         if(sub_array[0]== 0x01 || sub_array[0]== 0x02 ||sub_array[0]== 0x03 ||sub_array[0]== 0x04 
+		 	|| sub_array[0]== 0x05 ||sub_array[0]== 0x06 ||sub_array[0]== 0x07 ||sub_array[0]== 0x08 
+		 	|| sub_array[0]== 0x09 ||sub_array[0]== 0x0a ||sub_array[0]== 0x0b ||sub_array[0]== 0x0c ){ 
              wifi_t.rx_data_state=1; //=1
 		  }
 		  else{
@@ -890,7 +891,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
          break;
 
 	  case 1:
-	  	 if(wifi_t[0] == ' ')
+	  	 if(sub_array[0]== ' ')
 		  	 wifi_t.rx_data_state=2; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -905,7 +906,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
          break;
 
 	  case 3:
-	  	  if(wifi_t[0] == ':')
+	  	  if(sub_array[0]== ':')
 		  	 wifi_t.rx_data_state=4; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -920,7 +921,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
          break;
 
 	  case 5:
-	  	 if(wifi_t[0] == ':')
+	  	 if(sub_array[0]== ':')
 		  	 wifi_t.rx_data_state=6; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -937,7 +938,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
         break;
 
 		case 7:
-			if(wifi_t[0] == ' ')
+			if(sub_array[0]== ' ')
 		  	 wifi_t.rx_data_state=8; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -947,7 +948,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 		break;
 		  
 		case 8:
-			 if(wifi_t[0] ==20){
+			 if(sub_array[0]==20){
                 wifi_t.get_rx_beijing_time_enable=0 ;
 				wifi_t.rx_data_state=0; //=1
 				  
@@ -996,7 +997,7 @@ void Parse_Json_Statement(void)
 		
 		if(strstr((char *)TCMQTTRCVPUB,"Anion\":0")){
 			
-				   gctl_t.gPlasma=0;
+				  gctl_t.plasma_flag=0;
 				
 				
 			 
