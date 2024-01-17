@@ -81,7 +81,7 @@ static void Mqtt_Value_update_data(void)
 	sg_info.state = gctl_t.mode_flag;
 	sg_info.ptc  = gctl_t.ptc_flag;
 	sg_info.anion =gctl_t.plasma_flag;
-	sg_info.sonic = gctl_t.ultrasonic_flag ;
+	sg_info.sonic = gctl_t.ultrasoinc_flag ;
     sg_info.find =  wifi_t.set_wind_speed_value;
     if(wifi_t.set_temperature_value <20)wifi_t.set_temperature_value = 20;
 	else if(wifi_t.set_temperature_value > 40)wifi_t.set_temperature_value = 40;
@@ -116,11 +116,13 @@ static void Mqtt_power_off_Value(void)
 ********************************************************************************/
 void property_topic_publish(void)
 {
+    static uint32_t ic_id;
+
     char topic[128] = {0};
     int  size;
 
-    gctl_t.randomName[0]=HAL_GetUIDw0();
-    size = snprintf(topic, sizeof(topic), "AT+TCMQTTPUB=\"$thing/up/property/%s/UYIJIA01-%d\",0,", PRODUCT_ID,gctl_t.randomName[0]);
+    ic_id=HAL_GetUIDw0();
+    size = snprintf(topic, sizeof(topic), "AT+TCMQTTPUB=\"$thing/up/property/%s/UYIJIA01-%d\",0,", PRODUCT_ID,ic_id);
     at_send_data((uint8_t *)topic, size);
  
    

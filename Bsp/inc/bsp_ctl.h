@@ -18,6 +18,9 @@ typedef enum{
 
 }hard_error_state;
 
+
+
+
 typedef struct _bsp_ctl{
 
     uint8_t wifi_flag;

@@ -512,7 +512,7 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"sonic\":0")){
             if(gctl_t.gPower_On ==POWER_ON){
-           // gctl_t.ultrasonic_flag=0;
+           // gctl_t.ultrasoinc_flag=0;
 			wifi_t.response_wifi_signal_label = SONIC_OFF_ITEM;
         
                 
@@ -581,7 +581,7 @@ void Json_Parse_Command_Fun(void)
 
       case OPEN_OFF_ITEM:
 
-           if(gctl_t.app_timer_power_off_flag ==0){
+           if(wifi_t.app_timer_power_off_flag ==0){
 		 	MqttData_Publish_SetOpen(0);  
 			HAL_Delay(350);
 
@@ -589,7 +589,7 @@ void Json_Parse_Command_Fun(void)
 	       // gctl_t.RunCommand_Label=POWER_OFF;
          //   SendWifiCmd_To_Order(WIFI_POWER_OFF);
 			HAL_Delay(5);
-            wifi_t.gctl_t.wifi_power_on_flag=0;
+            wifi_t.wifi_power_on_flag=0;
 			buzzer_temp_on=0;
 	
            }
@@ -795,7 +795,7 @@ void Json_Parse_Command_Fun(void)
 			}
             
 		}
-         wifi_t.gctl_t.wifi_power_on_flag=0;
+         wifi_t.wifi_power_on_flag=0;
 	  	buzzer_temp_on=0;
 	    wifi_t.response_wifi_signal_label = 0xff;
 	  	break;
@@ -807,15 +807,15 @@ void Json_Parse_Command_Fun(void)
 	  	
 		   if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
 		   
-			  gctl_t.app_timer_power_on_flag = 1;
-		      gctl_t.app_timer_power_off_flag = 0;
+			  wifi_t.app_timer_power_on_flag = 1;
+		      wifi_t.app_timer_power_off_flag = 0;
 			   MqttData_Publish_SetOpen(1);  
 			   HAL_Delay(350);
-				gctl_t.rx_command_tag= RUN_COMMAND;
-			   gctl_t.RunCommand_Label=POWER_ON;
+				gctl_t.rx_command_tag= 2;
+			  // gctl_t.RunCommand_Label=POWER_ON;
 			   SendWifiCmd_To_Order(WIFI_POWER_ON);
 			   HAL_Delay(10);
-                wifi_t.gctl_t.wifi_power_on_flag=0;
+                wifi_t.wifi_power_on_flag=0;
 			   buzzer_temp_on=0;
 		         
 
@@ -825,17 +825,17 @@ void Json_Parse_Command_Fun(void)
 		   
             if(strstr((char *)TCMQTTRCVPUB,"open\":0")){
 		   
-		        gctl_t.app_timer_power_off_flag = 1;
-			    gctl_t.app_timer_power_on_flag = 0;
+		        wifi_t.app_timer_power_off_flag = 1;
+			    wifi_t.app_timer_power_on_flag = 0;
                 __HAL_UART_CLEAR_OREFLAG(&huart2);
 		 			MqttData_Publish_SetOpen(0);  
 			       HAL_Delay(350);
-			gctl_t.rx_command_tag= RUN_COMMAND;
-	         gctl_t.RunCommand_Label=POWER_OFF;
+			gctl_t.rx_command_tag= 2;
+	       //  gctl_t.RunCommand_Label=POWER_OFF;
 
 			SendWifiCmd_To_Order(WIFI_POWER_OFF);
 			HAL_Delay(10);
-             wifi_t.gctl_t.wifi_power_on_flag=0;
+             wifi_t.wifi_power_on_flag=0;
 		      buzzer_temp_on=0;
 				
 			}
@@ -850,7 +850,7 @@ void Json_Parse_Command_Fun(void)
 
    if(wifi_t.response_wifi_signal_label==0xff){
         
-        if(buzzer_temp_on ==0 &&  wifi_t.gctl_t.wifi_power_on_flag ==0){
+        if(buzzer_temp_on ==0 &&  wifi_t.wifi_power_on_flag ==0){
 			buzzer_temp_on++;
    	       Buzzer_KeySound();
         }
@@ -885,7 +885,8 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 		  }
 		  else{
                wifi_t.rx_counter=0;
-               wifi_t.UART_Flag = 0;
+              // wifi_t.UART_Flag = 0;
+			   wifi_t.data_size=0;
                wifi_t.wifi_uart_counter=0;              
             }
          break;
@@ -901,7 +902,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 
       case 2:
       
-           wifi_t.real_hours=wifi_t[0];
+           wifi_t.real_hours=sub_array[0];
            wifi_t.rx_data_state=3; //=1
          break;
 
@@ -915,7 +916,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 	  	break;
       case 4: //#1
       
-            wifi_t.real_minutes = wifi_t[0];
+            wifi_t.real_minutes = sub_array[0];
             wifi_t.rx_data_state=5; //=1
        
          break;
@@ -930,7 +931,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 	  break;
             
         case 6:
-           wifi_t.real_seconds = wifi_t[0];
+           wifi_t.real_seconds = sub_array[0];
            wifi_t.rx_data_state=7; //=1
            
            
@@ -1004,7 +1005,7 @@ void Parse_Json_Statement(void)
 		}
 		else if(strstr((char *)TCMQTTRCVPUB,"Anion\":1")){
 			
-				gctl_t.gPlasma=1;
+				gctl_t.plasma_flag=1;
 				
 			
 				
@@ -1012,13 +1013,13 @@ void Parse_Json_Statement(void)
 		
 		if(strstr((char *)TCMQTTRCVPUB,"sonic\":0")){
 			
-			     gctl_t.ultrasonic_flag=0;
+			     gctl_t.ultrasoinc_flag=0;
 				
 			
 		}
 		else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1")){
 			
-				gctl_t.ultrasonic_flag=1;
+				gctl_t.ultrasoinc_flag=1;
 				
 		   }
 

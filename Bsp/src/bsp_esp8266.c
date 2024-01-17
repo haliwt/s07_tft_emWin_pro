@@ -2,7 +2,7 @@
 #include "bsp.h"
 
 
-
+static uint32_t ic_id;
 
  uint8_t *sub_buf;
 
@@ -92,7 +92,10 @@ void ReConnect_Wifi_Net_ATReset_Hardware(void)
 ****************************************************************************************************/
 void Wifi_SoftAP_Config_Handler(void)
 {
-     uint8_t *device_massage;
+     
+	
+	
+	uint8_t *device_massage;
     
 
     device_massage = (uint8_t *)malloc(128);
@@ -113,12 +116,13 @@ void Wifi_SoftAP_Config_Handler(void)
     	    WIFI_IC_ENABLE();
          	HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
         	HAL_Delay(1000);
-            Decode_Function();
+           // Decode_Function();
 			HAL_Delay(1000);
             Decode_Function();
 			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
 			wifi_t.wifi_config_net_lable =wifi_set_softap;
-			gctl_t.randomName[0]=HAL_GetUIDw0();
+			//gctl_t.randomName[0]=HAL_GetUIDw0();
+	        ic_id = HAL_GetUIDw0();
 		
 
 	 break;
@@ -126,7 +130,7 @@ void Wifi_SoftAP_Config_Handler(void)
 	  case wifi_set_softap:
             WIFI_IC_ENABLE();
 			
-            sprintf((char *)device_massage, "AT+TCPRDINFOSET=1,\"%s\",\"%s\",\"UYIJIA01-%d\"\r\n", PRODUCT_ID, DEVICE_SECRET,gctl_t.randomName[0]);
+            sprintf((char *)device_massage, "AT+TCPRDINFOSET=1,\"%s\",\"%s\",\"UYIJIA01-%d\"\r\n", PRODUCT_ID, DEVICE_SECRET,ic_id);
 			usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
 	  		HAL_Delay(1000);
             Decode_Function();
@@ -167,7 +171,7 @@ void Wifi_SoftAP_Config_Handler(void)
             Decode_Function();
 		    HAL_Delay(1000);
             Decode_Function();
-	        sprintf((char *)device_massage, "AT+TCSAP=\"UYIJIA01-%d\"\r\n",gctl_t.randomName[0]);
+	        sprintf((char *)device_massage, "AT+TCSAP=\"UYIJIA01-%d\"\r\n",ic_id);
             usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
 			 HAL_Delay(1000);
              Decode_Function();
@@ -267,7 +271,7 @@ void PowerOn_Self_Auto_Link_Tencent_Cloud(void)
 		  //HAL_Delay(1000);
 			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
 		//	auto_link_cloud_flag =wifi_set_softap;
-			gctl_t.randomName[0]=HAL_GetUIDw0();
+			 ic_id=HAL_GetUIDw0();
 		
 
 	 break;
