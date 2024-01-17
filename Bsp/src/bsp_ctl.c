@@ -4,7 +4,7 @@
 bsp_ctl gctl_t;
 
 
-
+uint8_t (*wifi_state)(void);
 uint8_t (*ptc_state)(void); //adjust of ptc is open or close
 uint8_t (*plasma_state)(void); //adjust of plasma is open or close
 uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
@@ -12,6 +12,17 @@ uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
 
 uint8_t (*ptc_error_state)(void);
 uint8_t (*fan_error_state)(void);
+
+static uint8_t Wifi_Default_Handler(void);
+static uint8_t Ptc_Default_Handler(void);
+static uint8_t Plasma_Default_Handler(void);
+static uint8_t Ultrasonic_Default_Handler(void);
+static uint8_t Fan_Default_Handler(void);
+
+static uint8_t Ptc_Error_Default_Handler(void);
+
+static uint8_t Fan_Error_Default_Handler(void);
+
 
 
 
@@ -24,6 +35,7 @@ void bsp_ctl_init(void)
    gctl_t.plasma_flag =1;
    gctl_t.ultrasoinc_flag =1;
    UartVarInit();
+   Wifi_State_Handler(Wifi_Default_Handler);
    Ptc_State_Handler(Ptc_Default_Handler);
    Plasma_State_Handler(Plasma_Default_Handler);
    Ultrasonic_state_Handler(Ultrasonic_Default_Handler);
@@ -32,6 +44,25 @@ void bsp_ctl_init(void)
 
 }
 
+/*****************************************************************************
+ * 
+ * Function Name: void Wifi_State_Handler(uint8_t(*wifi_handler)(void))
+ * Function: 
+ * Input Ref:
+ * Return Ref:
+ * 
+*****************************************************************************/
+void Wifi_State_Handler(uint8_t(*wifi_handler)(void))
+{
+       wifi_state = wifi_handler;              
+      
+}
+static uint8_t Wifi_Default_Handler(void)
+{
+     if(gctl_t.wifi_flag == 1)return 1;
+	 else return 0;
+
+}
 /*****************************************************************************
  * 
  * Function Name: uint8_t Ptc_State_Handler( uint8_t (*ptc_dat)(uint8_t idat))

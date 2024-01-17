@@ -20,7 +20,8 @@ typedef enum{
 
 typedef struct _bsp_ctl{
 
-    uint8_t ptc_flag;
+    uint8_t wifi_flag;
+	uint8_t ptc_flag;
 	uint8_t plasma_flag;
 	uint8_t ultrasoinc_flag;
 
@@ -35,6 +36,8 @@ typedef struct _bsp_ctl{
 
 extern bsp_ctl gctl_t;
 
+
+extern uint8_t (*wifi_state)(void);
 extern uint8_t (*ptc_state)(void); //adjust of ptc is open or close
 extern uint8_t (*plasma_state)(void); //adjust of plasma is open or close
 extern uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
@@ -42,9 +45,13 @@ extern uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
 
 extern uint8_t (*ptc_error_state)(void);
 extern uint8_t (*fan_error_state)(void);
+//key of panel of ref
+
 
 
 void bsp_ctl_init(void);
+
+void Wifi_State_Handler(uint8_t(*wifi_handler)(void));
 
 
 void Ptc_State_Handler( uint8_t (*ptc_handler)(void));
@@ -58,14 +65,7 @@ void  Fan_error_state_Handler(uint8_t(*fan_error_handler)(void));
 
 
 
-uint8_t Ptc_Default_Handler(void);
-uint8_t Plasma_Default_Handler(void);
-uint8_t Ultrasonic_Default_Handler(void);
-uint8_t Fan_Default_Handler(void);
 
-uint8_t Ptc_Error_Default_Handler(void);
-
-uint8_t Fan_Error_Default_Handler(void);
 
 
 
