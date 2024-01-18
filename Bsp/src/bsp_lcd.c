@@ -152,7 +152,7 @@ static void LCD_Clear(uint16_t color)
  * Return Ref: NO
  * 
 ***********************************************************************************/
-void LCD_Init(void)
+void TFT_LCD_Init(void)
 {
     /* 关闭睡眠模式 */
     LCD_Write_Cmd(0x11);

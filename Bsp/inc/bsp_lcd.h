@@ -28,7 +28,7 @@
 
 #define LCD_NSS_SetLow()    (HAL_GPIO_WritePin(TFT_NSS_GPIO_Port,TFT_NSS_Pin,GPIO_PIN_RESET))
 
-void LCD_Init(void);
+void TFT_LCD_Init(void);
 
 void LCD_Display_BacklightOn(void);
 

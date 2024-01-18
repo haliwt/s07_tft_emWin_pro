@@ -114,7 +114,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 		LED_Power_Key_On();
 
 		pro_t.run_process_step=1;
-	//	Display_Power_On_Works_Time();
+	    TFT_LCD_Init();
 
 
 
