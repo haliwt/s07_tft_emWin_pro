@@ -107,6 +107,8 @@ extern uint8_t (*fan_error_state)(void);
 
 
 void bsp_ctl_init(void);
+void Device_Action_Handler(void);
+
 
 void Wifi_State_Handler(uint8_t(*wifi_handler)(void));
 void Mode_State_Handler(uint8_t(*mode_handler)(void));

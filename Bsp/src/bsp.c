@@ -103,14 +103,15 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
    case  run_update_data:
       
       
-      switch(pro_t.run_process_step){
+    switch(pro_t.run_process_step){
 
 
 	 case 0:
 		
 		pro_t.key_power_be_pressed_flag =0;
 		pro_t.ack_power_on_sig=0; 
-		//Lcd_PowerOn_Fun();
+		LED_Mode_Key_On();
+		LED_Power_Key_On();
 
 		pro_t.run_process_step=1;
 	//	Display_Power_On_Works_Time();
@@ -120,16 +121,16 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-	   //  KEY_POWER_ON_LED();
+
 	     pro_t.key_power_be_pressed_flag =0;
-//         pro_t.long_key_flag =0;
-//	      if(pro_t.gTimer_pro_ms > 20){ //200ms
-//			 pro_t.gTimer_pro_ms =0;
-//
-//		     Display_Panel_Action_Handler();
-//			 
-//          }
-//		  
+         pro_t.long_key_flag =0;
+	      if(pro_t.gTimer_pro_ms > 20){ //200ms
+			 pro_t.gTimer_pro_ms =0;
+
+		     Device_Action_Handler();
+			 
+          }
+		  
 		
 
 		if(pro_t.gTimer_pro_disp_timer > 3){ //37s 
@@ -196,22 +197,20 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 	 break;
 
+    
 
-
-	 break;
-    }
-
-	case power_off_fan_pro:
-		//power_off_fan_run();
-		
-	    
-
-	break;
+	
 
     default:
     break;
    	}
-}
+	case power_off_fan_pro:
+		//power_off_fan_run();
+		
+	 break;
+     }
+ }
+
 
 
 /************************************************************************
@@ -225,7 +224,8 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 void Power_On_Fun(void)
 {
    
-  
+  LED_Mode_Key_On();
+  LED_Power_Key_On();
    gctl_t.ptc_flag = 1;
    gctl_t.mode_flag = works_time;
    gctl_t.plasma_flag = 1;
@@ -252,7 +252,8 @@ void Power_Off_Fun(void)
 {
 	 		 
      
-	//SendData_PowerOnOff(0);
+	LED_Mode_Key_Off();
+	LED_Power_Key_Off();
 
  
    gctl_t.mode_flag = 0;
@@ -279,7 +280,7 @@ void Power_Off_Fun(void)
 void power_off_fan_run(void)
 {
 	
-   
+    LED_Mode_Key_Off();
 	Breath_Led();
 	
 //	if(fan_runContinue == 1 && power_off_first_flag!=0){
@@ -618,6 +619,8 @@ void Power_Key_Detected(void)
 			 pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
+			
+			
 			//SendData_PowerOnOff(1);
 			//KEY_POWER_ON_LED();
 		    Power_On_Fun();
@@ -633,6 +636,8 @@ void Power_Key_Detected(void)
 			   pro_t.gPower_On = power_off;   
 	         //  SendData_PowerOnOff(0);
 			 //  KEY_POWER_OFF_LED();
+			 
+			  
 			   
 	           Power_Off_Fun();
 			 //  LCD_Backlight_Off();

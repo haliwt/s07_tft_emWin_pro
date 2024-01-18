@@ -2,20 +2,20 @@
 #include "bsp.h"
 
 
-//void Ptc_On(void)
-//{
+void Ptc_On(void)
+{
 
-//   PTC_SetHigh();
+   PTC_SetHigh();
 
 
-//}
+}
 
-//void Ptc_Off(void)
-//{
+void Ptc_Off(void)
+{
 
-//   PTC_SetLow();
+   PTC_SetLow();
 
-//}
+}
 
 
 

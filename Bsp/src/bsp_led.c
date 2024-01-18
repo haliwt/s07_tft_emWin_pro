@@ -9,26 +9,26 @@ static void Delay(int16_t count);
 volatile uint32_t led_k,led_i;
 
 
-void LED_Power_On(void)
+void LED_Power_Key_On(void)
 {
     LED_POWER_KEY_SetHigh() ;
 
 
 }
-void LED_POWER_OFF(void)
+void LED_Power_Key_Off(void)
 {
 	LED_POWER_KEY_SetLow() ;
 }
 
-void LED_Mode_On(void)
+void LED_Mode_Key_On(void)
 {
-  LED_MODE_SetHigh();	
+  LED_MODE_KEY_SetHigh();	
 
 }
-void LED_Mode_Off(void)
+void LED_Mode_Key_Off(void)
 {
 
-	LED_MODE_SetLow()	;
+	LED_MODE_KEY_SetLow();
 
 
 }
@@ -68,17 +68,17 @@ void Breath_Led(void)
 	if(led_k<2001){
         i=0;
         j=0;
-		LED_Power_On();
+		LED_Power_Key_On();
 		Delay(led_k);
-	   LED_POWER_OFF();
+	   LED_Power_Key_Off();
 	   Delay(8000-led_k);
 
     }
     if(led_k>1999 && led_k <4001){
         j++;
-		LED_POWER_OFF();
+		LED_Power_Key_Off();
 		Delay(j);
-        LED_Power_On();
+        LED_Power_Key_On();
         Delay(2000-j);
         
 
@@ -87,8 +87,8 @@ void Breath_Led(void)
 		led_i++;
 
 	  
-	   LED_Power_On();
-       LED_POWER_OFF();
+	   LED_Power_Key_On();
+       LED_Power_Key_Off();
 	   Delay(2300+led_i);
       
 
@@ -97,7 +97,7 @@ void Breath_Led(void)
         led_k =30000;
         i++; 
       if(i<50000){
-          LED_POWER_OFF();
+          LED_Power_Key_Off();
       }
       else{
         led_i=0;

@@ -116,6 +116,7 @@ int main(void)
 	bsp_Idle();
 	Key_Process_Handler();
 	TFT_Process_Handler();
+	WIFI_Process_Handler();
 	
 	
   }

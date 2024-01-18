@@ -54,8 +54,10 @@ void MX_GPIO_Init(void)
                           |TFT_NSS_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, RELAY_CTL_Pin|LED_PTC_Pin|LED_RAT_Pin|LED_WIFI_Pin
-                          |LED_KILL_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, RELAY_CTL_Pin, GPIO_PIN_RESET);
+
+  HAL_GPIO_WritePin(GPIOB, LED_PTC_Pin|LED_RAT_Pin|LED_WIFI_Pin
+                           |LED_KILL_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, FAN_CTL_2_Pin|FAN_CTL_1_Pin|TEMP_SENSOR_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);

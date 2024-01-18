@@ -95,17 +95,23 @@ void Error_Handler(void);
 #define LED_RAT_GPIO_Port               GPIOB
 
 //function GPIO 
-#define PLASMA_CTL_Pin GPIO_PIN_7
-#define PLASMA_CTL_GPIO_Port GPIOA
-#define RELAY_CTL_Pin GPIO_PIN_0
-#define RELAY_CTL_GPIO_Port GPIOB
-#define BEEP_PWM_Pin GPIO_PIN_1
-#define BEEP_PWM_GPIO_Port GPIOB
+#define PLASMA_CTL_Pin                  GPIO_PIN_7
+#define PLASMA_CTL_GPIO_Port            GPIOA
+
+#define RELAY_CTL_Pin                   GPIO_PIN_0
+#define RELAY_CTL_GPIO_Port             GPIOB
+
+#define BEEP_PWM_Pin                    GPIO_PIN_1
+#define BEEP_PWM_GPIO_Port              GPIOB
+//ultrasonic pwm 
+#define ULTRA_PWM_Pin                   GPIO_PIN_8
+#define ULTRA_PWM_GPIO_Port              GPIOA
 //fna gpio
-#define FAN_CTL_2_Pin GPIO_PIN_0
-#define FAN_CTL_2_GPIO_Port GPIOD
-#define FAN_CTL_1_Pin GPIO_PIN_1
-#define FAN_CTL_1_GPIO_Port GPIOD
+#define FAN_CTL_2_Pin                 GPIO_PIN_0
+#define FAN_CTL_2_GPIO_Port           GPIOD
+
+#define FAN_CTL_1_Pin                 GPIO_PIN_1
+#define FAN_CTL_1_GPIO_Port            GPIOD
 //key 
 #define KEY_POWER_Pin                 GPIO_PIN_11
 #define KEY_POWER_GPIO_Port           GPIOB
@@ -118,9 +124,7 @@ void Error_Handler(void);
 #define KEY_DEC_Pin GPIO_PIN_14
 #define KEY_DEC_GPIO_Port GPIOB
 
-//pwm 
-#define ULTRA_PWM_Pin GPIO_PIN_8
-#define ULTRA_PWM_GPIO_Port GPIOA
+
 
 //TFT
 #define TFT_NSS_Pin GPIO_PIN_15
