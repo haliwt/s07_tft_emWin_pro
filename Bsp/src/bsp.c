@@ -2,7 +2,7 @@
 
 PRO_T pro_t;
 
-
+static void Ptc_Temperature_Compare_Value(void);
 static void Power_Key_Detected(void);
 static void Mode_Key_Detected(void);
 static void ADD_Key_Detected(void);
@@ -27,8 +27,8 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key);
 void bsp_Idle(void)
 {
 	/* --- 喂狗 */
-    if(gctl_t.gTimer_pro_feed_dog > 3){
-	gctl_t.gTimer_pro_feed_dog = 0;	
+    if(pro_t.gTimer_pro_feed_dog > 3){
+	pro_t.gTimer_pro_feed_dog = 0;	
 	iwdg_feed();
 
     }
@@ -77,7 +77,7 @@ void TFT_Process_Handler(void)
 {
  if(pro_t.key_power_be_pressed_flag ==1){
  	
-  TFT_Pocess_Command_Handler(pro_t.gKey_command_tag)
+  TFT_Pocess_Command_Handler(pro_t.gKey_command_tag);
 
  }
 
@@ -94,7 +94,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 {
    //key input run function
 
-   static uint8_t temp1,temp2;
+   static uint8_t temp1,temp2,voice_enable_flag;
   
    static uint16_t counter;
 
@@ -110,10 +110,10 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 		
 		pro_t.key_power_be_pressed_flag =0;
 		pro_t.ack_power_on_sig=0; 
-		Lcd_PowerOn_Fun();
+		//Lcd_PowerOn_Fun();
 
 		pro_t.run_process_step=1;
-		Display_Power_On_Works_Time();
+	//	Display_Power_On_Works_Time();
 
 
 
@@ -134,13 +134,13 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 		if(pro_t.gTimer_pro_disp_timer > 3){ //37s 
 		  	pro_t.gTimer_pro_disp_timer =0;
-		    Display_Works_Or_Timer_times_Handler();
+		  //  Display_Works_Or_Timer_times_Handler();
 
 		  }
 
 		  Ptc_Temperature_Compare_Value();
 		  
-	      if(wifi_link_flag ==1){
+	      if(wifi_state() ==1){
 			  pro_t.run_process_step=4;
           }
 		  else
@@ -154,7 +154,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
        //KEY_POWER_ON_LED();
 	 if(pro_t.gTimer_pro_disp_ms > 3 && voice_enable_flag==0){ //40ms
 			pro_t.gTimer_pro_disp_ms=0;
-			DisplayPanel_Ref_Handler();
+			//DisplayPanel_Ref_Handler();
        }
 	   
 
@@ -168,7 +168,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	  if(pro_t.set_timer_flag==1){ //
 		  pro_t.set_timer_flag++;
              
-	      SendData_Time_Data(disp_t.disp_set_timer_timing);
+	     // SendData_Time_Data(disp_t.disp_set_timer_timing);
 		  
       }
 
@@ -180,7 +180,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	   if(wifi_state() ==1){
 		
 		 // SendData_Set_Command(WIFI_CONNECT_SUCCESS);
-		  wifi_link_flag =0;
+		 // wifi_link_flag =0;
         }
 		else if(pro_t.ack_wifi_led ==0){
 			
@@ -188,7 +188,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 		}
 		else{
-			wifi_link_flag =0;
+		//	wifi_link_flag =0;
 
         }
 
@@ -202,7 +202,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
     }
 
 	case power_off_fan_pro:
-		power_off_fan_run();
+		//power_off_fan_run();
 		
 	    
 
@@ -252,7 +252,7 @@ void Power_Off_Fun(void)
 {
 	 		 
      
-	SendData_PowerOnOff(0);
+	//SendData_PowerOnOff(0);
 
  
    gctl_t.mode_flag = 0;
@@ -269,11 +269,11 @@ void Power_Off_Fun(void)
 	gctl_t.ptc_warning = 0;
 	gctl_t.fan_warning=0;
 
-	if(fan_runContinue==2){
-		fan_runContinue=1;
-		pro_t.gTimer_pro_fan =0;
+//	if(fan_runContinue==2){
+//		fan_runContinue=1;
+//		pro_t.gTimer_pro_fan =0;
 
-	}
+//	}
 
 }
 void power_off_fan_run(void)
@@ -282,17 +282,17 @@ void power_off_fan_run(void)
    
 	Breath_Led();
 	
-	if(fan_runContinue == 1 && power_off_first_flag!=0){
-	if(pro_t.gTimer_pro_fan < 61){
-		
-	}
-	else {
-	    fan_runContinue  =0;
-		
+//	if(fan_runContinue == 1 && power_off_first_flag!=0){
+//	if(pro_t.gTimer_pro_fan < 61){
+//		
+//	}
+//	else {
+//	    fan_runContinue  =0;
+//		
 
-	}
+//	}
 
-	}
+	
 
 }
 
@@ -372,7 +372,7 @@ static void ADD_Key_Fun(void)
 
 		   if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
-			SendData_Buzzer();
+			Buzzer_KeySound();
 		
 			switch(pro_t.gTimer_mode_flag){
 
@@ -390,24 +390,24 @@ static void ADD_Key_Fun(void)
             
 			   // decade_temp =   gctl_t.gSet_temperature_value / 10 ;
 				//unit_temp =   gctl_t.gSet_temperature_value % 10; //
-                
-				lcd_t.number1_low=gctl_t.gSet_temperature_value / 10 ;
-				lcd_t.number1_high =gctl_t.gSet_temperature_value / 10 ;
+//                
+//				lcd_t.number1_low=gctl_t.gSet_temperature_value / 10 ;
+//				lcd_t.number1_high =gctl_t.gSet_temperature_value / 10 ;
 
-				lcd_t.number2_low = gctl_t.gSet_temperature_value % 10; //
-				lcd_t.number2_high = gctl_t.gSet_temperature_value % 10; //
+//				lcd_t.number2_low = gctl_t.gSet_temperature_value % 10; //
+//				lcd_t.number2_high = gctl_t.gSet_temperature_value % 10; //
 				
-				lcd_t.gTimer_numbers_one_two_blink=0;//display temperature of blink "led" timer timing
+				//lcd_t.gTimer_numbers_one_two_blink=0;//display temperature of blink "led" timer timing
                 pro_t.temperature_set_flag=1;  //set temperature value flag
-                DisplayPanel_Ref_Handler();
+               // DisplayPanel_Ref_Handler();
 				
                break;
 
 			   case set_timer_timing:
 				    
 					pro_t.gTimer_key_timing =0;
-                    disp_t.set_timer_timing_value_chaned_flag++;
-			   		if(disp_t.set_timer_timing_value_chaned_flag > 254 ) disp_t.set_timer_timing_value_chaned_flag=0;
+                   // disp_t.set_timer_timing_value_chaned_flag++;
+			   	//	if(disp_t.set_timer_timing_value_chaned_flag > 254 ) disp_t.set_timer_timing_value_chaned_flag=0;
 					
 					gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
 				    if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
@@ -444,7 +444,7 @@ static void DEC_Key_Fun(void)
 	if(pro_t.gPower_On ==power_on){
 	   	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
-			SendData_Buzzer();
+			Buzzer_KeySound();
 	   	
 	     switch(pro_t.gTimer_mode_flag){
 

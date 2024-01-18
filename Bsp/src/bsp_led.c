@@ -2,8 +2,8 @@
 #include "bsp.h"
 
 
-#if 0
-static void LED_POWER_OFF(void);
+
+
 static void Delay(int16_t count);
 
 volatile uint32_t led_k,led_i;
@@ -114,18 +114,6 @@ void Breath_Led(void)
 }
 
 
-void Backlight_On(void)
-{
-	BACKLIGHT_SetHigh();
-
-}
-void Backlight_Off(void)
-{
-
-	BACKLIGHT_SetLow();
 
 
-}
-
-#endif 
 

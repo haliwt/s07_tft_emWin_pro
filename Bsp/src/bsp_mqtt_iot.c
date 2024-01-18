@@ -81,7 +81,7 @@ static void Mqtt_Value_update_data(void)
 	sg_info.state = gctl_t.mode_flag;
 	sg_info.ptc  = gctl_t.ptc_flag;
 	sg_info.anion =gctl_t.plasma_flag;
-	sg_info.sonic = gctl_t.ultrasoinc_flag ;
+	sg_info.sonic = gctl_t.ultrasonic_flag ;
     sg_info.find =  wifi_t.set_wind_speed_value;
     if(wifi_t.set_temperature_value <20)wifi_t.set_temperature_value = 20;
 	else if(wifi_t.set_temperature_value > 40)wifi_t.set_temperature_value = 40;

@@ -509,7 +509,7 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"sonic\":0")){
             if(gctl_t.gPower_On ==POWER_ON){
-           // gctl_t.ultrasoinc_flag=0;
+           // gctl_t.ultrasonic_flag=0;
 			wifi_t.response_wifi_signal_label = SONIC_OFF_ITEM;
         
                 
@@ -518,7 +518,7 @@ void Tencent_Cloud_Rx_Handler(void)
     }
     else if(strstr((char *)wifi_t.wifi_data,"sonic\":1")){
             if(gctl_t.gPower_On ==POWER_ON){
-            gctl_t.ultrasoinc_flag=1;
+            gctl_t.ultrasonic_flag=1;
 			wifi_t.response_wifi_signal_label = SONIC_ON_ITEM;
        
            }
@@ -688,7 +688,7 @@ void Json_Parse_Command_Fun(void)
 
             MqttData_Publish_SetUltrasonic(0);
 				HAL_Delay(350);
-            gctl_t.ultrasoinc_flag=0;
+            gctl_t.ultrasonic_flag=0;
 	
 		//	SendWifiCmd_To_Order(WIFI_SONIC_OFF);
 			HAL_Delay(5);
@@ -703,7 +703,7 @@ void Json_Parse_Command_Fun(void)
 		
              MqttData_Publish_SetUltrasonic(1);
 			 	HAL_Delay(350);
-            gctl_t.ultrasoinc_flag=1;
+            gctl_t.ultrasonic_flag=1;
 		
 			//SendWifiCmd_To_Order(WIFI_SONIC_ON);
 			HAL_Delay(5);
@@ -1010,13 +1010,13 @@ void Parse_Json_Statement(void)
 		
 		if(strstr((char *)TCMQTTRCVPUB,"sonic\":0")){
 			
-			     gctl_t.ultrasoinc_flag=0;
+			     gctl_t.ultrasonic_flag=0;
 				
 			
 		}
 		else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1")){
 			
-				gctl_t.ultrasoinc_flag=1;
+				gctl_t.ultrasonic_flag=1;
 				
 		   }
 

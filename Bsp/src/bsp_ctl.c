@@ -48,7 +48,7 @@ void bsp_ctl_init(void)
    gctl_t.ptc_warning = 0;
    gctl_t.ptc_flag=1;
    gctl_t.plasma_flag =1;
-   gctl_t.ultrasoinc_flag =1;
+   gctl_t.ultrasonic_flag =1;
    UartVarInit();
    Wifi_State_Handler(Wifi_Default_Handler);
    Mode_State_Handler(Mode_Default_Handler);
@@ -171,7 +171,7 @@ void  Ultrasonic_state_Handler(uint8_t(*ultrasonic_handler)(void))
 uint8_t Ultrasonic_Default_Handler(void)
 {
 	
-	if(gctl_t.ultrasoinc_flag == 1){
+	if(gctl_t.ultrasonic_flag == 1){
         return 1;
 	}
 	else{

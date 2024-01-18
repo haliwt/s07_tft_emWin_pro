@@ -44,21 +44,6 @@
 #define DISABLE_INT()	__set_PRIMASK(1)	/* ��ֹȫ���ж� */
 
 
-typedef enum{
-
-   power_off,
-   power_on,
-   wifi_fun_on,
-   set_timer_fun_on,
-   mode_id,
-   mode_ai,
-   mode_no_ai,
-   add_key,
-   dec_key,
-   power_id
-   
-
-}key_input_state;
 
 typedef enum TIMING_T{
 

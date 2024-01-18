@@ -75,24 +75,24 @@ void Error_Handler(void);
 #define VOICE_RX_Pin GPIO_PIN_10
 #define VOICE_RX_GPIO_Port GPIOA
 
-//key led 
-#define LED_KEY_TIM_Pin GPIO_PIN_5
-#define LED_KEY_TIM_GPIO_Port GPIOA
+//key of led 
+#define LED_KEY_TIM_Pin                 GPIO_PIN_5
+#define LED_KEY_TIM_GPIO_Port           GPIOA
 
-#define LED_POWER_Pin GPIO_PIN_6
-#define LED_POWER_GPIO_Port GPIOA
+#define LED_POWER_Pin                   GPIO_PIN_6
+#define LED_POWER_GPIO_Port             GPIOA
+//ICON OF LED
+#define LED_WIFI_Pin                    GPIO_PIN_7
+#define LED_WIFI_GPIO_Port              GPIOB
 
-#define LED_WIFI_Pin GPIO_PIN_7
-#define LED_WIFI_GPIO_Port GPIOB
+#define LED_KILL_Pin                    GPIO_PIN_9
+#define LED_KILL_GPIO_Port              GPIOB
 
-#define LED_KILL_Pin GPIO_PIN_9
-#define LED_KILL_GPIO_Port GPIOB
+#define LED_PTC_Pin                       GPIO_PIN_2
+#define LED_PTC_GPIO_Port                 GPIOB
 
-#define LED_PTC_Pin GPIO_PIN_2
-#define LED_PTC_GPIO_Port GPIOB
-
-#define LED_RAT_Pin GPIO_PIN_10
-#define LED_RAT_GPIO_Port GPIOB
+#define LED_RAT_Pin                     GPIO_PIN_10
+#define LED_RAT_GPIO_Port               GPIOB
 
 //function GPIO 
 #define PLASMA_CTL_Pin GPIO_PIN_7
