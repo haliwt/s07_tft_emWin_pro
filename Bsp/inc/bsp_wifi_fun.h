@@ -136,11 +136,10 @@ typedef struct _WIFI_FUN{
 
 extern WIFI_FUN   wifi_t;
 
-extern void (*PowerOn)(void); //函数指针
-extern void (*PowerOff)(void);
-extern void (*Ai_Fun)(uint8_t sig);
-extern void (*SetTimes)(void);
-extern void (*SetTemperature)(void);
+extern uint8_t (*wifi_link_net_state)(void); //函数指针
+
+
+void Wifi_Init(void);
 
 void PowerOn_Host(void (*poweronHandler)(void));
 void PowerOff_Host(void (*poweroffHandler)(void));
@@ -150,11 +149,12 @@ void PowerOff_Host(void (*poweroffHandler)(void));
 
 void wifiDisplayTemperature_Humidity(void);
 
+void Wifi_Link_Net_Handler(uint8_t (*wifi_link_handler)(void));
 
 void wifiUpdate_SetTimeValue(uint8_t tv);
 void wifiUpdate_SetTemperatureValue(uint8_t temp);
 
-void RunWifi_Command_Handler(void);
+
 void GetNTP_Times(void);
 
 

@@ -103,6 +103,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   bsp_ctl_init();
+  Wifi_Init();
 
   /* USER CODE END 2 */
 

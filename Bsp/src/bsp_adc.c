@@ -5,7 +5,6 @@ static uint16_t Get_Adc_Channel(uint32_t ch) ;
 
 static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times);
 
-#if 0
 
 /*****************************************************************
 *
@@ -123,6 +122,6 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
      }
 }
 
-#endif 
+
 
 

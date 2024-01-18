@@ -390,6 +390,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 
                if(strstr((const char*)wifi_t.data,"+TCSAP:WIFI_CONNECT_SUCCESS")){
               		wifi_t.soft_ap_config_success=1;
+					 gctl_t.wifi_flag = 1;
 					wifi_t.soft_ap_config_flag=0;
                	}
 
@@ -397,10 +398,12 @@ void Wifi_Rx_InputInfo_Handler(void)
             else{
 				  if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
 	              wifi_t.esp8266_login_cloud_success=1;
+				  gctl_t.wifi_flag = 1;
 	              wifi_t.linking_tencent_cloud_doing=0;
 				  wifi_t.auto_link_cloud_flag=0xff;
 				  wifi_t.wifi_reconnect_read_flag = 0;
 				  wifi_t.soft_ap_config_flag=0;
+				  
 			  }
            
            }
@@ -409,6 +412,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 
 		     if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
 	              wifi_t.esp8266_login_cloud_success=1;
+				  gctl_t.wifi_flag = 1;
 	              wifi_t.linking_tencent_cloud_doing=0;
 				  wifi_t.auto_link_cloud_flag=0xff;
 				  wifi_t.wifi_reconnect_read_flag = 0;

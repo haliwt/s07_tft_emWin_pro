@@ -313,7 +313,7 @@ void AutoRepeate_Link_Tencent_Cloud(void)
 {
     
 	 static uint8_t wifi_en,wifi_det;
-	 if(wifi_t.esp8266_login_cloud_success==0){
+	 if(wifi_link_net_state()==0){
 	     if( wifi_t.gTimer_reconnect_wifi_order  > 15  && wifi_en ==0){
 		   	   wifi_en++;
 			 
