@@ -341,7 +341,7 @@ uint8_t ReadKey(void)
 //			}
 //	}
 //	else
-		if(MODE_KEY_VALUE() ==KEY_DOWN  && gctl_t.long_key_flag ==0 && gctl_t.gPower_On == power_on){
+	if(MODE_KEY_VALUE() ==KEY_DOWN  && gctl_t.long_key_flag ==0 && gctl_t.gPower_On == power_on){
 	  		cnt = 0;
 			K2++;   //Confirm_key press
 		

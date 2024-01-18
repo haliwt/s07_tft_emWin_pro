@@ -27,7 +27,7 @@ typedef struct _bsp_ctl{
 	uint8_t mode_flag;
 	uint8_t ptc_flag;
 	uint8_t plasma_flag;
-	uint8_t ultrasoinc_flag;
+	uint8_t ultrasonic_flag;
 
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
@@ -53,6 +53,10 @@ typedef struct _bsp_ctl{
    uint8_t set_timer_flag;
    uint8_t gTimer_mode_flag;
    uint8_t key_set_timer_flag;
+   uint8_t gSet_timer_hours ;
+   uint8_t gSet_temperature_value;
+   uint8_t gSet_timer_minutes ;
+   uint8_t set_temp_has_been_flag;
 
    //command
    uint8_t rx_command_tag;
@@ -63,6 +67,7 @@ typedef struct _bsp_ctl{
    uint8_t temperature_set_flag;
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
+   uint8_t gSet_temperature_value_flag;
 
    //warning
  
@@ -73,21 +78,7 @@ typedef struct _bsp_ctl{
 	uint8_t v_usart2_rx_numbers;
 	uint8_t v_usart2_rx_flag;
 
-  	uint8_t gTimer_pro_feed_dog;
-	uint8_t gTimer_pro_temp ;
-	uint8_t gTimer_pro_temp_delay ;
-	uint8_t gTimer_wifi_connect_counter;
-	uint8_t gTimer_key_timing;
-
-	uint8_t gTimer_pro_fan;
-	uint8_t gTimer_usart_error;
-	uint8_t gTimer_pro_ms;
-	uint8_t gTimer_pro_disp_timer ;
-	uint8_t gTimer_pro_disp_ms;
-	uint8_t gTime_pro_run_voice_time;
-	
-
-}bsp_ctl;
+ }bsp_ctl;
 
 extern bsp_ctl gctl_t;
 

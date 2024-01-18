@@ -114,7 +114,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	bsp_Idle();
-	Main_Process_Handler();
+	Key_Process_Handler();
+	TFT_Process_Handler();
+	
 	
   }
   /* USER CODE END 3 */
