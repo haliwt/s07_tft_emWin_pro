@@ -256,9 +256,9 @@ void PowerOn_Self_Auto_Link_Tencent_Cloud(void)
 
     case 0:
            InitWifiModule_Hardware();//InitWifiModule();
-          // Decode_Function();
+        
 		   HAL_Delay(1000);
-		 //  Decode_Function();
+
            auto_link_cloud_flag =wifi_set_cwmode;
 	break;
 
@@ -266,11 +266,9 @@ void PowerOn_Self_Auto_Link_Tencent_Cloud(void)
 	 case wifi_set_cwmode:
     	    WIFI_IC_ENABLE();
          	HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
-        //	Decode_Function();
+     
             HAL_Delay(1000);
-		  //HAL_Delay(1000);
-			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
-		//	auto_link_cloud_flag =wifi_set_softap;
+	
 			 ic_id=HAL_GetUIDw0();
 		
 

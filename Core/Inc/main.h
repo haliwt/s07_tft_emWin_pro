@@ -67,8 +67,9 @@ void Error_Handler(void);
 #define TX_WIFI_GPIO_Port GPIOA
 #define RX_WIFI_Pin GPIO_PIN_3
 #define RX_WIFI_GPIO_Port GPIOA
-#define WIFI_EN_Pin GPIO_PIN_4
-#define WIFI_EN_GPIO_Port GPIOA
+
+#define WIFI_EN_Pin               GPIO_PIN_4
+#define WIFI_EN_GPIO_Port         GPIOA
 //usart2 voice 
 #define VOICE_TX_Pin GPIO_PIN_9
 #define VOICE_TX_GPIO_Port GPIOA

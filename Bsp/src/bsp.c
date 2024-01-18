@@ -124,7 +124,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 	     pro_t.key_power_be_pressed_flag =0;
          pro_t.long_key_flag =0;
-	      if(pro_t.gTimer_pro_ms > 20){ //200ms
+	      if(pro_t.gTimer_pro_ms > 20){ //20 *10ms = 200ms
 			 pro_t.gTimer_pro_ms =0;
 
 		     Device_Action_Handler();
@@ -133,7 +133,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 		  
 		
 
-		if(pro_t.gTimer_pro_disp_timer > 3){ //37s 
+		if(pro_t.gTimer_pro_disp_timer > 3){ //3s 
 		  	pro_t.gTimer_pro_disp_timer =0;
 		  //  Display_Works_Or_Timer_times_Handler();
 
@@ -152,8 +152,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	
 
 	 case 2: //set timer times pro
-       //KEY_POWER_ON_LED();
-	 if(pro_t.gTimer_pro_disp_ms > 3 && voice_enable_flag==0){ //40ms
+	 if(pro_t.gTimer_pro_disp_ms > 3 && voice_enable_flag==0){ 
 			pro_t.gTimer_pro_disp_ms=0;
 			//DisplayPanel_Ref_Handler();
        }

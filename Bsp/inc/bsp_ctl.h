@@ -42,9 +42,6 @@ typedef struct _bsp_ctl{
    //command
    uint8_t rx_command_tag;
 
- 
-
-  
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
    uint8_t gSet_temperature_value_flag;
