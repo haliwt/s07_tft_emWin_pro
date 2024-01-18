@@ -115,6 +115,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 		pro_t.run_process_step=1;
 	    TFT_LCD_Init();
+		TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,(uint32_t*)gImage_s07_main_picture);
 
 
 
@@ -135,7 +136,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 		if(pro_t.gTimer_pro_disp_timer > 3){ //3s 
 		  	pro_t.gTimer_pro_disp_timer =0;
-		  //  Display_Works_Or_Timer_times_Handler();
+		    TFT_Works_Or_Timer_times_Handler();
 
 		  }
 
@@ -154,7 +155,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	 case 2: //set timer times pro
 	 if(pro_t.gTimer_pro_disp_ms > 3 && voice_enable_flag==0){ 
 			pro_t.gTimer_pro_disp_ms=0;
-			//DisplayPanel_Ref_Handler();
+			TFT_Display_Handler();
        }
 	   
 

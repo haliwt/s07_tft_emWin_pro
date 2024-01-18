@@ -232,12 +232,13 @@ void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_
     }
 }
 /**************************************************************************************
+ *
  * Function Name:void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode)
  * Function :显示一个指定大小的汉字,x,y :汉字的坐标,font:汉字GBK码
-            //fw:字宽
-            //fh:字高
+            //fw:字宽//fh:字高
             //mode:0,正常显示,1,叠加显示
  * Return Ref: NO 
+ *
 *************************************************************************************/
 void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode)
 {
@@ -352,6 +353,38 @@ void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t p
 }
 
 
+/***********************************************************************
+ *
+ * Function Name: void TFT_Display_Handler(void)
+ * Function: TFT LCD 显示全部的内容
+ * Inpurt Ref: NO
+ *            
+ * Return Ref: NO 
+ *
+************************************************************************/
+void TFT_Display_Handler(void)
+{
+  
 
+
+}
+
+
+/***********************************************************************
+ *
+ * Function Name: void TFT_Works_Or_Timer_times_Handler(void)
+ * Function: TFT LCD显示定时的时间设置或者显示北京时间 
+ * Inpurt Ref: x,y:起点坐标 pw:图片宽（单位像素）ph:图片高（单位像素）
+ *             p:图片起始地址
+ * Return Ref: NO 
+ *
+************************************************************************/
+void TFT_Works_Or_Timer_times_Handler(void)
+{
+            
+
+
+
+}
 
 

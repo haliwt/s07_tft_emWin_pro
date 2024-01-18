@@ -25,4 +25,10 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
 
 void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t ph);
 
+void TFT_Works_Or_Timer_times_Handler(void);
+
+void TFT_Display_Handler(void);
+
+void TFT_Works_Or_Timer_times_Handler(void);
+
 #endif
