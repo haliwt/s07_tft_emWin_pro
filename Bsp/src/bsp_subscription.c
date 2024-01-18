@@ -479,7 +479,7 @@ void Tencent_Cloud_Rx_Handler(void)
 
 	
 	if(strstr((char *)wifi_t.wifi_data,"ptc\":0")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
 				  gctl_t.ptc_flag=0;
 	           wifi_t.response_wifi_signal_label = PTC_OFF_ITEM;
 	         
@@ -487,7 +487,7 @@ void Tencent_Cloud_Rx_Handler(void)
 			
     }
     else if(strstr((char *)wifi_t.wifi_data,"ptc\":1")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
 	          gctl_t.ptc_flag=1;
 			  wifi_t.response_wifi_signal_label = PTC_ON_ITEM;
 				
@@ -496,7 +496,7 @@ void Tencent_Cloud_Rx_Handler(void)
     }
 	
     if(strstr((char *)wifi_t.wifi_data,"Anion\":0")){
-          if(gctl_t.gPower_On ==POWER_ON){
+          if(pro_t.gPower_On ==POWER_ON){
 	          // gctl_t.plasma_flag=0;
 			wifi_t.response_wifi_signal_label = ANION_OFF_ITEM;
 		    
@@ -504,7 +504,7 @@ void Tencent_Cloud_Rx_Handler(void)
 		 
     }
     else if(strstr((char *)wifi_t.wifi_data,"Anion\":1")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
             //gctl_t.gPlasma=1;
 			wifi_t.response_wifi_signal_label = ANION_ON_ITEM;
 		
@@ -512,7 +512,7 @@ void Tencent_Cloud_Rx_Handler(void)
     }
 	
     if(strstr((char *)wifi_t.wifi_data,"sonic\":0")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
            // gctl_t.ultrasonic_flag=0;
 			wifi_t.response_wifi_signal_label = SONIC_OFF_ITEM;
         
@@ -521,7 +521,7 @@ void Tencent_Cloud_Rx_Handler(void)
 		
     }
     else if(strstr((char *)wifi_t.wifi_data,"sonic\":1")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
             gctl_t.ultrasonic_flag=1;
 			wifi_t.response_wifi_signal_label = SONIC_ON_ITEM;
        
@@ -531,14 +531,14 @@ void Tencent_Cloud_Rx_Handler(void)
 
 	
     if(strstr((char *)wifi_t.wifi_data,"state\":1")){
-           if(gctl_t.gPower_On ==POWER_ON){
+           if(pro_t.gPower_On ==POWER_ON){
             gctl_t.mode_flag=1;
 			wifi_t.response_wifi_signal_label = STATE_AI_MODEL_ITEM;
         	}
 		  
     }
     else if(strstr((char *)wifi_t.wifi_data,"state\":2")){
-            if(gctl_t.gPower_On ==POWER_ON){
+            if(pro_t.gPower_On ==POWER_ON){
             gctl_t.mode_flag=2;
 			wifi_t.response_wifi_signal_label = STATE_TIMER_MODEL_ITEM;
             }
@@ -547,7 +547,7 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"temperature")){
 
-	        if(gctl_t.gPower_On ==POWER_ON){
+	        if(pro_t.gPower_On ==POWER_ON){
 			wifi_t.response_wifi_signal_label = TEMPERATURE_ITEM;
             
 	        }
@@ -555,7 +555,7 @@ void Tencent_Cloud_Rx_Handler(void)
     }
    if(strstr((char *)wifi_t.wifi_data,"find")){
 
-		 if(gctl_t.gPower_On ==POWER_ON){
+		 if(pro_t.gPower_On ==POWER_ON){
 
 			wifi_t.response_wifi_signal_label= FAN_ITEM;
 		}
@@ -618,7 +618,7 @@ void Json_Parse_Command_Fun(void)
 	  break;
 
 	  case PTC_ON_ITEM:
-	  if(gctl_t.gPower_On ==POWER_ON){
+	  if(pro_t.gPower_On ==POWER_ON){
 	    if(gctl_t.ptc_warning ==0){
          MqttData_Publish_SetPtc(0x01);
 	  	 HAL_Delay(350);
@@ -643,7 +643,7 @@ void Json_Parse_Command_Fun(void)
 	   break;
 
 	  case PTC_OFF_ITEM:
-	  	if(gctl_t.gPower_On ==POWER_ON){
+	  	if(pro_t.gPower_On ==POWER_ON){
 		//Buzzer_KeySound();
          MqttData_Publish_SetPtc(0);
 		 HAL_Delay(350);
@@ -659,7 +659,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case ANION_OFF_ITEM: //"杀菌" //5
-	  	if(gctl_t.gPower_On ==POWER_ON){
+	  	if(pro_t.gPower_On ==POWER_ON){
 			// Buzzer_KeySound();
             MqttData_Publish_SetPlasma(0);
 			HAL_Delay(350);
@@ -674,7 +674,7 @@ void Json_Parse_Command_Fun(void)
 	   break;
 		
 	  case ANION_ON_ITEM: //plasma 
-	  	if(gctl_t.gPower_On ==POWER_ON){
+	  	if(pro_t.gPower_On ==POWER_ON){
             MqttData_Publish_SetPlasma(1);
 			HAL_Delay(350);
            gctl_t.plasma_flag=1;
@@ -688,7 +688,7 @@ void Json_Parse_Command_Fun(void)
 	    break;
 
 	  case SONIC_OFF_ITEM://ultransonic off
-        if(gctl_t.gPower_On ==POWER_ON){
+        if(pro_t.gPower_On ==POWER_ON){
 
             MqttData_Publish_SetUltrasonic(0);
 				HAL_Delay(350);
@@ -703,7 +703,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case SONIC_ON_ITEM://ultransonic off
-	    if(gctl_t.gPower_On ==POWER_ON){
+	    if(pro_t.gPower_On ==POWER_ON){
 		
              MqttData_Publish_SetUltrasonic(1);
 			 	HAL_Delay(350);
@@ -718,7 +718,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case STATE_TIMER_MODEL_ITEM:
-	  if(gctl_t.gPower_On ==POWER_ON){
+	  if(pro_t.gPower_On ==POWER_ON){
 	         gctl_t.mode_flag=2;
             MqttData_Publish_SetState(2);
 			HAL_Delay(350);
@@ -732,7 +732,7 @@ void Json_Parse_Command_Fun(void)
 	  break;
 		
 	  case STATE_AI_MODEL_ITEM:
-	  	 if(gctl_t.gPower_On ==POWER_ON){
+	  	 if(pro_t.gPower_On ==POWER_ON){
 		
 		    gctl_t.mode_flag=1;
             MqttData_Publish_SetState(1);
@@ -747,7 +747,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case TEMPERATURE_ITEM:
-	   if(gctl_t.gPower_On ==POWER_ON){
+	   if(pro_t.gPower_On ==POWER_ON){
 		
 
             temp_decade=wifi_t.wifi_data[14]-0x30;
@@ -767,7 +767,7 @@ void Json_Parse_Command_Fun(void)
 	  break;
 
 	  case FAN_ITEM:
-	    if(gctl_t.gPower_On ==POWER_ON){
+	    if(pro_t.gPower_On ==POWER_ON){
 
 		     if(gctl_t.fan_warning ==0){
 

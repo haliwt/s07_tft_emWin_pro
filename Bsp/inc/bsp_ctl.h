@@ -31,28 +31,9 @@ typedef struct _bsp_ctl{
 
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
+   
+    //time
 
-    uint8_t gTimer_prcoess_iwdg;
-	uint8_t gTimer_process_display;
-
-	 //key
-   uint8_t gKey_value;
-   uint8_t gPower_On;
-   uint8_t long_key_flag;
-   uint8_t run_process_step;
-   uint8_t key_power_be_pressed_flag ;
-  
-   uint8_t ack_wifi_led;
-   uint8_t ack_power_on_sig;
-   uint8_t ack_power_off_sig;
-
-   uint8_t gKey_command_tag;
-
-   uint8_t decodeFlag;
-   //time
-   uint8_t set_timer_flag;
-   uint8_t gTimer_mode_flag;
-   uint8_t key_set_timer_flag;
    uint8_t gSet_timer_hours ;
    uint8_t gSet_temperature_value;
    uint8_t gSet_timer_minutes ;
@@ -63,22 +44,12 @@ typedef struct _bsp_ctl{
 
  
 
-   //temperature and humidity
-   uint8_t temperature_set_flag;
+  
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
    uint8_t gSet_temperature_value_flag;
 
-   //warning
- 
-	//wifi
-	uint8_t wifi_led_fast_blink_flag;
-
-	//usart 2 voice 
-	uint8_t v_usart2_rx_numbers;
-	uint8_t v_usart2_rx_flag;
-
- }bsp_ctl;
+}bsp_ctl;
 
 extern bsp_ctl gctl_t;
 

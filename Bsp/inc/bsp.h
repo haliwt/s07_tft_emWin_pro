@@ -73,7 +73,7 @@ typedef struct{
 
    uint8_t gKey_command_tag;
 
-   uint8_t decodeFlag;
+   
    //time
    uint8_t set_timer_flag;
    uint8_t gTimer_mode_flag;
