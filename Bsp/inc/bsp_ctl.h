@@ -51,6 +51,12 @@ typedef struct _bsp_ctl{
 extern bsp_ctl gctl_t;
 
 
+
+
+extern uint8_t (*power_on_state)(void);
+
+
+
 extern uint8_t (*wifi_state)(void);
 extern uint8_t (*mode_state)(void);
 

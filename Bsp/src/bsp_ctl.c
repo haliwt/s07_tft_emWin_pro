@@ -1,9 +1,11 @@
+
+
 #include "bsp_ctl.h"
 #include "bsp.h"
 
 bsp_ctl gctl_t;
 
-
+uint8_t (*power_on_state)(void);
 uint8_t (*wifi_state)(void);
 uint8_t (*mode_state)(void);
 
@@ -21,6 +23,9 @@ uint8_t (*smartphone_set_temp_value)(void);
 
 uint8_t (*ptc_error_state)(void);
 uint8_t (*fan_error_state)(void);
+
+static uint8_t power_default_fun(void);
+
 
 static uint8_t Wifi_Default_Handler(void);
 static uint8_t Mode_Default_Handler(void);
@@ -49,7 +54,10 @@ void bsp_ctl_init(void)
    gctl_t.ptc_flag=1;
    gctl_t.plasma_flag =1;
    gctl_t.ultrasonic_flag =1;
-   UartVarInit();
+   
+  // UartVarInit();
+   Power_Handler(power_default_fun);
+  
    Wifi_State_Handler(Wifi_Default_Handler);
    Mode_State_Handler(Mode_Default_Handler);
    
@@ -66,6 +74,31 @@ void bsp_ctl_init(void)
    Fan_error_state_Handler(Fan_Error_Default_Handler);
 
 }
+
+
+/***********************************************************
+ *  *
+    *Function Name: static uint8_t power_default_fun(void);
+    *Function: power turn on or turn off
+    *Input Ref: NO
+    *Return Ref:  1->turn on ,0-> turn off
+    * 
+***********************************************************/
+static uint8_t power_default_fun(void)
+{
+      if(pro_t.gPower_On ==power_on) return 1;
+	  else return 0;
+
+}
+
+void Power_Handler(uint8_t(* power_on_handler)(void))
+{
+
+	power_on_state =power_on_handler;
+
+
+}
+
 
 /*****************************************************************************
  * 

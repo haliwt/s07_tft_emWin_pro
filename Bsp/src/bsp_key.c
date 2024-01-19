@@ -23,47 +23,7 @@ uint8_t value4 = 0;
 
 
 
-uint8_t (*power_on_off_state)(void);
 
-static uint8_t power_default_fun(void);
-
-
-/**************************************************************
-	*
-	*Function Name:void Key_Init(void)
-	*
-	*
-	*
-	*
-**************************************************************/
-void Key_Init(void)
-{
-   Power_Handler(power_default_fun);
-
-}
-
-/***********************************************************
- *  *
-    *Function Name: static uint8_t power_default_fun(void);
-    *Function: power turn on or turn off
-    *Input Ref: NO
-    *Return Ref:  1->turn on ,0-> turn off
-    * 
-***********************************************************/
-static uint8_t power_default_fun(void)
-{
-      if(pro_t.gPower_On ==power_on) return 1;
-	  else return 0;
-
-}
-
-void Power_Handler(uint8_t(* power_on_handler)(void))
-{
-
-	power_on_off_state =power_on_handler;
-
-
-}
 
 
 
@@ -143,7 +103,7 @@ uint8_t KEY_Scan(void)
 		{
 			if(key_t.read == key_t.buffer) //again adjust key if be pressed down 
 			{
-				if(++key_t.on_time> 1000 && pro_t.gPower_On ==power_on)// 500 long key be down
+				if(++key_t.on_time> 1000 && power_on_state() ==power_on)// 500 long key be down
 				{
 					
 					key_t.value = key_t.value|0x80; //key.value(power_on) = 0x01 | 0x80  =0x81  
@@ -219,7 +179,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 	case KEY_POWER_Pin:
 
-		if(POWER_KEY_VALUE() == KEY_DOWN && pro_t.gPower_On ==0){
+		if(POWER_KEY_VALUE() == KEY_DOWN && power_on_state() ==0){
 
 			//while(POWER_KEY_VALUE() == KEY_DOWN);
 
@@ -252,7 +212,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 	case KEY_MODE_Pin:
 
 
-	if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gPower_On==1 ){
+	if(MODE_KEY_VALUE() ==KEY_DOWN && power_on_state()==1 ){
 
 //        while(ADD_KEY_VALUE() ==KEY_DOWN){
 //            K2++;
@@ -281,7 +241,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 	case KEY_DEC_Pin:
 
-	if(DEC_KEY_VALUE() ==KEY_DOWN &&  pro_t.gPower_On==1){
+	if(DEC_KEY_VALUE() ==KEY_DOWN &&  power_on_state()==1){
 
 	   // while(DEC_KEY_VALUE() == KEY_DOWN);
 
@@ -295,7 +255,7 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 
 	case KEY_ADD_Pin:
 
-	if(ADD_KEY_VALUE() == KEY_DOWN && pro_t.gPower_On ==power_on){
+	if(ADD_KEY_VALUE() == KEY_DOWN && power_on_state() ==power_on){
 
        // while(ADD_KEY_VALUE() == KEY_DOWN);
 
@@ -341,12 +301,12 @@ uint8_t ReadKey(void)
 //			}
 //	}
 //	else
-	if(MODE_KEY_VALUE() ==KEY_DOWN  && pro_t.long_key_flag ==0 && pro_t.gPower_On == power_on){
+	if(MODE_KEY_VALUE() ==KEY_DOWN  && pro_t.long_key_flag ==0 && power_on_state() == power_on){
 	  		cnt = 0;
 			K2++;   //Confirm_key press
 		
 			pro_t.long_key_flag =0;
-			if(K2 > 1990000 && pro_t.gPower_On ==power_on){
+			if(K2 > 1990000 && power_on_state() ==power_on){
 	              K2=0;
 				  cnt = 0;
 				 
@@ -357,12 +317,12 @@ uint8_t ReadKey(void)
 
 
 	 }
-	 else if(DEC_KEY_VALUE() == KEY_DOWN && pro_t.gPower_On == power_on){
+	 else if(DEC_KEY_VALUE() == KEY_DOWN && power_on_state() == power_on){
 	       cnt =0;
 		   K3++;
 	       
 	}
-	else if(ADD_KEY_VALUE() == KEY_DOWN && pro_t.gPower_On == power_on){
+	else if(ADD_KEY_VALUE() == KEY_DOWN && power_on_state() == power_on){
 		cnt =0;
 		K4++;
 	}
@@ -475,9 +435,9 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 
          K1++;
 		 iwdg_feed();
-		 if(pro_t.gPower_On == power_on){
+		 if(power_on_state() == power_on){
 
-		    if(K1 > 400000){
+		    if(K1 > 1900000){
                 K1=0;
 				
 				//SendData_Set_Wifi(0x01);
@@ -494,7 +454,7 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 	  };      
        /* 按键扫描完毕，确定按键被按下，返回按键被按下状态 */
 	 
-	  if(K1 > 400000 && pro_t.gPower_On == power_on && pro_t.long_key_flag ==0){
+	  if(K1 > 400000 && power_on_state() == power_on && pro_t.long_key_flag ==0){
 	  	 K1 =0;
 		//  SendData_Set_Wifi(0x01);
 		  pro_t.long_key_flag =1;
@@ -538,7 +498,7 @@ KEYState_TypeDef MODE_KEY_StateRead(void)
       /* 等待按键弹开才退出按键扫描函数 */
       while(HAL_GPIO_ReadPin(KEY_MODE_GPIO_Port,KEY_MODE_Pin)==KEY_DOWN_LEVEL){
 		 K2++;
-		 if(pro_t.gPower_On == power_on){
+		 if(power_on_state() == power_on){
 
 		    if(K2 > 90000){
                 K2=0;

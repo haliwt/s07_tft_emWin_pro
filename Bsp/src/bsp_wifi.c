@@ -60,12 +60,12 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
     }
 
-	 if(wifi_link_net_state()==1 && pro_t.gPower_On  !=POWER_ON ){
+	 if(wifi_link_net_state()==1 && power_on_state()  !=power_on ){
        
            if(send_power_off_flag==0){
             send_power_off_flag++;
-		    //run_t.RunCommand_Label=POWER_OFF;
-		   // pro.rx_command_tag= POWER_OFF;
+		    //run_t.RunCommand_Label=power_off;
+		   // pro.rx_command_tag= power_off;
 			//wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data
 			//SendWifiData_To_Cmd(0x01) ;
 			HAL_Delay(50);
@@ -116,7 +116,7 @@ static void RunWifi_Command_Handler(void)
 
         case wifi_link_tencent_cloud: //02
 
-		   if(pro_t.gPower_On == POWER_ON){
+		   if(power_on_state() == power_on){
 			
 			 
 			Wifi_SoftAP_Config_Handler();
@@ -177,7 +177,7 @@ static void RunWifi_Command_Handler(void)
 
 	   	case wifi_publish_update_tencent_cloud_data://05
             
-		      while(wifi_t.beijing_time_flag == 1 && pro_t.gPower_On ==POWER_ON){
+		      while(wifi_t.beijing_time_flag == 1 && power_on_state() ==power_on){
 				wifi_t.beijing_time_flag ++;
 				wifi_t.gTimer_get_beijing_time=0;
 				wifi_t.get_rx_beijing_time_enable=0;//disenable get beijing timing
@@ -224,15 +224,15 @@ static void RunWifi_Command_Handler(void)
 	   case wifi_tencent_publish_dht11_data://6
 	   
 		wifi_t.get_rx_beijing_time_enable=0;
-		if(pro_t.gPower_On == POWER_ON){
-			if(wifi_t.app_timer_power_off_flag == 0 && pro_t.gPower_On ==POWER_ON && (wifi_t.app_timer_power_on_flag==0||wifi_t.app_timer_power_on_flag==3)){
+		if(power_on_state() == power_on){
+			if(wifi_t.app_timer_power_off_flag == 0 && power_on_state() ==power_on && (wifi_t.app_timer_power_on_flag==0||wifi_t.app_timer_power_on_flag==3)){
 			Update_Dht11_Totencent_Value();
 			HAL_Delay(300);
 
 			}
 
 
-			if(wifi_t.gTimer_get_beijing_time > 423 && pro_t.gPower_On ==POWER_ON){ //&& gctl_t.power_on_send_bejing_times==0){ //
+			if(wifi_t.gTimer_get_beijing_time > 423 && power_on_state() ==power_on){ //&& gctl_t.power_on_send_bejing_times==0){ //
 			wifi_t.gTimer_get_beijing_time=0;
 
 			wifi_t.set_beijing_time_flag=1; //set beijing times .
@@ -257,7 +257,7 @@ static void RunWifi_Command_Handler(void)
 
 	   case wifi_get_beijing_time://7
 
-	    if(pro_t.gPower_On==POWER_ON ){
+	    if(power_on_state()==power_on ){
 	 
 		 wifi_t.linking_tencent_cloud_doing =0;
 	   	 if(wifi_t.set_beijing_time_flag ==1){   //&& wifi_t.gTimer_beijing_time>1){

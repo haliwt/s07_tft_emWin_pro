@@ -11,15 +11,16 @@ volatile uint32_t led_k,led_i;
 
 void LED_Power_Key_On(void)
 {
-    LED_POWER_KEY_SetHigh() ;
+    LED_POWER_KEY_SetLow() ;
 
 
 }
 void LED_Power_Key_Off(void)
 {
-	LED_POWER_KEY_SetLow() ;
+	LED_POWER_KEY_SetHigh() ;
 }
 
+//mos 
 void LED_Mode_Key_On(void)
 {
   LED_MODE_KEY_SetHigh();	

@@ -75,11 +75,11 @@ void Key_Process_Handler(void)
 */
 void TFT_Process_Handler(void)
 {
- if(pro_t.key_power_be_pressed_flag ==1){
- 	
-  TFT_Pocess_Command_Handler(pro_t.gKey_command_tag);
 
- }
+ 	
+  TFT_Pocess_Command_Handler(pro_t.run_process_step);
+
+ 
 
 }
 /******************************************************************************
@@ -98,16 +98,13 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
   
    static uint16_t counter;
 
-   switch(flag_key){
-
-   case  run_update_data:
-      
-      
+   if(pro_t.gPower_On == power_on){
+  
     switch(pro_t.run_process_step){
 
 
 	 case 0:
-		
+		pro_t.long_key_flag =0;
 		pro_t.key_power_be_pressed_flag =0;
 		pro_t.ack_power_on_sig=0; 
 		LED_Mode_Key_On();
@@ -122,7 +119,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-
+          pro_t.long_key_flag =0;
 	     pro_t.key_power_be_pressed_flag =0;
          pro_t.long_key_flag =0;
 	      if(pro_t.gTimer_pro_ms > 20){ //20 *10ms = 200ms
@@ -197,19 +194,18 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 
 	 break;
 
-    
-
-	
-
     default:
     break;
    	}
-	case power_off_fan_pro:
-		//power_off_fan_run();
-		
-	 break;
-     }
- }
+   }
+   else{
+	LED_Mode_Key_Off();
+	Breath_Led();
+
+   }
+   
+}
+	
 
 
 
@@ -308,7 +304,7 @@ void power_off_fan_run(void)
 static void Mode_Fun(void)
 {
 	
-	if(pro_t.gPower_On ==power_on){
+	if(power_on_state() ==power_on){
 		
 			 
 	   if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
@@ -340,7 +336,7 @@ static void Mode_Fun(void)
 ************************************************************************/
 void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 {
-	  if(pro_t.gPower_On ==power_on){
+	  if(power_on_state() ==power_on){
 	   if(gctl_t.fan_warning ==0 && gctl_t.ptc_warning ==0){
 	  	
 		   
@@ -369,7 +365,7 @@ static void ADD_Key_Fun(void)
  
     uint8_t  temp_bit_1_hours,temp_bit_2_hours,temp_bit_2_minute,temp_bit_1_minute;
 
-	 if(pro_t.gPower_On ==power_on){
+	 if(power_on_state()==power_on){
 
 		   if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
@@ -442,7 +438,7 @@ static void DEC_Key_Fun(void)
 
     uint8_t  decade_temp,unit_temp,temp_bit_1_hours,temp_bit_2_hours;
 	uint8_t temp_bit_2_minute=0,temp_bit_1_minute=0;
-	if(pro_t.gPower_On ==power_on){
+	if(power_on_state() ==power_on){
 	   	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
 			Buzzer_KeySound();
@@ -613,9 +609,9 @@ void Power_Key_Detected(void)
 
 	    
 
-	      if( pro_t.gPower_On == power_off){
+	      if( power_on_state() == power_off){
 		  	  pro_t.key_power_be_pressed_flag =1;
-		  	 pro_t.gKey_command_tag = run_update_data;
+	
 			 pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
@@ -632,7 +628,7 @@ void Power_Key_Detected(void)
 		  else{
                 pro_t.key_power_be_pressed_flag =1;
 	           pro_t.long_key_flag =0;
-			   pro_t.gKey_command_tag = power_off_fan_pro;
+			 
 			   pro_t.gPower_On = power_off;   
 	         //  SendData_PowerOnOff(0);
 			 //  KEY_POWER_OFF_LED();

@@ -18,7 +18,7 @@
 
 
 
-#define KEY_DOWN_LEVEL               1  /* ¸ù¾ÝÔ­ÀíÍ¼Éè¼Æ£¬KEY2°´ÏÂÊ±Òý½ÅÎªµÍµçÆ½£¬ËùÒÔÕâÀïÉèÖÃÎª0 */
+#define KEY_DOWN_LEVEL               0  /* ¸ù¾ÝÔ­ÀíÍ¼Éè¼Æ£¬KEY2°´ÏÂÊ±Òý½ÅÎªµÍµçÆ½£¬ËùÒÔÕâÀïÉèÖÃÎª0 */
 
 
 #define		_KEY_ALL_OFF				 0XFF
@@ -116,9 +116,8 @@ typedef enum{
 
 typedef enum{
 
-  POWER_OFF,
-  POWER_ON,
-  POWER_ID_FLAG,
+ 
+  POWER_ID_FLAG =0x02,
   POWER_NULL
 
 
@@ -158,9 +157,6 @@ typedef  struct  _state_
 void Key_Init(void);
 
 
-extern uint8_t (*key_set_timer_state)(void);
-
-extern uint8_t (*power_on_off_state)(void);
 
 
 
@@ -181,7 +177,7 @@ void Key_Set_Timer_Handler(uint8_t(*key_timer_handler)(void));
 void Power_Handler(uint8_t(*power_on_handler)(void));
 
 uint8_t ReadKey(void);
-KEYState_TypeDef VK36N4D_IC_StateRead(void);
+
 
 KEYState_TypeDef POWER_KEY_StateRead(void);
 KEYState_TypeDef MODE_KEY_StateRead(void);

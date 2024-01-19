@@ -105,7 +105,10 @@ int main(void)
   delay_init(64); 
   bsp_ctl_init();
   Wifi_Init();
-
+  HAL_TIM_Base_Start_IT(&htim17);
+ // UART_Start_Receive_IT(&huart1,inputBuf,1);
+   //DMA usart2
+ // UART_Start_Receive_IT(&huart2,wifi_usart_data.wifi_inputBuf,1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,7 +121,7 @@ int main(void)
 	bsp_Idle();
 	Key_Process_Handler();
 	TFT_Process_Handler();
-	WIFI_Process_Handler();
+	//WIFI_Process_Handler();
 	
 	
   }

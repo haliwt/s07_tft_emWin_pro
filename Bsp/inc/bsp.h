@@ -72,7 +72,6 @@ typedef struct{
    uint8_t ack_power_on_sig;
    uint8_t ack_power_off_sig;
 
-   uint8_t gKey_command_tag;
 
    
    //time
