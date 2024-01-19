@@ -309,14 +309,14 @@ uint8_t Fan_Error_Default_Handler(void)
 *****************************************************************************/
 void Device_Action_Handler(void)
 {
-   if(mode_state() == 1){
-      
-
-   }
-   else{
-
-
-   }
+//   if(mode_state() == 1){
+//      
+//
+//   }
+//   else{
+//
+//
+//   }
 
    if(wifi_state() == 1){
       LED_WIFI_ICON_ON();

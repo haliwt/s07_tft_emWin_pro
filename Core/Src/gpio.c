@@ -58,6 +58,10 @@ void MX_GPIO_Init(void)
                           |LED_KILL_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
+	HAL_GPIO_WritePin(GPIOC, TFT_BACKLIGHT_Pin, GPIO_PIN_RESET);
+
+
+  /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOD, FAN_CTL_2_Pin|FAN_CTL_1_Pin|TEMP_SENSOR_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PAPin PAPin PAPin PAPin
@@ -83,6 +87,14 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PCPin */
+  GPIO_InitStruct.Pin = TFT_BACKLIGHT_Pin;
+                          
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PDPin PDPin PDPin PDPin */
   GPIO_InitStruct.Pin = FAN_CTL_2_Pin|FAN_CTL_1_Pin|TEMP_SENSOR_Pin|TFT_RESET_Pin;

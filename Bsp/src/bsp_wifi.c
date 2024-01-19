@@ -52,11 +52,8 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
         SmartPhone_TryToLink_TencentCloud();
 		if(wifi_link_net_state()==1){
 			
-			wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;//04
-	
-			//SendWifiData_To_Cmd(0x01) ;
-            //HAL_Delay(5);
-          }
+		     wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;//04
+	    }
        
     }
 

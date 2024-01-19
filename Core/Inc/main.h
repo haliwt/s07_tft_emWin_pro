@@ -134,6 +134,8 @@ void Error_Handler(void);
 #define TFT_RESET_Pin GPIO_PIN_3
 #define TFT_RESET_GPIO_Port GPIOD
 
+#define TFT_BACKLIGHT_Pin             GPIO_PIN_13
+#define TFT_BACKLIGHT_GPIO_Port       GPIOC
 //dht11 sensor 
 #define TEMP_SENSOR_Pin GPIO_PIN_2
 #define TEMP_SENSOR_GPIO_Port GPIOD

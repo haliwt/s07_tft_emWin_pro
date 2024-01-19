@@ -76,7 +76,8 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -97,7 +98,7 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM1_Init();
   MX_TIM3_Init();
-  MX_TIM14_Init();
+ 
   MX_TIM17_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -121,7 +122,7 @@ int main(void)
 	bsp_Idle();
 	Key_Process_Handler();
 	TFT_Process_Handler();
-	//WIFI_Process_Handler();
+	WIFI_Process_Handler();
 	
 	
   }

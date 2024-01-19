@@ -12,7 +12,7 @@ static void Mode_Fun(void);
 
 static void Mode_Long_Key_Fun(void);
 
-static void TFT_Pocess_Command_Handler(uint8_t flag_key);
+static void TFT_Pocess_Command_Handler(void);
 
 
 /*
@@ -77,7 +77,7 @@ void TFT_Process_Handler(void)
 {
 
  	
-  TFT_Pocess_Command_Handler(pro_t.run_process_step);
+  TFT_Pocess_Command_Handler();
 
  
 
@@ -90,7 +90,7 @@ void TFT_Process_Handler(void)
 	*Return Ref:
 	*
 ******************************************************************************/
-static void TFT_Pocess_Command_Handler(uint8_t flag_key)
+static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 
@@ -119,10 +119,11 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-          pro_t.long_key_flag =0;
+	     TFT_BACKLIGHT_ON();
+         pro_t.long_key_flag =0;
 	     pro_t.key_power_be_pressed_flag =0;
          pro_t.long_key_flag =0;
-	      if(pro_t.gTimer_pro_ms > 20){ //20 *10ms = 200ms
+	     if(pro_t.gTimer_pro_ms > 40){ //20 *10ms = 200ms
 			 pro_t.gTimer_pro_ms =0;
 
 		     Device_Action_Handler();
@@ -131,7 +132,7 @@ static void TFT_Pocess_Command_Handler(uint8_t flag_key)
 		  
 		
 
-		if(pro_t.gTimer_pro_disp_timer > 3){ //3s 
+		if(pro_t.gTimer_pro_disp_timer > 4){ //3s 
 		  	pro_t.gTimer_pro_disp_timer =0;
 		    TFT_Works_Or_Timer_times_Handler();
 
@@ -567,7 +568,7 @@ static void Ptc_Temperature_Compare_Value(void)
                else if(dht11_temp_value() <38 || (smartphone_set_temp_value() -2) > dht11_temp_value() ){
                
                   gctl_t.ptc_flag = 1;
-                 // SendData_Set_Command(DRY_ON_NO_BUZZER);
+                
 
 				  
                 }
@@ -578,14 +579,14 @@ static void Ptc_Temperature_Compare_Value(void)
                  if(dht11_temp_value() >40){//envirment temperature
                
                  gctl_t.ptc_flag  = 0;
-                // SendData_Set_Command(DRY_OFF_NO_BUZZER);
+              
                 
            
                }
                else if(dht11_temp_value() <38){
                
                   gctl_t.ptc_flag = 1;
-                 // SendData_Set_Command(DRY_ON_NO_BUZZER);
+                
                  
                 }
                           

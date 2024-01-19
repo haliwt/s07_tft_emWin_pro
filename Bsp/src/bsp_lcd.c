@@ -155,6 +155,8 @@ static void LCD_Clear(uint16_t color)
 void TFT_LCD_Init(void)
 {
     /* 关闭睡眠模式 */
+	TFT_BACKLIGHT_ON();
+
     LCD_Write_Cmd(0x11);
     HAL_Delay(120);
 
