@@ -38,6 +38,10 @@ extern uint8_t spi_tx_buffer[1];
 
 void TFT_LCD_Init(void);
 
+
+void LCD_GPIO_Reset(void);
+
+
 void LCD_Display_BacklightOn(void);
 
 void LCD_Display_BacklightOff(void);

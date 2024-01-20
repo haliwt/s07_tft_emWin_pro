@@ -114,7 +114,7 @@ void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,u
 * Return Ref: NO
 *
 ******************************************************************************************/
-void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,uint32_t *black_data)
+void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,const uint32_t *black_data)
 {
    uint32_t i,j;
     

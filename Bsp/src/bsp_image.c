@@ -1,6 +1,6 @@
 #include "bsp_image.h"
 
-const unsigned char gImage_s07_main_picture[5406] = { 
+const uint32_t gImage_s07_main_picture[5406] = { 
 0X10,0X01,0X00,0XF0,0X00,0XB4,
 0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,
 0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,0XFF,

@@ -10,7 +10,6 @@ uint8_t spi_tx_buffer[1];
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 static uint8_t lcd_buf[LCD_Buf_Size];
 
-static void LCD_GPIO_Reset(void);
 static void LCD_Clear(uint16_t color);
 
 /*******************************************************************************
@@ -25,10 +24,10 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     //spi_tx_buffer[0] = *txdata;
     //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-    return  HAL_SPI_Transmit(&hspi1,txdata,1,5000);
+    return  HAL_SPI_Transmit(&hspi1,txdata,1,0xffff);
 
 }
-static void LCD_GPIO_Reset(void)
+void LCD_GPIO_Reset(void)
 {
 
     
