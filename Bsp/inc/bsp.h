@@ -6,12 +6,13 @@
 #include <stdio.h>
 
 #include "adc.h"
-#include "dma.h"
+//#include "dma.h"
 #include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+//bsp
 #include "bsp_buzzer.h"
 #include "bsp_ultrasonic.h"
 #include "bsp_delay.h"
@@ -29,7 +30,7 @@
 #include "bsp_wifi.h"
 #include "bsp_image.h"
 
-
+//wifi
 #include "bsp_wifi_fun.h"
 #include "bsp_esp8266.h"
 #include "bsp_publish.h"
@@ -85,7 +86,7 @@ typedef struct{
    uint8_t temperature_set_flag;
 
    //warning
- 
+    uint8_t spi_error_flag;
 	//wifi
 	uint8_t wifi_led_fast_blink_flag;
 

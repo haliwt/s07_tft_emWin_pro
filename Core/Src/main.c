@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
-#include "dma.h"
 #include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
@@ -76,8 +75,7 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-
-	HAL_Init();
+  HAL_Init();
 
   /* USER CODE BEGIN Init */
 
@@ -92,13 +90,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_ADC1_Init();
   MX_IWDG_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
   MX_TIM3_Init();
- 
   MX_TIM17_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -107,6 +103,8 @@ int main(void)
   bsp_ctl_init();
   Wifi_Init();
   HAL_TIM_Base_Start_IT(&htim17);
+  //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
+ // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
  // UART_Start_Receive_IT(&huart1,inputBuf,1);
    //DMA usart2
  // UART_Start_Receive_IT(&huart2,wifi_usart_data.wifi_inputBuf,1);
@@ -119,10 +117,11 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	
 	bsp_Idle();
 	Key_Process_Handler();
 	TFT_Process_Handler();
-	WIFI_Process_Handler();
+	//WIFI_Process_Handler();
 	
 	
   }
@@ -190,6 +189,7 @@ void Error_Handler(void)
   __disable_irq();
   while (1)
   {
+  	pro_t.spi_error_flag = 0xff;
   }
   /* USER CODE END Error_Handler_Debug */
 }

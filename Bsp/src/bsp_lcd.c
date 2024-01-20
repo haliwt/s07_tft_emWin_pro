@@ -4,6 +4,9 @@
 #define LCD_TOTAL_BUF_SIZE  (240*320*2)
 #define LCD_Buf_Size 1152
 
+uint8_t spi_tx_buffer[1];
+
+
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 static uint8_t lcd_buf[LCD_Buf_Size];
 
@@ -20,13 +23,18 @@ static void LCD_Clear(uint16_t color);
 ***********************************************************************************/
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
-
-  return HAL_SPI_Transmit_DMA(&hspi1,txdata,size);
+    //spi_tx_buffer[0] = *txdata;
+    //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
+    return  HAL_SPI_Transmit(&hspi1,txdata,1,5000);
 
 }
 static void LCD_GPIO_Reset(void)
 {
-    LCD_RST_SetLow();
+
+    
+	LCD_RST_SetHigh();
+	 HAL_Delay(100);
+	LCD_RST_SetLow();
     HAL_Delay(100);
     LCD_RST_SetHigh();
 
@@ -41,22 +49,25 @@ static void LCD_GPIO_Reset(void)
 ***********************************************************************************/
 void LCD_Write_Cmd(uint8_t cmd)
 {
-
-    LCD_NSS_SetLow(); //To write command to TFT is low level 
-    SPI_WriteByte(&cmd,1);
+    LCD_NSS_SetLow();
+    TFT_DCX_CMD();
+    pro_t.spi_error_flag=SPI_WriteByte(&cmd,1);
 
 }
 
 void LCD_Write_Data(uint8_t data)
 {
-    LCD_NSS_SetHigh(); //To write data to TFT is high level
+    //LCD_NSS_SetHigh(); //To write data to TFT is high level
+    LCD_NSS_SetLow();
+	TFT_DCX_DATA();
     SPI_WriteByte(&data,1);
 }
 
 void LCD_Write_16bit_Data(uint16_t data)
 {
     uint8_t temp_data;
-    LCD_NSS_SetHigh(); //To write data to TFT is high level
+    //LCD_NSS_SetHigh(); //To write data to TFT is high level
+    LCD_NSS_SetLow();
     SPI_WriteByte((uint8_t *)data,1);
     temp_data = data >>8;
     SPI_WriteByte((uint8_t *)temp_data,1);
@@ -156,11 +167,12 @@ void TFT_LCD_Init(void)
 {
     /* 关闭睡眠模式 */
 	TFT_BACKLIGHT_ON();
-
     LCD_Write_Cmd(0x11);
-    HAL_Delay(120);
-
+	
+   // HAL_Delay(120);
+    #if 1
     /* 开始设置显存扫描模式，数据格式等 */
+	
     LCD_Write_Cmd(0x36);//修改此处，可以改变屏幕的显示方向，横屏，竖屏等
     LCD_Write_Data(0x00);
     /* RGB 5-6-5-bit格式  */
@@ -239,8 +251,18 @@ void TFT_LCD_Init(void)
 
     /*打开显示*/
     LCD_Display_BacklightOn();
-
+    #endif 
 }
 
+
+//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+//{
+//
+//  
+//
+//	HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer,1);  
+//
+//
+//}
 
 

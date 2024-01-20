@@ -46,12 +46,12 @@ extern uint32_t  K1;
 
 
 
-#define HIGH_LEVEL                   1  /* 根据原理图设计，KEY1按下时引脚为低电平，所以这里设置为0 */
+//#define HIGH_LEVEL                   1  /* 根据原理图设计，KEY1按下时引脚为低电平，所以这里设置为0 */
 
 typedef enum
 {
-  KEY_UP   = 0,
-  KEY_DOWN = 1,
+  KEY_UP   = 1,
+  KEY_DOWN = 0,
   KEY_POWER_LONG_DOWN=0x81,
   KEY_MODE_LONG_DOWN=0x82
 }KEYState_TypeDef;

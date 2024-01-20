@@ -14,6 +14,8 @@ static void Mode_Long_Key_Fun(void);
 
 static void TFT_Pocess_Command_Handler(void);
 
+static void Power_On_Fun(void);
+static void Power_Off_Fun(void);
 
 /*
 *********************************************************************************************************
@@ -94,25 +96,28 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 
-   static uint8_t temp1,temp2,voice_enable_flag;
+   static uint8_t power_been_flag;
   
-   static uint16_t counter;
+ 
 
-   if(pro_t.gPower_On == power_on){
+   if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
 
 
 	 case 0:
+	 	Power_On_Fun();
+	    Buzzer_KeySound();
+	  
 		pro_t.long_key_flag =0;
 		pro_t.key_power_be_pressed_flag =0;
 		pro_t.ack_power_on_sig=0; 
-		LED_Mode_Key_On();
-		LED_Power_Key_On();
+		
 
-		pro_t.run_process_step=1;
+		
 	    TFT_LCD_Init();
-		TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,(uint32_t*)gImage_s07_main_picture);
+		//TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,(uint32_t*)gImage_s07_main_picture);
+	     pro_t.run_process_step=1;
 
 
 
@@ -120,18 +125,16 @@ static void TFT_Pocess_Command_Handler(void)
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
 	     TFT_BACKLIGHT_ON();
+		 power_been_flag=1;
          pro_t.long_key_flag =0;
 	     pro_t.key_power_be_pressed_flag =0;
-         pro_t.long_key_flag =0;
 	     if(pro_t.gTimer_pro_ms > 40){ //20 *10ms = 200ms
 			 pro_t.gTimer_pro_ms =0;
 
 		     Device_Action_Handler();
 			 
-          }
+         }
 		  
-		
-
 		if(pro_t.gTimer_pro_disp_timer > 4){ //3s 
 		  	pro_t.gTimer_pro_disp_timer =0;
 		    TFT_Works_Or_Timer_times_Handler();
@@ -151,7 +154,7 @@ static void TFT_Pocess_Command_Handler(void)
 	
 
 	 case 2: //set timer times pro
-	 if(pro_t.gTimer_pro_disp_ms > 3 && voice_enable_flag==0){ 
+	 if(pro_t.gTimer_pro_disp_ms > 3 ){ 
 			pro_t.gTimer_pro_disp_ms=0;
 			TFT_Display_Handler();
        }
@@ -200,16 +203,17 @@ static void TFT_Pocess_Command_Handler(void)
    	}
    }
    else{
+   	if(power_been_flag == 1){
+		power_been_flag =0;
+		Power_Off_Fun();
+        Buzzer_KeySound();
+	}
 	LED_Mode_Key_Off();
 	Breath_Led();
 
    }
    
 }
-	
-
-
-
 /************************************************************************
 	*
 	*Function Name: static void Power_On_Fun(void)
@@ -218,7 +222,7 @@ static void TFT_Pocess_Command_Handler(void)
 	*Return Ref:No
 	*
 ************************************************************************/
-void Power_On_Fun(void)
+static void Power_On_Fun(void)
 {
    
   LED_Mode_Key_On();
@@ -245,7 +249,7 @@ void Power_On_Fun(void)
      
 
 
-void Power_Off_Fun(void)
+static void Power_Off_Fun(void)
 {
 	 		 
      
@@ -610,7 +614,7 @@ void Power_Key_Detected(void)
 
 	    
 
-	      if( power_on_state() == power_off){
+	      if( pro_t.gPower_On == power_off){
 		  	  pro_t.key_power_be_pressed_flag =1;
 	
 			 pro_t.gPower_On = power_on;   
@@ -620,7 +624,7 @@ void Power_Key_Detected(void)
 			
 			//SendData_PowerOnOff(1);
 			//KEY_POWER_ON_LED();
-		    Power_On_Fun();
+		  //  Power_On_Fun();
 			//LCD_Backlight_On();
 		
 
@@ -631,13 +635,10 @@ void Power_Key_Detected(void)
 	           pro_t.long_key_flag =0;
 			 
 			   pro_t.gPower_On = power_off;   
-	         //  SendData_PowerOnOff(0);
-			 //  KEY_POWER_OFF_LED();
-			 
+	         
 			  
-			   
-	           Power_Off_Fun();
-			 //  LCD_Backlight_Off();
+			//  Power_Off_Fun();
+		
 		    
 			   pro_t.run_process_step=0xff;
 			  
@@ -649,11 +650,11 @@ void Power_Key_Detected(void)
 
 	if(POWER_KEY_StateRead()==KEY_POWER_LONG_DOWN && pro_t.long_key_flag ==1){
 
-        //SendData_Set_Wifi(0x01);
+  
          pro_t.key_power_be_pressed_flag =0;
 
-	    //Key_Sound();
-       // pro_t.wifi_led_fast_blink_flag=1;
+	    Buzzer_KeySound();
+        pro_t.wifi_led_fast_blink_flag=1;
 		pro_t.long_key_flag =0;
         K1=0;
 

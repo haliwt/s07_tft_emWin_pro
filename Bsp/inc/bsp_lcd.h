@@ -19,11 +19,13 @@
 #define BLUE    0x001F  //蓝色
 #define BLACK   0x0000  //黑色
 
+extern uint8_t spi_tx_buffer[1];
 
 #define TFT_BACKLIGHT_ON()     (HAL_GPIO_WritePin(TFT_BACKLIGHT_GPIO_Port,TFT_BACKLIGHT_Pin,GPIO_PIN_SET))  
-
 #define TFT_BACKLIGHT_OFF()     (HAL_GPIO_WritePin(TFT_BACKLIGHT_GPIO_Port,TFT_BACKLIGHT_Pin,GPIO_PIN_RESET)) 
 
+#define TFT_DCX_CMD()     (HAL_GPIO_WritePin(TFT_DCX_GPIO_Port,TFT_DCX_Pin,GPIO_PIN_RESET))  
+#define TFT_DCX_DATA()     (HAL_GPIO_WritePin(TFT_DCX_GPIO_Port,TFT_DCX_Pin,GPIO_PIN_SET))
 
 
 #define LCD_RST_SetHigh()  (HAL_GPIO_WritePin(TFT_RESET_GPIO_Port,TFT_RESET_Pin,GPIO_PIN_SET))
