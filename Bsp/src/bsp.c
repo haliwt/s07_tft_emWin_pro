@@ -115,9 +115,10 @@ static void TFT_Pocess_Command_Handler(void)
 		
 
 		
-	    TFT_LCD_Init();
-		
+	  //  TFT_LCD_Init();
+		//HAL_Delay(200);
 		//TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
+		TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
 		HAL_Delay(200);
 	     pro_t.run_process_step=1;
 
