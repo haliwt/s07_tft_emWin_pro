@@ -56,7 +56,9 @@ void LCD_Write_16bit_Data(uint16_t data);
 void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
 
 void DISPLAY_COLOR(uint16_t color);
+void Frame(void);
 
+void DISP_WINDOWS(void);
 
 
 

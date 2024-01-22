@@ -114,15 +114,18 @@ void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,u
 * Return Ref: NO
 *
 ******************************************************************************************/
-void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,const uint32_t *black_data)
+void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint8_t block_height,const uint8_t *black_data)
 {
-   uint32_t i,j;
+   uint16_t i,j;
     
-   TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
+   //TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
+  DISP_WINDOWS();
 
    for(i=0;i<block_width;i++){
        for(j=0;j<block_height;j++){
-           LCD_Write_16bit_Data(black_data[i*block_height+j]);
+          // LCD_Write_16bit_Data(black_data[j]);
+          //LCD_Write_16bit_Data(black_data[i*block_height+j]);
+          LCD_Write_Data(black_data[i*block_height+j]);
        }
    }
 }

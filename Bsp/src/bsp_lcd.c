@@ -11,7 +11,7 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 //static uint8_t lcd_buf[LCD_Buf_Size];
 static void DISPLAY_image(void);
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
-static void DISP_WINDOWS(void);
+
 
 
 
@@ -69,15 +69,9 @@ void LCD_Write_Data(uint8_t data)
 
 void LCD_Write_16bit_Data(uint16_t data)
 {
-    uint8_t temp_data,temp_one_data;
-    //LCD_NSS_SetHigh(); //To write data to TFT is high level
-    LCD_NSS_SetLow();
-    TFT_DCX_DATA();
-    temp_data = data>>8;
-	 temp_one_data = data;
-    SPI_WriteByte(&temp_data,1);
-   
-    SPI_WriteByte(&temp_one_data,1);
+
+    LCD_Write_Data(data >> 8);
+    LCD_Write_Data(data);
     
 
 }
@@ -178,6 +172,7 @@ void LCD_Clear(uint16_t color)
 		LCD_Write_Data(0);
 		LCD_Write_Data(0);
 		LCD_Write_Data(240);
+		
 		LCD_Write_Cmd(0X2B);
 		LCD_Write_Data(0);
 		LCD_Write_Data(0);
@@ -208,7 +203,7 @@ void LCD_Clear(uint16_t color)
  * Return Ref: NO
  * 
 ********************************************************************************/
-static void DISP_WINDOWS(void)
+void DISP_WINDOWS(void)
 {
          LCD_Write_Cmd(0x2A);
          LCD_Write_Data(0x00);
