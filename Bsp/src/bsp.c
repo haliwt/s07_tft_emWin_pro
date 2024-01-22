@@ -29,7 +29,7 @@ static void Power_Off_Fun(void);
 void bsp_Idle(void)
 {
 	/* --- 喂狗 */
-    if(pro_t.gTimer_pro_feed_dog > 3){
+    if(pro_t.gTimer_pro_feed_dog > 4){ //16s
 	pro_t.gTimer_pro_feed_dog = 0;	
 	iwdg_feed();
 
@@ -138,7 +138,9 @@ static void TFT_Pocess_Command_Handler(void)
 		// DISPLAY_COLOR(GBLUE);
 		 HAL_Delay(200);
 		 LCD_Clear(YELLOW);
-		  HAL_Delay(200);
+		 HAL_Delay(200);
+		 LCD_Clear(GREEN);
+		 HAL_Delay(200);
 		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
 
 		 power_been_flag=1;
