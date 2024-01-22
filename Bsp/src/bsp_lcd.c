@@ -1,7 +1,7 @@
 #include "bsp_lcd.h"
 #include "bsp.h"
 
-#define LCD_TOTAL_BUF_SIZE  (240*320*2)
+#define LCD_TOTAL_BUF_SIZE (240*320*2)
 #define LCD_Buf_Size 1152
 
 uint8_t spi_tx_buffer[1];
@@ -9,8 +9,11 @@ uint8_t spi_tx_buffer[1];
 
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 static uint8_t lcd_buf[LCD_Buf_Size];
+static void DISPLAY_image(void);
+static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
 
-static void LCD_Clear(uint16_t color);
+
+
 
 /*******************************************************************************
  * 
@@ -32,10 +35,11 @@ void LCD_GPIO_Reset(void)
 
     
 	LCD_RST_SetHigh();
-	 HAL_Delay(100);
+	 HAL_Delay(200);
 	LCD_RST_SetLow();
-    HAL_Delay(100);
+    HAL_Delay(200);
     LCD_RST_SetHigh();
+	HAL_Delay(100);
 
 }
 /*******************************************************************************
@@ -64,12 +68,16 @@ void LCD_Write_Data(uint8_t data)
 
 void LCD_Write_16bit_Data(uint16_t data)
 {
-    uint8_t temp_data;
+    uint8_t temp_data,temp_one_data;
     //LCD_NSS_SetHigh(); //To write data to TFT is high level
     LCD_NSS_SetLow();
-    SPI_WriteByte((uint8_t *)data,1);
-    temp_data = data >>8;
-    SPI_WriteByte((uint8_t *)temp_data,1);
+
+    temp_data = data>>8;
+	 temp_one_data = data;
+    SPI_WriteByte(&temp_data,1);
+   
+    SPI_WriteByte(&temp_one_data,1);
+    
 
 }
 /*******************************************************************************
@@ -128,8 +136,8 @@ void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2)
  * Input Ref: NO
  * Return Ref: NO
  * 
-***********************************************************************************/
-static void LCD_Clear(uint16_t color)
+********************************************************************************/
+void LCD_Clear(uint16_t color)
 {
     uint16_t i, j;
     uint8_t data[2] = {0};  //color是16bit的，每个像素点需要两个字节的显存
@@ -139,21 +147,153 @@ static void LCD_Clear(uint16_t color)
     data[1] = color;
 
     /* 显存的值需要逐字节写入 */
-    for(j = 0; j < LCD_Buf_Size / 2; j++)
-    {
-        lcd_buf[j * 2] =  data[0];
-        lcd_buf[j * 2 + 1] =  data[1];
-    }
+//    for(j = 0; j < LCD_Buf_Size / 2; j++)
+//    {
+//        lcd_buf[j * 2] =  data[0];
+//        lcd_buf[j * 2 + 1] =  data[1];
+//    }
     /* 指定显存操作地址为全屏幕 */
     LCD_Address_Set(0, 0, LCD_Width - 1, LCD_Height - 1);
     /* 指定接下来的数据为数据 */
      LCD_NSS_SetHigh();//LCD_WR_RST(1);
     /* 将显存缓冲区的数据全部写入缓冲区 */
-    for(i = 0; i < (LCD_TOTAL_BUF_SIZE / LCD_Buf_Size); i++)
+    for(i = 0; i < LCD_Height; i++)
     {
-        SPI_WriteByte(lcd_buf, (uint16_t)LCD_Buf_Size);
+        for(j = 0; j < LCD_Width; j++){
+		LCD_Write_Data(data[0]);
+		LCD_Write_Data(data[1]);	
+		}
+        
     }
 }
+
+
+
+/*******************************************************************************
+ * 
+ * Function Name: void DISP_WINDOWS(void)
+ * Function : display TFT color
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+********************************************************************************/
+void DISP_WINDOWS(void)
+{
+         LCD_Write_Cmd(0x2A);
+         LCD_Write_Data(0x00);
+         LCD_Write_Data(0x00);
+         LCD_Write_Data(0x00);
+         LCD_Write_Data(0xEF);
+
+         LCD_Write_Cmd(0x2B);
+         LCD_Write_Data(0x00);
+         LCD_Write_Data(0x00);
+         LCD_Write_Data(0x01);
+         LCD_Write_Data(0x3f);
+         LCD_Write_Cmd(0x2C);
+}
+#if 0
+void LCD_Write_Data1(uchar dat1,uchar dat2)
+{
+ int i,j;
+      A0=1;
+      CSB=0;
+      for(i=0;i<8;i++)
+      {
+      if(dat1&0x80)
+      {
+      SDA=1;
+      }
+      else SDA=0;
+      SCL=0;
+      SCL=1;
+      dat1<<=1;
+      }
+	CSB=1;
+
+	  CSB=0;
+	  for(j=0;j<8;j++)
+      {
+      if(dat2&0x80)
+      {
+      SDA=1;
+      }
+      else SDA=0;
+      SCL=0;
+      SCL=1;
+      dat2<<=1;
+      }
+	 CSB=1;
+     
+  
+}
+#endif 
+/*******************************************************************************
+ * 
+ * Function Name: void DISP_WINDOWS(void)
+ * Function : display TFT color
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+********************************************************************************/
+#if 0
+void DISPLAY_image(void)
+{
+	uint i,j,k;
+	uint p=0;
+	uint q=0;
+	DISP_WINDOWS();
+                   	for(i=0;i<80;i++)
+					{
+						for(j=0;j<240;j++)
+						{
+							LCD_Write_Data(BLACK); 
+						}
+					}
+					for(i=0;i<160;i++)
+					{
+						for(j=0;j<56;j++)
+						{
+							LCD_Write_Data(BLACK);
+						}
+						for(j=0;j<128;j++)
+						{
+							LCD_Write_Data1(picc1[p],picc1[p+1]);
+												     	p++;
+												     	p++;
+			 			}
+						for(j=0;j<56;j++)
+			 			{
+						LCD_Write_Data(BLACK);
+		 	 			}
+					}
+					for(i=0;i<80;i++)
+					{
+						for(j=0;j<240;j++)
+						{
+							LCD_Write_Data(BLACK); 
+						}
+					}
+ 
+	//HOLD_DISP ();
+}
+#endif 
+//========================================================
+void DISPLAY_COLOR(uint16_t color)
+{
+    uint8_t temp_data;
+	int i,j;
+ 	DISP_WINDOWS();
+	for (i=LCD_Height;i>0;i--)
+	for (j=LCD_Width; j>0;j--)
+
+	temp_data = color >>8;
+	LCD_Write_Data(temp_data);
+	LCD_Write_Data(color);
+	//LCD_Write_16bit_Data(color);
+	//HOLD_DISP ();
+}
+
 /*******************************************************************************
  * 
  * Function Name: static void LCD_Clear(uint16_t color)
@@ -162,18 +302,21 @@ static void LCD_Clear(uint16_t color)
  * Return Ref: NO
  * 
 ***********************************************************************************/
+#if 1
 void TFT_LCD_Init(void)
 {
     /* 关闭睡眠模式 */
+	//LCD_GPIO_Reset();
+
 	TFT_BACKLIGHT_ON();
     LCD_Write_Cmd(0x11);
-	
-   // HAL_Delay(120);
+	HAL_Delay(20);
     #if 1
     /* 开始设置显存扫描模式，数据格式等 */
 	
     LCD_Write_Cmd(0x36);//修改此处，可以改变屏幕的显示方向，横屏，竖屏等
-    LCD_Write_Data(0x00);
+    LCD_Write_Data(0x00);  //竖屏
+   // LCD_Write_Data(0x60); //横屏
     /* RGB 5-6-5-bit格式  */
     LCD_Write_Cmd(0x3A);
     LCD_Write_Data(0x65);
@@ -253,7 +396,7 @@ void TFT_LCD_Init(void)
     #endif 
 }
 
-
+#endif 
 //void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 //{
 //
@@ -263,5 +406,96 @@ void TFT_LCD_Init(void)
 //
 //
 //}
+#if 0
+void TFT_LCD_Init(void)
+{
 
+
+TFT_BACKLIGHT_ON();
+
+LCD_GPIO_Reset();
+
+
+LCD_Write_Cmd(0x11);     
+
+//Delay(120); //ms
+HAL_Delay(100);
+
+LCD_Write_Cmd( 0x36);     
+LCD_Write_Data( 0x00);   
+
+LCD_Write_Cmd( 0x3A);     
+LCD_Write_Data( 0x06);   
+
+LCD_Write_Cmd( 0xB2);     
+LCD_Write_Data( 0x0C);   
+LCD_Write_Data( 0x0C);   
+LCD_Write_Data( 0x00);   
+LCD_Write_Data( 0x33);   
+LCD_Write_Data( 0x33);   
+
+LCD_Write_Cmd( 0xB7);     
+LCD_Write_Data( 0x75); //VGH=14.97V, VGL=-10.43V  
+
+LCD_Write_Cmd( 0xBB);   //VCOM  
+LCD_Write_Data( 0x1F);   
+
+LCD_Write_Cmd( 0xC0);     
+LCD_Write_Data( 0x2C);   
+
+LCD_Write_Cmd( 0xC2);     
+LCD_Write_Data( 0x01);   
+
+LCD_Write_Cmd( 0xC3);   //GVDD  
+LCD_Write_Data( 0x13);   
+
+LCD_Write_Cmd( 0xC4);     
+LCD_Write_Data( 0x20);   
+
+LCD_Write_Cmd( 0xC6);     
+LCD_Write_Data( 0x0F);   
+
+LCD_Write_Cmd( 0xD0);     
+LCD_Write_Data( 0xA4);   
+LCD_Write_Data( 0xA1);   
+
+LCD_Write_Cmd( 0xE0);     
+LCD_Write_Data( 0xD0);   
+LCD_Write_Data( 0x1A);   
+LCD_Write_Data( 0x1E);   
+LCD_Write_Data( 0x0A);   
+LCD_Write_Data( 0x0A);   
+LCD_Write_Data( 0x27);   
+LCD_Write_Data( 0x3B);   
+LCD_Write_Data( 0x44);   
+LCD_Write_Data( 0x4A);   
+LCD_Write_Data( 0x2B);   
+LCD_Write_Data( 0x16);   
+LCD_Write_Data( 0x15);   
+LCD_Write_Data( 0x1A);   
+LCD_Write_Data( 0x1E);   
+
+LCD_Write_Cmd(0xE1);     
+LCD_Write_Data(0xD0);   
+LCD_Write_Data( 0x1A);   
+LCD_Write_Data( 0x1E);   
+LCD_Write_Data( 0x0A);   
+LCD_Write_Data( 0x0A);   
+LCD_Write_Data( 0x27);   
+LCD_Write_Data( 0x3A);   
+LCD_Write_Data( 0x43);   
+LCD_Write_Data( 0x49);   
+LCD_Write_Data( 0x2B);   
+LCD_Write_Data( 0x16);   
+LCD_Write_Data( 0x15);   
+LCD_Write_Data( 0x1A);   
+LCD_Write_Data( 0x1D);   
+
+LCD_Write_Cmd( 0x29); 
+
+
+
+
+}
+#endif 
 

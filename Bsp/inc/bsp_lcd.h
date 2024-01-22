@@ -40,6 +40,7 @@ void TFT_LCD_Init(void);
 
 
 void LCD_GPIO_Reset(void);
+void LCD_Clear(uint16_t color);
 
 
 void LCD_Display_BacklightOn(void);
@@ -53,6 +54,8 @@ void LCD_Write_Data(uint8_t data);
 void LCD_Write_16bit_Data(uint16_t data);
 
 void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2);
+
+void DISPLAY_COLOR(uint16_t color);
 
 
 

@@ -118,8 +118,11 @@ static void TFT_Pocess_Command_Handler(void)
 	  //  TFT_LCD_Init();
 		//HAL_Delay(200);
 		//TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
-		TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
-		HAL_Delay(200);
+		//LCD_Clear(BROWN);
+		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
+		///HAL_Delay(300);
+		///LCD_Clear(GBLUE);
+		///HAL_Delay(300);
 	     pro_t.run_process_step=1;
 
 
@@ -128,6 +131,16 @@ static void TFT_Pocess_Command_Handler(void)
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
 	     TFT_BACKLIGHT_ON();
+		// LCD_Clear(BROWN);
+	    // HAL_Delay(300);
+		 //LCD_Clear(GBLUE);
+		 LCD_Clear(GBLUE);
+		// DISPLAY_COLOR(GBLUE);
+		 HAL_Delay(200);
+		 LCD_Clear(YELLOW);
+		  HAL_Delay(200);
+		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
+
 		 power_been_flag=1;
          pro_t.long_key_flag =0;
 	     pro_t.key_power_be_pressed_flag =0;
