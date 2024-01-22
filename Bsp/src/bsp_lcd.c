@@ -9,8 +9,10 @@ uint8_t spi_tx_buffer[1];
 
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 //static uint8_t lcd_buf[LCD_Buf_Size];
-static void DISPLAY_image(void);
+
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
+static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
+
 
 
 
@@ -28,7 +30,7 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     //spi_tx_buffer[0] = *txdata;
     //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-    return  HAL_SPI_Transmit(&hspi1,txdata,1,0xffff);
+    return  HAL_SPI_Transmit(&hspi1,txdata,1,1000);
 
 }
 void LCD_GPIO_Reset(void)
@@ -218,42 +220,6 @@ void DISP_WINDOWS(void)
          LCD_Write_Data(0x3f);
          LCD_Write_Cmd(0x2C);
 }
-#if 0
-void LCD_Write_Data1(uchar dat1,uchar dat2)
-{
- int i,j;
-      A0=1;
-      CSB=0;
-      for(i=0;i<8;i++)
-      {
-      if(dat1&0x80)
-      {
-      SDA=1;
-      }
-      else SDA=0;
-      SCL=0;
-      SCL=1;
-      dat1<<=1;
-      }
-	CSB=1;
-
-	  CSB=0;
-	  for(j=0;j<8;j++)
-      {
-      if(dat2&0x80)
-      {
-      SDA=1;
-      }
-      else SDA=0;
-      SCL=0;
-      SCL=1;
-      dat2<<=1;
-      }
-	 CSB=1;
-     
-  
-}
-#endif 
 /*******************************************************************************
  * 
  * Function Name: void DISP_WINDOWS(void)
@@ -262,12 +228,48 @@ void LCD_Write_Data1(uchar dat1,uchar dat2)
  * Return Ref: NO
  * 
 ********************************************************************************/
-#if 0
+static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
+{
+ 	int i,j;
+      //A0=1;
+     // CSB=0;
+     TFT_DCX_DATA();
+     LCD_NSS_SetLow();
+	  
+      for(i=0;i<8;i++)
+      {
+          //LCD_Write_Data(dat1);
+          SPI_WriteByte(&dat1,1);
+      }
+	//CSB=1;
+	LCD_NSS_SetHigh();
+
+	 // CSB=0;
+	LCD_NSS_SetLow();
+	  for(j=0;j<8;j++)
+      {
+        // LCD_Write_Data(dat2);
+         SPI_WriteByte(&dat2,1);
+      }
+	// CSB=1;
+	 LCD_NSS_SetHigh();
+     
+  
+}
+
+/*******************************************************************************
+ * 
+ * Function Name: void DISP_WINDOWS(void)
+ * Function : display TFT color
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+********************************************************************************/
 void DISPLAY_image(void)
 {
-	uint i,j,k;
-	uint p=0;
-	uint q=0;
+	uint16_t i,j,k;
+	uint16_t p=0;
+	uint16_t q=0;
 	DISP_WINDOWS();
                    	for(i=0;i<80;i++)
 					{
@@ -284,9 +286,9 @@ void DISPLAY_image(void)
 						}
 						for(j=0;j<128;j++)
 						{
-							LCD_Write_Data1(picc1[p],picc1[p+1]);
-												     	p++;
-												     	p++;
+							LCD_Write_Data1(gImage_s07_main_picture[p],gImage_s07_main_picture[p+1]);
+					     	p++;
+					     	p++;
 			 			}
 						for(j=0;j<56;j++)
 			 			{
@@ -303,7 +305,7 @@ void DISPLAY_image(void)
  
 	//HOLD_DISP ();
 }
-#endif 
+
 //========================================================
 void DISPLAY_COLOR(uint16_t color)
 {

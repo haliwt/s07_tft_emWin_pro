@@ -60,7 +60,7 @@ void Frame(void);
 
 void DISP_WINDOWS(void);
 
-
+void DISPLAY_image(void);
 
 #endif 
 
