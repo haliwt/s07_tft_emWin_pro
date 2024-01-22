@@ -125,8 +125,9 @@ void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width
        for(j=0;j<block_height;j++){
           // LCD_Write_16bit_Data(black_data[j]);
           //LCD_Write_16bit_Data(black_data[i*block_height+j]);
-
-          LCD_Write_Data(black_data[i*block_height+j]);
+          for(z=0;z<25;z++){
+             LCD_Write_Data(black_data[i*block_height+j + z]);
+          }
        }
    }
 }

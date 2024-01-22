@@ -4,8 +4,9 @@
 
 
 //LCD屏幕分辨率定义
-#define LCD_Width   240
-#define LCD_Height  320
+//横屏显示
+#define LCD_Width   320//240
+#define LCD_Height  240 //320
 //颜色定义
 #define WHITE   0xFFFF  //白色
 #define YELLOW  0xFFE0  //黄色
