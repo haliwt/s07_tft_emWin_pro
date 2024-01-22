@@ -134,22 +134,22 @@ static void TFT_Pocess_Command_Handler(void)
 	
 	 
 	
-		 LCD_Clear(GBLUE);
+		// LCD_Clear(GBLUE);
 	    
 	 
-		// DISPLAY_COLOR(GBLUE);
+		
 
-		 HAL_Delay(100);
-		 LCD_Clear(YELLOW);
-		// DISPLAY_COLOR(RED);
+		// HAL_Delay(100);
+		// LCD_Clear(YELLOW);
+	
 
-		 HAL_Delay(100);
+		// HAL_Delay(100);
 		// Frame();//LCD_Clear(GREEN);
-		//TFT_ShowPicture(0,0,gImage_s07_main_picture,(LCD_Width-1),(LCD_Height-1));
-		 //TFT_ST7789_FillPicture(0,0,(LCD_Width-1),(LCD_Height-1),gImage_s07_main_picture);
+		
+		 //TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
 		 DISPLAY_image();
 		
-		 HAL_Delay(100);
+		 HAL_Delay(200);
 		 
 		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
 

@@ -6,6 +6,7 @@ uint16_t BACK_COLOR=BLACK;
 uint16_t  POINT_COLOR=WHITE;
 
 static uint32_t lcd_pow(uint8_t m, uint8_t n);
+uint16_t z;
 
 
 
@@ -114,22 +115,31 @@ void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,u
 * Return Ref: NO
 *
 ******************************************************************************************/
-void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint8_t block_height,const uint8_t *black_data)
+void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width,uint16_t block_height,const uint8_t *block_data)
 {
-   uint16_t i,j,z;
-    
-   //TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
-  DISP_WINDOWS();
+   uint16_t i,j;
+  
+   // TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
+  // LCD_Address_Set(xstart,ystart,block_width,block_height);
+   if(z==9600)z=0;
+   DISP_WINDOWS();
 
-   for(i=0;i<block_width;i++){
+  for(i=0;i<block_width;i++){
+
        for(j=0;j<block_height;j++){
-          // LCD_Write_16bit_Data(black_data[j]);
-          //LCD_Write_16bit_Data(black_data[i*block_height+j]);
-          for(z=0;z<25;z++){
-             LCD_Write_Data(black_data[i*block_height+j + z]);
-          }
-       }
-   }
+         
+         LCD_Write_Data(*(block_data +z));
+		 z++;
+		 LCD_Write_Data(*(block_data+z));
+		 z++;
+		 if(z==9600)z=0;
+		
+	     
+	   }
+
+
+
+  }
 }
 /***************************************************************************
 * Function Name:void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
@@ -155,33 +165,6 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
     else if(fw==12&&fh==24) p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
     else return;        //没有的字库
     
-    #if 0
-    for(t = 0; t < csize; t++)        /*遍历打印所有像素点到LCD */
-    {   
-        temp = p[t];
-        for(tbit = 0; tbit < 8; tbit++)        /* 打印一个像素点到液晶 */
-        {        
-        u16 color;
-
-        if(temp & 0x80)        color = POINT_COLOR;
-        else if(0 == mode)        color = BACK_COLOR;
-        else color = ~POINT_COLOR;
-        TFT_DrawPoint(x, y,color );
-
-        temp <<= 1;                        
-        y++;
-
-        if(y >= LCD_Height) return;                /* 超区域了 */
-
-        if((y - y0) == fh){
-        y = y0;
-        x++;
-        if(x >= LCD_Width)        return;        /* 超区域了 */
-        break;
-        }
-        }           
-    }  
-    #endif           
 }
 /*************************************************************************
  * Function Name:void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8_t fh)
@@ -316,46 +299,7 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
  *             p:图片起始地址
  * Return Ref: NO 
 ************************************************************************/
-void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t ph)
-{
-    uint8_t temp,i,col,row;
-    uint8_t y0=y;
-    uint8_t width=pw;
-    uint8_t high=ph;
-	uint16_t color;
 
-    if(x+pw>LCD_Width)width=LCD_Width-pw;//实际显示宽度
-   
-    if(y+ph>LCD_Height)high=LCD_Height-ph;//实际显示高度
-    uint8_t exp_col_bytes=(ph/8+((ph%8)?1:0));//显示一行的字节数
-    uint8_t act_col_bytes=(high/8+((high%8)?1:0));//实际显示一列的字节数
-
-    for(row=0; row<width; row++) //列++
-    {
-        for(col=0; col<act_col_bytes; col++) //显示一列
-        {
-            temp = p[col+row*exp_col_bytes];
-            for(i=0; i<8; i++)
-            {
-              
-                
-                if(temp & 0x80)color = POINT_COLOR;
-                else color = BACK_COLOR;
-
-                TFT_DrawPoint(x, y,color );
-                                
-                temp<<=1;
-                y++;
-                if((y-y0)==high)
-                {
-                    y=y0;
-                    x++;
-                    break;
-                }
-            }
-        }
-    }
-}
 
 
 /***********************************************************************

@@ -116,7 +116,30 @@ void LCD_Display_BacklightOff(void)
 ***********************************************************************************/
 void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2)
 {
-    /* 指定X方向操作区域 */
+
+   if(HORIZON ==1){
+     /* 指定X方向操作区域 */
+	   LCD_Write_Cmd(0x2a); //display column
+	   LCD_Write_Data(x1 >> 8);
+	   LCD_Write_Data(x1);
+	   LCD_Write_Data(x2 >> 8);
+	   LCD_Write_Data(x2);
+   
+	   /* 指定Y方向操作区域 */
+	   LCD_Write_Cmd(0x2b); //display row 
+	   LCD_Write_Data(y1 >> 8);
+	   LCD_Write_Data(y1);
+	   LCD_Write_Data(y2 >> 8);
+	   LCD_Write_Data(y2);
+   
+	   /* 发送该命令，LCD开始等待接收显存数据 */
+	   LCD_Write_Cmd(0x2C);
+
+
+
+   }
+   else{
+	/* 指定X方向操作区域 */
     LCD_Write_Cmd(0x2a); //display column
     LCD_Write_Data(x1 >> 8);
     LCD_Write_Data(x1);
@@ -132,6 +155,7 @@ void LCD_Address_Set(uint16_t x1,uint16_t y1,uint16_t x2,uint16_t y2)
 
     /* 发送该命令，LCD开始等待接收显存数据 */
     LCD_Write_Cmd(0x2C);
+   }
 
 }
 
@@ -261,22 +285,16 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
      // CSB=0;
      TFT_DCX_DATA();
      LCD_NSS_SetLow();
-	  
-      for(i=0;i<8;i++)
-      {
-          //LCD_Write_Data(dat1);
-          SPI_WriteByte(&dat1,1);
-      }
+	 SPI_WriteByte(&dat1,1);
+      
 	//CSB=1;
 	LCD_NSS_SetHigh();
 
 	 // CSB=0;
 	LCD_NSS_SetLow();
-	  for(j=0;j<8;j++)
-      {
-        // LCD_Write_Data(dat2);
-         SPI_WriteByte(&dat2,1);
-      }
+	 
+     SPI_WriteByte(&dat2,1);
+     
 	// CSB=1;
 	 LCD_NSS_SetHigh();
      
@@ -293,7 +311,7 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
 ********************************************************************************/
 void DISPLAY_image(void)
 {
-	uint16_t i,j,k,z;
+	uint16_t i,j;
 	static uint16_t p;
 	
 	TFT_DCX_DATA();
@@ -314,11 +332,12 @@ void DISPLAY_image(void)
 //		}
 		for(j=0;j<240;j++)
 		{
-           for(z=0;z<25;z++){
-			 LCD_Write_Data(p+z); //LCD_Write_Data1(gImage_s07_main_picture[p+z],gImage_s07_main_picture[q+1+z]);
-			 if(z==24)p=p+25;
+          
+		     LCD_Write_Data1(gImage_s07_main_picture[p],gImage_s07_main_picture[p+1]);
+			 p++;
+			 if(p==9600)p=0;
 			 
-            }
+            
 	     	
 		}
 //		for(j=0;j<56;j++)
@@ -337,42 +356,14 @@ void DISPLAY_image(void)
 	//HOLD_DISP ();
 }
 
-//========================================================
-void DISPLAY_COLOR(uint16_t color)
-{
-    uint16_t i,j;
-	LCD_Write_Cmd(0x2A);
-	LCD_Write_Data(0x00);
-	LCD_Write_Data(0x00);
-	LCD_Write_Data(0x01);
-	LCD_Write_Data(0x3f);
-	
-
-	LCD_Write_Cmd(0x2B);
-	LCD_Write_Data(0x00);
-	LCD_Write_Data(0x00);
-	LCD_Write_Data(0x00);
-	LCD_Write_Data(0xef);
-
-	 LCD_Write_Cmd(0x2C);
-
-	 for(i=0;i< 320;i++){
-
-	   for(j=0;j<240;j++){
-            
-		   LCD_Write_Cmd(color>>8);
-		   LCD_Write_Cmd(color);
-
-
-	   }
-
-
-
-	 }
-	
-}
-
-//========================================================
+/*******************************************************************************
+ * 
+ * Function Name: void Frame(void)
+ * Function : display TFT color
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+********************************************************************************/
 void Frame(void)
 {
 	int i,j,k;
