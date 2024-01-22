@@ -335,7 +335,7 @@ void DISPLAY_image(void)
           
 		     LCD_Write_Data1(gImage_s07_main_picture[p],gImage_s07_main_picture[p+1]);
 			 p++;
-			 if(p==9600)p=0;
+			 if(p==38400)p=0;
 			 
             
 	     	
