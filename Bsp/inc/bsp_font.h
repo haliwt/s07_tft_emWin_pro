@@ -30,13 +30,19 @@ typedef struct
 
 
 
+
 void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fontcolor, uint16_t backgroundcolor, uint8_t *s,uint8_t mode);
 
 
 
+void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
 
+void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t startY,
+							uint16_t textColor, uint16_t backgroundColor);
 
+void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t startY,
+							uint16_t textColor, uint16_t backgroundColor);
 
 
 

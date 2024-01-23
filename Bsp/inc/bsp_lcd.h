@@ -15,7 +15,7 @@
 #define RED     0xF800  //红色
 #define BROWN   0XBC40  //棕色
 #define GRAY    0X8430  //灰色
-#define GBLUE   0xF800  //0X07FF  //兰色
+#define GBLUE   0X07FF  //兰色
 #define GREEN   0x07E0  //绿色
 #define BLUE    0x001F  //蓝色
 #define BLACK   0x0000  //黑色

@@ -537,13 +537,13 @@ void TFT_LCD_Init(void)
 
 	
     /* 显示开 */
-	LCD_Write_Cmd(0x21); // Display Inversion On
-	//LCD_Write_Cmd(0x20); // Display Inversion Off
+	//LCD_Write_Cmd(0x21); // Display Inversion On
+	LCD_Write_Cmd(0x20); // Display Inversion Off
     LCD_Write_Cmd(0x29); // display on 
     //LCD_Write_Cmd(0x28);  // display off 
 
     /* 清屏为白色 */
-    LCD_Clear(WHITE);
+    LCD_Clear(BLACK);
 
     /*打开显示*/
     LCD_Display_BacklightOn();

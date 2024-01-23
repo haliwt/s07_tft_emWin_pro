@@ -57,7 +57,7 @@ void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color)
 * Return Ref: NO
 *
 ***********************************************************************/
-void TFT_SetWindow(uint32_t xstart,uint32_t ystart,uint32_t xend,uint32_t yend)
+void TFT_SetWindow(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend)
 {
    LCD_Write_Cmd(0x2a);
    LCD_Write_16bit_Data(xstart);
@@ -231,6 +231,7 @@ void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_
  * Return Ref: NO 
  *
 *************************************************************************************/
+#if 0
 void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode)
 {
     const char* font_table;
@@ -239,12 +240,15 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
     uint16_t y0=y;
     uint16_t color;
     uint8_t csize=(fh/8+((fh%8)?1:0))*fw;//得到自由分辨字符所占的字节数
-#if 0
+
     if(fw==12 && fh==12)
-        font_table = 't'; //font1212_table;
+        font_table = font1212_table;
     else if(fw==24 && fh==24)
-        font_table = "温度";// font2424_table;
+        font_table = font2424_table;
     else return;/*没有的字库*/
+
+
+	
     for(fontSeq=0; fontSeq<strlen(font_table)/2; fontSeq++)/*计算font_table对应字库的数组下标*/
     {
         if(font_table[2*fontSeq]==font[0] && font_table[2*fontSeq+1]==font[1])
@@ -254,10 +258,10 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
 
     for(t=0; t<csize; t++)
     {
-        if(fw==12 && fh==12)
-            temp =  "温度";;//font_1212[fontSeq][t];/*调用font_1212字库*/
+        if(fw==16 && fh==16)
+            temp = font1616_temp[fontSeq][t];;//font_1212[fontSeq][t];/*调用font_1212字库*/
         else if(fw==24 && fh==24)
-            temp = "温度;////font_2424[fontSeq][t];/*调用font_2424字库*/
+            temp = font1616_temp[fontSeq][t];//font_2424[fontSeq][t];/*调用font_2424字库*/
         for(t1=0; t1<8; t1++)
         {
                         
@@ -277,9 +281,9 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
             }
         }
     }
-	#endif 
+	
 }
-
+#endif 
 /*********************************************************************
  * 
  * Function Name:void TFT_ShowText(uitn16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
@@ -292,7 +296,7 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
 {
     while(*str!=0)
     {
-        TFT_ShowFont(x,y,str,fw,fh,mode); //显示这个汉字,空心显示
+       // TFT_ShowFont(x,y,str,fw,fh,mode); //显示这个汉字,空心显示
         str+=2;
         x+=fh;//下一个汉字偏移
     }

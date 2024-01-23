@@ -17,7 +17,7 @@ static void TFT_Pocess_Command_Handler(void);
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
-uint8_t hz_array[]="温度";
+uint8_t hz_array[]={'温','度'};
 
 /*
 *********************************************************************************************************
@@ -134,23 +134,17 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 1:  //display works time + "temperature value " + "humidity value"
 	     TFT_BACKLIGHT_ON();
 	
-	 
-	
-		// LCD_Clear(GBLUE);
-	    
-	 
-		
-
-		// HAL_Delay(100);
-		// LCD_Clear(YELLOW);
-	
-
-		// HAL_Delay(100);
+//	   
+//		LCD_Clear(GBLUE);
+//	    HAL_Delay(100);
+//		LCD_Clear(YELLOW);
+//	    HAL_Delay(100);
 		// Frame();//LCD_Clear(GREEN);
 		
 		 //TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
 		// DISPLAY_image();
-	     GUI_DrawFont16(150,0,WHITE,BLACK,hz_array,0);
+	    // GUI_DrawFont16(0,0,WHITE,BLACK,hz_array,0);
+	    TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
 		
 		 HAL_Delay(200);
 		 

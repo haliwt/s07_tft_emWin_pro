@@ -4,7 +4,7 @@
 
 void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color);
 
-void TFT_SetWindow(uint32_t xstart,uint32_t ystart,uint32_t xend,uint32_t yend);
+void TFT_SetWindow(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend);
 
 
 void TFT_St7789_SetBGColor(uint32_t color);
@@ -19,7 +19,7 @@ void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8
 
 void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode);
 
-void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode);
+//void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode);
 
 void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode);
 

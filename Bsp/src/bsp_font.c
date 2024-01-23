@@ -5,14 +5,6 @@
 
 
 
-const typFNT_GB16 font1616_temp[]={
-
-	0x00,0x00,0x23,0xF8,0x12,0x08,0x12,0x08,0x83,0xF8,0x42,0x08,0x42,0x08,0x13,0xF8,
-	0x10,0x00,0x27,0xFC,0xE4,0xA4,0x24,0xA4,0x24,0xA4,0x24,0xA4,0x2F,0xFE,0x00,0x00,/*"温",0*/
-	0x01,0x00,0x00,0x80,0x3F,0xFE,0x22,0x20,0x22,0x20,0x3F,0xFC,0x22,0x20,0x22,0x20,
-	0x23,0xE0,0x20,0x00,0x2F,0xF0,0x24,0x10,0x42,0x20,0x41,0xC0,0x86,0x30,0x38,0x0E,/*"度",1*/
-
-};
 
 /*************************************************************************************************
 	*
@@ -22,13 +14,15 @@ const typFNT_GB16 font1616_temp[]={
 	*Return Ref:NO
 	*
 *************************************************************************************************/
+#if 1
 void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s,uint8_t mode)
 {
    uint8_t i,j;
    uint16_t k;
    uint16_t HZnum;
    uint16_t x0=x;
-   HZnum=sizeof(font1616_temp)/sizeof(typFNT_GB16);	//自动统计汉字数目
+	#if 0
+   HZnum=sizeof(font1616_temp)/sizeof(font1616_temp[0][0]);	//自动统计汉字数目
    for (k=0;k<HZnum;k++) 
    {
        if((font1616_temp[k].Index[0]==*(s))&&(font1616_temp[k].Index[1]==*(s+1)))
@@ -77,6 +71,104 @@ void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s
     }
    // LCD_SetWindows(0,0,lcddev.width-1,lcddev.height-1);//恢复窗口为全屏 
    TFT_SetWindow(0,0,(LCD_Width-1),(LCD_Height-1));
+   #endif 
+}
+#endif 
+/**************************************************************************************************************
+*@brief TFT_display_char16_16_noBackColor
+*@details 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*		  注意：数据取模时是低位在前高位在后（逆序），具体根
+*		  据取模方向来确定
+*@param[in] address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*@return void
+*@author zx
+*@date 2023-06-04
+**************************************************************************************************************/
+void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0,temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	for(column = 0; column < 16; column++)
+	{
+		temp =* address;
+		for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+ tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			  
+		}
+		address++;
+		temp =* address;
+		for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+ tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}	
+
+
+
 }
 
- 
+/****************************************************************************************
+	*@brief TFT_display_char16_16
+	*@details 显示16x16的汉字
+	*@param[in] address:图片数据地址
+	*			startX：X起始坐标
+	*			startY：Y起始坐标
+	*			textColor：字体显示颜色
+	*			backgroundColor:背景色
+	*@return void
+	*@author zx
+	*@date 2023-06-04
+******************************************************************************************/
+void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t startY,
+							uint16_t textColor, uint16_t backgroundColor)
+{
+	unsigned int column;
+	unsigned char tm=0,temp;
+
+	//TFT_SetWindows(startX, startY, 16, 16);
+    TFT_SetWindow(startX, startY, 16, 16);
+	
+	for(column = 0; column < 32; column++)  //column loop
+	{
+		temp =* address;
+		for(tm = 0; tm < 8; tm++)
+		{
+			if(temp&0x01)
+			{
+				LCD_Write_Data(textColor>>8);//TFT_SEND_DATA(textColor>>8);
+				LCD_Write_Data(textColor);//TFT_SEND_DATA(textColor);
+			}
+			else 
+			{
+				LCD_Write_Data(backgroundColor>>8);//TFT_SEND_DATA(backgroundColor>>8);
+				LCD_Write_Data(backgroundColor);//TFT_SEND_DATA(backgroundColor);
+			}
+			temp >>= 1;
+		}
+		address++;
+	}
+}  
