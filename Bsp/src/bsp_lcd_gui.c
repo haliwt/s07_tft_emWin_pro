@@ -38,12 +38,15 @@ static uint32_t lcd_pow(uint8_t m, uint8_t n)
 void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color)
 {
    LCD_Write_Cmd(0x2a);
+   LCD_Write_Data(x >>8);
    LCD_Write_Data(x);
 
    LCD_Write_Cmd(0x2b);
+   LCD_Write_Data(y >>8);
    LCD_Write_Data(y);
 
    LCD_Write_Cmd(0x2c);
+   LCD_Write_Data(color >>8);
    LCD_Write_Data(color);
 }
 /**************************************************************************
@@ -236,11 +239,11 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
     uint16_t y0=y;
     uint16_t color;
     uint8_t csize=(fh/8+((fh%8)?1:0))*fw;//得到自由分辨字符所占的字节数
-
+#if 0
     if(fw==12 && fh==12)
-        font_table = font1212_table;
+        font_table = 't'; //font1212_table;
     else if(fw==24 && fh==24)
-        font_table = font2424_table;
+        font_table = "温度";// font2424_table;
     else return;/*没有的字库*/
     for(fontSeq=0; fontSeq<strlen(font_table)/2; fontSeq++)/*计算font_table对应字库的数组下标*/
     {
@@ -252,17 +255,17 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
     for(t=0; t<csize; t++)
     {
         if(fw==12 && fh==12)
-            temp = font_1212[fontSeq][t];/*调用font_1212字库*/
+            temp =  "温度";;//font_1212[fontSeq][t];/*调用font_1212字库*/
         else if(fw==24 && fh==24)
-            temp = font_2424[fontSeq][t];/*调用font_2424字库*/
+            temp = "温度;////font_2424[fontSeq][t];/*调用font_2424字库*/
         for(t1=0; t1<8; t1++)
         {
                         
                         
-                        if(temp & 0x80)        color = POINT_COLOR;
-                        else if(0 == mode)        color = BACK_COLOR;
-                        else color = ~POINT_COLOR;
-                        TFT_DrawPoint(x, y,color );
+            if(temp & 0x80)        color = POINT_COLOR;
+            else if(0 == mode)        color = BACK_COLOR;
+            else color = ~POINT_COLOR;
+            TFT_DrawPoint(x, y,color );
                         
             temp<<=1;
             y++;
@@ -274,7 +277,9 @@ void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t m
             }
         }
     }
+	#endif 
 }
+
 /*********************************************************************
  * 
  * Function Name:void TFT_ShowText(uitn16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)

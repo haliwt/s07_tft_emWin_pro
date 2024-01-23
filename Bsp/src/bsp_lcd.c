@@ -312,7 +312,9 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
 void DISPLAY_image(void)
 {
 	uint16_t i,j;
-	static uint16_t p;
+	static uint16_t p,q;
+
+
 	
 	TFT_DCX_DATA();
     LCD_NSS_SetLow();
@@ -330,21 +332,38 @@ void DISPLAY_image(void)
 //		{
 //			LCD_Write_Data(BLACK);
 //		}
+		q=0;
+
 		for(j=0;j<240;j++)
 		{
-          
-		     LCD_Write_Data1(gImage_s07_main_picture[p],gImage_s07_main_picture[p+1]);
-			 p++;
-			 if(p==38400)p=0;
-			 
             
+			if(p<4440 && j< 121){
+			//LCD_Write_Data1(gImage_s07_main_picture[p],gImage_s07_main_picture[p+1]);
+			LCD_Write_Data1(gImage_s07_temp[p],gImage_s07_temp[p+1]);
+			p++;
+			q++;
+
+			}
+            else{
+				p++;
+			   LCD_Write_Data(BLACK >> 8);
+			    LCD_Write_Data(BLACK);
+               if(p==76800)p=0;
+
+            }
+			 
+
+         }
+			
+			 
+	}   
 	     	
-		}
+	
 //		for(j=0;j<56;j++)
 //			{
 //		       LCD_Write_Data(BLACK);
 // 			}
-	}
+//	}
 //	for(i=0;i<80;i++)
 //	{
 //		for(j=0;j<240;j++)
@@ -518,8 +537,10 @@ void TFT_LCD_Init(void)
 
 	
     /* 显示开 */
-	LCD_Write_Cmd(0x21); //黑色背景
-    LCD_Write_Cmd(0x29);
+	LCD_Write_Cmd(0x21); // Display Inversion On
+	//LCD_Write_Cmd(0x20); // Display Inversion Off
+    LCD_Write_Cmd(0x29); // display on 
+    //LCD_Write_Cmd(0x28);  // display off 
 
     /* 清屏为白色 */
     LCD_Clear(WHITE);

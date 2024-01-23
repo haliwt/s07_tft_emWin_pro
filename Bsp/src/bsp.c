@@ -17,6 +17,8 @@ static void TFT_Pocess_Command_Handler(void);
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
+uint8_t hz_array[]="温度";
+
 /*
 *********************************************************************************************************
 *	函 数 名: bsp_Idle
@@ -147,7 +149,8 @@ static void TFT_Pocess_Command_Handler(void)
 		// Frame();//LCD_Clear(GREEN);
 		
 		 //TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
-		 DISPLAY_image();
+		// DISPLAY_image();
+	     GUI_DrawFont16(150,0,WHITE,BLACK,hz_array,0);
 		
 		 HAL_Delay(200);
 		 
