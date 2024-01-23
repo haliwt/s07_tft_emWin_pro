@@ -99,7 +99,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 	for(column = 0; column < 16; column++)
 	{
 		temp =* address;
-		for(tm = 0; tm < 8; tm++)
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
 		{			
 			if(temp&0x01)
 			{
@@ -108,11 +108,10 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 			}
 			
 			temp >>= 1;
-			  
 		}
 		address++;
 		temp =* address;
-		for(tm = 0; tm < 8; tm++)
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
 		{			
 			if(temp&0x01)
 			{
@@ -121,6 +120,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 			}
 			
 			temp >>= 1;
+			 
 		}
 //		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
 		y++;
