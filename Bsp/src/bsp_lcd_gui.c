@@ -60,12 +60,18 @@ void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color)
 void TFT_SetWindow(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend)
 {
    LCD_Write_Cmd(0x2a);
-   LCD_Write_16bit_Data(xstart);
-   LCD_Write_16bit_Data(xend);                      //Column start
+    LCD_Write_Data(x >>8);
+   LCD_Write_Data(x);                      //Column start
+
+    LCD_Write_Data(xend >>8);
+   LCD_Write_Data(xend);
 
    LCD_Write_Cmd(0x2b);
-   LCD_Write_16bit_Data(ystart);
-   LCD_Write_16bit_Data(yend);                      //Row start
+    LCD_Write_Data(ystart >>8);
+   LCD_Write_Data(ystart);
+   
+     LCD_Write_Data(yend >>8);
+   LCD_Write_Data(yend);                     //Row start
 
    LCD_Write_Cmd(0x2c);
 

@@ -148,6 +148,10 @@ static void TFT_Pocess_Command_Handler(void)
 		
 		 HAL_Delay(200);
 		 
+		TFT_display_char16_16(font1616_temp ,150,120, WHITE,BLACK);
+
+		 HAL_Delay(200);
+		 
 		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
 
 		 power_been_flag=1;
