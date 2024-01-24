@@ -29,6 +29,10 @@ void TFT_Display_Handler(void)
 	TFT_St7789_FillBlock(156,5,8,115,WHITE);
 
 	TFT_Display_WorksTime();
+
+	//TFT_Display_Number_32x32();
+   // St7789DrawChar(16, 0,64, 64,font6464_no_1 ,WHITE,BLACK);
+   TFT_ShowChar(10,0,'1',12,24,0);
 	
 
 

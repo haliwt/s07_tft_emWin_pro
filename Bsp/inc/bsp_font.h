@@ -16,16 +16,22 @@
 #define      WIDTH_CH_CHAR		                16	    //中文字符宽度 
 #define      HEIGHT_CH_CHAR		              	16		  //中文字符高度 
 
+#define LINE(x) ((x) * (((sFONT *)LCD_GetFont())->Height))
+#define LINEY(x) ((x) * (((sFONT *)LCD_GetFont())->Width))
 
 
-//16x16中文字体结构体定义
-typedef struct 
-{
-   uint8_t Index[2];	//存放汉字GBK码
-   char Msk[32]; //存放汉字取模数据
-}typFNT_GB16;  //结构体名称可以自己定义
 
+typedef struct _tFont
+{    
+  const uint8_t *table;
+  uint16_t Width;
+  uint16_t Height;
+  
+} sFONT;
 
+extern sFONT Font24x32;
+extern sFONT Font16x24;
+extern sFONT Font8x16;
 
 
 
@@ -52,7 +58,18 @@ void TFT_display_char16_16_Four_noBackColor(const uint8_t *address ,uint16_t sta
 
 void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
+void TFT_display_char32_32_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
+void LCD_DispString_EN ( 	uint16_t usX ,uint16_t usY,  char * pStr );
+
+void TFT_DispChar_EN ( uint16_t usX, uint16_t usY, const char cChar );
+
+void LCD_DispString_EN ( uint16_t usX ,uint16_t usY,  char * pStr );
+void LCD_DispStringLine_EN (  uint16_t line,  char * pStr );
+
+void St7789DrawChar(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *str, uint16_t forecolor, uint16_t backcolor);
+
+void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode);
 
 #endif 
 
