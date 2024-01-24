@@ -74,7 +74,8 @@ void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s
    #endif 
 }
 #endif 
-/**************************************************************************************************************
+
+/**************************************************************************************************************
 *@brief TFT_display_char16_16_noBackColor
 *@details 显示16x16的汉字(不带背景颜色，镂空)
 *		  显示规则：一行一行显示，首先显示第一行的前八位，
@@ -93,10 +94,11 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 {
 
 	uint16_t column;
-	uint8_t tm=0,temp;
+	uint8_t tm=0;
+	uint8_t temp;
 	uint16_t x = 0;
 	uint16_t y = 0;
-	for(column = 0; column < 16; column++)
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
 	{
 		temp =* address;
 	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
@@ -104,7 +106,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 			if(temp&0x01)
 			{
 				//TFT_display_point(startX+ tm, startY+ y ,color);
-				 TFT_DrawPoint(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
 			}
 			
 			temp >>= 1;
@@ -116,7 +118,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 			if(temp&0x01)
 			{
 				//TFT_display_point(startX+ tm+8, startY+ y ,color);
-				TFT_DrawPoint(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
 			}
 			
 			temp >>= 1;
@@ -127,9 +129,100 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 		address++;
 	}	
 
+}
 
+/**************************************************************************************************************
+*
+*@brief TFT_display_char16_16_noBackColor
+*@details 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*		  注意：数据取模时是低位在前高位在后（逆序），具体根
+*		  据取模方向来确定
+*@param[in] address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*@return void
+*
+**************************************************************************************************************/
+void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	uint8_t *ptr;
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
+	{
+	   temp =* address;
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+		address++;
+		temp =* address;
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}
+	//the second words display 
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
+	{
+	   temp =*address;
+	   
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+	   {			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm+24, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+	  
+		address ++;
+		temp =*address;
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+32, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}
+
+	
 
 }
+
 
 /****************************************************************************************
 	*@brief TFT_display_char16_16
@@ -150,12 +243,12 @@ void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t star
 	unsigned char tm=0,temp;
 
 	//TFT_SetWindows(startX, startY, 16, 16);
-    TFT_SetWindow(startX, startY, 16, 16);
+    TFT_SetWindow(startX, startY, 32, 32);
 	
 	for(column = 0; column < 32; column++)  //column loop
 	{
 		temp =* address;
-		for(tm = 0; tm < 8; tm++)
+		for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
 		{
 			if(temp&0x01)
 			{

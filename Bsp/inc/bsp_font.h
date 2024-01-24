@@ -43,6 +43,7 @@ void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t star
 
 void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t startY,
 							uint16_t textColor, uint16_t backgroundColor);
+void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
 
 
