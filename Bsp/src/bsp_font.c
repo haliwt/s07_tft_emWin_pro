@@ -15,6 +15,7 @@ uint16_t LCD_Y_LENGTH = 240;
 static sFONT *LCD_Currentfonts = &Font8x16;  //英文字体
 static uint16_t CurrentTextColor   = WHITE;//前景色
 static uint16_t CurrentBackColor   = BLACK;//背景色
+static uint32_t lcd_pow(uint8_t m, uint8_t n);
 
 
 /**
@@ -852,6 +853,50 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 	}  	  
 }
 
+
+/**
+ * @brief       平方函数, m^n
+ * @param       m: 底数
+ * @param       n: 指数
+ * @retval      m的n次方
+ */
+static uint32_t lcd_pow(uint8_t m, uint8_t n)
+{
+    uint32_t result = 1;
+
+    while (n--)result *= m;
+
+    return result;
+}
+
+
+
+//显示数字
+//x,y :起点坐标
+//len :数字的位数
+//fw:字宽
+//fh:字高
+//num:数值(0~4294967295);
+void TFT_ShowNum(uint16_t x,uint16_t y,uint16_t num,uint8_t len,uint8_t fw,uint8_t fh)
+{
+    uint8_t t,temp;
+    uint8_t enshow=0;
+    for(t=0; t<len; t++)
+    {
+       temp=(num/lcd_pow(10,len-t-1))%10;
+        if(enshow==0&&t<(len-1))
+        {
+            if(temp==0)
+            {
+                TFT_ShowChar(x+(fw)*t,y,' ',fw,fh,0);
+                continue;
+            }
+            else
+                enshow=1;
+        }
+        TFT_ShowChar(x+(fw)*t,y,temp+'0',fw,fh,0);
+    }
+}
 
 
 

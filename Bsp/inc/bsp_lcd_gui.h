@@ -16,7 +16,7 @@ void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width
 
 void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode);
 
-void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8_t fh);
+
 
 void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode);
 

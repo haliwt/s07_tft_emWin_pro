@@ -5,7 +5,7 @@
 uint16_t BACK_COLOR=BLACK;
 uint16_t  POINT_COLOR=WHITE;
 
-static uint32_t lcd_pow(uint8_t m, uint8_t n);
+
 static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 
 
@@ -32,26 +32,12 @@ void TFT_Display_Handler(void)
 
 	//TFT_Display_Number_32x32();
    // St7789DrawChar(16, 0,64, 64,font6464_no_1 ,WHITE,BLACK);
-   TFT_ShowChar(10,0,'1',12,24,0);
+   TFT_ShowChar(10,0,'30',12,24,0);
+   TFT_ShowNum(20,0,30,2,12,24);
 	
 
 
 }
-/**
- * @brief       平方函数, m^n
- * @param       m: 底数
- * @param       n: 指数
- * @retval      m的n次方
- */
-static uint32_t lcd_pow(uint8_t m, uint8_t n)
-{
-    uint32_t result = 1;
-
-    while (n--)result *= m;
-
-    return result;
-}
-
 
 
 /**************************************************************************
