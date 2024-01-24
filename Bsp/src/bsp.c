@@ -166,21 +166,25 @@ static void TFT_Pocess_Command_Handler(void)
 		 
 	  if(pro_t.gTimer_pro_ms > 40){ //50 *10ms = 400ms
 			 pro_t.gTimer_pro_ms =0;
+			 pro_t.run_process_step=0xff;
 
 		     Device_Action_Handler();
+	        
 			 
          }
 	    pro_t.run_process_step=3;
 	 break;
 
 	 case 3:
+	 	   pro_t.run_process_step=0xf0;
+
+	      if(pro_t.gTimer_pro_temp > 4){
+			  pro_t.gTimer_pro_temp =0;
+
+	          Update_DHT11_Value();
+
+	      }
 		  
-		if(pro_t.gTimer_pro_disp_timer > 5){ //3s 
-		  	pro_t.gTimer_pro_disp_timer =0;
-		    //TFT_Works_Or_Timer_times_Handler();
-
-		  }
-
 		  Ptc_Temperature_Compare_Value();
 		  
 	      if(wifi_state() ==1){

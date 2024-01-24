@@ -15,31 +15,6 @@ DHT11_Data_TypeDef DHT11;
 
 
 
-//锟饺达拷us锟斤拷锟斤拷
-//void delay_us(unsigned long i)
-//{
-//	unsigned long j;
-//	for(;i>0;i--)
-//	{
-//			for(j=6;j>0;j--);
-//	}
-//}
-
-
-/**
-  * 锟斤拷锟斤拷锟斤拷锟斤拷: DHT11 锟斤拷始锟斤拷锟斤拷锟斤拄1�7
-  * 锟斤拷锟斤拷锟斤拷锟ￄ1�7: 锟斤拄1�7
-  * 锟斤拄1�7 锟斤拄1�7 倄1�7: 锟斤拄1�7
-  * 评1�7    锟斤拷锟斤拷锟斤拄1�7
-  */
-void DHT11_Init ( void )
-{
-
-	__HAL_RCC_GPIOA_CLK_ENABLE();
-	DHT11_Mode_Out_PP();
-	
-	DHT11_Dout_HIGH();  // 锟斤拷锟斤拷GPIO
-}
 
 /**
   * 锟斤拷锟斤拷锟斤拷锟斤拷: 使DHT11-DATA锟斤拷锟脚憋拷为锟斤拷锟斤拷锟斤拷锟斤拷模式

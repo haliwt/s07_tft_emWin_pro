@@ -6,13 +6,13 @@
 #define DHT11_DATA_IO_IN()      {GPIOD->MODER&=0XFFFFFFFC;GPIOD->MODER|=0<<0;}  //0x00 input mode
 #define DHT11_DATA_IO_OUT()     {GPIOD->MODER&=0XFFFFFFFC;GPIOD->MODER|=1<<0;}   //0x01 output  mode 
 
-#define DHT11_DATA      GPIO_PIN_2
-#define DHT11_GPIO      GPIOD
+//#define DHT11_DATA      GPIO_PIN_2
+//#define DHT11_GPIO      GPIOD
 
-#define DHT11_DATA_SetHigh()            HAL_GPIO_WritePin(DHT11_GPIO,DHT11_DATA,GPIO_PIN_SET)    // output high level
-#define DHT11_DATA_SetLow()             HAL_GPIO_WritePin(DHT11_GPIO,DHT11_DATA,GPIO_PIN_RESET)    // output low level
+#define DHT11_DATA_SetHigh()            HAL_GPIO_WritePin(TEMP_SENSOR_GPIO_Port,TEMP_SENSOR_Pin,GPIO_PIN_SET)    // output high level
+#define DHT11_DATA_SetLow()             HAL_GPIO_WritePin(TEMP_SENSOR_GPIO_Port,TEMP_SENSOR_Pin,GPIO_PIN_RESET)    // output low level
 
-#define DHT11_ReadData()	            HAL_GPIO_ReadPin(DHT11_GPIO,DHT11_DATA)
+#define DHT11_ReadData()	            HAL_GPIO_ReadPin(TEMP_SENSOR_GPIO_Port,TEMP_SENSOR_Pin)
 
 /* �궨�� -------------------------------------------------------------------*/
 /***********************   DHT11 �������Ŷ���  **************************/
@@ -21,9 +21,9 @@
 #define DHT11_Dout_PIN                            GPIO_PIN_2
 
 /***********************   DHT11 �����궨��  ****************************/
-#define DHT11_Dout_LOW()                          HAL_GPIO_WritePin(DHT11_Dout_PORT, DHT11_Dout_PIN, GPIO_PIN_RESET)
-#define DHT11_Dout_HIGH()                         HAL_GPIO_WritePin(DHT11_Dout_PORT, DHT11_Dout_PIN, GPIO_PIN_SET)
-#define DHT11_Data_IN()	                          HAL_GPIO_ReadPin(DHT11_Dout_PORT,DHT11_Dout_PIN)
+#define DHT11_Dout_LOW()                          HAL_GPIO_WritePin(TEMP_SENSOR_GPIO_Port, TEMP_SENSOR_Pin, GPIO_PIN_RESET)
+#define DHT11_Dout_HIGH()                         HAL_GPIO_WritePin(TEMP_SENSOR_GPIO_Port, TEMP_SENSOR_Pin, GPIO_PIN_SET)
+#define DHT11_Data_IN()	                          HAL_GPIO_ReadPin(TEMP_SENSOR_GPIO_Port,TEMP_SENSOR_Pin)
 
 
 

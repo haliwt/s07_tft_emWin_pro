@@ -26,6 +26,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
      
 	 pro_t.gTimer_pro_disp_timer++;
 	 pro_t.gTimer_pro_temp_delay++;
+	 pro_t.gTimer_pro_temp++;
 
 	 pro_t.gTimer_pro_feed_dog++;
 	 wifi_t.gTimer_get_beijing_time++;
