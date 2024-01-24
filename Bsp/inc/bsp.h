@@ -106,8 +106,9 @@ typedef struct{
 	uint8_t gTimer_usart_error;
 	uint8_t gTimer_pro_ms;
 	uint8_t gTimer_pro_disp_timer ;
-	uint8_t gTimer_pro_disp_ms;
+
 	uint8_t gTime_pro_run_voice_time;
+	uint8_t gTimer_pro_tft;
 	
 
 }PRO_T;

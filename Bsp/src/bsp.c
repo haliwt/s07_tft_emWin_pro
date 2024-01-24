@@ -17,7 +17,7 @@ static void TFT_Pocess_Command_Handler(void);
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
-uint8_t hz_array[]={'温','度'};
+
 
 /*
 *********************************************************************************************************
@@ -31,7 +31,7 @@ uint8_t hz_array[]={'温','度'};
 void bsp_Idle(void)
 {
 	/* --- 喂狗 */
-    if(pro_t.gTimer_pro_feed_dog > 4){ //16s
+    if(pro_t.gTimer_pro_feed_dog > 3){ //16s
 	pro_t.gTimer_pro_feed_dog = 0;	
 	iwdg_feed();
 
@@ -127,12 +127,15 @@ static void TFT_Pocess_Command_Handler(void)
 		///HAL_Delay(300);
 	     pro_t.run_process_step=1;
 
-
+		 TFT_BACKLIGHT_ON();
+		 power_been_flag=1;
+         pro_t.long_key_flag =0;
+	     pro_t.key_power_be_pressed_flag =0;
 
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-	     TFT_BACKLIGHT_ON();
+	    
 	
 //	   
 //		LCD_Clear(GBLUE);
@@ -145,73 +148,64 @@ static void TFT_Pocess_Command_Handler(void)
 		// DISPLAY_image();
 	    // GUI_DrawFont16(0,0,WHITE,BLACK,hz_array,0);
 	    //TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
-	    TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);
-	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE);
-		lcd_draw_rectangle(156,5,164,120,WHITE);
-		TFT_St7789_FillBlock(156,5,8,115,WHITE);
+//	    TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);
+//	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE);
+//		lcd_draw_rectangle(156,5,164,120,WHITE);
+//		TFT_St7789_FillBlock(156,5,8,115,WHITE);
 	  //  TFT_display_char16_16_noBackColor(font1616_temp ,166,0,WHITE);
+
+	   if(pro_t.gTimer_pro_tft > 3){
+	   	   pro_t.gTimer_pro_tft=0;
+           TFT_Display_Handler();
+
+	   }
+	   pro_t.run_process_step=2;
+	   
+	case 2: 
 		
-		 HAL_Delay(200);
 		 
-		//TFT_display_char16_16(font1616_temp ,150,120, WHITE,BLACK);
-
-		 HAL_Delay(200);
-		 
-		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
-
-		 power_been_flag=1;
-         pro_t.long_key_flag =0;
-	     pro_t.key_power_be_pressed_flag =0;
-	     if(pro_t.gTimer_pro_ms > 40){ //20 *10ms = 200ms
+	  if(pro_t.gTimer_pro_ms > 40){ //50 *10ms = 400ms
 			 pro_t.gTimer_pro_ms =0;
 
 		     Device_Action_Handler();
 			 
          }
+	    pro_t.run_process_step=3;
+	 break;
+
+	 case 3:
 		  
-		if(pro_t.gTimer_pro_disp_timer > 4){ //3s 
+		if(pro_t.gTimer_pro_disp_timer > 5){ //3s 
 		  	pro_t.gTimer_pro_disp_timer =0;
-		    TFT_Works_Or_Timer_times_Handler();
+		    //TFT_Works_Or_Timer_times_Handler();
 
 		  }
 
 		  Ptc_Temperature_Compare_Value();
 		  
 	      if(wifi_state() ==1){
-			  pro_t.run_process_step=4;
+			  pro_t.run_process_step=5;
           }
 		  else
-            pro_t.run_process_step=2;
+            pro_t.run_process_step=4;
 		 
 	 break;
 
 	
 
-	 case 2: //set timer times pro
-	 if(pro_t.gTimer_pro_disp_ms > 3 ){ 
-			pro_t.gTimer_pro_disp_ms=0;
-			TFT_Display_Handler();
-       }
-	   
-
-	   pro_t.run_process_step=3;
-
-
-	 break;
-
-	 case 3:
+	 case 4:
       // KEY_POWER_ON_LED();
 	  if(pro_t.set_timer_flag==1){ //
 		  pro_t.set_timer_flag++;
              
-	     // SendData_Time_Data(disp_t.disp_set_timer_timing);
+	   
 		  
       }
 
 	  pro_t.run_process_step=1;
       break;
 
-	 case 4:
+	 case 5: //wif_fun
 	 	// KEY_POWER_ON_LED();
 	   if(wifi_state() ==1){
 		
@@ -614,6 +608,8 @@ static void Ptc_Temperature_Compare_Value(void)
 
             }
             else{
+
+			 
                  if(dht11_temp_value() >40){//envirment temperature
                
                  gctl_t.ptc_flag  = 0;
@@ -627,9 +623,6 @@ static void Ptc_Temperature_Compare_Value(void)
                 
                  
                 }
-                          
-
-
 
             }
           }

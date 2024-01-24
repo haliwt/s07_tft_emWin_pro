@@ -9,9 +9,27 @@ static uint32_t lcd_pow(uint8_t m, uint8_t n);
 static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 
 
+/***********************************************************************
+ *
+ * Function Name: void TFT_Display_Handler(void)
+ * Function: TFT LCD 显示全部的内容
+ * Inpurt Ref: NO           
+ * Return Ref: NO 
+ *
+************************************************************************/
+void TFT_Display_Handler(void)
+{
+
+    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
+	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
+	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+	
+	lcd_draw_rectangle(156,5,164,120,WHITE);
+	TFT_St7789_FillBlock(156,5,8,115,WHITE);
+	
 
 
-
+}
 /**
  * @brief       平方函数, m^n
  * @param       m: 底数
@@ -155,58 +173,8 @@ void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width
   }
 }
 #endif 
-/***************************************************************************
-* Function Name:void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
-* Function:在指定位置显示一个字符,包括部分字符 函数说明：显示字符
-* Input Ref：x,y    起点坐标
-            chr    要显示的字符
-            mode   1叠加方式  0非叠加方式
-/**************************************************************************/
-void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
-{
-    uint8_t temp, t, tbit;
-    uint8_t y0=y;
-    uint8_t *p;        
-    uint16_t csize ;
 
-    csize=(fh/8+((fh%8)?1:0))*fw;// 得到字体一个字符对应点阵集所占的字节数        
 
-    chr=chr-' ';//得到偏移后的值
-
-    if(fw==6&&fh==8)        p = (uint8_t *)asc2_0608[chr];        //调用0608ascii字体
-    else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];        //调用0612ascii字体
-    else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];        //调用0612ascii字体
-    else if(fw==12&&fh==24) p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
-    else return;        //没有的字库
-    
-}
-/*************************************************************************
- * Function Name:void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8_t fh)
- * Function:显示数字
- * Input Ref:bx,y->起点坐标 ,len :数字的位数,fw:字宽,fh:字高,
- *                num:数值(0~4294967295);
- * Return Ref: NO
-************************************************************************/
-void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8_t fh)
-{
-    uint8_t t,temp;
-    uint8_t enshow=0;
-    for(t=0; t<len; t++)
-    {
-        temp=(num/lcd_pow(10,len-t-1))%10;
-        if(enshow==0&&t<(len-1))
-        {
-            if(temp==0)
-            {
-                TFT_ShowChar(x+(fw)*t,y,' ',fw,fh,0);
-                continue;
-            }
-            else
-                enshow=1;
-        }
-        TFT_ShowChar(x+(fw)*t,y,temp+'0',fw,fh,0);
-    }
-}
 /**********************************************************************
  * Function Name:void TFT_ShowString(u16 x,u16 y,char *str,u8 fw,u8 fh,u8 mode)
  * Function: 在指定位置开始显示一个字符串,支持自动换行
@@ -217,22 +185,22 @@ void TFT_ShowNum(uint16_t x,uint16_t y,uint32_t num,uint8_t len,uint8_t fw,uint8
             //mode:0,非叠加方式;1,叠加方式
  * Return Ref: NO 
 **********************************************************************/
-void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
-{
-    while((*str<='~')&&(*str>=' '))//判断是不是非法字符!
-    {
-        if(x>(LCD_Width-(fw))) {
-            x=0;
-            y+=fh;
-        }
-        if(y>(LCD_Height-fh)) {
-            y=x=0;   //TFT_Clear();
-        }
-        TFT_ShowChar(x,y,*str,fw,fh,mode);
-        x+=fw;
-        str++;
-    }
-}
+//void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
+//{
+//    while((*str<='~')&&(*str>=' '))//判断是不是非法字符!
+//    {
+//        if(x>(LCD_Width-(fw))) {
+//            x=0;
+//            y+=fh;
+//        }
+//        if(y>(LCD_Height-fh)) {
+//            y=x=0;   //TFT_Clear();
+//        }
+//        TFT_ShowChar(x,y,*str,fw,fh,mode);
+//        x+=fw;
+//        str++;
+//    }
+//}
 
 /*********************************************************************
  * 
@@ -255,21 +223,9 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
 
 
 
-/***********************************************************************
- *
- * Function Name: void TFT_Display_Handler(void)
- * Function: TFT LCD 显示全部的内容
- * Inpurt Ref: NO
- *            
- * Return Ref: NO 
- *
-************************************************************************/
-void TFT_Display_Handler(void)
-{
-  
 
 
-}
+
 
 
 /***********************************************************************
