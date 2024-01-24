@@ -145,7 +145,8 @@ static void TFT_Pocess_Command_Handler(void)
 		// DISPLAY_image();
 	    // GUI_DrawFont16(0,0,WHITE,BLACK,hz_array,0);
 	    //TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
-	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,150,0,WHITE);
+	    TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
+	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,166,0,WHITE);
 	  //  TFT_display_char16_16_noBackColor(font1616_temp ,166,0,WHITE);
 		
 		 HAL_Delay(200);

@@ -154,7 +154,8 @@ void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t star
 	uint8_t temp;
 	uint16_t x = 0;
 	uint16_t y = 0;
-	uint8_t *ptr;
+
+	#if 0
 	for(column = 0; column < 16; column++) //2个字 1个字是16 
 	{
 	   temp =* address;
@@ -185,30 +186,31 @@ void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t star
 		y++;
 		address++;
 	}
+	#endif 
 	//the second words display 
 	for(column = 0; column < 16; column++) //2个字 1个字是16 
 	{
-	   temp =*address;
+	   temp =*(address+32);
 	   
 	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
 	   {			
 			if(temp&0x01)
 			{
 				//TFT_display_point(startX+ tm, startY+ y ,color);
-				 TFT_DrawPoint(startX+tm+24, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
 			}
 			
 			temp >>= 1;
 		}
 	  
 		address ++;
-		temp =*address;
+		temp =*(address+32);
 		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
 		{			
 			if(temp&0x01)
 			{
 				//TFT_display_point(startX+ tm+8, startY+ y ,color);
-				TFT_DrawPoint(startX+tm+32, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
 			}
 			
 			temp >>= 1;
