@@ -31,4 +31,7 @@ void TFT_Display_Handler(void);
 
 void TFT_Works_Or_Timer_times_Handler(void);
 
+void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+
+
 #endif

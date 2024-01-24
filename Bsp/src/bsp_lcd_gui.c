@@ -6,7 +6,9 @@ uint16_t BACK_COLOR=BLACK;
 uint16_t  POINT_COLOR=WHITE;
 
 static uint32_t lcd_pow(uint8_t m, uint8_t n);
-uint16_t z;
+static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+
+
 
 
 
@@ -124,6 +126,7 @@ void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,u
 * Return Ref: NO
 *
 ******************************************************************************************/
+#if 0
 void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width,uint16_t block_height,const uint8_t *block_data)
 {
    uint16_t i,j;
@@ -150,6 +153,7 @@ void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width
 
   }
 }
+#endif 
 /***************************************************************************
 * Function Name:void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
 * Function:在指定位置显示一个字符,包括部分字符 函数说明：显示字符
@@ -228,68 +232,7 @@ void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_
         str++;
     }
 }
-/**************************************************************************************
- *
- * Function Name:void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode)
- * Function :显示一个指定大小的汉字,x,y :汉字的坐标,font:汉字GBK码
-            //fw:字宽//fh:字高
-            //mode:0,正常显示,1,叠加显示
- * Return Ref: NO 
- *
-*************************************************************************************/
-#if 0
-void TFT_ShowFont(uint8_t x,uint8_t y,char *font,uint8_t fw,uint8_t fh,uint8_t mode)
-{
-    const char* font_table;
-    uint16_t fontSeq;
-    uint8_t temp,t,t1;
-    uint16_t y0=y;
-    uint16_t color;
-    uint8_t csize=(fh/8+((fh%8)?1:0))*fw;//得到自由分辨字符所占的字节数
 
-    if(fw==12 && fh==12)
-        font_table = font1212_table;
-    else if(fw==24 && fh==24)
-        font_table = font2424_table;
-    else return;/*没有的字库*/
-
-
-	
-    for(fontSeq=0; fontSeq<strlen(font_table)/2; fontSeq++)/*计算font_table对应字库的数组下标*/
-    {
-        if(font_table[2*fontSeq]==font[0] && font_table[2*fontSeq+1]==font[1])
-            break;
-    }
-    if(fontSeq >= strlen(font_table)/2) return;/*font_table中没有font该字*/
-
-    for(t=0; t<csize; t++)
-    {
-        if(fw==16 && fh==16)
-            temp = font1616_temp[fontSeq][t];;//font_1212[fontSeq][t];/*调用font_1212字库*/
-        else if(fw==24 && fh==24)
-            temp = font1616_temp[fontSeq][t];//font_2424[fontSeq][t];/*调用font_2424字库*/
-        for(t1=0; t1<8; t1++)
-        {
-                        
-                        
-            if(temp & 0x80)        color = POINT_COLOR;
-            else if(0 == mode)        color = BACK_COLOR;
-            else color = ~POINT_COLOR;
-            TFT_DrawPoint(x, y,color );
-                        
-            temp<<=1;
-            y++;
-            if((y-y0)==fh)
-            {
-                y=y0;
-                x++;
-                break;
-            }
-        }
-    }
-	
-}
-#endif 
 /*********************************************************************
  * 
  * Function Name:void TFT_ShowText(uitn16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
@@ -307,13 +250,7 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
         x+=fh;//下一个汉字偏移
     }
 }
-/***********************************************************************
- * Function Name: void TFT_ShowPicture(uint16_t x,uint16_t y,const uint8_t *p,uint8_t pw,uint8_t ph)
- * Function: 显示图片 
- * Inpurt Ref: x,y:起点坐标 pw:图片宽（单位像素）ph:图片高（单位像素）
- *             p:图片起始地址
- * Return Ref: NO 
-************************************************************************/
+
 
 
 
@@ -350,5 +287,77 @@ void TFT_Works_Or_Timer_times_Handler(void)
 
 
 }
+/*******************************************************************************************
+	 *
+	 * @brief       画线
+	 * @param       x1,y1: 起始坐标
+	 * @param       x2,y2: 终点坐标
+	 * @param       color: 线的颜色
+	 * @retval      无
+	 *
+ *******************************************************************************************/
+static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+{
+    uint16_t t;
+    int xerr = 0, yerr = 0, delta_x, delta_y, distance;
+    int incx, incy, row, col;
+    delta_x = x2 - x1;          /* 计算坐标增量 */
+    delta_y = y2 - y1;
+    row = x1;
+    col = y1;
 
+    if (delta_x > 0)incx = 1;   /* 设置单布方向 */
+    else if (delta_x == 0)incx = 0; /* 垂直线 */
+    else
+    {
+        incx = -1;
+        delta_x = -delta_x;
+    }
+
+    if (delta_y > 0)incy = 1;
+    else if (delta_y == 0)incy = 0; /* 水平线*/
+    else
+    {
+        incy = -1;
+        delta_y = -delta_y;
+    }
+
+    if ( delta_x > delta_y)distance = delta_x;  /* 选取基本增量坐标轴 */
+    else distance = delta_y;
+
+    for (t = 0; t <= distance + 1; t++ )   /* 画线输出 */
+    {
+        //lcd_draw_point(row, col, color); /* 画点 */
+        TFT_DrawPoint(row,col,color);
+        xerr += delta_x ;
+        yerr += delta_y ;
+
+        if (xerr > distance)
+        {
+            xerr -= distance;
+            row += incx;
+        }
+
+        if (yerr > distance)
+        {
+            yerr -= distance;
+            col += incy;
+        }
+    }
+}
+
+/*************************************************************************************************
+ * @brief       画矩形
+ * @param       x1,y1: start
+ * @param       x2,y2: end 
+ * @param       color: rectangle is color
+ * @retval      ÎÞ
+ *************************************************************************************************/
+void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color)
+{
+    lcd_draw_line(x1, y1, x2, y1, color);
+    lcd_draw_line(x1, y1, x1, y2, color);
+    lcd_draw_line(x1, y2, x2, y2, color);
+    lcd_draw_line(x2, y1, x2, y2, color);
+}
 
