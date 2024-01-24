@@ -184,6 +184,11 @@ static void TFT_Pocess_Command_Handler(void)
 	          Update_DHT11_Value();
 
 	      }
+		  if(pro_t.gTimer_pro_feed_dog > 3){ //16s
+			pro_t.gTimer_pro_feed_dog = 0;	
+			iwdg_feed();
+
+    	  }
 		  
 		  Ptc_Temperature_Compare_Value();
 		  
@@ -581,7 +586,6 @@ static void Ptc_Temperature_Compare_Value(void)
 	   	//send temp value to smart phone 
 	  	if(gctl_t.set_temp_has_been_flag==1){
 			gctl_t.set_temp_has_been_flag =0;
-			//SendData_Temp_Data(gctl_t.gSet_temperature_value);
 
 		}
        break;
@@ -597,17 +601,14 @@ static void Ptc_Temperature_Compare_Value(void)
                if(dht11_temp_value() >40 || smartphone_set_temp_value() <= dht11_temp_value()){//envirment temperature
                
                  gctl_t.ptc_flag = 0;
-                // SendData_Set_Command(DRY_OFF_NO_BUZZER);
-                
-           
-               }
+               
+                }
                else if(dht11_temp_value() <38 || (smartphone_set_temp_value() -2) > dht11_temp_value() ){
                
                   gctl_t.ptc_flag = 1;
                 
 
-				  
-                }
+			   }
                           
 
             }
@@ -616,7 +617,7 @@ static void Ptc_Temperature_Compare_Value(void)
 			 
                  if(dht11_temp_value() >40){//envirment temperature
                
-                 gctl_t.ptc_flag  = 0;
+                 	gctl_t.ptc_flag  = 0;
               
                 
            

@@ -225,6 +225,131 @@ void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t star
 
 }
 
+/**************************************************************************************************************
+*
+*@brief TFT_display_char16_16_noBackColor
+*@details 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*		  注意：数据取模时是低位在前高位在后（逆序），具体根
+*		  据取模方向来确定
+*@param[in] address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*@return void
+*
+**************************************************************************************************************/
+void TFT_display_char16_16_Three_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+
+	//the second words display 
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
+	{
+	   temp =*(address+64);
+	   
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+	   {			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+	  
+		address ++;
+		temp =*(address+64);
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}
+
+	
+
+}
+
+/**************************************************************************************************************
+*
+*@brief TFT_display_char16_16_noBackColor
+*@details 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*		  注意：数据取模时是低位在前高位在后（逆序），具体根
+*		  据取模方向来确定
+*@param[in] address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*@return void
+*
+**************************************************************************************************************/
+void TFT_display_char16_16_Four_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+
+	
+	//the second words display 
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
+	{
+	   temp =*(address+96);
+	   
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+	   {			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+	  
+		address ++;
+		temp =*(address+96);
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}
+
+	
+
+}
+
 
 /****************************************************************************************
 	*@brief TFT_display_char16_16
@@ -266,4 +391,48 @@ void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t star
 		}
 		address++;
 	}
-}  
+} 
+
+/**************************************************************************************************************
+*@brief TFT_display_char16_16_noBackColor
+*@details 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*		  注意：数据取模时是低位在前高位在后（逆序），具体根
+*		  据取模方向来确定
+*@param[in] address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*@return void
+*@author zx
+*@date 2023-06-04
+**************************************************************************************************************/
+void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	for(column = 0; column < 16; column++) //2个字 1个字是16 
+	{
+		temp =* address;
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}	
+
+}
+

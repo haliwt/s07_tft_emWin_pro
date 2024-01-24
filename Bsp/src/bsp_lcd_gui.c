@@ -20,12 +20,15 @@ static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, ui
 void TFT_Display_Handler(void)
 {
 
-    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
-	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
-	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+    
+     TFT_Display_Tmep_Symbol();
+
+	TFT_Display_Humidity_Symbol();
 	
 	lcd_draw_rectangle(156,5,164,120,WHITE);
 	TFT_St7789_FillBlock(156,5,8,115,WHITE);
+
+	TFT_Display_WorksTime();
 	
 
 
