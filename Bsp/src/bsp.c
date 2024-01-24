@@ -145,9 +145,10 @@ static void TFT_Pocess_Command_Handler(void)
 		// DISPLAY_image();
 	    // GUI_DrawFont16(0,0,WHITE,BLACK,hz_array,0);
 	    //TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
-	    TFT_display_char16_16_noBackColor(font1616_temp ,132,104,WHITE);
-	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,148,104,WHITE);
-		lcd_draw_rectangle(152,0,168,120,WHITE);
+	    TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);
+	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE);
+		lcd_draw_rectangle(156,5,164,120,WHITE);
+		TFT_St7789_FillBlock(156,5,8,115,WHITE);
 	  //  TFT_display_char16_16_noBackColor(font1616_temp ,166,0,WHITE);
 		
 		 HAL_Delay(200);

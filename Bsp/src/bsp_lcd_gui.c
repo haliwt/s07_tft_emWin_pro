@@ -107,13 +107,14 @@ void TFT_St7789_SetBGColor(uint32_t color)
 * Return Ref: NO
 *
 ***********************************************************************/
-void TFT_St7789_FillBlock(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,uint32_t color)
+void TFT_St7789_FillBlock(uint16_t xstart,uint16_t ystart,uint16_t block_width,uint16_t block_height,uint16_t color)
 {
     uint32_t i,j;
     TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
     for(i=0;i<block_width;i++){
         for(j=0;j<block_height;j++){
-            LCD_Write_16bit_Data(color);
+            LCD_Write_Data(color >>8);
+			LCD_Write_Data(color );
         }
     }
 }
@@ -360,4 +361,12 @@ void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint
     lcd_draw_line(x1, y2, x2, y2, color);
     lcd_draw_line(x2, y1, x2, y2, color);
 }
+
+/***************************************************************************************
+ * @brief       指定的区域填充颜色块
+ * @param       (sx,sy),(ex,ey):填充矩形对角坐标，区域大小:(ex - sx + 1) * (ey - sy + 1)
+ * @param       color: 填充颜色的首地址
+ * @retval      ÎÞ
+ ***************************************************************************************/
+
 
