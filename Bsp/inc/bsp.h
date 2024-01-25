@@ -31,6 +31,7 @@
 #include "bsp_image.h"
 #include "bsp_tft_font.h"
 #include "bsp_font.h"
+#include "bsp_font_app.h"
 
 //wifi
 #include "bsp_wifi_fun.h"

@@ -67,7 +67,8 @@ void TFT_Display_Humidity_Symbol(void)
    //TFT_display_char16_16_noBackColor(font1616_humidity ,278,104,WHITE);       //humidity_1"湿"
    //TFT_display_char16_16_Tow_noBackColor(font1616_humidity ,294,104,WHITE);   //humidity_2 "度"
    //TFT_display_char32_32_noBackColor(font1616_humidity ,278,104,WHITE); 
-   TFT_display_char32_32_noBackColor(font3232_humidity ,270,104,WHITE);
+    TFT_Disp_Humidity_32_32_onBlack(246,104,0);
+    TFT_Disp_Humidity_32_32_onBlack(278,104,1);
 
 
 }

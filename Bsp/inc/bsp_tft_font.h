@@ -13,7 +13,7 @@ extern const uint8_t font3232_humidity_symbol[];
 
 
 extern const uint8_t font1616_humidity[];
-extern const uint8_t font3232_humidity[];
+extern const uint8_t font3232_humidity[2][128];
 
 
 extern const uint8_t font1616_works_time[];
