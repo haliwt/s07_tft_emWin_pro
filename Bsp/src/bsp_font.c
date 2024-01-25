@@ -830,7 +830,7 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
     //else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];	//调用0612ascii字体
     //else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];	//调用0612ascii字体
     if(fw==12&&fh==24){
-		p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
+	//	p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
         csize =36;
     }
     else if(fw==48 && fh ==48){
@@ -877,11 +877,14 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 
 /******************************************************************************************************
 *
-//在指定位置显示一个字符,包括部分字符
-//函数说明：显示字符
-//入口数据：x,y    起点坐标
-//		chr    要显示的字符
-//		mode   1叠加方式  0非叠加方式
+*Function Name:void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+*Function :
+	//在指定位置显示一个字符,包括部分字符
+	//函数说明：显示字符
+*Input Ref：x,y    起点坐标
+	//		chr    要显示的字符
+	//		mode   1叠加方式  0非叠加方式
+*Return Ref: NO
 *
 ******************************************************************************************************/
 void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
@@ -937,8 +940,72 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 	
 }
 
+/******************************************************************************************************
+*
+*Function Name:void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+*Function :
+	//在指定位置显示一个字符,包括部分字符
+	//函数说明：显示字符
+*Input Ref：x,y    起点坐标
+	//		chr    要显示的字符
+	//		mode   1叠加方式  0非叠加方式
+*Return Ref: NO
+*
+******************************************************************************************************/
+void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+{
+    uint16_t temp, t, tbit;
+    uint16_t x0=x;
+    
+	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
 
-/**
+	LCD_WIDTH =320;
+	LCD_HEIGHT = 240;
+	
+   
+	for(t = 0; t < 256; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font6464_no[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_WIDTH){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 32){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_HEIGHT){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+  
+	
+}
+
+/****************************************************************************************
  * @brief       平方函数, m^n
  * @param       m: 底数
  * @param       n: 指数

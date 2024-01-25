@@ -75,6 +75,9 @@ void TFT_ShowNum(uint16_t x,uint16_t y,uint16_t num,uint8_t len,uint8_t fw,uint8
 
 void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode);
 
+void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode);
+
+
 
 #endif 
 

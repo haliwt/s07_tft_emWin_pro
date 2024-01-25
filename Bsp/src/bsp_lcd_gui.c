@@ -34,8 +34,9 @@ void TFT_Display_Handler(void)
    // St7789DrawChar(16, 0,64, 64,font6464_no_1 ,WHITE,BLACK);
    //TFT_ShowChar(60,60,'2',48,48,0);
   // TFT_ShowNum(80,12,3,1,24,48);
-   TFT_ShowChar_144(50,10,0,0); 
-   TFT_ShowChar_144(74,10,1,0);
+   //TFT_ShowChar_144(50,10,0,0); 
+   //TFT_ShowChar_144(74,10,1,0);
+   TFT_ShowChar_256(50,5,0,0);
 	
 
 
@@ -319,5 +320,42 @@ void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint
  * @param       color: 填充颜色的首地址
  * @retval      ÎÞ
  ***************************************************************************************/
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_Tmep_Symbol(void)
+	*Function : special TFT of itme
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
+void TFT_Display_Tmep_Symbol(void)
+{
+    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
+	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
+	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+}
+
+
+void TFT_Display_Humidity_Symbol(void)
+{
+
+   TFT_display_char16_16_English_noBackColor(font1616_humidity_symbol,294,5,WHITE);   //humidity symbol 
+   TFT_display_char16_16_noBackColor(font1616_humidity ,278,104,WHITE);       //humidity_1"湿"
+   TFT_display_char16_16_Tow_noBackColor(font1616_humidity ,294,104,WHITE);   //humidity_2 "度"
+
+
+}
+void TFT_Display_WorksTime(void)
+{
+
+	TFT_display_char16_16_noBackColor(font1616_works_time ,128,136,WHITE);		 //
+	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,136,WHITE);	 //
+	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,136,WHITE);
+	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,136,WHITE);
+
+
+
+
+}
 
 
