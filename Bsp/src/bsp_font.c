@@ -802,11 +802,15 @@ void LCD_write_english(int8_t data,uint16_t color,uint16_t xcolor ,uint8_t mode)
 //    }     
 //   }
 }
+/******************************************************************************************************
+*
 //在指定位置显示一个字符,包括部分字符
 //函数说明：显示字符
 //入口数据：x,y    起点坐标
 //		chr    要显示的字符
 //		mode   1叠加方式  0非叠加方式
+*
+******************************************************************************************************/
 void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
 {
     uint8_t temp, t, tbit;
@@ -825,6 +829,7 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
     //else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];	//调用0612ascii字体
     //else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];	//调用0612ascii字体
     if(fw==12&&fh==24) p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
+    else if(fw=64 && fh ==64)(uint8_t *)asc2_1224[chr];
     else return;	//没有的字库
 	for(t = 0; t < csize; t++)	/*遍历打印所有像素点到LCD */
 	{   
