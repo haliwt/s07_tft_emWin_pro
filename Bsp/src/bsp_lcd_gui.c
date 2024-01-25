@@ -55,7 +55,8 @@ void TFT_Display_Handler(void)
 ***********************************************************************************************/
 void TFT_Display_Temp_Symbol(void)
 {
-    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,10,WHITE);   //temp symbol 
+   // TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,10,WHITE);   //temp symbol 
+    TFT_Disp_Temp_24_24_onBlack(122,10,2);
 	//TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
 	//TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
 	TFT_Disp_Temp_24_24_onBlack(102,100,0);
@@ -66,8 +67,9 @@ void TFT_Display_Temp_Symbol(void)
 void TFT_Display_Humidity_Symbol(void)
 {
 
-   TFT_display_char32_32_OneEnglish_noBackColor(font3232_humidity_symbol,288,10,WHITE);   //humidity symbol 
- 
+   //TFT_display_char32_32_OneEnglish_noBackColor(font3232_humidity_symbol,288,10,WHITE);   //humidity symbol 
+    TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
+   
     TFT_Disp_Humidity_24_24_onBlack(268,100,0);
     TFT_Disp_Humidity_24_24_onBlack(292,100,1);
 
@@ -76,12 +78,7 @@ void TFT_Display_Humidity_Symbol(void)
 void TFT_Display_WorksTime(void)
 {
 
-//	TFT_display_char16_16_noBackColor(font1616_works_time ,128,140,WHITE);		 //
-//	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,140,WHITE);	 //
-//	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,140,WHITE);
-//	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,140,WHITE);
-
-	TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//
+    TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//
 	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//
 	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
 	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//

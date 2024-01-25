@@ -5,9 +5,9 @@
 
 
 
-void St7789DrawChar(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *str, uint16_t forecolor, uint16_t backcolor);
+//void St7789DrawChar(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *str, uint16_t forecolor, uint16_t backcolor);
 
-void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode);
+//void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode);
 
 void TFT_ShowNum(uint16_t x,uint16_t y,uint16_t num,uint8_t len,uint8_t fw,uint8_t fh);
 
@@ -25,6 +25,9 @@ void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num);
 void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
 
 void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
+
+
+
 
 
 

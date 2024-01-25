@@ -6,7 +6,7 @@
 
 
 extern const uint8_t font1616_temp[];//[][16];
-extern const uint8_t font2424_temp[2][72];
+extern const uint8_t font2424_temp[3][72];
 
 extern const uint8_t font1616_temp_symbol[];
 
@@ -16,7 +16,7 @@ extern const uint8_t font3232_humidity_symbol[];
 
 extern const uint8_t font1616_humidity[];
 extern const uint8_t font3232_humidity[2][128];
-extern const uint8_t font2424_humidity[2][72];
+extern const uint8_t font2424_humidity[3][72];
 
 
 
