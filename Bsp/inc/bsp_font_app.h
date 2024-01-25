@@ -26,6 +26,7 @@ void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
 
 void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
 
+void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num);
 
 
 

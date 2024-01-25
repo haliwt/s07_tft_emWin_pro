@@ -134,6 +134,7 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 *Return Ref: NO
 *
 ******************************************************************************************************/
+#if 0
 void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 {
     uint8_t temp, t, tbit;
@@ -186,7 +187,7 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
   
 	
 }
-
+#endif 
 /******************************************************************************************************
 *
 *Function Name:void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
@@ -199,6 +200,7 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 *Return Ref: NO
 *
 ******************************************************************************************************/
+#if 0
 void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 {
     uint16_t temp, t, tbit;
@@ -251,7 +253,7 @@ void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
   
 	
 }
-
+#endif 
 
 void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 {
@@ -413,6 +415,7 @@ void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,u
 	*
 	*
 ****************************************************************************************/
+#if 0
 void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
 {
     uint16_t temp, t, tbit,mode;
@@ -463,6 +466,7 @@ void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
 		}  	 
 	}  
 }
+#endif 
 /****************************************************************************************
 	*
 	*Function  Name :void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
@@ -631,4 +635,60 @@ void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	}  
 
 }
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font4848_works_time_value[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+
 
