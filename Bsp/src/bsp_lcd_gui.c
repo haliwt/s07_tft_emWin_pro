@@ -34,7 +34,8 @@ void TFT_Display_Handler(void)
    // St7789DrawChar(16, 0,64, 64,font6464_no_1 ,WHITE,BLACK);
    //TFT_ShowChar(60,60,'2',48,48,0);
   // TFT_ShowNum(80,12,3,1,24,48);
-   TFT_ShowChar_144(50,10,2,0);
+   TFT_ShowChar_144(50,10,0,0); 
+   TFT_ShowChar_144(74,10,1,0);
 	
 
 

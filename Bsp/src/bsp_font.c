@@ -894,7 +894,6 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 	LCD_WIDTH =320;
 	LCD_HEIGHT = 240;
 	
-	if(t<143){
    
 	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
 	{   
@@ -935,7 +934,7 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 		}  	 
 	}  
   
-	}
+	
 }
 
 
