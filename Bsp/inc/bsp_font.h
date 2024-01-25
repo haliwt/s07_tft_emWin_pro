@@ -58,8 +58,17 @@ void TFT_display_char16_16_Four_noBackColor(const uint8_t *address ,uint16_t sta
 
 void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
+void TFT_display_char32_32_OneEnglish_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
+
+
+
 void TFT_display_char32_32_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
 
+
+void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color);
+
+
+//
 void LCD_DispString_EN ( 	uint16_t usX ,uint16_t usY,  char * pStr );
 
 void TFT_DispChar_EN ( uint16_t usX, uint16_t usY, const char cChar );
@@ -77,6 +86,7 @@ void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode);
 
 void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode);
 
+void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode);
 
 
 #endif 

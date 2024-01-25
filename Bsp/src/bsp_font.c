@@ -180,38 +180,6 @@ void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t star
 	uint16_t x = 0;
 	uint16_t y = 0;
 
-	#if 0
-	for(column = 0; column < 16; column++) //2个字 1个字是16 
-	{
-	   temp =* address;
-	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
-		{			
-			if(temp&0x01)
-			{
-				//TFT_display_point(startX+ tm, startY+ y ,color);
-				 TFT_DrawPoint(startX+tm, startY+ y ,color);
-			}
-			
-			temp >>= 1;
-		}
-		address++;
-		temp =* address;
-		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
-		{			
-			if(temp&0x01)
-			{
-				//TFT_display_point(startX+ tm+8, startY+ y ,color);
-				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
-			}
-			
-			temp >>= 1;
-			 
-		}
-//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
-		y++;
-		address++;
-	}
-	#endif 
 	//the second words display 
 	for(column = 0; column < 16; column++) //2个字 1个字是16 
 	{
@@ -461,6 +429,9 @@ void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t 
 
 }
 
+
+
+
 /**************************************************************************************************************
 *@brief TFT_display_char48_48_noBackColor
 *@details 显示16x16的汉字(不带背景颜色，镂空)
@@ -600,6 +571,103 @@ void TFT_display_char32_32_English_noBackColor(const uint8_t *address ,uint16_t 
 		y++;
 		address++;
 	}	
+
+}
+
+void TFT_display_char32_32_OneEnglish_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	for(column = 0; column < 32; column++) //2个字 1个字是16 
+	{
+	  temp =* address;
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+		address++;
+		temp =* address;
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+		
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}	
+
+}
+/**************************************************************************************************************
+*
+*Function Name:void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+*Function: 显示16x16的汉字(不带背景颜色，镂空)
+*		  显示规则：一行一行显示，首先显示第一行的前八位，
+*		  然后显示后八位，显示完成之后显示第二行，
+*Input Ref:address:图片数据地址
+*			startX：X起始坐标
+*			startY：Y起始坐标
+*			color：字体显示颜色
+*Return Ref:NO
+*
+**************************************************************************************************************/
+void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
+{
+
+	uint16_t column;
+	uint8_t tm=0;
+	uint8_t temp;
+	uint16_t x = 0;
+	uint16_t y = 0;
+	for(column = 0; column < 128; column++) //2个字 1个字是16 
+	{
+		temp =* address;
+	   for(tm = 8; tm > 0; tm--)//for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm, startY+ y ,color);
+				 TFT_DrawPoint(startX+tm, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+		}
+		address++;
+		temp =* address;
+		for(tm = 8; tm > 0; tm--) //for(tm = 0; tm < 8; tm++)
+		{			
+			if(temp&0x01)
+			{
+				//TFT_display_point(startX+ tm+8, startY+ y ,color);
+				TFT_DrawPoint(startX+tm+8, startY+ y ,color);
+			}
+			
+			temp >>= 1;
+			 
+		}
+//		if(column>0 && column%2 == 0)//如果开启字体的高读会压缩到之前的一半
+		y++;
+		address++;
+	}	
+
+	
 
 }
 
@@ -772,36 +840,6 @@ void St7789DrawChar(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_
 }
 
 
-/**********************************************
-函数名：LCD_write_english
-功能：选定Lcd上写一个英文或数字
-入口参数：data 要写的字符
-          color 字符的颜色
-          xcolor 字符的背景色
-          size  字体的大小
-返回值：无
-***********************************************/
-void LCD_write_english(int8_t data,uint16_t color,uint16_t xcolor ,uint8_t mode)//写字符
-{
-//  uint8_t i=0,j=0,n=0;
-//  uint8_t avl=0;
-//  data -=32;                     
-//  for (i=0;i<120;i++) //为 20x40字库      
-//  {     
-//    avl=english[data][i];         
-//    for (j=0;j<8;j++)           
-//    {
-//      n++;
-//      if(avl&0x80)LCD_WriteOneDot(color);        
-//      else if(mode==0) LCD_WriteOneDot(xcolor);
-//      avl<<=1;
-//      if(n>19) {
-//        n=0;
-//        break;
-//      }//部分字体如英文20*40，形成的字库3个8位一组，每一组最后4位不显示，用该语句进行判断有几位不需要显示
-//    }     
-//   }
-}
 /******************************************************************************************************
 *
 //在指定位置显示一个字符,包括部分字符
@@ -1004,6 +1042,61 @@ void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
   
 	
 }
+
+
+void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+{
+    uint16_t temp, t, tbit;
+    uint16_t x0=x;
+    
+	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
+
+	LCD_WIDTH =320;
+	LCD_HEIGHT = 240;
+	
+   
+	for(t = 0; t < 576; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font9696_no[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_WIDTH){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 48){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_HEIGHT){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+  
+	
+}
+
 
 /****************************************************************************************
  * @brief       平方函数, m^n

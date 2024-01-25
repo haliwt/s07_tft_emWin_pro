@@ -34,7 +34,7 @@ void TFT_Works_Or_Timer_times_Handler(void);
 
 void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
 
-void TFT_Display_Tmep_Symbol(void);
+void TFT_Display_Temp_Symbol(void);
 
 void TFT_Display_Humidity_Symbol(void);
 void TFT_Display_WorksTime(void);

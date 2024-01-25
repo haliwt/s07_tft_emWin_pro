@@ -21,7 +21,7 @@ void TFT_Display_Handler(void)
 {
 
     
-     TFT_Display_Tmep_Symbol();
+    TFT_Display_Temp_Symbol();
 
 	TFT_Display_Humidity_Symbol();
 	
@@ -29,15 +29,57 @@ void TFT_Display_Handler(void)
 	TFT_St7789_FillBlock(156,5,8,115,WHITE);
 
 	TFT_Display_WorksTime();
-
-	//TFT_Display_Number_32x32();
-   // St7789DrawChar(16, 0,64, 64,font6464_no_1 ,WHITE,BLACK);
-   //TFT_ShowChar(60,60,'2',48,48,0);
-  // TFT_ShowNum(80,12,3,1,24,48);
-   //TFT_ShowChar_144(50,10,0,0); 
-   //TFT_ShowChar_144(74,10,1,0);
-   TFT_ShowChar_256(50,5,0,0);
+   //temperature value 
+   TFT_ShowChar_576(20,5,0,0);
+   TFT_ShowChar_576(68,5,4,0);
+   //TFT_ShowChar_256(50,5,0,0);
+   //huimidity value
+   TFT_ShowChar_576(184,5,1,0);
+   TFT_ShowChar_576(232,5,3,0);
+   //works times value 
+   TFT_ShowChar_576(128,160,2,0);
+   TFT_ShowChar_576(176,160,4,0);
 	
+
+
+}
+
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_Temp_Symbol(void)
+	*Function : special TFT of itme
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
+void TFT_Display_Temp_Symbol(void)
+{
+    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
+	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
+	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+}
+
+
+void TFT_Display_Humidity_Symbol(void)
+{
+
+   TFT_display_char32_32_OneEnglish_noBackColor(font3232_humidity_symbol,288,10,WHITE);   //humidity symbol 
+   //TFT_display_char16_16_noBackColor(font1616_humidity ,278,104,WHITE);       //humidity_1"湿"
+   //TFT_display_char16_16_Tow_noBackColor(font1616_humidity ,294,104,WHITE);   //humidity_2 "度"
+   //TFT_display_char32_32_noBackColor(font1616_humidity ,278,104,WHITE); 
+   TFT_display_char32_32_noBackColor(font3232_humidity ,270,104,WHITE);
+
+
+}
+void TFT_Display_WorksTime(void)
+{
+
+	TFT_display_char16_16_noBackColor(font1616_works_time ,128,140,WHITE);		 //
+	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,140,WHITE);	 //
+	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,140,WHITE);
+	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,140,WHITE);
+
+
 
 
 }
@@ -198,6 +240,13 @@ void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width
 //    }
 //}
 
+/***************************************************************************************
+ * @brief       指定的区域填充颜色块
+ * @param       (sx,sy),(ex,ey):填充矩形对角坐标，区域大小:(ex - sx + 1) * (ey - sy + 1)
+ * @param       color: 填充颜色的首地址
+ * @retval      ÎÞ
+ ***************************************************************************************/
+
 /*********************************************************************
  * 
  * Function Name:void TFT_ShowText(uitn16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
@@ -314,48 +363,6 @@ void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint
     lcd_draw_line(x2, y1, x2, y2, color);
 }
 
-/***************************************************************************************
- * @brief       指定的区域填充颜色块
- * @param       (sx,sy),(ex,ey):填充矩形对角坐标，区域大小:(ex - sx + 1) * (ey - sy + 1)
- * @param       color: 填充颜色的首地址
- * @retval      ÎÞ
- ***************************************************************************************/
-/***********************************************************************************************
-	*
-	*Function Name:void TFT_Display_Tmep_Symbol(void)
-	*Function : special TFT of itme
-	*Input: NO
-	*Return: NO 
-	*
-***********************************************************************************************/
-void TFT_Display_Tmep_Symbol(void)
-{
-    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
-	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
-	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
-}
 
-
-void TFT_Display_Humidity_Symbol(void)
-{
-
-   TFT_display_char16_16_English_noBackColor(font1616_humidity_symbol,294,5,WHITE);   //humidity symbol 
-   TFT_display_char16_16_noBackColor(font1616_humidity ,278,104,WHITE);       //humidity_1"湿"
-   TFT_display_char16_16_Tow_noBackColor(font1616_humidity ,294,104,WHITE);   //humidity_2 "度"
-
-
-}
-void TFT_Display_WorksTime(void)
-{
-
-	TFT_display_char16_16_noBackColor(font1616_works_time ,128,136,WHITE);		 //
-	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,136,WHITE);	 //
-	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,136,WHITE);
-	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,136,WHITE);
-
-
-
-
-}
 
 
