@@ -14,9 +14,10 @@ extern const uint8_t font1616_humidity[];
 
 extern const uint8_t font1616_works_time[];
 
-extern const uint8_t font3232_no_1[];
 
-extern const uint8_t font6464_no_1[][256];
+
+extern const uint8_t font2448_no[4][96];
+
 
 extern const uint8_t ASCII8x16_Table [] ;
 

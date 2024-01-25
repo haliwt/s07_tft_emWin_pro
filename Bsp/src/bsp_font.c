@@ -816,27 +816,35 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
     uint8_t temp, t, tbit;
     uint8_t y0=y;
     uint8_t *p;	
-	uint16_t LCD_HEIGHT,LCD_WIDTH,color;
+	uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
 
 	LCD_WIDTH =320;
 	LCD_HEIGHT = 240;
 	
-	uint16_t csize = csize=(fh/8+((fh%8)?1:0))*fw;// 得到字体一个字符对应点阵集所占的字节数	
+	
+	//csize=(fh/8+((fh%8)?1:0))*fw/2;// 得到字体一个字符对应点阵集所占的字节数	
  
     chr=chr-' ';//得到偏移后的值
  
     //if(fw==6&&fh==8)        p = (uint8_t *)asc2_0608[chr];	//调用0608ascii字体
     //else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];	//调用0612ascii字体
     //else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];	//调用0612ascii字体
-    if(fw==12&&fh==24) p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
-    else if(fw=64 && fh ==64)(uint8_t *)asc2_1224[chr];
+    if(fw==12&&fh==24){
+		p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
+        csize =36;
+    }
+    else if(fw==24 && fh ==48){
+		p= (uint8_t *)font2448_no[chr];
+		csize =96;
+
+    }
     else return;	//没有的字库
 	for(t = 0; t < csize; t++)	/*遍历打印所有像素点到LCD */
 	{   
 		temp = p[t];
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
-			uint16_t color;
+			
 			
 			if(temp & 0x80)	color = WHITE;
 			else if(0 == mode)	color = BLACK;
