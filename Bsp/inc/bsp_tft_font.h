@@ -16,7 +16,7 @@ extern const uint8_t font1616_works_time[];
 
 
 
-extern const uint8_t font2448_no[4][96];
+extern const uint8_t font4848_no[4][144];
 
 
 extern const uint8_t ASCII8x16_Table [] ;

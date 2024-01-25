@@ -89,6 +89,9 @@ typedef struct{
 
    //warning
     uint8_t spi_error_flag;
+   //error 
+     uint8_t lcd_over_width_flag;
+     uint8_t lcd_over_height_flag ;
 	//wifi
 	uint8_t wifi_led_fast_blink_flag;
 

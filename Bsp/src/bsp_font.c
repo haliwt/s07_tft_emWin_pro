@@ -816,13 +816,13 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
     uint8_t temp, t, tbit;
     uint8_t y0=y;
     uint8_t *p;	
-	uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
+	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
 
 	LCD_WIDTH =320;
 	LCD_HEIGHT = 240;
 	
 	
-	//csize=(fh/8+((fh%8)?1:0))*fw/2;// 得到字体一个字符对应点阵集所占的字节数	
+	csize=(fh/8+((fh%8)?1:0))*fw/2;// 得到字体一个字符对应点阵集所占的字节数	
  
     chr=chr-' ';//得到偏移后的值
  
@@ -833,9 +833,9 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 		p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
         csize =36;
     }
-    else if(fw==24 && fh ==48){
-		p= (uint8_t *)font2448_no[chr];
-		csize =96;
+    else if(fw==48 && fh ==48){
+		p= (uint8_t *)font4848_no[chr];
+		csize =144;
 
     }
     else return;	//没有的字库
@@ -852,18 +852,90 @@ void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_
 			TFT_DrawPoint(x, y,color );
 			
 			temp <<= 1;			
-			y++;
+			y++; //
 			
-			if(y >= LCD_HEIGHT) return;		/* 超区域了 */
+			if(y >= LCD_HEIGHT){
+				pro_t.lcd_over_height_flag;
+				return;		/* 超区域了 */
+
+			}
  
 			if((y - y0) == fh){
 				y = y0;
 				x++;
-				if(x >= LCD_WIDTH)	return;	/* 超区域了 */
+				if(x >= LCD_WIDTH){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+				}
 				break;
 			}
 		}  	 
 	}  	  
+}
+
+
+/******************************************************************************************************
+*
+//在指定位置显示一个字符,包括部分字符
+//函数说明：显示字符
+//入口数据：x,y    起点坐标
+//		chr    要显示的字符
+//		mode   1叠加方式  0非叠加方式
+*
+******************************************************************************************************/
+void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+{
+    uint8_t temp, t, tbit;
+    uint8_t x0=x;
+    
+	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
+
+	LCD_WIDTH =320;
+	LCD_HEIGHT = 240;
+	
+	
+   
+	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font4848_no[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_WIDTH){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 48){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_HEIGHT){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+  
+	
 }
 
 
