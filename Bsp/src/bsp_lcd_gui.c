@@ -29,16 +29,17 @@ void TFT_Display_Handler(void)
 	TFT_St7789_FillBlock(156,5,8,115,WHITE);
 
 	TFT_Display_WorksTime();
+
    //temperature value 
-   TFT_ShowChar_576(20,5,0,0);
-   TFT_ShowChar_576(68,5,4,0);
+   TFT_ShowChar_576(10,5,0,0); //位移是48
+   TFT_ShowChar_576(58,5,4,0);
    //TFT_ShowChar_256(50,5,0,0);
    //huimidity value
-   TFT_ShowChar_576(184,5,1,0);
-   TFT_ShowChar_576(232,5,3,0);
+   TFT_ShowChar_576(174,5,1,0);
+   TFT_ShowChar_576(222,5,3,0);
    //works times value 
-   TFT_ShowChar_576(128,160,2,0);
-   TFT_ShowChar_576(176,160,4,0);
+   //TFT_ShowChar_576(128,160,2,0);
+   //TFT_ShowChar_576(176,160,4,0);
 	
 
 
@@ -54,9 +55,11 @@ void TFT_Display_Handler(void)
 ***********************************************************************************************/
 void TFT_Display_Temp_Symbol(void)
 {
-    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,5,WHITE);   //temp symbol 
-	TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
-	TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+    TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,10,WHITE);   //temp symbol 
+	//TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
+	//TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+	TFT_Disp_Temp_24_24_onBlack(102,100,0);
+	TFT_Disp_Temp_24_24_onBlack(126,100,1);
 }
 
 
@@ -64,24 +67,24 @@ void TFT_Display_Humidity_Symbol(void)
 {
 
    TFT_display_char32_32_OneEnglish_noBackColor(font3232_humidity_symbol,288,10,WHITE);   //humidity symbol 
-   //TFT_display_char16_16_noBackColor(font1616_humidity ,278,104,WHITE);       //humidity_1"湿"
-   //TFT_display_char16_16_Tow_noBackColor(font1616_humidity ,294,104,WHITE);   //humidity_2 "度"
-   //TFT_display_char32_32_noBackColor(font1616_humidity ,278,104,WHITE); 
-    TFT_Disp_Humidity_32_32_onBlack(246,104,0);
-    TFT_Disp_Humidity_32_32_onBlack(278,104,1);
+ 
+    TFT_Disp_Humidity_24_24_onBlack(268,100,0);
+    TFT_Disp_Humidity_24_24_onBlack(292,100,1);
 
 
 }
 void TFT_Display_WorksTime(void)
 {
 
-	TFT_display_char16_16_noBackColor(font1616_works_time ,128,140,WHITE);		 //
-	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,140,WHITE);	 //
-	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,140,WHITE);
-	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,140,WHITE);
+//	TFT_display_char16_16_noBackColor(font1616_works_time ,128,140,WHITE);		 //
+//	TFT_display_char16_16_Tow_noBackColor(font1616_works_time ,144,140,WHITE);	 //
+//	TFT_display_char16_16_Three_noBackColor(font1616_works_time ,160,140,WHITE);
+//	TFT_display_char16_16_Four_noBackColor(font1616_works_time ,176,140,WHITE);
 
-
-
+	TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//
 
 }
 

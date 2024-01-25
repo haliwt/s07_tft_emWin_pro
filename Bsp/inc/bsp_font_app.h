@@ -22,6 +22,12 @@ void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,u
 
 void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num);
 
+void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
+
+void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num);
+
+
+
 
 #endif 
 

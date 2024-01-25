@@ -404,7 +404,13 @@ void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,u
 	
 
 }
-
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*
+	*
+****************************************************************************************/
 void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
 {
     uint16_t temp, t, tbit,mode;
@@ -454,10 +460,173 @@ void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
 			}
 		}  	 
 	}  
+}
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*
+	*
+****************************************************************************************/
+void TFT_Disp_Humidity_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
 
+	LCD_WIDTH =320;
+	LCD_HEIGHT = 240;
+	
+   
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_humidity[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
 
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
 
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*
+	*
+****************************************************************************************/
+void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_works_time[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
 
 }
 
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_temp[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
 
