@@ -83,9 +83,9 @@ void TFT_Display_WorksTime(void)
 	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
 	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//
 	//works time value
-	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,0);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,2);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,1);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(160,185,4); //时间分割符号
+	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
 	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,2);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,3);
 

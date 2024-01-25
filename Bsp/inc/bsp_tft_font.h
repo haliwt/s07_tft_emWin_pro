@@ -23,7 +23,7 @@ extern const uint8_t font2424_humidity[3][72];
 
 //extern const uint8_t font1616_works_time[];
 extern const uint8_t font2424_works_time[4][72];
-extern const uint8_t font4848_works_time_value[5][144];
+extern const uint8_t font4848_works_time_value[11][144];
 
 
 
