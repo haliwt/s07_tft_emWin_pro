@@ -1,52 +1,7 @@
 #include "bsp.h"
 
 #if 0
-/********************************************************************
-*
-* name         : 
-* description  : 绘制字符串，可设置前景色和背景色
-* Input        : 字体宽度，高度，字符，字符颜色，背景颜色
-* Return       : 
-*
-********************************************************************/
-void St7789DrawChar(uint16_t x, uint16_t y, uint16_t w, uint16_t h, const uint8_t *str, uint16_t forecolor, uint16_t backcolor)
-{
-    uint32_t i, j;
-    uint8_t  mask;
-    
-   // SetWindow( x, y, x + w - 1, y + h -1);
-	
-    TFT_SetWindow(x, y, x + w - 1, y + h -1);
-    for(i = 0; i < h; i++)
-    {
-        mask = 0x80;//取模时：阴码，高位在前
-        for(j = 0; j < w; j++)
-        {
-            if(*str & mask){
-                //Write16Bits(forecolor);
-                LCD_Write_Data(forecolor >>8);
-				 LCD_Write_Data(forecolor );
 
-            }
-            else{
-               // Write16Bits(backcolor);
-                LCD_Write_Data(backcolor >>8);
-			    LCD_Write_Data(backcolor);
-
-            }
-            
-            mask >>= 1;
-            if(mask == 0)
-            {
-                mask = 0x80;
-                str++;
-            }
-        }
-        
-        if(mask != 0x80)
-            str++;
-    }
-}
 
 
 /******************************************************************************************************
@@ -254,7 +209,14 @@ void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 	
 }
 #endif 
-
+/********************************************************************
+*
+* name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+* description  : 绘制字符串，可设置前景色和背景色
+* Input        : 字体宽度，高度，字符，字符颜色，背景颜色
+* Return       : 
+*
+********************************************************************/
 void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 {
     uint16_t temp, t, tbit;
@@ -690,5 +652,174 @@ void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	}  
 
 }
+
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_20_20_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Temp_20_20_One(uint16_t x,uint16_t y)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 60; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2020_temp_1[t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 20){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_20_20_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Temp_20_20_Two(uint16_t x,uint16_t y)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 60; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2020_temp_2[t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 20){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Humidity_20_20(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Humidity_20_20(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 60; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2020_humidity[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 20){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+
+
 
 

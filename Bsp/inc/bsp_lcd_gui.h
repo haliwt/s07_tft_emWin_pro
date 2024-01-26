@@ -2,6 +2,9 @@
 #define __BSP_LCD_GUI_H
 #include "main.h"
 
+#define TFT_DISP_TEMP_24   0
+
+
 void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color);
 
 void TFT_SetWindow(uint16_t xstart,uint16_t ystart,uint16_t xend,uint16_t yend);

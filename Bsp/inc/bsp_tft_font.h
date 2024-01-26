@@ -30,6 +30,12 @@ extern const uint8_t font4848_works_time_value[11][144];
 
 extern const uint8_t font9696_no[10][576];
 
+extern const uint8_t font2020_temp_1[60];
+extern const uint8_t font2020_temp_2[60];
+
+extern const uint8_t font2020_humidity[2][60];
+
+
 
 
 

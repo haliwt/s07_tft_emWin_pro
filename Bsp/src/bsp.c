@@ -70,11 +70,12 @@ void Key_Process_Handler(void)
 }
 /*
 *********************************************************************************************************
+*
 *	函 数 名: void TFT_Process_Handler(void)
-*	功能说明: TFT显示的内容
-*			 
+*	功能说明: TFT显示的内容		 
 *	形    参: 无
 *	返 回 值: 无
+*
 *********************************************************************************************************
 */
 void TFT_Process_Handler(void)
@@ -90,8 +91,8 @@ void TFT_Process_Handler(void)
 	*
 	*Function Name:void TFT_Pocess_Command_Handler(void)
 	*Funcion: display of TFT lcd 
-	*Input Ref:
-	*Return Ref:
+	*Input Ref:NO
+	*Return Ref:NO
 	*
 ******************************************************************************/
 static void TFT_Pocess_Command_Handler(void)
@@ -108,51 +109,25 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 	 case 0:
-	 	Power_On_Fun();
-	    Buzzer_KeySound();
-	  
+		Power_On_Fun();
+		Buzzer_KeySound();
+
 		pro_t.long_key_flag =0;
 		pro_t.key_power_be_pressed_flag =0;
 		pro_t.ack_power_on_sig=0; 
-		
 
-		
-	  //  TFT_LCD_Init();
-		//HAL_Delay(200);
-		//TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
-		//LCD_Clear(BROWN);
-		//TFT_ShowPicture(0,0,gImage_s07_main_picture,LCD_Width,LCD_Height);
-		///HAL_Delay(300);
-		///LCD_Clear(GBLUE);
-		///HAL_Delay(300);
-	     pro_t.run_process_step=1;
 
-		 TFT_BACKLIGHT_ON();
-		 power_been_flag=1;
-         pro_t.long_key_flag =0;
-	     pro_t.key_power_be_pressed_flag =0;
+		pro_t.run_process_step=1;
+
+		TFT_BACKLIGHT_ON();
+		power_been_flag=1;
+		pro_t.long_key_flag =0;
+		pro_t.key_power_be_pressed_flag =0;
 
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
 	    
-	
-//	   
-//		LCD_Clear(GBLUE);
-//	    HAL_Delay(100);
-//		LCD_Clear(YELLOW);
-//	    HAL_Delay(100);
-		// Frame();//LCD_Clear(GREEN);
-		
-		 //TFT_ST7789_FillPicture(0,0,LCD_Width,LCD_Height,gImage_s07_main_picture);
-		// DISPLAY_image();
-	    // GUI_DrawFont16(0,0,WHITE,BLACK,hz_array,0);
-	    //TFT_display_char16_16_noBackColor(font1616_temp ,150,0,WHITE);
-//	    TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);
-//	    TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE);
-//		lcd_draw_rectangle(156,5,164,120,WHITE);
-//		TFT_St7789_FillBlock(156,5,8,115,WHITE);
-	  //  TFT_display_char16_16_noBackColor(font1616_temp ,166,0,WHITE);
 
 	   if(pro_t.gTimer_pro_tft > 3){
 	   	   pro_t.gTimer_pro_tft=0;
@@ -163,7 +138,6 @@ static void TFT_Pocess_Command_Handler(void)
 	   
 	case 2: 
 		
-		 
 	  if(pro_t.gTimer_pro_ms > 40){ //50 *10ms = 400ms
 			 pro_t.gTimer_pro_ms =0;
 			 pro_t.run_process_step=0xff;
@@ -189,20 +163,24 @@ static void TFT_Pocess_Command_Handler(void)
 			iwdg_feed();
 
     	  }
+	   pro_t.run_process_step=4;
+
+	case 4:
+		   pro_t.run_process_step=0xf1;
 		  
-		  Ptc_Temperature_Compare_Value();
+		//  Ptc_Temperature_Compare_Value();
 		  
 	      if(wifi_state() ==1){
-			  pro_t.run_process_step=5;
+			  pro_t.run_process_step=6;
           }
 		  else
-            pro_t.run_process_step=4;
+            pro_t.run_process_step=5;
 		 
 	 break;
 
 	
 
-	 case 4:
+	 case 5:
       // KEY_POWER_ON_LED();
 	  if(pro_t.set_timer_flag==1){ //
 		  pro_t.set_timer_flag++;
@@ -214,8 +192,8 @@ static void TFT_Pocess_Command_Handler(void)
 	  pro_t.run_process_step=1;
       break;
 
-	 case 5: //wif_fun
-	 	// KEY_POWER_ON_LED();
+	 case 6: //wif_fun
+	 	
 	   if(wifi_state() ==1){
 		
 		 // SendData_Set_Command(WIFI_CONNECT_SUCCESS);

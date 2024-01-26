@@ -383,29 +383,29 @@ void DISPLAY_image(void)
  * Return Ref: NO
  * 
 ********************************************************************************/
-void Frame(void)
-{
-	int i,j,k;
- 	DISP_WINDOWS();
-    for (i=LCD_Width;i>0;i--)
-	{
-    LCD_Write_Data(WHITE);
-	}
-	for (j=LCD_Height-2;j>0;j--)
-	{
-    LCD_Write_Data(WHITE);
-    for (k=LCD_Width-2;k>0;k--)
-	{
-    LCD_Write_Data(BLACK);
-	}
-	LCD_Write_Data(WHITE);
-	}
-	for (i=LCD_Width;i>0;i--)
-	{
-    LCD_Write_Data(WHITE);
-	}
-	//HOLD_DISP ();
-}
+//void Frame(void)
+//{
+//	int i,j,k;
+// 	DISP_WINDOWS();
+//    for (i=LCD_Width;i>0;i--)
+//	{
+//    LCD_Write_Data(WHITE);
+//	}
+//	for (j=LCD_Height-2;j>0;j--)
+//	{
+//    LCD_Write_Data(WHITE);
+//    for (k=LCD_Width-2;k>0;k--)
+//	{
+//    LCD_Write_Data(BLACK);
+//	}
+//	LCD_Write_Data(WHITE);
+//	}
+//	for (i=LCD_Width;i>0;i--)
+//	{
+//    LCD_Write_Data(WHITE);
+//	}
+//	//HOLD_DISP ();
+//}
 
 
 static void LCD_set_Window_Horizon(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height)

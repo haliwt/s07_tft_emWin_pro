@@ -25,22 +25,18 @@ void TFT_Display_Handler(void)
 
 	TFT_Display_Humidity_Symbol();
 	
-	lcd_draw_rectangle(156,5,164,120,WHITE);
-	TFT_St7789_FillBlock(156,5,8,115,WHITE);
+	lcd_draw_rectangle(157,10,163,120,WHITE);
+	TFT_St7789_FillBlock(157,10,6,110,WHITE);
 
 	TFT_Display_WorksTime();
 
    //temperature value 
    TFT_ShowChar_576(10,5,0,0); //位移是48
    TFT_ShowChar_576(58,5,4,0);
-   //TFT_ShowChar_256(50,5,0,0);
-   //huimidity value
+ 
    TFT_ShowChar_576(174,5,1,0);
    TFT_ShowChar_576(222,5,3,0);
-   //works times value 
-   //TFT_ShowChar_576(128,160,2,0);
-   //TFT_ShowChar_576(176,160,4,0);
-	
+ 
 
 
 }
@@ -55,34 +51,44 @@ void TFT_Display_Handler(void)
 ***********************************************************************************************/
 void TFT_Display_Temp_Symbol(void)
 {
-   // TFT_display_char16_16_noBackColor(font1616_temp_symbol,130,10,WHITE);   //temp symbol 
-    TFT_Disp_Temp_24_24_onBlack(122,10,2);
-	//TFT_display_char16_16_noBackColor(font1616_temp ,114,104,WHITE);  //temp_1"温"
-	//TFT_display_char16_16_Tow_noBackColor(font1616_temp ,130,104,WHITE); //temp_2 "度"
+
+    TFT_Disp_Temp_24_24_onBlack(122,10,2); //temp symbol 
+#if TFT_DISP_TEMP_24
 	TFT_Disp_Temp_24_24_onBlack(102,100,0);
 	TFT_Disp_Temp_24_24_onBlack(126,100,1);
+#else
+	 TFT_Disp_Temp_20_20_One(111,100);
+	 TFT_Disp_Temp_20_20_Two(131,100);
+#endif 
 }
 
 
 void TFT_Display_Humidity_Symbol(void)
 {
 
-   //TFT_display_char32_32_OneEnglish_noBackColor(font3232_humidity_symbol,288,10,WHITE);   //humidity symbol 
-    TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
    
-    TFT_Disp_Humidity_24_24_onBlack(268,100,0);
-    TFT_Disp_Humidity_24_24_onBlack(292,100,1);
+    TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
+#if TFT_DISP_TEMP_24 
+    //TFT_Disp_Humidity_24_24_onBlack(268,100,0);
+    //TFT_Disp_Humidity_24_24_onBlack(292,100,1);
+#else
+    TFT_Disp_Humidity_20_20(275,100,0);
+	TFT_Disp_Humidity_20_20(295,100,1);
+
+#endif 
 
 
 }
 void TFT_Display_WorksTime(void)
 {
-
+    //display works of words of chines 
     TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//works one "工"
 	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//
 	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
 	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//
+	
 	//works time value
+	
 	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,2);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,1);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
