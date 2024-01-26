@@ -7,8 +7,7 @@ uint16_t  POINT_COLOR=WHITE;
 
 
 static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
-static void TFT_Disp_Temp_Value(uint8_t temp_value);
-static void TFT_Disp_Humidity_Value(uint8_t hum_value);
+
 
 
 
@@ -89,6 +88,29 @@ void TFT_Display_Humidity_Symbol(void)
 }
 void TFT_Display_WorksTime(void)
 {
+
+    static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+
+    if(gctl_t.gTimer_ctl_disp_minutes > 59){
+        gctl_t.gTimer_ctl_disp_minutes =0;
+        gctl_t.disp_works_minutes++;
+        if(gctl_t.disp_works_minutes>59){
+            gctl_t.disp_works_minutes=0;
+            gctl_t.disp_works_hours++;
+            if(gctl_t.disp_works_hours > 23){
+                gctl_t.disp_works_hours=0;
+            }
+
+        }
+
+
+    }
+	temp_decade_hours = gctl_t.disp_works_hours /10;
+	temp_unit_hours = gctl_t.disp_works_hours % 10;
+
+	temp_decade_minutes = gctl_t.disp_works_minutes/10;
+	temp_unit_minutes = gctl_t.disp_works_minutes%10;
+
     //display works of words of chines 
     TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//works one "工"
 	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//
@@ -97,15 +119,15 @@ void TFT_Display_WorksTime(void)
 	
 	//works time value
 	
-	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,2);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,1);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
-	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,2);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,3);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,temp_decade_hours);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,temp_unit_hours);
+//	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
+	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,temp_decade_minutes);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,temp_unit_minutes);
 
 }
 
-static void TFT_Disp_Temp_Value(uint8_t temp_value)
+void TFT_Disp_Temp_Value(uint8_t temp_value)
 {
 
    static uint8_t temp_unit,temp_decade;
@@ -120,7 +142,7 @@ static void TFT_Disp_Temp_Value(uint8_t temp_value)
 
 }
 
-static void TFT_Disp_Humidity_Value(uint8_t hum_value)
+void TFT_Disp_Humidity_Value(uint8_t hum_value)
 {
 
    static uint8_t hum_unit,hum_decade;

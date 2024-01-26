@@ -18,6 +18,10 @@ void TFT_St7789_FillBlock(uint16_t xstart,uint16_t ystart,uint16_t block_width,u
 void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width,uint16_t block_height,const uint8_t *black_data);
 
 
+void TFT_Disp_Temp_Value(uint8_t temp_value);
+void TFT_Disp_Humidity_Value(uint8_t hum_value);
+
+
 
 
 
@@ -40,6 +44,7 @@ void lcd_draw_rectangle(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint
 void TFT_Display_Temp_Symbol(void);
 
 void TFT_Display_Humidity_Symbol(void);
+
 void TFT_Display_WorksTime(void);
 
 
