@@ -661,7 +661,7 @@ void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	*Return Ref:NO
 	*
 ****************************************************************************************/
-void TFT_Disp_Temp_20_20_One(uint16_t x,uint16_t y)
+void TFT_Disp_Temp_20_20(uint16_t x,uint16_t y,uint8_t num)
 {
     uint16_t temp, t, tbit,mode;
     uint16_t x0=x;
@@ -671,63 +671,7 @@ void TFT_Disp_Temp_20_20_One(uint16_t x,uint16_t y)
 	for(t = 0; t < 60; t++)	/*遍历打印所有像素点到LCD */
 	{   
 	
-		temp = font2020_temp_1[t]; 
-		
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			//y++; // 垂直扫描
-			x++;//水平扫描
-
-			if(x >= LCD_Width){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-			}
-			
-			if((x - x0) == 20){
-				x = x0;
-				y++;
-				
-			    if(y >= LCD_Height){
-				pro_t.lcd_over_height_flag=1;
-				return;		/* 超区域了 */
-
-			     }
- 
-				break;
-			}
-		}  	 
-	}  
-
-}
-
-/****************************************************************************************
-	*
-	*Function  Name :void TFT_Disp_Temp_20_20_onBlack(uint16_t x,uint16_t y,uint8_t num)
-	*Function:
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-****************************************************************************************/
-void TFT_Disp_Temp_20_20_Two(uint16_t x,uint16_t y)
-{
-    uint16_t temp, t, tbit,mode;
-    uint16_t x0=x;
-    mode =0;
-	static uint16_t color;
-
-	for(t = 0; t < 60; t++)	/*遍历打印所有像素点到LCD */
-	{   
-	
-		temp = font2020_temp_2[t]; 
+		temp = font2020_temp[num][t]; 
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	

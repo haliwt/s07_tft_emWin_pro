@@ -57,8 +57,8 @@ void TFT_Display_Temp_Symbol(void)
 	TFT_Disp_Temp_24_24_onBlack(102,100,0);
 	TFT_Disp_Temp_24_24_onBlack(126,100,1);
 #else
-	 TFT_Disp_Temp_20_20_One(111,100);
-	 TFT_Disp_Temp_20_20_Two(131,100);
+	 TFT_Disp_Temp_20_20(111,100,0);
+	 TFT_Disp_Temp_20_20(131,100,1);
 #endif 
 }
 
