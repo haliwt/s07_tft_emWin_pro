@@ -20,20 +20,42 @@
 
 //extern const uint8_t ASCII8x16_Table [] ;
 
-
+#if TFT_DISP_TEMP_24 
 
 extern const uint8_t font2424_temp[3][72];
 extern const uint8_t font2424_humidity[3][72];
 
-extern const uint8_t font2424_works_time[4][72];
-extern const uint8_t font4848_works_time_value[11][144];
+
 
 extern const uint8_t font9696_no[10][576];
+
+
+#endif 
+
+extern const uint8_t font2424_temp_symbol[72];
+
+
+extern const uint8_t font2424_humidity_symbol[72];
+
+extern const uint8_t font2424_works_time[4][72];
+
+
+
+extern const uint8_t font4848_works_time_value[11][144];
+
+
 
 extern const uint8_t font2020_temp[2][60];
 
 
 extern const uint8_t font2020_humidity[2][60];
+
+//extern const uint8_t font90120_num[4][720];
+
+
+//extern const uint8_t font110110_num[4][770];
+
+extern const uint8_t font_pic_num[5][414];
 
 
 

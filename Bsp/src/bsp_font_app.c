@@ -208,7 +208,7 @@ void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
   
 	
 }
-#endif 
+
 /********************************************************************
 *
 * name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
@@ -269,6 +269,69 @@ void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
   
 	
 }
+#endif 
+/********************************************************************
+*
+* name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
+* description  : 绘制字符串，可设置前景色和背景色
+* Input        : 字体宽度，高度，字符，字符颜色，背景颜色
+* Return       : 
+*
+********************************************************************/
+void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit;
+    uint16_t x0=x;
+	uint8_t mode;
+	mode =0;
+    
+	static uint16_t color;
+
+	
+	
+   
+	for(t = 0; t < 414; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font_pic_num[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = BLACK;//WHITE;
+			else if(0 == mode)	color = WHITE;//BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 42){ //英文数字是中文宽度的一半 110/2=45
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+  
+	
+}
+
 
 //
 ///****************************************************************************************
@@ -429,6 +492,7 @@ void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	}  
 }
 #endif 
+#if TFT_DISP_TEMP_24
 /****************************************************************************************
 	*
 	*Function  Name :void TFT_Disp_Humidity_32_32_onBlack(uint16_t x,uint16_t y,uint8_t num)
@@ -451,60 +515,6 @@ void TFT_Disp_Humidity_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	{   
 	
 		temp = font2424_humidity[num][t]; 
-		
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			//y++; // 垂直扫描
-			x++;//水平扫描
-
-			if(x >= LCD_Width){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-			}
-			
-			if((x - x0) == 24){
-				x = x0;
-				y++;
-				
-			    if(y >= LCD_Height){
-				pro_t.lcd_over_height_flag=1;
-				return;		/* 超区域了 */
-
-			     }
- 
-				break;
-			}
-		}  	 
-	}  
-
-}
-/****************************************************************************************
-	*
-	*Function  Name :void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
-	*Function:
-	*
-	*
-****************************************************************************************/
-void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
-{
-    uint16_t temp, t, tbit,mode;
-    uint16_t x0=x;
-    mode =0;
-	static uint16_t color;
-
-	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
-	{   
-	
-		temp = font2424_works_time[num][t]; 
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
@@ -597,6 +607,175 @@ void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	}  
 
 }
+#endif 
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*
+	*
+****************************************************************************************/
+void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_works_time[num][t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+
+
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Temp_Symbol_24_24(uint16_t x,uint16_t y)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_temp_symbol[t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+/****************************************************************************************
+	*
+	*Function  Name :void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+	*Function:
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************/
+void TFT_Disp_Humidity_Symbol_24_24(uint16_t x,uint16_t y)
+{
+    uint16_t temp, t, tbit,mode;
+    uint16_t x0=x;
+    mode =0;
+	static uint16_t color;
+
+	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
+	{   
+	
+		temp = font2424_humidity_symbol[t]; 
+		
+		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
+		{	
+			
+			
+			if(temp & 0x80)	color = WHITE;
+			else if(0 == mode)	color = BLACK;
+			else color = BLACK;
+			TFT_DrawPoint(x, y,color );
+			
+			temp <<= 1;			
+			//y++; // 垂直扫描
+			x++;//水平扫描
+
+			if(x >= LCD_Width){
+                    pro_t.lcd_over_width_flag =1;
+					return;	/* 超区域了 */
+
+			}
+			
+			if((x - x0) == 24){
+				x = x0;
+				y++;
+				
+			    if(y >= LCD_Height){
+				pro_t.lcd_over_height_flag=1;
+				return;		/* 超区域了 */
+
+			     }
+ 
+				break;
+			}
+		}  	 
+	}  
+
+}
+
+
 /****************************************************************************************
 	*
 	*Function  Name :void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)

@@ -25,17 +25,25 @@ void TFT_Display_Handler(void)
 
 	TFT_Display_Humidity_Symbol();
 	
-	lcd_draw_rectangle(157,10,163,120,WHITE);
-	TFT_St7789_FillBlock(157,10,6,110,WHITE);
+	lcd_draw_rectangle(157,35,163,110,WHITE);
+	TFT_St7789_FillBlock(157,35,6,75,WHITE);
 
 	TFT_Display_WorksTime();
 
    //temperature value 
-   TFT_ShowChar_576(10,5,0,0); //位移是48
-   TFT_ShowChar_576(58,5,4,0);
- 
-   TFT_ShowChar_576(174,5,1,0);
-   TFT_ShowChar_576(222,5,3,0);
+   //TFT_ShowChar_576(10,5,0,0); //位移是48
+   //TFT_ShowChar_576(58,5,4,0);
+  // TFT_Disp_Numbers_110_110(10,5,0);
+  /// TFT_Disp_Numbers_110_110(65,5,3);
+   TFT_Disp_Numbers_Pic_414(10,40,0);
+   TFT_Disp_Numbers_Pic_414(70,40,3);
+   //huimidity value
+   //TFT_ShowChar_576(174,5,1,0);
+   //TFT_ShowChar_576(222,5,3,0);
+  // TFT_Disp_Numbers_110_110(174,5,1);
+  // TFT_Disp_Numbers_110_110(229,5,2);
+   TFT_Disp_Numbers_Pic_414(173,40,4);
+   TFT_Disp_Numbers_Pic_414(233,40,2);
  
 
 
@@ -52,13 +60,17 @@ void TFT_Display_Handler(void)
 void TFT_Display_Temp_Symbol(void)
 {
 
-    TFT_Disp_Temp_24_24_onBlack(122,10,2); //temp symbol 
+   
+
+	TFT_Disp_Temp_Symbol_24_24(122,40); //temp symbol 
 #if TFT_DISP_TEMP_24
+	TFT_Disp_Temp_24_24_onBlack(122,10,2); //temp symbol 
+
 	TFT_Disp_Temp_24_24_onBlack(102,100,0);
 	TFT_Disp_Temp_24_24_onBlack(126,100,1);
 #else
-	 TFT_Disp_Temp_20_20(111,100,0);
-	 TFT_Disp_Temp_20_20(131,100,1);
+	 TFT_Disp_Temp_20_20(111,90,0);
+	 TFT_Disp_Temp_20_20(131,90,1);
 #endif 
 }
 
@@ -66,14 +78,16 @@ void TFT_Display_Temp_Symbol(void)
 void TFT_Display_Humidity_Symbol(void)
 {
 
-   
-    TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
+    TFT_Disp_Humidity_Symbol_24_24(286,40);
+    
 #if TFT_DISP_TEMP_24 
-    //TFT_Disp_Humidity_24_24_onBlack(268,100,0);
-    //TFT_Disp_Humidity_24_24_onBlack(292,100,1);
+	TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
+
+    TFT_Disp_Humidity_24_24_onBlack(268,100,0);
+    TFT_Disp_Humidity_24_24_onBlack(292,100,1);
 #else
-    TFT_Disp_Humidity_20_20(275,100,0);
-	TFT_Disp_Humidity_20_20(295,100,1);
+    TFT_Disp_Humidity_20_20(275,90,0);
+	TFT_Disp_Humidity_20_20(295,90,1);
 
 #endif 
 
