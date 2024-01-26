@@ -7,6 +7,9 @@ uint16_t  POINT_COLOR=WHITE;
 
 
 static void lcd_draw_line(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint16_t color);
+static void TFT_Disp_Temp_Value(uint8_t temp_value);
+static void TFT_Disp_Humidity_Value(uint8_t hum_value);
+
 
 
 /***********************************************************************
@@ -31,19 +34,10 @@ void TFT_Display_Handler(void)
 	TFT_Display_WorksTime();
 
    //temperature value 
-   //TFT_ShowChar_576(10,5,0,0); //位移是48
-   //TFT_ShowChar_576(58,5,4,0);
-  // TFT_Disp_Numbers_110_110(10,5,0);
-  /// TFT_Disp_Numbers_110_110(65,5,3);
-   TFT_Disp_Numbers_Pic_414(10,40,0);
-   TFT_Disp_Numbers_Pic_414(70,40,3);
+   TFT_Disp_Temp_Value(gctl_t.dht11_temp_value);
    //huimidity value
-   //TFT_ShowChar_576(174,5,1,0);
-   //TFT_ShowChar_576(222,5,3,0);
-  // TFT_Disp_Numbers_110_110(174,5,1);
-  // TFT_Disp_Numbers_110_110(229,5,2);
-   TFT_Disp_Numbers_Pic_414(173,40,4);
-   TFT_Disp_Numbers_Pic_414(233,40,2);
+
+   TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
  
 
 
@@ -111,7 +105,34 @@ void TFT_Display_WorksTime(void)
 
 }
 
+static void TFT_Disp_Temp_Value(uint8_t temp_value)
+{
 
+   static uint8_t temp_unit,temp_decade;
+
+   temp_decade = temp_value /10;
+
+   temp_unit= temp_value%10;
+  
+   TFT_Disp_Numbers_Pic_414(10,40,temp_decade);
+   TFT_Disp_Numbers_Pic_414(70,40,temp_unit);
+
+
+}
+
+static void TFT_Disp_Humidity_Value(uint8_t hum_value)
+{
+
+   static uint8_t hum_unit,hum_decade;
+
+   hum_decade = hum_value /10;
+
+   hum_unit = hum_value%10;
+
+   TFT_Disp_Numbers_Pic_414(173,40,hum_decade);
+   TFT_Disp_Numbers_Pic_414(233,40, hum_unit);
+
+}
 /**************************************************************************
 *
 * Function Name:void TFT_DrawPoint(uint16_t x,uint16_t y,uint16_t color)
