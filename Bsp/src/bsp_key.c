@@ -403,9 +403,6 @@ uint8_t ReadKey(void)
 #endif 
 
 #if NORMAL_KEY_2
-
-
-
 /**
   * 函数功能: 读取按键KEY1的状态
   * 输入参数：无

@@ -247,6 +247,7 @@ static void Power_On_Fun(void)
    
   LED_Mode_Key_On();
   LED_Power_Key_On();
+  Power_On_Led_Init();
    gctl_t.ptc_flag = 1;
    gctl_t.mode_flag = works_time;
    gctl_t.plasma_flag = 1;
@@ -275,6 +276,8 @@ static void Power_Off_Fun(void)
      
 	LED_Mode_Key_Off();
 	LED_Power_Key_Off();
+
+	Power_Off_Led();
 
  
    gctl_t.mode_flag = 0;
@@ -636,14 +639,6 @@ void Power_Key_Detected(void)
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
 			
-			
-			//SendData_PowerOnOff(1);
-			//KEY_POWER_ON_LED();
-		  //  Power_On_Fun();
-			//LCD_Backlight_On();
-		
-
-
 		  }
 		  else{
                 pro_t.key_power_be_pressed_flag =1;
@@ -688,16 +683,16 @@ void Mode_Key_Detected(void)
 		
 		  gctl_t.mode_flag = timer_time;
 		 // SendData_Set_Wifi(MODE_AI);
-		  pro_t.gTimer_pro_disp_timer = 40; //at once be changed ai or no_ai timing.
-		 //  Key_Sound();
+		  pro_t.gTimer_pro_disp_timer = 60; //at once be changed ai or no_ai timing.
+		  Buzzer_KeySound();
 		 
 		
 		 }
          else{
 		  	 pro_t.long_key_flag =0;
 			  gctl_t.mode_flag = works_time;
-			//  SendData_Set_Wifi(MODE_TIMER);
-			//  Key_Sound();
+			  Buzzer_KeySound();
+			
 			 pro_t.gTimer_pro_disp_timer = 40;//at once be changed ai or no_ai timing.
           }
 

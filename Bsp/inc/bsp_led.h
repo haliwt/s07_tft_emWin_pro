@@ -38,7 +38,14 @@ void LED_Mode_Key_Off(void);
 void LED_Power_Key_On(void);
 void LED_Power_Key_Off(void);
 
+void LED_Net_On(void);
+void LED_Net_Off(void);
 
+
+void Power_On_Led_Init(void);
+
+
+void Power_Off_Led(void);
 
 
 void Breath_Led(void);

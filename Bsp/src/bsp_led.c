@@ -33,6 +33,20 @@ void LED_Mode_Key_Off(void)
 
 
 }
+//LED_NET
+
+void LED_Net_On(void)
+{
+   LED_WIFI_ICON_ON();
+
+}
+void LED_Net_Off(void)
+{
+	LED_WIFI_ICON_OFF() ;
+	
+}
+
+
 
 
 static void Delay(int16_t count)
@@ -51,6 +65,49 @@ static void Delay(int16_t count)
 
 }
 
+
+void Power_On_Led_Init(void)
+{
+
+  
+	//WIFI ICON LED
+	LED_WIFI_ICON_ON()  ;             
+
+	//PTC ICON LED
+	LED_PTC_ICON_ON() ;               
+
+
+	//KILL ICON LED
+	LED_KILL_ICON_ON()  ;             
+
+
+	//ULTRSONIC ICO LED
+	LED_RAT_ICON_ON()  ;           
+
+
+}
+
+void Power_Off_Led(void)
+{
+
+//WIFI ICON LED
+	LED_WIFI_ICON_OFF()	;			  
+
+	//PTC ICON LED
+	LED_PTC_ICON_OFF() ; 			  
+
+
+	//KILL ICON LED
+	LED_KILL_ICON_OFF()	;			  
+
+
+	//ULTRSONIC ICO LED
+	LED_RAT_ICON_OFF()  ;		   
+
+
+
+
+}
 
 /***************************************************************
 *
