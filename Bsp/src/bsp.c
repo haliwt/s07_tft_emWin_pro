@@ -30,6 +30,16 @@ static void Power_Off_Fun(void);
 */
 void bsp_Idle(void)
 {
+	static uint8_t power_on_first;
+	if(power_on_first ==0){
+       power_on_first ++;
+	   gctl_t.gTimer_ctl_disp_second=0;
+	   TFT_BACKLIGHT_OFF();
+	   Update_DHT11_Value();
+       TFT_Display_Handler();
+
+	}
+	
 	/* --- 喂狗 */
     if(pro_t.gTimer_pro_feed_dog > 3){ //16s
 	pro_t.gTimer_pro_feed_dog = 0;	
@@ -37,7 +47,7 @@ void bsp_Idle(void)
 
     }
 
-
+    TFT_Disp_Timer_Split_Symbol();
 	/* --- 让CPU进入休眠，由Systick定时中断唤醒或者其他中断唤醒 */
 
 	/* 例如 emWin 图形库，可以插入图形库需要的轮询函数 */
@@ -80,12 +90,7 @@ void Key_Process_Handler(void)
 */
 void TFT_Process_Handler(void)
 {
-
- 	
-  TFT_Pocess_Command_Handler();
-
- 
-
+	TFT_Pocess_Command_Handler();
 }
 /******************************************************************************
 	*
@@ -101,8 +106,6 @@ static void TFT_Pocess_Command_Handler(void)
 
    static uint8_t power_been_flag;
   
- 
-
    if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
@@ -152,22 +155,8 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 3:
 	 	   pro_t.run_process_step=0xf0;
 
-	      if(pro_t.gTimer_pro_temp > 4){
-			  pro_t.gTimer_pro_temp =0;
-
-	          Update_DHT11_Value();
-
-	      }
-		  if(pro_t.gTimer_pro_time_split_symbol > 0 && pro_t.gTimer_pro_time_split_symbol< 2){
-             
-              TFT_Disp_Time_Split_Symbol(160,180,0); //时间分割符号,turn off
-		  }
-		  else if(pro_t.gTimer_pro_time_split_symbol ==2 || pro_t.gTimer_pro_time_split_symbol >2){
-			  if(pro_t.gTimer_pro_time_split_symbol >= 3){
-                  pro_t.gTimer_pro_time_split_symbol=0;
-			  }
-			  
-			  	TFT_Disp_Time_Split_Symbol(160,180,1); //时间分割符号 turn
+	      if(gctl_t.gTimer_ctl_disp_second > 59){
+			TFT_Display_WorksTime();
 			  
 		  }
 		 

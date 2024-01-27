@@ -20,13 +20,6 @@ uint8_t value2 = 0;
 uint8_t value3 = 0;
 uint8_t value4 = 0;
 
-
-
-
-
-
-
-
 /**************************************************************
 	*
 	*Function Name:uint8_t KEY_Scan(void)

@@ -106,8 +106,8 @@ void TFT_Display_WorksTime(void)
 
     static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
 
-    if(gctl_t.gTimer_ctl_disp_minutes > 59){
-        gctl_t.gTimer_ctl_disp_minutes =0;
+    if(gctl_t.gTimer_ctl_disp_second > 59){
+        gctl_t.gTimer_ctl_disp_second =0;
         gctl_t.disp_works_minutes++;
         if(gctl_t.disp_works_minutes>59){
             gctl_t.disp_works_minutes=0;
@@ -115,10 +115,7 @@ void TFT_Display_WorksTime(void)
             if(gctl_t.disp_works_hours > 23){
                 gctl_t.disp_works_hours=0;
             }
-
         }
-
-
     }
 	temp_decade_hours = gctl_t.disp_works_hours /10;
 	temp_unit_hours = gctl_t.disp_works_hours % 10;
@@ -142,6 +139,25 @@ void TFT_Display_WorksTime(void)
 
 }
 
+void TFT_Disp_Timer_Split_Symbol(void)
+{
+    if(pro_t.gPower_On==power_on){  
+      if(pro_t.gTimer_pro_time_split_symbol > 0 && pro_t.gTimer_pro_time_split_symbol< 2){
+             
+              TFT_Disp_Time_Split_Symbol(160,180,0); //时间分割符号,turn off
+		  }
+		  else if(pro_t.gTimer_pro_time_split_symbol ==2 || pro_t.gTimer_pro_time_split_symbol >2){
+			  if(pro_t.gTimer_pro_time_split_symbol >= 3){
+                  pro_t.gTimer_pro_time_split_symbol=0;
+			  }
+			  
+			  	TFT_Disp_Time_Split_Symbol(160,180,1); //时间分割符号 turn
+			  
+		  }
+
+    }
+}
+
 /***********************************************************************************************
 	*
 	*Function Name:void TFT_Disp_Temp_Value(uint8_t temp_value)
@@ -160,8 +176,8 @@ void TFT_Disp_Temp_Value(uint8_t temp_value)
    temp_unit= temp_value%10; 
   
    	
-   TFT_Disp_Numbers_Pic_414(5,40,temp_decade); //间隔58
-   TFT_Disp_Numbers_Pic_414(63,40,temp_unit);
+   TFT_Disp_Numbers_Pic_413(5,40,temp_decade); //间隔58
+   TFT_Disp_Numbers_Pic_413(63,40,temp_unit);
 
 
 }
@@ -182,8 +198,8 @@ void TFT_Disp_Humidity_Value(uint8_t hum_value)
 
    hum_unit = hum_value%10;
 
-   TFT_Disp_Numbers_Pic_414(168,40,hum_decade); //间隔58
-   TFT_Disp_Numbers_Pic_414(226,40, hum_unit);
+   TFT_Disp_Numbers_Pic_413(168,40,hum_decade); //间隔58
+   TFT_Disp_Numbers_Pic_413(226,40, hum_unit);
 
 }
 /**************************************************************************
@@ -364,31 +380,6 @@ void TFT_ShowText(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t 
         str+=2;
         x+=fh;//下一个汉字偏移
     }
-}
-
-
-
-
-
-
-
-
-
-/***********************************************************************
- *
- * Function Name: void TFT_Works_Or_Timer_times_Handler(void)
- * Function: TFT LCD显示定时的时间设置或者显示北京时间 
- * Inpurt Ref: x,y:起点坐标 pw:图片宽（单位像素）ph:图片高（单位像素）
- *             p:图片起始地址
- * Return Ref: NO 
- *
-************************************************************************/
-void TFT_Works_Or_Timer_times_Handler(void)
-{
-            
-
-
-
 }
 /*******************************************************************************************
 	 *

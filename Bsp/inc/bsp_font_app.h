@@ -40,9 +40,9 @@ void TFT_Disp_Temp_20_20(uint16_t x,uint16_t y,uint8_t num);
 void TFT_Disp_Humidity_20_20(uint16_t x,uint16_t y,uint8_t num);
 
 
-void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num);
+void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t num);
 
-
+void TFT_Disp_Timer_Split_Symbol(void);
 
 
 

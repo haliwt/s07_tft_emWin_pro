@@ -278,7 +278,7 @@ void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 * Return       : 
 *
 ********************************************************************/
-void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
+void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t num)
 {
     uint16_t temp, t, tbit;
     uint16_t x0=x;
@@ -287,9 +287,6 @@ void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
     
 	static uint16_t color;
 
-	
-	
-   
 	for(t = 0; t < 413; t++)	/*遍历打印所有像素点到LCD */
 	{   
 	
@@ -331,8 +328,6 @@ void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
   
 	
 }
-
-
 //
 ///****************************************************************************************
 // * @brief       平方函数, m^n

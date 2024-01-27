@@ -35,7 +35,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 wifi_t.gTimer_auto_detected_net_link_state ++;
 	 wifi_t.gTimer_linking_tencen_counter++;
 	 pro_t.gTimer_pro_tft++;
-	 gctl_t.gTimer_ctl_disp_minutes++;
+	 gctl_t.gTimer_ctl_disp_second++;
 	  pro_t.gTimer_pro_time_split_symbol++;
 	
 	 

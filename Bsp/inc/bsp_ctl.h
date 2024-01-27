@@ -46,7 +46,7 @@ typedef struct _bsp_ctl{
    uint8_t dht11_temp_value;
    uint8_t gSet_temperature_value_flag;
 
-   uint8_t gTimer_ctl_disp_minutes;
+   uint8_t gTimer_ctl_disp_second;
    
 
 }bsp_ctl;

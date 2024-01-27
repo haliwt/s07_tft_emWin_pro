@@ -104,12 +104,14 @@ int main(void)
   Wifi_Init();
   HAL_TIM_Base_Start_IT(&htim17);
   LCD_GPIO_Reset();
+  TFT_BACKLIGHT_OFF();
   TFT_LCD_Init();
   //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
  // UART_Start_Receive_IT(&huart1,inputBuf,1);
    //DMA usart2
  // UART_Start_Receive_IT(&huart2,wifi_usart_data.wifi_inputBuf,1);
+  
   /* USER CODE END 2 */
 
   /* Infinite loop */
