@@ -132,9 +132,15 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 1:  //display works time + "temperature value " + "humidity value"
 	    
 
-	   if(pro_t.gTimer_pro_tft > 3){
+	   if(pro_t.gTimer_pro_tft > 9){
 	   	   pro_t.gTimer_pro_tft=0;
-           TFT_Display_Handler();
+           //TFT_Display_Handler();
+		    Update_DHT11_Value();
+			//temperature value 
+			TFT_Disp_Temp_Value(gctl_t.dht11_temp_value);
+			//huimidity value
+
+			TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
 
 	   }
 	   pro_t.run_process_step=2;
@@ -218,6 +224,7 @@ static void TFT_Pocess_Command_Handler(void)
    else{
    	if(power_been_flag == 1){
 		power_been_flag =0;
+		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
         Buzzer_KeySound();
 	}
