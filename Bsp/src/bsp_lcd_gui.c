@@ -67,7 +67,14 @@ void TFT_Display_Temp_Symbol(void)
 #endif 
 }
 
-
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_Humidity_Symbol(void)
+	*Function : menu of humidity chines words
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_Display_Humidity_Symbol(void)
 {
 
@@ -86,6 +93,14 @@ void TFT_Display_Humidity_Symbol(void)
 
 
 }
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_WorksTime(void)
+	*Function : display of works time value 
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_Display_WorksTime(void)
 {
 
@@ -127,6 +142,14 @@ void TFT_Display_WorksTime(void)
 
 }
 
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Disp_Temp_Value(uint8_t temp_value)
+	*Function : display dht11 of sensor temperature value 
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_Disp_Temp_Value(uint8_t temp_value)
 {
 
@@ -135,14 +158,21 @@ void TFT_Disp_Temp_Value(uint8_t temp_value)
    temp_decade = temp_value /10;
 
    temp_unit= temp_value%10; 
-   temp_decade=2;
+  
    	
    TFT_Disp_Numbers_Pic_414(5,40,temp_decade); //间隔58
    TFT_Disp_Numbers_Pic_414(63,40,temp_unit);
 
 
 }
-
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Disp_Humidity_Value(uint8_t hum_value)
+	*Function : display dht11 of sensor humidity value 
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_Disp_Humidity_Value(uint8_t hum_value)
 {
 
