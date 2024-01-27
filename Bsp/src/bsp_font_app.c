@@ -290,7 +290,7 @@ void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
 	
 	
    
-	for(t = 0; t < 414; t++)	/*遍历打印所有像素点到LCD */
+	for(t = 0; t < 413; t++)	/*遍历打印所有像素点到LCD */
 	{   
 	
 		temp = font_pic_num[num][t]; 
@@ -314,7 +314,7 @@ void TFT_Disp_Numbers_Pic_414(uint16_t x,uint16_t y,uint8_t num)
 
 			}
 			
-			if((x - x0) == 42){ //英文数字是中文宽度的一半 110/2=45
+			if((x - x0) == 52){ //英文数字是中文宽度的一半 110/2=45
 				x = x0;
 				y++;
 				
