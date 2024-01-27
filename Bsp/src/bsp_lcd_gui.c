@@ -113,7 +113,7 @@ void TFT_Display_WorksTime(void)
 
     //display works of words of chines 
     TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//works one "工"
-	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//""
 	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
 	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//
 	
@@ -136,7 +136,7 @@ void TFT_Disp_Temp_Value(uint8_t temp_value)
 
    temp_unit= temp_value%10;
   
-   TFT_Disp_Numbers_Pic_414(10,40,temp_decade);
+   TFT_Disp_Numbers_Pic_414(15,40,temp_decade);
    TFT_Disp_Numbers_Pic_414(70,40,temp_unit);
 
 
@@ -151,7 +151,7 @@ void TFT_Disp_Humidity_Value(uint8_t hum_value)
 
    hum_unit = hum_value%10;
 
-   TFT_Disp_Numbers_Pic_414(173,40,hum_decade);
+   TFT_Disp_Numbers_Pic_414(178,40,hum_decade);
    TFT_Disp_Numbers_Pic_414(233,40, hum_unit);
 
 }
