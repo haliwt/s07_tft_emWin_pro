@@ -55,7 +55,7 @@ extern const uint8_t font2020_humidity[2][60];
 
 //extern const uint8_t font110110_num[4][770];
 
-extern const uint8_t font_pic_num[10][414];
+extern const uint8_t font_pic_num[11][414];
 
 
 

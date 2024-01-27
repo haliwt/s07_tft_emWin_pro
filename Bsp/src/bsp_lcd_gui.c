@@ -134,10 +134,12 @@ void TFT_Disp_Temp_Value(uint8_t temp_value)
 
    temp_decade = temp_value /10;
 
-   temp_unit= temp_value%10;
-  
-   TFT_Disp_Numbers_Pic_414(15,40,temp_decade);
-   TFT_Disp_Numbers_Pic_414(70,40,temp_unit);
+   temp_unit= temp_value%10; 
+   temp_decade = 9;
+   temp_unit = 10;
+   	
+   TFT_Disp_Numbers_Pic_414(15,40,temp_decade); //间隔53
+   TFT_Disp_Numbers_Pic_414(68,40,temp_unit);
 
 
 }
@@ -151,8 +153,8 @@ void TFT_Disp_Humidity_Value(uint8_t hum_value)
 
    hum_unit = hum_value%10;
 
-   TFT_Disp_Numbers_Pic_414(178,40,hum_decade);
-   TFT_Disp_Numbers_Pic_414(233,40, hum_unit);
+   TFT_Disp_Numbers_Pic_414(178,40,hum_decade); //间隔53
+   TFT_Disp_Numbers_Pic_414(231,40, hum_unit);
 
 }
 /**************************************************************************
