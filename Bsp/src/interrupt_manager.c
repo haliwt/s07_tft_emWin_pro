@@ -20,7 +20,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    
    
     pro_t.gTimer_pro_wifi_fast_led++;
-	pro_t.gTimer_pro_set_timer_time++;
+	
 	
 	if(tm0>999){ //1000 *1ms = 1000ms = 1s
 		tm0=0;
@@ -46,6 +46,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;
 	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
+	  pro_t.gTimer_pro_set_timer_time++;
 	  
 	 
    }

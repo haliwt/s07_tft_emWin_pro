@@ -199,12 +199,12 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			    if(pro_t.gTimer_pro_mode_key_timer < 10){
+			    if(pro_t.gTimer_pro_mode_key_timer > 3 && pro_t.gTimer_pro_mode_key_timer < 7){
                     
-                    if(pro_t.gTimer_pro_set_timer_time < 201){
+                    if(pro_t.gTimer_pro_set_timer_time < 2){
 					     TFT_Disp_Set_TimerTime(0);
                     }
-					else if(pro_t.gTimer_pro_set_timer_time >200  && pro_t.gTimer_pro_set_timer_time < 4001){
+					else if(pro_t.gTimer_pro_set_timer_time >2  && pro_t.gTimer_pro_set_timer_time < 5){
 
 						TFT_Disp_Set_TimerTime(1); //turn off disp timer time
 
@@ -294,20 +294,16 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case mode_key_temp:
 				
- 			if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
-			
-				TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);		
-			
-			}
-			else{ //temperature value is blink three times .
 
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 0){
+			if(pro_t.gTimer_pro_mode_key_timer > 3){
+
+                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
 
 					 TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);   
 
 
 				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 0 && pro_t.gTimer_pro_set_tem_value_blink < 2){
+				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 5){
 
 					  TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //don't display numbers 
 
@@ -519,6 +515,8 @@ static void ADD_Key_Fun(void)
 
 		    case 0xff:
 
+			   pro_t.mode_key_confirm_flag=mode_key_temp;
+              
 			case mode_key_temp: //set temperature value add number
       
 		        gctl_t.gSet_temperature_value ++;
@@ -530,7 +528,8 @@ static void ADD_Key_Fun(void)
 
 				
                  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-				
+
+				TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
                break;
 
 			  case mode_key_timer_time:
@@ -544,9 +543,10 @@ static void ADD_Key_Fun(void)
 
 					}
 				
-                    temp_bit_2_hours = gctl_t.gSet_timer_hours  /10 ;
-					temp_bit_1_hours = gctl_t.gSet_timer_hours  %10;
+                  
                      pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+
+					  TFT_Disp_Set_TimerTime(0);
 
 				break;
 
@@ -587,12 +587,16 @@ static void DEC_Key_Fun(void)
 
 		   case 0xff:
 
+		 	pro_t.mode_key_confirm_flag= mode_key_temp;
+
 		   case mode_key_temp:  //default tempearture value 
 	    
 			 gctl_t.gSet_temperature_value--;
 			if( gctl_t.gSet_temperature_value<20)  gctl_t.gSet_temperature_value=40;
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
+
+			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
@@ -609,6 +613,8 @@ static void DEC_Key_Fun(void)
 					
 				}
 			 pro_t.gTimer_pro_mode_key_timer = 0;
+				
+			TFT_Disp_Set_TimerTime(0);
 			break;
 
 			 case mode_key_select:
