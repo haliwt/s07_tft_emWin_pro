@@ -10,20 +10,21 @@
 *******************************************************************************/
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-  static uint8_t tm0;
-  static uint16_t tm2;
+  static uint16_t tm0;
+ 
+
     
    if(htim->Instance==TIM17){
     
     tm0++;  //1ms
-	tm2++;
-	if(tm0 > 9){ //10md
-       tm0=0; 
-		pro_t.gTimer_pro_ms ++;
-	}
-	if(tm2>999){ //1000 *1ms = 1000ms = 1s
-		tm2=0;
-     
+   
+   
+    pro_t.gTimer_pro_wifi_fast_led++;
+	
+	if(tm0>999){ //1000 *1ms = 1000ms = 1s
+		tm0=0;
+
+	 pro_t.gTimer_pro_ms ++;
 	 pro_t.gTimer_pro_disp_timer++;
 	 pro_t.gTimer_pro_temp_delay++;
 	 pro_t.gTimer_pro_temp++;
@@ -36,7 +37,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 wifi_t.gTimer_linking_tencen_counter++;
 	 pro_t.gTimer_pro_tft++;
 	 gctl_t.gTimer_ctl_disp_second++;
+	 //
 	  pro_t.gTimer_pro_time_split_symbol++;
+	  pro_t.gTimer_pro_wifi_led++;
 	
 	 
    }

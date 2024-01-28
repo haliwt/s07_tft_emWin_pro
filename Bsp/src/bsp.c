@@ -17,7 +17,7 @@ static void TFT_Pocess_Command_Handler(void);
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
-
+static void Wifi_Fast_Led_Blink(void);
 
 /*
 *********************************************************************************************************
@@ -90,6 +90,7 @@ void Key_Process_Handler(void)
 */
 void TFT_Process_Handler(void)
 {
+  
 	TFT_Pocess_Command_Handler();
 }
 /******************************************************************************
@@ -130,9 +131,9 @@ static void TFT_Pocess_Command_Handler(void)
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-	    
+        
 
-	   if(pro_t.gTimer_pro_tft > 9){
+	   if(pro_t.gTimer_pro_tft > 9 ){
 	   	   pro_t.gTimer_pro_tft=0;
            //TFT_Display_Handler();
 		    Update_DHT11_Value();
@@ -147,21 +148,19 @@ static void TFT_Pocess_Command_Handler(void)
 	   
 	case 2: 
 		
-	  if(pro_t.gTimer_pro_ms > 40){ //50 *10ms = 400ms
+	  if(pro_t.gTimer_pro_ms >4){ 
 			 pro_t.gTimer_pro_ms =0;
 			 pro_t.run_process_step=0xff;
 
 		     Device_Action_Handler();
-	        
-			 
-         }
+	    }
 	    pro_t.run_process_step=3;
 	 break;
 
 	 case 3:
 	 	   pro_t.run_process_step=0xf0;
 
-	      if(gctl_t.gTimer_ctl_disp_second > 59){
+	      if(gctl_t.gTimer_ctl_disp_second > 59 ){
 			TFT_Display_WorksTime();
 			  
 		  }
@@ -170,28 +169,65 @@ static void TFT_Pocess_Command_Handler(void)
 	   pro_t.run_process_step=4;
 
 	case 4:
-		   pro_t.run_process_step=0xf1;
+		   //pro_t.run_process_step=0xf1;
 		  
 		//  Ptc_Temperature_Compare_Value();
 		  
 	      if(wifi_state() ==1){
 			  pro_t.run_process_step=6;
           }
-		  else
-            pro_t.run_process_step=5;
+		  else{
+
+             switch(pro_t.wifi_led_fast_blink_flag){
+
+			 case 1:
+
+                 pro_t.long_key_flag =0;
+			     Wifi_Fast_Led_Blink();
+			 	
+                
+			  pro_t.run_process_step=1;
+
+			 break;
+
+             case 0:
+			  if(pro_t.gTimer_pro_wifi_led > 1 && pro_t.gTimer_pro_wifi_led < 3){
+			  	
+                 LED_WIFI_ICON_ON();
+
+			 }
+			 else if(pro_t.gTimer_pro_wifi_led > 2){
+
+                  pro_t.gTimer_pro_wifi_led=0;
+				  LED_WIFI_ICON_OFF();
+
+
+			 }
+			 break;
+
+             }
+
+			 
+			  
+			  pro_t.run_process_step=1;
+           
+		  }
+		  
 		 
 	 break;
 
 	
 
 	 case 5:
-      // KEY_POWER_ON_LED();
+      //WIFI LED BLINK
 	  if(pro_t.set_timer_flag==1){ //
 		  pro_t.set_timer_flag++;
              
 	   
 		  
       }
+
+	
 
 	  pro_t.run_process_step=1;
       break;
@@ -203,11 +239,6 @@ static void TFT_Pocess_Command_Handler(void)
 		 // SendData_Set_Command(WIFI_CONNECT_SUCCESS);
 		 // wifi_link_flag =0;
         }
-		else if(pro_t.ack_wifi_led ==0){
-			
-		  // SendData_Set_Wifi(0x01);
-
-		}
 		else{
 		//	wifi_link_flag =0;
 
@@ -306,17 +337,6 @@ void power_off_fan_run(void)
 	
     LED_Mode_Key_Off();
 	Breath_Led();
-	
-//	if(fan_runContinue == 1 && power_off_first_flag!=0){
-//	if(pro_t.gTimer_pro_fan < 61){
-//		
-//	}
-//	else {
-//	    fan_runContinue  =0;
-//		
-
-//	}
-
 	
 
 }
@@ -646,11 +666,9 @@ void Power_Key_Detected(void)
 			 
 			   pro_t.gPower_On = power_off;   
 	         
-			  
-			//  Power_Off_Fun();
+			 //  Power_Off_Fun();
 		
-		    
-			   pro_t.run_process_step=0xff;
+		    pro_t.run_process_step=0xff;
 			  
 			  
            }
@@ -664,9 +682,10 @@ void Power_Key_Detected(void)
          pro_t.key_power_be_pressed_flag =0;
 
 	    Buzzer_KeySound();
+		 pro_t.gTimer_pro_wifi_led =0;
         pro_t.wifi_led_fast_blink_flag=1;
-		pro_t.long_key_flag =0;
         K1=0;
+		
 
 	}
 
@@ -681,7 +700,7 @@ void Mode_Key_Detected(void)
 		if(mode_state() == works_time ){
 		  pro_t.long_key_flag =0;
 		
-		  gctl_t.mode_flag = timer_time;
+		  gctl_t.mode_flag = timer_time;//0x02
 		 // SendData_Set_Wifi(MODE_AI);
 		  pro_t.gTimer_pro_disp_timer = 60; //at once be changed ai or no_ai timing.
 		  Buzzer_KeySound();
@@ -690,7 +709,7 @@ void Mode_Key_Detected(void)
 		 }
          else{
 		  	 pro_t.long_key_flag =0;
-			  gctl_t.mode_flag = works_time;
+			  gctl_t.mode_flag = works_time; //0x01
 			  Buzzer_KeySound();
 			
 			 pro_t.gTimer_pro_disp_timer = 40;//at once be changed ai or no_ai timing.
@@ -701,9 +720,9 @@ void Mode_Key_Detected(void)
 	} 
 
 	if(MODE_KEY_StateRead()==KEY_MODE_LONG_DOWN && pro_t.long_key_flag ==1){
-
+       Buzzer_KeySound();
        Mode_Long_Key_Fun();
-
+      
 
 	}
 
@@ -715,7 +734,7 @@ void ADD_Key_Detected(void)
 {
 	if(ADD_KEY_StateRead()==KEY_DOWN){
 
-		//Key_Sound();
+	
 		
 		ADD_Key_Fun();
     }
@@ -725,10 +744,41 @@ void ADD_Key_Detected(void)
 void DEC_Key_Detected(void)
 {
 	 if(DEC_KEY_StateRead()==KEY_DOWN){
+	 	
 
 		 DEC_Key_Fun();
 	 }
 
 }
 
+static void Wifi_Fast_Led_Blink(void)
+{
+
+	if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
+
+	if(pro_t.gTimer_pro_wifi_fast_led < 51 ){ //50ms
+
+	LED_WIFI_ICON_ON();
+
+	}
+	else if(pro_t.gTimer_pro_wifi_fast_led > 49 && pro_t.gTimer_pro_wifi_fast_led< 101){
+
+	LED_WIFI_ICON_OFF();
+	}
+	else{
+
+	pro_t.gTimer_pro_wifi_fast_led=0;
+
+	}
+
+
+	}
+	else if(pro_t.gTimer_pro_wifi_led > 165){
+	pro_t.wifi_led_fast_blink_flag=0;
+
+
+	}
+	
+
+}
 

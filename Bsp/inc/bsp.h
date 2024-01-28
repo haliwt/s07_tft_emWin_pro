@@ -72,7 +72,7 @@ typedef struct{
    uint8_t run_process_step;
    uint8_t key_power_be_pressed_flag ;
   
-   uint8_t ack_wifi_led;
+
    uint8_t ack_power_on_sig;
    uint8_t ack_power_off_sig;
 
@@ -100,7 +100,7 @@ typedef struct{
 	uint8_t v_usart2_rx_numbers;
 	uint8_t v_usart2_rx_flag;
 
-  uint8_t gTimer_pro_feed_dog;
+  	uint8_t gTimer_pro_feed_dog;
 	uint8_t gTimer_pro_temp ;
 	uint8_t gTimer_pro_temp_delay ;
 	uint8_t gTimer_wifi_connect_counter;
@@ -114,6 +114,8 @@ typedef struct{
 	uint8_t gTime_pro_run_voice_time;
 	uint8_t gTimer_pro_tft;
 	uint8_t gTimer_pro_time_split_symbol;
+	uint8_t gTimer_pro_wifi_led;
+	uint8_t gTimer_pro_wifi_fast_led;
 	
 
 }PRO_T;

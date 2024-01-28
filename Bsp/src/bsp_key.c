@@ -427,29 +427,29 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 		 iwdg_feed();
 		 if(power_on_state() == power_on){
 
-		    if(K1 > 1900000){
+		    if(K1 > 900000){
                 K1=0;
 				
 				//SendData_Set_Wifi(0x01);
 				pro_t.long_key_flag =1;
 				pro_t.wifi_led_fast_blink_flag=0;
+				 pro_t.gTimer_pro_wifi_led =0;
 				gctl_t.wifi_flag =0;
 				return KEY_POWER_LONG_DOWN;
-
 			}
-
 		}
 
 
 	  };      
        /* 按键扫描完毕，确定按键被按下，返回按键被按下状态 */
 	 
-	  if(K1 > 1900000 && power_on_state() == power_on && pro_t.long_key_flag ==0){
+	  if(K1 > 900000 && power_on_state() == power_on && pro_t.long_key_flag ==0){
 	  	 K1 =0;
 		//  SendData_Set_Wifi(0x01);
 		  pro_t.long_key_flag =1;
 		  pro_t.wifi_led_fast_blink_flag=0;
 		 gctl_t.wifi_flag =0;
+		 pro_t.gTimer_pro_wifi_led =0;
 		 return KEY_POWER_LONG_DOWN;
 
 
@@ -490,9 +490,10 @@ KEYState_TypeDef MODE_KEY_StateRead(void)
 		 K2++;
 		 if(power_on_state() == power_on){
 
-		    if(K2 > 90000){
+		    if(K2 > 900000){
                 K2=0;
 				pro_t.long_key_flag =1;
+			    
 				return KEY_MODE_LONG_DOWN;
 
 			}
@@ -501,6 +502,7 @@ KEYState_TypeDef MODE_KEY_StateRead(void)
 
 		};      
        /* 按键扫描完毕，确定按键被按下，返回按键被按下状态 */
+	  K2=0;
       return KEY_DOWN;
     }
   }
