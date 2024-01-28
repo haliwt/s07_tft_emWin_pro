@@ -54,8 +54,9 @@
 
 typedef enum TIMING_T{
 
-   works_time=0x01,
+   works_time,
    timer_time,
+   timer_set_time,
    timing_success ,
    
 }timing_t;
@@ -80,7 +81,7 @@ typedef struct{
    
    //time
    uint8_t set_timer_flag;
-   uint8_t gTimer_mode_flag;
+   uint8_t gTimer_pro_timer_mode_times;
    uint8_t key_set_timer_flag;
 
  
@@ -104,7 +105,7 @@ typedef struct{
 	uint8_t gTimer_pro_temp ;
 	uint8_t gTimer_pro_temp_delay ;
 	uint8_t gTimer_wifi_connect_counter;
-	uint8_t gTimer_key_timing;
+	uint8_t timer_mode_flag;
 
 	uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
@@ -116,7 +117,7 @@ typedef struct{
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
-	uint8_t gTimer_pro_wifi_key_flag;
+	uint8_t gTimer_pro_long_key_timer_flag;
 	
 
 }PRO_T;
