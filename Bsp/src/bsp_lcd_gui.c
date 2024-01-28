@@ -33,7 +33,7 @@ void TFT_Display_Handler(void)
 	TFT_Display_WorksTime();
 
    //temperature value 
-   TFT_Disp_Temp_Value(gctl_t.dht11_temp_value);
+   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
    //huimidity value
 
    TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
@@ -124,21 +124,80 @@ void TFT_Display_WorksTime(void)
 	temp_unit_minutes = gctl_t.disp_works_minutes%10;
 
     //display works of words of chines 
-    TFT_Disp_WorksTime_24_24_onBlack(112,150,0);//works one "工"
-	TFT_Disp_WorksTime_24_24_onBlack(136,150,1);//""
-	TFT_Disp_WorksTime_24_24_onBlack(160,150,2);//
-	TFT_Disp_WorksTime_24_24_onBlack(184,150,3);//
+    TFT_Disp_WorksTime_24_24_onBlack(112,150,0,0);//works one "工"
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,0,1);//works tow "作"
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,0,2);//
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,0,3);//
 	
 	//works time value
 	
-	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,temp_decade_hours);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,temp_unit_hours);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,0,temp_decade_hours);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,0,temp_unit_hours);
 //	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
-	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,temp_decade_minutes);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,temp_unit_minutes);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,0,temp_decade_minutes);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,0,temp_unit_minutes);
 
 }
 
+void TFT_DonnotDisp_Works_Time(void)
+{
+	if(gctl_t.gTimer_ctl_disp_second > 59){
+		   gctl_t.gTimer_ctl_disp_second =0;
+		   gctl_t.disp_works_minutes++;
+		   if(gctl_t.disp_works_minutes>59){
+			   gctl_t.disp_works_minutes=0;
+			   gctl_t.disp_works_hours++;
+			   if(gctl_t.disp_works_hours > 23){
+				   gctl_t.disp_works_hours=0;
+			   }
+		   }
+	  }
+
+}
+/********************************************************************************
+ * 
+ * Function Name: static void TFT_Disp_Set_TimerTime(void)
+ * Function: set timer time of TFT of numbers blink.
+ * Input Ref:
+ * Return Ref:
+ * 
+*********************************************************************************/
+void TFT_Disp_Set_TimerTime(uint8_t bc)
+{
+
+   static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
+
+    timer_decade_hours = gctl_t.gSet_timer_hours /10;
+	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
+
+	timer_decade_minutes = gctl_t.gSet_timer_minutes / 10;
+	timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
+
+    //display works of words of chines 
+    TFT_Disp_WorksTime_24_24_onBlack(112,150,1,0);//works one "定时时间"
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,1,1);//
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,1,2);//
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,1,3);//
+	
+	//works time value
+	
+	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,bc,timer_decade_hours);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,bc,timer_unit_hours);
+//	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
+	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+
+
+}
+
+/********************************************************************************
+ * 
+ * Function Name: void TFT_Disp_Timer_Split_Symbol(void)
+ * Function: display timer timing of split symbol
+ * Input Ref:
+ * Return Ref:
+ * 
+*********************************************************************************/
 void TFT_Disp_Timer_Split_Symbol(void)
 {
     if(pro_t.gPower_On==power_on){  
@@ -159,11 +218,11 @@ void TFT_Disp_Timer_Split_Symbol(void)
 	*
 	*Function Name:void TFT_Disp_Temp_Value(uint8_t temp_value)
 	*Function : display dht11 of sensor temperature value 
-	*Input: NO
+	*Input: bc= backgroud color,bc=0 ->display numbers ,bc= 1 ->don't display numbers 
 	*Return: NO 
 	*
 ***********************************************************************************************/
-void TFT_Disp_Temp_Value(uint8_t temp_value)
+void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value)
 {
 
    static uint8_t temp_unit,temp_decade;
@@ -173,8 +232,8 @@ void TFT_Disp_Temp_Value(uint8_t temp_value)
    temp_unit= temp_value%10; 
   
    	
-   TFT_Disp_Numbers_Pic_413(5,40,temp_decade); //间隔58
-   TFT_Disp_Numbers_Pic_413(63,40,temp_unit);
+   TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
+   TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
 
 
 }
@@ -195,8 +254,8 @@ void TFT_Disp_Humidity_Value(uint8_t hum_value)
 
    hum_unit = hum_value%10;
 
-   TFT_Disp_Numbers_Pic_413(168,40,hum_decade); //间隔58
-   TFT_Disp_Numbers_Pic_413(226,40, hum_unit);
+   TFT_Disp_Numbers_Pic_413(168,40,0,hum_decade); //间隔58
+   TFT_Disp_Numbers_Pic_413(226,40,0, hum_unit);
 
 }
 /**************************************************************************

@@ -309,24 +309,12 @@ uint8_t Fan_Error_Default_Handler(void)
 *****************************************************************************/
 void Device_Action_Handler(void)
 {
-//   if(mode_state() == 1){
-//      
-//
-//   }
-//   else{
-//
-//
-//   }
 
    if(wifi_state() == 1){
       LED_WIFI_ICON_ON();
 
    }
-   else{
-
-    LED_WIFI_ICON_OFF();
-
-   }
+   
 
   if(ptc_state()== 1){
 
@@ -368,6 +356,23 @@ void Device_Action_Handler(void)
 
 
 }
+/*****************************************************************************
+ * 
+ * Function Name: void Mode_Key_Select_Fun(void)
+ * Function:   This function is used to select the working mode of the device.
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+*****************************************************************************/
+void Mode_Key_Select_Fun(void)
+{
+   static uint8_t mode=0;
+
+}
+void Mode_Key_Confirm_Fun(void)
+{
 
 
+
+}
 

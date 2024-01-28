@@ -38,6 +38,8 @@ extern const uint8_t font2424_temp_symbol[72];
 extern const uint8_t font2424_humidity_symbol[72];
 
 extern const uint8_t font2424_works_time[4][72];
+extern const uint8_t font2424_timer_time[4][72];
+
 
 
 

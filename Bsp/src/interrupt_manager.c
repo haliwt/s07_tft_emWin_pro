@@ -20,12 +20,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
    
    
     pro_t.gTimer_pro_wifi_fast_led++;
+	pro_t.gTimer_pro_set_timer_time++;
 	
 	if(tm0>999){ //1000 *1ms = 1000ms = 1s
 		tm0=0;
 
 	 pro_t.gTimer_pro_ms ++;
-	 pro_t.gTimer_pro_disp_timer++;
+	
 	 pro_t.gTimer_pro_temp_delay++;
 	 pro_t.gTimer_pro_temp++;
 
@@ -37,11 +38,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 wifi_t.gTimer_linking_tencen_counter++;
 	 pro_t.gTimer_pro_tft++;
 	 gctl_t.gTimer_ctl_disp_second++;
-	 //
+	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
 	  pro_t.gTimer_pro_long_key_timer_flag++;
 	  pro_t.gTimer_pro_timer_mode_times++;
+	  pro_t.gTimer_pro_mode_key_timer++;
+	  pro_t.gTimer_pro_set_tem_value_blink++;
+	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
+	  
 	 
    }
   }

@@ -274,11 +274,12 @@ void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 *
 * name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
 * description  : 绘制字符串，可设置前景色和背景色
-* Input        : 字体宽度，高度，字符，字符颜色，背景颜色
+				 字体宽度，高度，字符，字符颜色，背景颜色
+* Input        : 
 * Return       : 
 *
 ********************************************************************/
-void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t num)
+void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t bc,uint8_t num)
 {
     uint16_t temp, t, tbit;
     uint16_t x0=x;
@@ -296,7 +297,13 @@ void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t num)
 		{	
 			
 			
-			if(temp & 0x80)	color = BLACK;//WHITE;
+			if(temp & 0x80){
+				if(bc ==0)
+				   color = BLACK;//WHITE;
+				else
+				   color = WHITE;
+
+			}
 			else if(0 == mode)	color = WHITE;//BLACK;
 			else color = BLACK;
 			TFT_DrawPoint(x, y,color );
@@ -610,7 +617,7 @@ void TFT_Disp_Temp_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
 	*
 	*
 ****************************************************************************************/
-void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
+void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t sel,uint8_t num)
 {
     uint16_t temp, t, tbit,mode;
     uint16_t x0=x;
@@ -619,8 +626,10 @@ void TFT_Disp_WorksTime_24_24_onBlack(uint16_t x,uint16_t y,uint8_t num)
 
 	for(t = 0; t < 72; t++)	/*遍历打印所有像素点到LCD */
 	{   
-	
-		temp = font2424_works_time[num][t]; 
+	    if(sel==0)
+		  temp = font2424_works_time[num][t]; 
+		else
+		  temp = font2424_timer_time[num][t];
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
@@ -779,7 +788,7 @@ void TFT_Disp_Humidity_Symbol_24_24(uint16_t x,uint16_t y)
 	*Return Ref:NO
 	*
 ****************************************************************************************/
-void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num)
+void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uint8_t num)
 {
     uint16_t temp, t, tbit,mode;
     uint16_t x0=x;
@@ -795,7 +804,13 @@ void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t num)
 		{	
 			
 			
-			if(temp & 0x80)	color = WHITE;
+			if(temp & 0x80){
+				if(sel==0)
+				   color = WHITE;
+				else
+				   color = BLACK;
+
+			}
 			else if(0 == mode)	color = BLACK;
 			else color = BLACK;
 			TFT_DrawPoint(x, y,color );

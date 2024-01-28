@@ -5,7 +5,7 @@
 key_types key_t;
 uint8_t power_key_detected;
 uint16_t key_mode_counter;
-uint8_t key_set_timer_flag;
+
 
 uint32_t  K1=0;
 uint32_t  K2=0;

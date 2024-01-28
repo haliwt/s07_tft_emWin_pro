@@ -532,14 +532,14 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"state\":1")){
            if(power_on_state() ==power_on){
-            gctl_t.mode_flag=1;
+            gctl_t.mode_flag=works_time;
 			wifi_t.response_wifi_signal_label = STATE_AI_MODEL_ITEM;
         	}
 		  
     }
     else if(strstr((char *)wifi_t.wifi_data,"state\":2")){
             if(power_on_state() ==power_on){
-            gctl_t.mode_flag=2;
+            gctl_t.mode_flag=timer_time;
 			wifi_t.response_wifi_signal_label = STATE_TIMER_MODEL_ITEM;
             }
 			
@@ -719,7 +719,7 @@ void Json_Parse_Command_Fun(void)
 
 	  case STATE_TIMER_MODEL_ITEM:
 	  if(power_on_state() ==power_on){
-	         gctl_t.mode_flag=2;
+	         gctl_t.mode_flag=timer_time;
             MqttData_Publish_SetState(2);
 			HAL_Delay(350);
         
@@ -734,7 +734,7 @@ void Json_Parse_Command_Fun(void)
 	  case STATE_AI_MODEL_ITEM:
 	  	 if(power_on_state() ==power_on){
 		
-		    gctl_t.mode_flag=1;
+		    gctl_t.mode_flag=works_time;
             MqttData_Publish_SetState(1);
 			HAL_Delay(350);
           

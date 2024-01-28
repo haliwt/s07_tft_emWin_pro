@@ -58,8 +58,32 @@ typedef enum TIMING_T{
    timer_time,
    timer_set_time,
    timing_success ,
+   /// @brief ：select function "ptc,kill,rat"
+   fun_selection
    
 }timing_t;
+
+typedef enum{
+  mode_key_temp,
+  mode_key_select ,
+  mode_key_confirm,
+  mode_key_timer_time
+
+}mode_key_state;
+
+typedef enum{
+
+  pro_init,
+  pro_disp_dht11_value,
+  pro_run_main_fun,
+  pro_disp_works_time,
+  pro_disp_wifi_led,
+  pro_mode_key_fun,
+  
+
+
+
+}process_run_state;
 
 
 
@@ -73,21 +97,15 @@ typedef struct{
    uint8_t run_process_step;
    uint8_t key_power_be_pressed_flag ;
   
-
-   uint8_t ack_power_on_sig;
-   uint8_t ack_power_off_sig;
-
-
-   
    //time
-   uint8_t set_timer_flag;
-   uint8_t gTimer_pro_timer_mode_times;
-   uint8_t key_set_timer_flag;
-
  
+   //modke key
+   uint8_t mode_key_fun_select;
+   uint8_t timer_mode_flag;
+   uint8_t mode_key_confirm_flag;
 
    //temperature 
-   uint8_t temperature_set_flag;
+     uint8_t set_temperature_value_flag;
 
    //warning
     uint8_t spi_error_flag;
@@ -101,23 +119,25 @@ typedef struct{
 	uint8_t v_usart2_rx_numbers;
 	uint8_t v_usart2_rx_flag;
 
-  	uint8_t gTimer_pro_feed_dog;
+  //timer timing function
+  uint8_t gTimer_pro_feed_dog;
 	uint8_t gTimer_pro_temp ;
 	uint8_t gTimer_pro_temp_delay ;
 	uint8_t gTimer_wifi_connect_counter;
-	uint8_t timer_mode_flag;
-
-	uint8_t gTimer_pro_fan;
+ 
+  uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
-	uint8_t gTimer_pro_ms;
-	uint8_t gTimer_pro_disp_timer ;
-
+  uint8_t gTimer_pro_ms;
 	uint8_t gTime_pro_run_voice_time;
 	uint8_t gTimer_pro_tft;
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
 	uint8_t gTimer_pro_long_key_timer_flag;
+  uint8_t gTimer_pro_timer_mode_times;
+  uint8_t gTimer_pro_mode_key_timer;
+  uint8_t gTimer_pro_set_tem_value_blink;
+  uint8_t gTimer_pro_set_timer_time;
 	
 
 }PRO_T;
