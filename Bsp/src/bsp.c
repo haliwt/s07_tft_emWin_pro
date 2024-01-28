@@ -165,7 +165,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 case pro_disp_works_time: //display works times and timer timing .
 	 	
 		Wifi_Fast_Led_Blink();
-		switch(gctl_t.mode_flag){
+		switch(pro_t.timer_mode_flag){
 
 			case timer_time: //timer_time 
                 if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
@@ -199,7 +199,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			    if(pro_t.gTimer_pro_mode_key_timer < 5){
+			    if(pro_t.gTimer_pro_mode_key_timer < 10){
                     
                     if(pro_t.gTimer_pro_set_timer_time < 201){
 					     TFT_Disp_Set_TimerTime(0);
@@ -222,12 +222,14 @@ static void TFT_Pocess_Command_Handler(void)
 
 					if(gctl_t.gSet_timer_hours >0){
 
-                        gctl_t.mode_flag = timer_time;
+                        pro_t.timer_mode_flag = timer_time;
+						pro_t.mode_key_confirm_flag =0xff;
 						gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 
 					}
 					else{
-						gctl_t.mode_flag = works_time;
+						pro_t.mode_key_confirm_flag =0xff;
+						pro_t.timer_mode_flag = works_time;
 
 					}
 					
@@ -423,6 +425,7 @@ static void Power_On_Fun(void)
   Power_On_Led_Init();
    gctl_t.ptc_flag = 1;
    gctl_t.mode_flag = works_time;
+   pro_t.timer_mode_flag =works_time;
    gctl_t.plasma_flag = 1;
    gctl_t.ultrasonic_flag =1;
    
@@ -485,9 +488,10 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	  if(power_on_state() ==power_on){
 	   if(gctl_t.fan_warning ==0 && gctl_t.ptc_warning ==0){
 	  	  pro_t.mode_key_confirm_flag = mode_key_timer_time;
-		  gctl_t.mode_flag=timer_set_time; //set timer mode enable
+		  pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
 
 		  pro_t.gTimer_pro_long_key_timer_flag=0; //long key exit "mode_long_key flag" flag
+		  pro_t.gTimer_pro_mode_key_timer=0;
 		   
 	  	 }
         }
@@ -530,7 +534,7 @@ static void ADD_Key_Fun(void)
                break;
 
 			  case mode_key_timer_time:
-					pro_t.timer_mode_flag =0;
+					
                
 					gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
 				    if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
@@ -594,7 +598,7 @@ static void DEC_Key_Fun(void)
 			case mode_key_timer_time: //timer timing set "decrease -down"
 	    
 	
-				pro_t.timer_mode_flag =0;
+				
               
 				
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
@@ -792,6 +796,7 @@ void Mode_Key_Detected(void)
 
 	if(MODE_KEY_StateRead()==KEY_MODE_LONG_DOWN && pro_t.long_key_flag ==1){
        Buzzer_KeySound();
+	   pro_t.gTimer_pro_mode_key_timer=0;
        Mode_Long_Key_Fun();
       
 
