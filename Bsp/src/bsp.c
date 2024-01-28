@@ -794,7 +794,7 @@ wifi_led:	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
 	    }
 		else{
 		   LED_WIFI_ICON_OFF();
-		   HAL_Delay(5);
+		   HAL_Delay(2);
 		   goto wifi_led;
 
 		}
