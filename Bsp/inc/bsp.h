@@ -116,6 +116,7 @@ typedef struct{
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
+	uint8_t gTimer_pro_wifi_key_flag;
 	
 
 }PRO_T;

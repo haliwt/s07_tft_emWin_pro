@@ -48,6 +48,7 @@ void bsp_Idle(void)
     }
 
     TFT_Disp_Timer_Split_Symbol();
+    Wifi_Fast_Led_Blink();
 	/* --- 让CPU进入休眠，由Systick定时中断唤醒或者其他中断唤醒 */
 
 	/* 例如 emWin 图形库，可以插入图形库需要的轮询函数 */
@@ -90,7 +91,6 @@ void Key_Process_Handler(void)
 */
 void TFT_Process_Handler(void)
 {
-  
 	TFT_Pocess_Command_Handler();
 }
 /******************************************************************************
@@ -131,9 +131,11 @@ static void TFT_Pocess_Command_Handler(void)
 	 break;
 
 	 case 1:  //display works time + "temperature value " + "humidity value"
-        
 
-	   if(pro_t.gTimer_pro_tft > 9 ){
+	   pro_t.run_process_step=0xf1;
+	   Wifi_Fast_Led_Blink();
+
+	   if(pro_t.gTimer_pro_tft > 9 &&  pro_t.wifi_led_fast_blink_flag==0){
 	   	   pro_t.gTimer_pro_tft=0;
            //TFT_Display_Handler();
 		    Update_DHT11_Value();
@@ -144,13 +146,17 @@ static void TFT_Pocess_Command_Handler(void)
 			TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
 
 	   }
+	   
 	   pro_t.run_process_step=2;
 	   
 	case 2: 
+       pro_t.run_process_step=0xf2;
+	 Wifi_Fast_Led_Blink();
 		
 	  if(pro_t.gTimer_pro_ms >4){ 
 			 pro_t.gTimer_pro_ms =0;
 			 pro_t.run_process_step=0xff;
+			 Wifi_Fast_Led_Blink();
 
 		     Device_Action_Handler();
 	    }
@@ -158,9 +164,12 @@ static void TFT_Pocess_Command_Handler(void)
 	 break;
 
 	 case 3:
-	 	   pro_t.run_process_step=0xf0;
+	 	
+	 	   pro_t.run_process_step=0xf3;
+		  Wifi_Fast_Led_Blink();
 
-	      if(gctl_t.gTimer_ctl_disp_second > 59 ){
+	      if(gctl_t.gTimer_ctl_disp_second > 59  ){
+		  	
 			TFT_Display_WorksTime();
 			  
 		  }
@@ -182,13 +191,15 @@ static void TFT_Pocess_Command_Handler(void)
 
 			 case 1:
 
-                 pro_t.long_key_flag =0;
-			     Wifi_Fast_Led_Blink();
-			 	
                 
-			  pro_t.run_process_step=1;
+			     Wifi_Fast_Led_Blink();
+			     if(pro_t.gTimer_pro_wifi_key_flag > 2){
+				 	
+			        pro_t.long_key_flag =0;
 
-			 break;
+			     }
+			 	
+             break;
 
              case 0:
 			  if(pro_t.gTimer_pro_wifi_led > 1 && pro_t.gTimer_pro_wifi_led < 3){
@@ -203,13 +214,14 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 			 }
+			 
 			 break;
 
              }
 
 			 
-			  
-			  pro_t.run_process_step=1;
+			pro_t.run_process_step=1;
+			 
            
 		  }
 		  
@@ -684,6 +696,7 @@ void Power_Key_Detected(void)
 	    Buzzer_KeySound();
 		 pro_t.gTimer_pro_wifi_led =0;
         pro_t.wifi_led_fast_blink_flag=1;
+		pro_t.gTimer_pro_wifi_key_flag=0;
         K1=0;
 		
 
@@ -753,32 +766,53 @@ void DEC_Key_Detected(void)
 
 static void Wifi_Fast_Led_Blink(void)
 {
-
+   if(pro_t.wifi_led_fast_blink_flag==1){
 	if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
 
-	if(pro_t.gTimer_pro_wifi_fast_led < 51 ){ //50ms
+wifi_led:	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
 
-	LED_WIFI_ICON_ON();
-
-	}
-	else if(pro_t.gTimer_pro_wifi_fast_led > 49 && pro_t.gTimer_pro_wifi_fast_led< 101){
-
-	LED_WIFI_ICON_OFF();
-	}
-	else{
-
-	pro_t.gTimer_pro_wifi_fast_led=0;
-
-	}
-
-
-	}
-	else if(pro_t.gTimer_pro_wifi_led > 165){
-	pro_t.wifi_led_fast_blink_flag=0;
-
+	 LED_WIFI_ICON_ON();
+	 
 
 	}
 	
+	if(pro_t.gTimer_pro_wifi_fast_led > 80 && pro_t.gTimer_pro_wifi_fast_led< 161){
 
+        
+		LED_WIFI_ICON_OFF();
+	}
+	
+
+	 
+	 if(pro_t.gTimer_pro_wifi_fast_led > 159){
+
+		pro_t.gTimer_pro_wifi_fast_led=0;
+		if(pro_t.gTimer_pro_wifi_led > 165){ //2'46s
+	      pro_t.wifi_led_fast_blink_flag=0;
+
+
+	    }
+		else{
+		   LED_WIFI_ICON_OFF();
+		   HAL_Delay(5);
+		   goto wifi_led;
+
+		}
+
+	 }
+	    
+	
+     
+
+	}
+	if(pro_t.gTimer_pro_wifi_led > 165){ //2'46s
+	    pro_t.wifi_led_fast_blink_flag=0;
+
+
+	}
+   }
+	
 }
+
+
 
