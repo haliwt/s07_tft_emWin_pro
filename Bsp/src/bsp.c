@@ -226,11 +226,11 @@ static void TFT_Pocess_Command_Handler(void)
 			    if(pro_t.gTimer_pro_mode_key_timer > 3 ){
                     
                     if(pro_t.gTimer_pro_set_timer_time < 2){
-					     TFT_Disp_Set_TimerTime(0);
+					     TFT_Disp_Set_TimerTime(0);//1-don't display numbers 0-display numbers
                     }
 					else if(pro_t.gTimer_pro_set_timer_time >2  && pro_t.gTimer_pro_set_timer_time < 5){
 
-						TFT_Disp_Set_TimerTime(1); //turn off disp timer time
+						TFT_Disp_Set_TimerTime(1); //1-don't display numbers 0-display numbers //turn off disp timer time
 
 					}
 					else{
@@ -245,11 +245,13 @@ static void TFT_Pocess_Command_Handler(void)
 							pro_t.timer_mode_flag = timer_time;
 							pro_t.mode_key_confirm_flag =0xff;
 							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+							pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
 
 						}
 						else{
 							pro_t.mode_key_confirm_flag =0xff;
 							pro_t.timer_mode_flag = works_time;
+						    pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
 
 						}
 					}
@@ -260,7 +262,8 @@ static void TFT_Pocess_Command_Handler(void)
 				
 				if(pro_t.gTimer_pro_long_key_timer_flag > 2){ //exit mode key for long time key  flag
 
-				pro_t.long_key_flag =0;
+					pro_t.long_key_flag =0;
+					pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
 				}	
 
 			break;
@@ -318,15 +321,15 @@ static void TFT_Pocess_Command_Handler(void)
 
 			if(pro_t.gTimer_pro_mode_key_timer > 3){
 
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 3){
+                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
 
-					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //don't display temp value  
+					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
 
 
 				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 7){
+				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 1 && pro_t.gTimer_pro_set_tem_value_blink < 3){
 
-					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //don't display numbers 
+					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
 
 
 				  }
@@ -335,12 +338,12 @@ static void TFT_Pocess_Command_Handler(void)
                     led_blink_times++;
 				  }
 
-                  if(led_blink_times > 3){
+                  if(led_blink_times ==1){
 				  	led_blink_times=0;
 					  pro_t.mode_key_confirm_flag = 0xff;
 					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
 					  pro_t.set_temperature_value_flag= 1;
-					  pro_t.mode_key_be_changed_flag=0;
+					  pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
 
                   }
 
@@ -512,6 +515,9 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 
 		  pro_t.gTimer_pro_long_key_timer_flag=0; //long key exit "mode_long_key flag" flag
 		  pro_t.gTimer_pro_mode_key_timer=0;
+		  pro_t.gTimer_pro_set_timer_time=0;
+		  
+		  TFT_Disp_Set_TimerTime(0);
 		   
 	  	 }
         }
@@ -527,7 +533,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 static void ADD_Key_Fun(void)
 {
  
-    uint8_t  temp_bit_1_hours,temp_bit_2_hours,temp_bit_2_minute,temp_bit_1_minute;
+    
 
 	 if(power_on_state()==power_on){
 
@@ -566,11 +572,9 @@ static void ADD_Key_Fun(void)
 		                
 
 					}
-				
-                  
-                     pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-
-					  TFT_Disp_Set_TimerTime(0);
+				   pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+                   pro_t.gTimer_pro_set_timer_time=0; //TFT set the timer time blinking
+					TFT_Disp_Set_TimerTime(0);
 
 				break;
 
@@ -637,7 +641,7 @@ static void DEC_Key_Fun(void)
 					
 				}
 			 pro_t.gTimer_pro_mode_key_timer = 0;
-				
+			 pro_t.gTimer_pro_set_timer_time=0;
 			TFT_Disp_Set_TimerTime(0);
 			break;
 

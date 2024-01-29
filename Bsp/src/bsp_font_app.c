@@ -298,11 +298,8 @@ void TFT_Disp_Numbers_Pic_413(uint16_t x,uint16_t y,uint8_t bc,uint8_t num)
 			
 			
 			if(temp & 0x80){
-				if(bc ==0){
-				   color = BLACK;//WHITE;
-				}
-				else
-				   color =BLACK; // WHITE;
+				
+				color =BLACK; // WHITE;
 
 			}
 			else if(0 == mode){
