@@ -13,9 +13,9 @@ uint16_t LCD_Y_LENGTH = 240;
 
 
 
-static uint16_t CurrentTextColor   = WHITE;//前景色
-static uint16_t CurrentBackColor   = BLACK;//背景色
-static uint32_t lcd_pow(uint8_t m, uint8_t n);
+//static uint16_t CurrentTextColor   = WHITE;//前景色
+//static uint16_t CurrentBackColor   = BLACK;//背景色
+//static uint32_t lcd_pow(uint8_t m, uint8_t n);
 
 
 
@@ -29,7 +29,7 @@ static uint32_t lcd_pow(uint8_t m, uint8_t n);
 	*Return Ref:NO
 	*
 *************************************************************************************************/
-#if 1
+#if 0
 void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s,uint8_t mode)
 {
    uint8_t i,j;
@@ -105,6 +105,7 @@ void GUI_DrawFont16(uint16_t x, uint16_t y, uint16_t fc, uint16_t bc, uint8_t *s
 *@author zx
 *@date 2023-06-04
 **************************************************************************************************************/
+#if 0
 void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
 {
 
@@ -145,7 +146,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 	}	
 
 }
-
+#endif 
 /**************************************************************************************************************
 *
 *@brief TFT_display_char16_16_noBackColor
@@ -161,6 +162,7 @@ void TFT_display_char16_16_noBackColor(const uint8_t *address ,uint16_t startX,u
 *@return void
 *
 **************************************************************************************************************/
+#if 0
 void TFT_display_char16_16_Tow_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
 {
 
@@ -333,7 +335,7 @@ void TFT_display_char16_16_Four_noBackColor(const uint8_t *address ,uint16_t sta
 
 }
 
-
+#endif 
 /****************************************************************************************
 	*@brief TFT_display_char16_16
 	*@details 显示16x16的汉字
@@ -391,6 +393,7 @@ void TFT_display_char16_16(const uint8_t *address ,uint16_t startX,uint16_t star
 *@author zx
 *@date 2023-06-04
 **************************************************************************************************************/
+#if 0
 void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
 {
 
@@ -419,7 +422,7 @@ void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t 
 
 }
 
-
+#endif 
 
 
 /**************************************************************************************************************
@@ -437,6 +440,7 @@ void TFT_display_char16_16_English_noBackColor(const uint8_t *address ,uint16_t 
 *@author zx
 *@date 2023-06-04
 **************************************************************************************************************/
+#if 0
 void TFT_display_char32_32_English_noBackColor(const uint8_t *address ,uint16_t startX,uint16_t startY,uint16_t color)
 {
 
@@ -605,3 +609,6 @@ void TFT_display_char32_32_OneEnglish_noBackColor(const uint8_t *address ,uint16
 	}	
 
 }
+#endif 
+
+

@@ -11,15 +11,21 @@
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0;
+  static uint8_t tm1;
  
 
     
    if(htim->Instance==TIM17){
     
     tm0++;  //1ms
-   
+    tm1++;
    
     pro_t.gTimer_pro_wifi_fast_led++;
+
+	if(tm1 > 9){
+		tm1=0;
+		gctl_t.gTimer_ctl_select_led++;
+	}
 	
 	
 	if(tm0>999){ //1000 *1ms = 1000ms = 1s
@@ -47,6 +53,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_tem_value_blink++;
 	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
 	  pro_t.gTimer_pro_set_timer_time++;
+	  
 	  
 	 
    }

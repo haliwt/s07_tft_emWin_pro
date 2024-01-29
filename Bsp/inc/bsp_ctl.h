@@ -18,6 +18,14 @@ typedef enum{
 
 }hard_error_state;
 
+typedef enum{
+
+   ptc_fun=0x01,
+   plasma_fun,
+   rat_fun
+
+}fun_name;
+
 
 
 
@@ -54,6 +62,7 @@ typedef struct _bsp_ctl{
 
    uint8_t gTimer_ctl_disp_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
+   uint8_t gTimer_ctl_select_led;
    
 
 }bsp_ctl;

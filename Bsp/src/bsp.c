@@ -230,7 +230,7 @@ static void TFT_Pocess_Command_Handler(void)
                     }
 					else if(pro_t.gTimer_pro_set_timer_time >2  && pro_t.gTimer_pro_set_timer_time < 5){
 
-						TFT_Disp_Set_TimerTime(1); //1-don't display numbers 0-display numbers //turn off disp timer time
+						TFT_Disp_Set_TimerTime(1); //1-don't display numbers, 0-display numbers //turn off disp timer time
 
 					}
 					else{
@@ -238,6 +238,7 @@ static void TFT_Pocess_Command_Handler(void)
 						pro_t.gTimer_pro_set_timer_time=0;
 
 					}
+					
 					if(timer_blink_times > 2){
 						timer_blink_times =0;
 						if(gctl_t.gSet_timer_hours >0 ){
@@ -356,6 +357,8 @@ static void TFT_Pocess_Command_Handler(void)
 
 		     if(pro_t.gTimer_pro_mode_key_timer < 5){ //exit of rule
 
+				if(pro_t.timer_mode_flag == timer_time)pro_t.timer_mode_flag=works_time;
+				else pro_t.timer_mode_flag = timer_time;
 				Mode_Key_Select_Fun();
              
 
@@ -533,66 +536,64 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 static void ADD_Key_Fun(void)
 {
  
-    
+ if(power_on_state()==power_on){
 
-	 if(power_on_state()==power_on){
+	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
-		   if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
+		Buzzer_KeySound();
 
-			Buzzer_KeySound();
-		
-			switch(pro_t.mode_key_confirm_flag){
+		switch(pro_t.mode_key_confirm_flag){
 
-		    case 0xff:
+		case 0xff:
 
-			   pro_t.mode_key_confirm_flag=mode_key_temp;
-              
+			pro_t.mode_key_confirm_flag=mode_key_temp;
+
 			case mode_key_temp: //set temperature value add number
-      
-		        gctl_t.gSet_temperature_value ++;
-	            if( gctl_t.gSet_temperature_value < 20){
-				     gctl_t.gSet_temperature_value=20;
-				}
-				
-				if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
 
-				
-                 pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-
-				TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
-               break;
-
-			  case mode_key_timer_time:
-					
-               
-					gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
-				    if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
-
-		                 gctl_t.gSet_timer_hours =0;//pro_t.dispTime_hours =0;
-		                
-
-					}
-				   pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-                   pro_t.gTimer_pro_set_timer_time=0; //TFT set the timer time blinking
-					TFT_Disp_Set_TimerTime(0);
-
-				break;
-
-				case mode_key_select:
-				    pro_t.gTimer_pro_mode_key_timer = 0;
-					gctl_t.select_main_fun_numbers++;
-					if(gctl_t.select_main_fun_numbers > 3){
-						gctl_t.select_main_fun_numbers = 1;
-					}
-					
-				
-				break;
-
-
-				
-				}	
+			gctl_t.gSet_temperature_value ++;
+			if( gctl_t.gSet_temperature_value < 20){
+			gctl_t.gSet_temperature_value=20;
 			}
-        }
+
+			if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
+
+
+			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+
+			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
+		break;
+
+		case mode_key_timer_time:
+
+
+			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
+			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
+
+			gctl_t.gSet_timer_hours =0;//pro_t.dispTime_hours =0;
+
+
+			}
+			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+			pro_t.gTimer_pro_set_timer_time=0; //TFT set the timer time blinking
+			TFT_Disp_Set_TimerTime(0);
+
+		break;
+
+		case mode_key_select:
+			pro_t.gTimer_pro_mode_key_timer = 0;
+			gctl_t.select_main_fun_numbers++;
+			if(gctl_t.select_main_fun_numbers > 3){
+			gctl_t.select_main_fun_numbers = 1;
+			}
+
+
+		break;
+
+
+
+		}	
+		}
+	}
        //  DisplayPanel_Ref_Handler();
 }
 /************************************************************************
@@ -826,11 +827,12 @@ void Mode_Key_Detected(void)
 
 		  pro_t.mode_key_confirm_flag = mode_key_select;
 		  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-		  
+		  gctl_t.gTimer_ctl_select_led =0;
 		 }
          else{
 			Buzzer_KeySound();
 			pro_t.mode_key_confirm_flag = mode_key_confirm;
+			pro_t.gTimer_pro_mode_key_timer=0;
 
 		}
 	} 

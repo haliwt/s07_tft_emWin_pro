@@ -1,9 +1,10 @@
-
-
 #include "bsp_ctl.h"
 #include "bsp.h"
 
 bsp_ctl gctl_t;
+
+uint8_t mode_fun;
+
 
 uint8_t (*power_on_state)(void);
 uint8_t (*wifi_state)(void);
@@ -366,13 +367,160 @@ void Device_Action_Handler(void)
 *****************************************************************************/
 void Mode_Key_Select_Fun(void)
 {
-   static uint8_t mode=0;
+  
+   mode_fun++;
+   if(mode_fun > 3)mode_fun=1;
+   switch(mode_fun){
+
+      case ptc_fun:
+        if(pro_t.gTimer_pro_mode_key_timer < 4){
+
+		  if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+ 		      LED_PTC_ICON_ON()  ;  
+		  }
+		  else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){
+ 		     LED_PTC_ICON_OFF() ; 
+
+		  }
+		  else
+		  	gctl_t.gTimer_ctl_select_led=0;
+
+        }
+		else{
+
+			pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
+
+		}
+
+      break;
+
+	  case plasma_fun:
+	  	//KILL ICON LED
+	  	if(pro_t.gTimer_pro_mode_key_timer < 4){
+         	 if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+
+		    
+				LED_KILL_ICON_ON() ;   
+         	 }
+			 else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){
+				LED_KILL_ICON_OFF() ;
+			 }
+			 else
+			 	gctl_t.gTimer_ctl_select_led=0;
+	  	}
+		else{
+
+		  pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
+
+
+		}
+
+	  break;
+
+	  case rat_fun:
+
+	  //ULTRSONIC ICO LED
+	   if(pro_t.gTimer_pro_mode_key_timer < 4){
+
+	   	if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+			LED_RAT_ICON_ON(); 
+	   	}
+		else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){	
+		   LED_RAT_ICON_OFF();
+		}
+		else
+		   gctl_t.gTimer_ctl_select_led=0;
+
+	   }
+	   else{
+
+		 pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
+
+	   }
+
+	  break;
+	  	
+	  	
+
+   }
 
 }
 void Mode_Key_Confirm_Fun(void)
 {
 
+   switch(mode_fun){
+
+      case ptc_fun:
+        if(pro_t.gTimer_pro_mode_key_timer < 4){
+
+		    if(gctl_t.ptc_flag==0){
+				LED_PTC_ICON_ON(); 
+				gctl_t.ptc_flag = 1;
+
+		    }
+			else{
+				LED_PTC_ICON_OFF() ; 
+				gctl_t.ptc_flag = 0;
+
+			}
+
+        }
+		else{
+
+			pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
+
+		}
+
+      break;
+
+	  case plasma_fun:
+	  	//KILL ICON LED
+	  	if(pro_t.gTimer_pro_mode_key_timer < 4){
+         	
+	        if(gctl_t.plasma_flag == 0){
+				gctl_t.plasma_flag=1;
+			     LED_KILL_ICON_ON() ;
+
+	        }
+     	    else{
+			  gctl_t.plasma_flag=0;
+			  LED_KILL_ICON_OFF() ;
+
+     	    }
+			
+	  	}
+		else{
+
+		  pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
 
 
+		}
+
+	  break;
+
+	  case rat_fun:
+
+	  //ULTRSONIC ICO LED
+	   if(pro_t.gTimer_pro_mode_key_timer < 4){
+
+	   	if(gctl_t.ultrasonic_flag ==0){ //30x10ms=300ms
+	   	    gctl_t.ultrasonic_flag=1;
+			LED_RAT_ICON_ON();  
+	   	}
+		else{	
+		   gctl_t.ultrasonic_flag=0;
+		   LED_RAT_ICON_OFF();
+		}
+	   }
+	   else{
+
+		 pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
+
+	   }
+
+
+	  break;
+
+	 }
 }
 

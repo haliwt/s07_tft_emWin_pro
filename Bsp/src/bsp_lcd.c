@@ -15,7 +15,7 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
 
-static void LCD_set_Window_Horizon(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height);
+
 
 
 
@@ -280,7 +280,7 @@ void DISP_WINDOWS(void)
 ********************************************************************************/
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
 {
- 	int i,j;
+ 	
       //A0=1;
      // CSB=0;
      TFT_DCX_DATA();
@@ -407,7 +407,7 @@ void DISPLAY_image(void)
 //	//HOLD_DISP ();
 //}
 
-
+#if 0
 static void LCD_set_Window_Horizon(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height)
 {
 	uint16_t twidth, theight;
@@ -428,6 +428,7 @@ static void LCD_set_Window_Horizon(uint16_t sx, uint16_t sy, uint16_t width, uin
 
 
 }
+#endif 
 /*******************************************************************************
  * 
  * Function Name: static void LCD_Clear(uint16_t color)
