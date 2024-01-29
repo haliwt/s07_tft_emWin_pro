@@ -147,6 +147,7 @@ typedef struct{
 extern PRO_T pro_t;
 
 
+void bsp_Init(void);
 
 void bsp_Idle(void);
 

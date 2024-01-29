@@ -2,6 +2,8 @@
 
 PRO_T pro_t;
 
+uint8_t led_blink_times;
+
 static void Ptc_Temperature_Compare_Value(void);
 static void Power_Key_Detected(void);
 static void Mode_Key_Detected(void);
@@ -18,6 +20,28 @@ static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
 static void Wifi_Fast_Led_Blink(void);
+
+void bsp_Init(void);
+
+/*
+*********************************************************************************************************
+*	函 数 名: bsp_Idle
+*	功能说明: 空闲时执行的函数。一般主程序在for和while循环程序体中需要插入 CPU_IDLE() 宏来调用本函数。
+*			 本函数缺省为空操作。用户可以添加喂狗、设置CPU进入休眠模式的功能。
+*	形    参: 无
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+
+void bsp_Init(void)
+{
+
+   pro_t.mode_key_confirm_flag=0xff;
+
+
+}
+
+
 
 /*
 *********************************************************************************************************
@@ -105,7 +129,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 
-   static uint8_t power_been_flag,led_blink_times,timer_blink_times;
+   static uint8_t power_been_flag,timer_blink_times;
   
    if(power_on_state() == power_on){
   
@@ -296,11 +320,11 @@ static void TFT_Pocess_Command_Handler(void)
 
                   if(pro_t.gTimer_pro_set_tem_value_blink < 3){
 
-					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);   
+					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //don't display temp value  
 
 
 				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 6){
+				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 7){
 
 					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //don't display numbers 
 
@@ -311,7 +335,7 @@ static void TFT_Pocess_Command_Handler(void)
                     led_blink_times++;
 				  }
 
-                  if(led_blink_times ==1){
+                  if(led_blink_times > 3){
 				  	led_blink_times=0;
 					  pro_t.mode_key_confirm_flag = 0xff;
 					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
@@ -330,7 +354,7 @@ static void TFT_Pocess_Command_Handler(void)
 		     if(pro_t.gTimer_pro_mode_key_timer < 5){ //exit of rule
 
 				Mode_Key_Select_Fun();
-
+             
 
 			 }
 			 else{
@@ -418,6 +442,8 @@ static void Power_On_Fun(void)
   LED_Power_Key_On();
   Power_On_Led_Init();
    gctl_t.ptc_flag = 1;
+
+   pro_t.mode_key_confirm_flag=0xff;
    gctl_t.mode_flag = works_time;
    pro_t.timer_mode_flag =works_time;
    gctl_t.plasma_flag = 1;
