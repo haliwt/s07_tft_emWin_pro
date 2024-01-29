@@ -3,7 +3,7 @@
 
 bsp_ctl gctl_t;
 
-uint8_t mode_fun;
+
 
 
 uint8_t (*power_on_state)(void);
@@ -368,75 +368,70 @@ void Device_Action_Handler(void)
 void Mode_Key_Select_Fun(void)
 {
   
-   mode_fun++;
-   if(mode_fun > 3)mode_fun=1;
-   switch(mode_fun){
+   
+   switch(gctl_t.select_main_fun_numbers){
 
       case ptc_fun:
-        if(pro_t.gTimer_pro_mode_key_timer < 4){
+        
 
-		  if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+	led_blik:	  if(gctl_t.gTimer_ctl_select_led < 20){ //30x10ms=300ms
  		      LED_PTC_ICON_ON()  ;  
 		  }
-		  else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){
+		  else if(gctl_t.gTimer_ctl_select_led > 19 && gctl_t.gTimer_ctl_select_led < 41){
  		     LED_PTC_ICON_OFF() ; 
 
 		  }
-		  else
+		  else{
 		  	gctl_t.gTimer_ctl_select_led=0;
+			goto led_blik;
 
-        }
-		else{
+		  }
 
-			pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-		}
+        
+		
 
       break;
 
 	  case plasma_fun:
 	  	//KILL ICON LED
-	  	if(pro_t.gTimer_pro_mode_key_timer < 4){
-         	 if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+	  	
+     led_blik2:    	 if(gctl_t.gTimer_ctl_select_led < 20){ //30x10ms=300ms
 
 		    
 				LED_KILL_ICON_ON() ;   
          	 }
-			 else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){
+			 else if(gctl_t.gTimer_ctl_select_led > 19 && gctl_t.gTimer_ctl_select_led < 41){
 				LED_KILL_ICON_OFF() ;
 			 }
-			 else
+			 else{
 			 	gctl_t.gTimer_ctl_select_led=0;
-	  	}
-		else{
+				goto led_blik2;
 
-		  pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-
-		}
+			 }
+	  	
+		
 
 	  break;
 
 	  case rat_fun:
 
 	  //ULTRSONIC ICO LED
-	   if(pro_t.gTimer_pro_mode_key_timer < 4){
+	 
 
-	   	if(gctl_t.gTimer_ctl_select_led < 30){ //30x10ms=300ms
+	led_blink3:   	if(gctl_t.gTimer_ctl_select_led < 20){ //30x10ms=300ms
 			LED_RAT_ICON_ON(); 
 	   	}
-		else if(gctl_t.gTimer_ctl_select_led > 29 && gctl_t.gTimer_ctl_select_led < 61){	
+		else if(gctl_t.gTimer_ctl_select_led > 19 && gctl_t.gTimer_ctl_select_led < 41){	
 		   LED_RAT_ICON_OFF();
 		}
-		else
+		else{
 		   gctl_t.gTimer_ctl_select_led=0;
+		   goto led_blink3;
 
-	   }
-	   else{
+		}
 
-		 pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-	   }
+	   
+	  
 
 	  break;
 	  	
@@ -448,10 +443,10 @@ void Mode_Key_Select_Fun(void)
 void Mode_Key_Confirm_Fun(void)
 {
 
-   switch(mode_fun){
+   switch(gctl_t.select_main_fun_numbers){
 
       case ptc_fun:
-        if(pro_t.gTimer_pro_mode_key_timer < 4){
+    
 
 		    if(gctl_t.ptc_flag==0){
 				LED_PTC_ICON_ON(); 
@@ -464,18 +459,13 @@ void Mode_Key_Confirm_Fun(void)
 
 			}
 
-        }
-		else{
-
-			pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-		}
-
+        
+		
       break;
 
 	  case plasma_fun:
 	  	//KILL ICON LED
-	  	if(pro_t.gTimer_pro_mode_key_timer < 4){
+	  	
          	
 	        if(gctl_t.plasma_flag == 0){
 				gctl_t.plasma_flag=1;
@@ -488,20 +478,14 @@ void Mode_Key_Confirm_Fun(void)
 
      	    }
 			
-	  	}
-		else{
-
-		  pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-
-		}
+	 
 
 	  break;
 
 	  case rat_fun:
 
 	  //ULTRSONIC ICO LED
-	   if(pro_t.gTimer_pro_mode_key_timer < 4){
+	  
 
 	   	if(gctl_t.ultrasonic_flag ==0){ //30x10ms=300ms
 	   	    gctl_t.ultrasonic_flag=1;
@@ -511,12 +495,8 @@ void Mode_Key_Confirm_Fun(void)
 		   gctl_t.ultrasonic_flag=0;
 		   LED_RAT_ICON_OFF();
 		}
-	   }
-	   else{
-
-		 pro_t.mode_key_be_changed_flag=0; //modke key cycle of be change flag 
-
-	   }
+	   
+	  
 
 
 	  break;

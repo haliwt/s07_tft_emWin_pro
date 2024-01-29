@@ -21,6 +21,9 @@ static void Power_Off_Fun(void);
 
 static void Wifi_Fast_Led_Blink(void);
 
+static void TFT_Donnot_Set_Timer_Time(void);
+
+
 void bsp_Init(void);
 
 /*
@@ -192,33 +195,44 @@ static void TFT_Pocess_Command_Handler(void)
 		switch(pro_t.timer_mode_flag){
 
 			case timer_time: //timer_time 
-                if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
-					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-                    gctl_t.gSet_timer_minutes --;
 
-					if(gctl_t.gSet_timer_minutes <0){
-					   gctl_t.gSet_timer_minutes =59;
-                       gctl_t.gSet_timer_hours --;
-					   
+		       
+	                if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
+						gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+
+	                 
+					    gctl_t.gSet_timer_minutes --;
+
+						
+
+						if(gctl_t.gSet_timer_minutes <0){
+						   gctl_t.gSet_timer_minutes =59;
+	                       gctl_t.gSet_timer_hours --;
+						   
+
+						}
+						if(gctl_t.gSet_timer_hours < 0){
+
+							pro_t.gPower_On = power_off;
+
+						}
+					 
 
 					}
-					if(gctl_t.gSet_timer_hours < 0){
 
-						pro_t.gPower_On = power_off;
-
-					}
-
-				}
-				TFT_Disp_Set_TimerTime(0);
-
+				 
+					
+				 TFT_Disp_Set_TimerTime(0);
 			break;
 
 			case works_time:
 
 			if(gctl_t.gTimer_ctl_disp_second > 59){
 				TFT_Display_WorksTime();
-			}	
+			}
 
+			TFT_Donnot_Set_Timer_Time();
+    
 			break;
 
 			case timer_set_time:
@@ -246,10 +260,12 @@ static void TFT_Pocess_Command_Handler(void)
 							pro_t.timer_mode_flag = timer_time;
 							pro_t.mode_key_confirm_flag =0xff;
 							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+							gctl_t.timer_time_define_flag = 1;
 							pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
 
 						}
 						else{
+							gctl_t.timer_time_define_flag = 0;
 							pro_t.mode_key_confirm_flag =0xff;
 							pro_t.timer_mode_flag = works_time;
 						    pro_t.mode_key_be_changed_flag=0; //repeat set up tempeature value by TFT 
@@ -320,7 +336,7 @@ static void TFT_Pocess_Command_Handler(void)
 			case mode_key_temp:
 				
 
-			if(pro_t.gTimer_pro_mode_key_timer > 3){
+			if(pro_t.gTimer_pro_mode_key_timer > 4){
 
                   if(pro_t.gTimer_pro_set_tem_value_blink < 2){
 
@@ -355,10 +371,12 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case mode_key_select:
 
-		     if(pro_t.gTimer_pro_mode_key_timer < 5){ //exit of rule
+		     if(pro_t.gTimer_pro_mode_key_timer < 10){ //exit of rule
 
-				if(pro_t.timer_mode_flag == timer_time)pro_t.timer_mode_flag=works_time;
-				else pro_t.timer_mode_flag = timer_time;
+                if(gctl_t.timer_time_define_flag == 1){
+					if(pro_t.timer_mode_flag == timer_time)pro_t.timer_mode_flag=works_time;
+					else pro_t.timer_mode_flag = timer_time;
+                }
 				Mode_Key_Select_Fun();
              
 
@@ -366,6 +384,7 @@ static void TFT_Pocess_Command_Handler(void)
 			 else{
 
                 pro_t.mode_key_confirm_flag = 0xff;
+				pro_t.mode_key_be_changed_flag =0;
 
 			 }
 
@@ -374,20 +393,12 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 		   case mode_key_confirm:
-			  if(pro_t.gTimer_pro_mode_key_timer < 5){ //exit of rule
+			 
 
 				Mode_Key_Confirm_Fun();
+				pro_t.mode_key_confirm_flag = 0xff;
 
-
-			 }
-			 else{
-
-                pro_t.mode_key_confirm_flag = 0xff;
-
-			 }
-
-
-		   break;
+			break;
 
 
 		   default:
@@ -451,6 +462,8 @@ static void Power_On_Fun(void)
 
    pro_t.mode_key_confirm_flag=0xff;
    gctl_t.mode_flag = works_time;
+   gctl_t.timer_time_define_flag = 0;
+   //
    pro_t.timer_mode_flag =works_time;
    gctl_t.plasma_flag = 1;
    gctl_t.ultrasonic_flag =1;
@@ -476,11 +489,14 @@ static void Power_Off_Fun(void)
 
  
    gctl_t.mode_flag = 0;
+   
+   pro_t.mode_key_confirm_flag=0xff;
    gctl_t.plasma_flag = 0;
    gctl_t.ultrasonic_flag =0;
 
-
-
+	pro_t.timer_mode_flag=0;
+	
+    
     pro_t.wifi_led_fast_blink_flag=0;
 	
 
@@ -580,10 +596,11 @@ static void ADD_Key_Fun(void)
 		break;
 
 		case mode_key_select:
+			gctl_t.gTimer_ctl_select_led =0;
 			pro_t.gTimer_pro_mode_key_timer = 0;
-			gctl_t.select_main_fun_numbers++;
-			if(gctl_t.select_main_fun_numbers > 3){
-			gctl_t.select_main_fun_numbers = 1;
+			gctl_t.select_main_fun_numbers++; // 0,1,2
+			if(gctl_t.select_main_fun_numbers > 2){
+			gctl_t.select_main_fun_numbers = 0;
 			}
 
 
@@ -630,10 +647,6 @@ static void DEC_Key_Fun(void)
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
 	    
-	
-				
-              
-				
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
 				if(gctl_t.gSet_timer_hours  < 0){//if(pro_t.dispTime_minutes < 0){
 
@@ -647,14 +660,15 @@ static void DEC_Key_Fun(void)
 			break;
 
 			 case mode_key_select:
-				    pro_t.gTimer_pro_mode_key_timer = 0;
-					gctl_t.select_main_fun_numbers--;
-					if(gctl_t.select_main_fun_numbers < 0){
-						gctl_t.select_main_fun_numbers = 3;
-					}
-					
-				 pro_t.gTimer_pro_mode_key_timer = 0;	
-				break;
+				gctl_t.gTimer_ctl_select_led =0;
+				pro_t.gTimer_pro_mode_key_timer = 0;
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers < 0){
+					gctl_t.select_main_fun_numbers = 2;
+				}
+
+				pro_t.gTimer_pro_mode_key_timer = 0;	
+			break;
 
 	    	}
 	   	  }
@@ -918,6 +932,42 @@ wifi_led:	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
 	}
    }
 	
+}
+
+
+/**********************************************************************************************************
+    **
+    *Function Name:TFT_Donnot_Set_Timer_Time();
+    *Function : 记录设置的定时时间，
+    *Input Ref:
+    *Return Ref:NO
+    *
+*********************************************************************************************************/
+static void TFT_Donnot_Set_Timer_Time(void)
+{
+    if(gctl_t.timer_time_define_flag == 1){
+
+	if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
+		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+
+		gctl_t.gSet_timer_minutes --;
+
+		if(gctl_t.gSet_timer_minutes <0){
+		gctl_t.gSet_timer_minutes =59;
+		gctl_t.gSet_timer_hours --;
+
+
+		}
+		if(gctl_t.gSet_timer_hours < 0){
+
+			pro_t.gPower_On = power_off;
+
+		}
+
+	}
+
+   }
+
 }
 
 

@@ -20,7 +20,7 @@ typedef enum{
 
 typedef enum{
 
-   ptc_fun=0x01,
+   ptc_fun=0,
    plasma_fun,
    rat_fun
 
@@ -43,6 +43,7 @@ typedef struct _bsp_ctl{
    
     //time
    uint8_t disp_works_hours;
+   uint8_t timer_time_define_flag;
 
    
    uint8_t set_temp_has_been_flag;
