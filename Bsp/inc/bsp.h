@@ -101,7 +101,7 @@ typedef struct{
  
    //modke key
  
-   uint8_t mode_key_fun_select;
+   uint8_t mode_key_be_changed_flag;
    uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
 

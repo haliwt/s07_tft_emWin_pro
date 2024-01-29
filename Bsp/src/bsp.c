@@ -294,15 +294,15 @@ static void TFT_Pocess_Command_Handler(void)
 
 			if(pro_t.gTimer_pro_mode_key_timer > 3){
 
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
+                  if(pro_t.gTimer_pro_set_tem_value_blink < 3){
 
-					 TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);   
+					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);   
 
 
 				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 5){
+				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 2 && pro_t.gTimer_pro_set_tem_value_blink < 6){
 
-					  TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //don't display numbers 
+					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //don't display numbers 
 
 
 				  }
@@ -311,11 +311,12 @@ static void TFT_Pocess_Command_Handler(void)
                     led_blink_times++;
 				  }
 
-                  if(led_blink_times > 3){
+                  if(led_blink_times ==1){
 				  	led_blink_times=0;
 					  pro_t.mode_key_confirm_flag = 0xff;
 					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
 					  pro_t.set_temperature_value_flag= 1;
+					  pro_t.mode_key_be_changed_flag=0;
 
                   }
 
@@ -727,7 +728,14 @@ static void Ptc_Temperature_Compare_Value(void)
 
 }
 
-
+/**********************************************************************************************************
+    **
+    *Function Name:void Power_Key_Detected(void)
+    *Function : 
+    *Input Ref:lightNum--LED ,filterNum -filter number, unionNum - smart menu number
+    *Return Ref:NO
+    *
+*********************************************************************************************************/
 void Power_Key_Detected(void)
 {
    
@@ -781,9 +789,9 @@ void Mode_Key_Detected(void)
 {
 	if(MODE_KEY_StateRead() == KEY_DOWN && pro_t.long_key_flag ==0){
 
-		pro_t.mode_key_fun_select = pro_t.mode_key_fun_select ^ 0x01;
+		pro_t.mode_key_be_changed_flag = pro_t.mode_key_be_changed_flag ^ 0x01;
 		
-		if(pro_t.mode_key_fun_select == 1){
+		if(pro_t.mode_key_be_changed_flag == 1){
 		  Buzzer_KeySound();
 
 		  pro_t.mode_key_confirm_flag = mode_key_select;
@@ -808,7 +816,14 @@ void Mode_Key_Detected(void)
 
 }
 
-
+/**********************************************************************************************************
+    **
+    *Function Name:void Power_Key_Detected(void)
+    *Function : 
+    *Input Ref:lightNum--LED ,filterNum -filter number, unionNum - smart menu number
+    *Return Ref:NO
+    *
+*********************************************************************************************************/
 void ADD_Key_Detected(void)
 {
 	if(ADD_KEY_StateRead()==KEY_DOWN){
