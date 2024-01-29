@@ -105,7 +105,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 
-   static uint8_t power_been_flag,led_blink_times;
+   static uint8_t power_been_flag,led_blink_times,timer_blink_times;
   
    if(power_on_state() == power_on){
   
@@ -199,7 +199,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			    if(pro_t.gTimer_pro_mode_key_timer > 3 && pro_t.gTimer_pro_mode_key_timer < 7){
+			    if(pro_t.gTimer_pro_mode_key_timer > 3 ){
                     
                     if(pro_t.gTimer_pro_set_timer_time < 2){
 					     TFT_Disp_Set_TimerTime(0);
@@ -210,31 +210,28 @@ static void TFT_Pocess_Command_Handler(void)
 
 					}
 					else{
-
+						timer_blink_times++;
 						pro_t.gTimer_pro_set_timer_time=0;
 
 					}
-					
+					if(timer_blink_times > 2){
+						timer_blink_times =0;
+						if(gctl_t.gSet_timer_hours >0 ){
 
+							pro_t.timer_mode_flag = timer_time;
+							pro_t.mode_key_confirm_flag =0xff;
+							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+
+						}
+						else{
+							pro_t.mode_key_confirm_flag =0xff;
+							pro_t.timer_mode_flag = works_time;
+
+						}
+					}
 
 				}
-				else{
-
-					if(gctl_t.gSet_timer_hours >0){
-
-                        pro_t.timer_mode_flag = timer_time;
-						pro_t.mode_key_confirm_flag =0xff;
-						gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-
-					}
-					else{
-						pro_t.mode_key_confirm_flag =0xff;
-						pro_t.timer_mode_flag = works_time;
-
-					}
-					
-
-				}
+				
 				TFT_DonnotDisp_Works_Time();
 				
 				if(pro_t.gTimer_pro_long_key_timer_flag > 2){ //exit mode key for long time key  flag
@@ -524,7 +521,7 @@ static void ADD_Key_Fun(void)
 				     gctl_t.gSet_temperature_value=20;
 				}
 				
-				if( gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
+				if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
 
 				
                  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
