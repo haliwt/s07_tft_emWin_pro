@@ -437,11 +437,14 @@ static void TFT_Pocess_Command_Handler(void)
 		  
 		//  Ptc_Temperature_Compare_Value();
 		  
-	    if(wifi_state() ==1){
-			  pro_t.run_process_step=6;
-        }
-		else{
+	    if(wifi_state() ==0){
+		  
+			if(pro_t.mode_key_confirm_flag ==mode_key_select){
 
+				LED_WIFI_ICON_OFF();
+
+            }
+            else{
              switch(pro_t.wifi_led_fast_blink_flag){
 
 			 case 1:
@@ -464,14 +467,17 @@ static void TFT_Pocess_Command_Handler(void)
 					pro_t.gTimer_pro_wifi_led=0;
 					LED_WIFI_ICON_OFF();
 				}
-				pro_t.run_process_step=pro_mode_key_fun;
+				
 			 break;
 
              }
 
+            }
+			
+
 		}
 		  
-		 
+	   pro_t.run_process_step=pro_mode_key_fun;
 	 break;
 
 	case pro_mode_key_fun://5 //mode key function selection 
