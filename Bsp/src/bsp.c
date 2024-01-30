@@ -5,10 +5,10 @@ PRO_T pro_t;
 uint8_t led_blink_times;
 
 static void Ptc_Temperature_Compare_Value(void);
-static void Power_Key_Detected(void);
-static void Mode_Key_Detected(void);
-static void ADD_Key_Detected(void);
-static void DEC_Key_Detected(void);
+//static void Power_Key_Detected(void);
+//static void Mode_Key_Detected(void);
+//static void ADD_Key_Detected(void);
+//static void DEC_Key_Detected(void);
 
 
 
@@ -22,8 +22,8 @@ static void Power_Off_Fun(void);
 static void Wifi_Fast_Led_Blink(void);
 
 static void TFT_Donnot_Set_Timer_Time(void);
-static void ADD_Key_Fun(void);
-static void DEC_Key_Fun(void);
+//static void ADD_Key_Fun(void);
+//static void DEC_Key_Fun(void);
 
 
 void bsp_Init(void);
@@ -637,7 +637,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	*Return Ref:No
 	*
 ************************************************************************/
-static void ADD_Key_Fun(void)
+void ADD_Key_Fun(void)
 {
  
  if(power_on_state()==power_on){
@@ -705,7 +705,7 @@ static void ADD_Key_Fun(void)
 	*Return Ref:No
 	*
 ************************************************************************/
-static void DEC_Key_Fun(void)
+void DEC_Key_Fun(void)
 {
 
 	if(power_on_state() ==power_on){
@@ -859,15 +859,16 @@ void NORMAL_KEY_2_Handler(void)
 	if(!pro_t.gTimer_pro_detect_key_ms) return ;
 
 	pro_t.gTimer_pro_detect_key_ms=0;
- 
-	Power_Key_Detected();
-	Mode_Key_Detected();
-	ADD_Key_Detected();
-	DEC_Key_Detected();
+// 
+//	Power_Key_Detected();
+//	Mode_Key_Detected();
+//	ADD_Key_Detected();
+//	DEC_Key_Detected();
 
 
 
 }
+#if 0
 /**********************************************************************************************************
     **
     *Function Name:void Power_Key_Detected(void)
@@ -970,22 +971,22 @@ void Mode_Key_Detected(void)
 *********************************************************************************************************/
 void ADD_Key_Detected(void)
 {
-	if(ADD_KEY_StateRead()==KEY_DOWN){
+//	if(ADD_KEY_StateRead()==KEY_DOWN){
           ADD_Key_Fun();
-    }
+ //   }
 
 
 }
 void DEC_Key_Detected(void)
 {
-	 if(DEC_KEY_StateRead()==KEY_DOWN){
+	// if(DEC_KEY_StateRead()==KEY_DOWN){
 	 	
 
 		 DEC_Key_Fun();
-	 }
+	// }
 
 }
-
+#endif 
 static void Wifi_Fast_Led_Blink(void)
 {
    if(pro_t.wifi_led_fast_blink_flag==1){

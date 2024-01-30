@@ -163,109 +163,76 @@ uint8_t KEY_Scan(void)
 *
 *********************************************************************/
 #if INTERRUPT_KEY
-void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
+void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
-   //static uint16_t key_power_counter,add_key_counter,dec_key_counter;
  
-    uint16_t K1,K2;
 	switch(GPIO_Pin){
 
 	case KEY_POWER_Pin:
 
-		if(POWER_KEY_VALUE() == KEY_DOWN && power_on_state() ==0){
-
-			//while(POWER_KEY_VALUE() == KEY_DOWN);
-
-			gctl_t.gKey_value = power_on;
-			//pro_t.gPower_On=1;
-			K1=0;
-		}
-//		else if(POWER_KEY_VALUE() == KEY_DOWN && gctl_t.gKey_value == power_on){
-//
-//		    while(POWER_KEY_VALUE() == KEY_DOWN){
-//
-//               K1++;
-//			   if(K1 > 60000){
-//                  K1= 0;
-//				 //gctl_t.wifi_flag =1;
-//				  gctl_t.gKey_value = wifi_fun_on;
-//                  return ;
-//              
-//			   }
-//			}
-//			K1=0;
-//			//pro_t.gPower_On=0;
-//			gctl_t.gKey_value = power_off;
-//
-//		}
-
-
+	     if(POWER_KEY_VALUE() ==KEY_DOWN){ 
+           if( pro_t.gPower_On == power_off){
+		  	  pro_t.key_power_be_pressed_flag =1;
+	
+			 pro_t.gPower_On = power_on;   
+            pro_t.long_key_flag =0;
+            pro_t.run_process_step=0;
+			 pro_t.buzzer_sound_flag = 1;
+			
+		  }
+		  else{
+		  	 pro_t.buzzer_sound_flag = 1;
+                pro_t.key_power_be_pressed_flag =1;
+	           pro_t.long_key_flag =0;
+			 
+			   pro_t.gPower_On = power_off;   
+	         
+			 //  Power_Off_Fun();
+		
+		    pro_t.run_process_step=0xff;
+			  
+			  
+           }
+	     }
+		
     break;
 
 	case KEY_MODE_Pin:
 
+		  //Buzzer_KeySound();
+	      pro_t.buzzer_sound_flag = 1;
+		  pro_t.mode_key_confirm_flag = mode_key_select;
+		  gctl_t.select_main_fun_numbers++; // 0,1,2
+		  if(gctl_t.select_main_fun_numbers > 2){
+			gctl_t.select_main_fun_numbers = 0;
+		   }
 
-	if(MODE_KEY_VALUE() ==KEY_DOWN && power_on_state()==1 ){
+	
+		  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+		  gctl_t.gTimer_ctl_select_led =0;
 
-//        while(ADD_KEY_VALUE() ==KEY_DOWN){
-//            K2++;
-//		
-//			if(K2 > 60000){
-//                  K2= 0;
-//
-//				 gctl_t.key_set_timer_flag =set_timer_fun_on;
-//				
-//                 return ;
-//              
-//			}
-//		}
-       
-		//gctl_t.gKey_command_tag = ADD_KEY_ITEM;
-		if(gctl_t.gAi_flag == mode_ai){
-		     gctl_t.gKey_value = mode_no_ai;
-		}
-	    else{
-			gctl_t.gKey_value = mode_ai;
-		}
 		
 
-	}
+	
 	break;
 
 	case KEY_DEC_Pin:
 
-	if(DEC_KEY_VALUE() ==KEY_DOWN &&  power_on_state()==1){
-
-	   // while(DEC_KEY_VALUE() == KEY_DOWN);
-
-		//gctl_t.gKey_command_tag = DEC_KEY_ITEM;
-		gctl_t.gKey_value = dec_key;
-	
-	}
+	DEC_Key_Fun();
 
 	break;
 
 
 	case KEY_ADD_Pin:
 
-	if(ADD_KEY_VALUE() == KEY_DOWN && power_on_state() ==power_on){
-
-       // while(ADD_KEY_VALUE() == KEY_DOWN);
-
-		
-		gctl_t.gKey_value = add_key;
-
-	}
+	ADD_Key_Fun();
 
 
 	break;
-
-
-
-	}
-
+	
 }
 
+}
 #endif 
 
 /***********************************************************

@@ -126,7 +126,7 @@ int main(void)
 	#if NORMAL_KEY                   
 	keyvalue = ReadKey();
 	Key_Process_Handler(keyvalue);
-	#else
+	//#else
      NORMAL_KEY_2_Handler();
 
 	#endif 

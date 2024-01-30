@@ -170,7 +170,8 @@ void TFT_Process_Handler(void);
 
 void NORMAL_KEY_2_Handler(void);
 
-
+void ADD_Key_Fun(void);
+void DEC_Key_Fun(void);
 
 
 
