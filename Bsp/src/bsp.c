@@ -851,6 +851,23 @@ static void Ptc_Temperature_Compare_Value(void)
 
 }
 
+
+void NORMAL_KEY_2_Handler(void)
+{
+     
+    
+	if(!pro_t.gTimer_pro_detect_key_ms) return ;
+
+	pro_t.gTimer_pro_detect_key_ms=0;
+ 
+	Power_Key_Detected();
+	Mode_Key_Detected();
+	ADD_Key_Detected();
+	DEC_Key_Detected();
+
+
+
+}
 /**********************************************************************************************************
     **
     *Function Name:void Power_Key_Detected(void)

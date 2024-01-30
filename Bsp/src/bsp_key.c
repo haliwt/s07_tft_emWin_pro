@@ -325,7 +325,7 @@ uint8_t ReadKey(void)
 		K4++;
 	}
 	//be detected of key release .
-    if(POWER_KEY_VALUE()==KEY_UP && MODE_KEY_VALUE()==KEY_UP \
+    else if(POWER_KEY_VALUE()==KEY_UP && MODE_KEY_VALUE()==KEY_UP \
 
       && DEC_KEY_VALUE()==KEY_UP && ADD_KEY_VALUE()==KEY_UP && pro_t.long_key_flag ==0){ //oneself key 
 		cnt++;

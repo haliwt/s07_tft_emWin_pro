@@ -123,8 +123,14 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
+	#if NORMAL_KEY                   
 	keyvalue = ReadKey();
 	Key_Process_Handler(keyvalue);
+	#else
+     NORMAL_KEY_2_Handler();
+
+	#endif 
+	
 	TFT_Process_Handler();
 	WIFI_Process_Handler();
 	

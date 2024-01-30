@@ -168,6 +168,7 @@ void bsp_Idle(void);
 void Key_Process_Handler(uint8_t keyvalue);
 void TFT_Process_Handler(void);
 
+void NORMAL_KEY_2_Handler(void);
 
 
 
