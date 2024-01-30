@@ -28,6 +28,8 @@ static void DEC_Key_Fun(void);
 
 void bsp_Init(void);
 
+uint16_t power_off_counter;
+
 /*
 *********************************************************************************************************
 *	函 数 名: bsp_Idle
@@ -120,17 +122,17 @@ void Key_Process_Handler(uint8_t keyvalue)
 
 			}
 			else{
-				pro_t.buzzer_sound_flag = 1;
-				pro_t.key_power_be_pressed_flag =1;
-				pro_t.long_key_flag =0;
-
-				pro_t.gPower_On = power_off;   
-
-				//  Power_Off_Fun();
-
-				pro_t.run_process_step=0xff;
-
-
+//				pro_t.buzzer_sound_flag = 1;
+//				pro_t.key_power_be_pressed_flag =1;
+//				pro_t.long_key_flag =0;
+//
+//				pro_t.gPower_On = power_off;   
+//
+//				//  Power_Off_Fun();
+//
+//				pro_t.run_process_step=0xff;
+                
+				power_off_counter++;
 			}
 
 	    break;
@@ -209,7 +211,8 @@ void TFT_Process_Handler(void)
 static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
-
+	static uint8_t power_been_flag,timer_blink_times;
+   
    if(pro_t.buzzer_sound_flag ==1){
 	   pro_t.buzzer_sound_flag=0;
 	   Buzzer_KeySound();
@@ -217,7 +220,7 @@ static void TFT_Pocess_Command_Handler(void)
 
    } 
 
-   static uint8_t power_been_flag,timer_blink_times;
+   
   
    if(power_on_state() == power_on){
   
@@ -574,7 +577,7 @@ static void Power_Off_Fun(void)
 
  
    gctl_t.mode_flag = 0;
-   
+   pro_t.gPower_On = power_off;
    pro_t.mode_key_confirm_flag=0xff;
    gctl_t.plasma_flag = 0;
    gctl_t.ultrasonic_flag =0;

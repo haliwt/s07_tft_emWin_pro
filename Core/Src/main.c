@@ -32,7 +32,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+uint8_t keyvalue;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -123,7 +123,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
-	Key_Process_Handler();
+	keyvalue = ReadKey();
+	Key_Process_Handler(keyvalue);
 	TFT_Process_Handler();
 	WIFI_Process_Handler();
 	

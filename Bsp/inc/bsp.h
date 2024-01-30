@@ -86,6 +86,16 @@ typedef enum{
 }process_run_state;
 
 
+typedef enum{
+
+   power_off,
+   power_on,
+
+
+
+}state_power_enum;
+
+
 
 
 typedef struct{
@@ -96,12 +106,15 @@ typedef struct{
    uint8_t long_key_flag;
    uint8_t run_process_step;
    uint8_t key_power_be_pressed_flag ;
+
+   //buzzer
+   uint8_t buzzer_sound_flag;
   
    //time
  
    //modke key
  
-   uint8_t mode_key_be_changed_flag;
+
    uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
 
@@ -139,6 +152,7 @@ typedef struct{
   uint8_t gTimer_pro_mode_key_timer;
   uint8_t gTimer_pro_set_tem_value_blink;
   uint8_t gTimer_pro_set_timer_time;
+  uint8_t gTimer_pro_detect_key_ms ;
 	
 
 }PRO_T;
@@ -151,7 +165,7 @@ void bsp_Init(void);
 
 void bsp_Idle(void);
 
-void Key_Process_Handler(void);
+void Key_Process_Handler(uint8_t keyvalue);
 void TFT_Process_Handler(void);
 
 

@@ -25,6 +25,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(tm1 > 9){
 		tm1=0;
 		gctl_t.gTimer_ctl_select_led++;
+	    pro_t.gTimer_pro_detect_key_ms = 1;
 	}
 	
 	

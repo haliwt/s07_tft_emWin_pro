@@ -4,8 +4,8 @@
 
 
 #define INTERRUPT_KEY                0
-#define NORMAL_KEY                   0
-#define NORMAL_KEY_2                 1
+#define NORMAL_KEY                   1
+#define NORMAL_KEY_2                 0
 #define NORMAL_KEY_3                 0
 
 #define POWER_KEY_VALUE()            HAL_GPIO_ReadPin(KEY_POWER_GPIO_Port,KEY_POWER_Pin)
@@ -66,16 +66,10 @@ typedef enum{
 
 typedef enum{
 
-   power_off,
-   power_on,
-   wifi_fun_on,
-   set_timer_fun_on,
-   mode_id,
-   mode_ai,
-   mode_no_ai,
-   add_key,
-   dec_key,
-   power_id
+   power_key_id =0x01,
+   mode_key_id,
+   add_key_id,
+   dec_key_id
    
 
 }key_input_state;

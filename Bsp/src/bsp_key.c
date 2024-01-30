@@ -280,21 +280,26 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
 uint8_t ReadKey(void)
 {
 
-//	if(POWER_KEY_VALUE() == KEY_DOWN && pro_t.long_key_flag ==0){ //KEY1 =POWER_KEY ,KEY2 = MODES
-//			cnt = 0;
-//			pro_t.long_key_flag =0;
-//			K1++;
-//			if(K1 > 1990000 && pro_t.gPower_On ==power_on){
-//	               K1= 0;
-//				//gctl_t.wifi_flag =1;
-//				  pro_t.long_key_flag =1;
-//				  gctl_t.gKey_value = wifi_fun_on;
-//	              return   wifi_fun_on;
-//	              
-//			}
-//	}
-//	else
-	if(MODE_KEY_VALUE() ==KEY_DOWN  && pro_t.long_key_flag ==0 && power_on_state() == power_on){
+    uint8_t value0;
+	if(!pro_t.gTimer_pro_detect_key_ms) return value0;
+
+	 pro_t.gTimer_pro_detect_key_ms=0;
+
+
+	if(HAL_GPIO_ReadPin(KEY_POWER_GPIO_Port,KEY_POWER_Pin) == KEY_DOWN && pro_t.long_key_flag ==0){ //KEY1 =POWER_KEY ,KEY2 = MODES
+			cnt = 0;
+			pro_t.long_key_flag =0;
+			K1++;
+			if(K1 > 1990000 && pro_t.gPower_On ==power_on){
+	               K1= 0;
+				//gctl_t.wifi_flag =1;
+				  pro_t.long_key_flag =1;
+				 // gctl_t.gKey_value = wifi_fun_on;
+	              return   KEY_POWER_LONG_DOWN;
+	              
+			}
+	}
+	else if(HAL_GPIO_ReadPin(KEY_MODE_GPIO_Port,KEY_MODE_Pin)==KEY_DOWN  && pro_t.long_key_flag ==0 && power_on_state() == power_on){
 	  		cnt = 0;
 			K2++;   //Confirm_key press
 		
@@ -305,36 +310,44 @@ uint8_t ReadKey(void)
 				 
 				  pro_t.long_key_flag =1;
 				  
-				  return set_timer_fun_on;
+				  return KEY_MODE_LONG_DOWN;
 	            }
 
 
 	 }
-	 else if(DEC_KEY_VALUE() == KEY_DOWN && power_on_state() == power_on){
+	 else if(HAL_GPIO_ReadPin(KEY_DEC_GPIO_Port,KEY_DEC_Pin)== KEY_DOWN && power_on_state() == power_on){
 	       cnt =0;
 		   K3++;
 	       
 	}
-	else if(ADD_KEY_VALUE() == KEY_DOWN && power_on_state() == power_on){
+	else if(HAL_GPIO_ReadPin(KEY_ADD_GPIO_Port,KEY_ADD_Pin) == KEY_DOWN && power_on_state() == power_on){
 		cnt =0;
 		K4++;
 	}
-    else if(POWER_KEY_VALUE()==0 && MODE_KEY_VALUE()==0 \
+	//be detected of key release .
+    if(POWER_KEY_VALUE()==KEY_UP && MODE_KEY_VALUE()==KEY_UP \
 
-      && DEC_KEY_VALUE()==0 && ADD_KEY_VALUE()==0 && pro_t.long_key_flag ==0){ //oneself key 
+      && DEC_KEY_VALUE()==KEY_UP && ADD_KEY_VALUE()==KEY_UP && pro_t.long_key_flag ==0){ //oneself key 
 		cnt++;
-		if(cnt<500){ //按键松开消抖,一定要大于短按键次数 > 20
+		if(cnt<50){ //按键松开消抖,一定要大于短按键次数 > 20
 		    return 0; 
 
 		}
-		
+//		
 		cnt = 0;//
-		//POWER_KEY
-		
 
-		//MODE_KEY
-		if(K2>495 ){//short time modes press 
-            value2 = mode_id;
+       if(K1>600){
+
+
+          value1 = power_key_id;
+	   }
+	   else{
+
+          value1 =0;
+	   }
+	
+		if(K2>600 ){//short time modes press 
+            value2 = mode_key_id;
 			
 
 		}
@@ -343,8 +356,8 @@ uint8_t ReadKey(void)
 		}
 
 		//DEC_CONFIRM 
-		if(K3>495 ){//short time modes press 
-            value3 = dec_key;
+		if(K3>600 ){//short time modes press 
+            value3 = dec_key_id;
 			
 
 		}
@@ -354,8 +367,8 @@ uint8_t ReadKey(void)
 
 		
 		//ADD_KEY
-		if(K4>495){//short time modes press 
-			value4 = add_key;
+		if(K4>600){//short time modes press 
+			value4 = add_key_id;
 			
 		
 		}
@@ -363,26 +376,19 @@ uint8_t ReadKey(void)
 		  value4 = 0;
 		}
 
-		if(K1>495){ //KEY_FUN
-			value1 = power_id;	//short time power press ---power on 
-			
-		}
-		else{
-			value1 = 0;
-
-		}
-
+		
 		
 		 	
 		
 		K1 = 0;
 		K2 = 0;
-		K3 =0 ;
-		K4 =0;
+		K3 = 0 ;
+		K4 = 0;
 
 		return (value1+value2+value3+value4);
 	}
 
+   
    //judge key combination
     #if 0
 	if((K1==500) && (K2<50)) //combination key 
