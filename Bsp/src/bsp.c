@@ -24,6 +24,8 @@ static void Wifi_Fast_Led_Blink(void);
 static void TFT_Donnot_Set_Timer_Time(void);
 //static void ADD_Key_Fun(void);
 //static void DEC_Key_Fun(void);
+static void Key_Interrup_Handler(void);
+
 
 
 void bsp_Init(void);
@@ -198,7 +200,71 @@ void Key_Process_Handler(uint8_t keyvalue)
 */
 void TFT_Process_Handler(void)
 {
+	if(pro_t.buzzer_sound_flag ==1){
+		pro_t.buzzer_sound_flag=0;
+		Buzzer_KeySound();
+	}
+	Key_Interrup_Handler();
 	TFT_Pocess_Command_Handler();
+}
+/******************************************************************************
+	*
+	*Function Name:void TFT_Pocess_Command_Handler(void)
+	*Funcion: display of TFT lcd 
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+******************************************************************************/
+static void Key_Interrup_Handler(void)
+{
+     switch(pro_t.gKey_value){
+
+         case power_key_id:
+		 	
+//		 	if(pro_t.buzzer_sound_flag ==1){
+//			   pro_t.buzzer_sound_flag=0;
+//			   Buzzer_KeySound();
+//			}
+
+		  pro_t.gKey_value =0XFF;
+
+		 break;
+
+		 
+		 case mode_key_id:
+//		    if(pro_t.buzzer_sound_flag ==1){
+//				pro_t.buzzer_sound_flag=0;
+//				Buzzer_KeySound();
+//		    }
+           pro_t.gKey_value =0XFF;
+
+		 break;
+
+		 case add_key_id:
+		 	
+		 	
+			 DEC_Key_Fun();
+
+			  pro_t.gKey_value =0XFF;
+
+		break;
+
+		case dec_key_id:
+//			if(pro_t.buzzer_sound_flag ==1){
+//			   pro_t.buzzer_sound_flag=0;
+//			   Buzzer_KeySound();
+//			}
+			ADD_Key_Fun();
+
+			 pro_t.gKey_value =0XFF;
+
+
+		break;
+
+
+	 }
+
+
 }
 /******************************************************************************
 	*
@@ -213,15 +279,8 @@ static void TFT_Pocess_Command_Handler(void)
    //key input run function
 	static uint8_t power_been_flag,timer_blink_times;
    
-   if(pro_t.buzzer_sound_flag ==1){
-	   pro_t.buzzer_sound_flag=0;
-	   Buzzer_KeySound();
-
-
-   } 
-
-   
   
+
    if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
@@ -229,7 +288,6 @@ static void TFT_Pocess_Command_Handler(void)
 
 	 case 0:
 		Power_On_Fun();
-		Buzzer_KeySound();
 
 		pro_t.long_key_flag =0;
 		pro_t.key_power_be_pressed_flag =0;

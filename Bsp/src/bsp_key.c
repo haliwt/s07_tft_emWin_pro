@@ -178,6 +178,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
 			 pro_t.buzzer_sound_flag = 1;
+			 pro_t.gKey_value= power_key_id;
 			
 		  }
 		  else{
@@ -186,10 +187,10 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 	           pro_t.long_key_flag =0;
 			 
 			   pro_t.gPower_On = power_off;   
-	         
-			 //  Power_Off_Fun();
+	           pro_t.gKey_value= power_key_id;
+			
 		
-		    pro_t.run_process_step=0xff;
+		   		 pro_t.run_process_step=0xff;
 			  
 			  
            }
@@ -199,33 +200,36 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 	case KEY_MODE_Pin:
 
-		  //Buzzer_KeySound();
-	      pro_t.buzzer_sound_flag = 1;
-		  pro_t.mode_key_confirm_flag = mode_key_select;
-		  gctl_t.select_main_fun_numbers++; // 0,1,2
-		  if(gctl_t.select_main_fun_numbers > 2){
-			gctl_t.select_main_fun_numbers = 0;
-		   }
-
-	
-		  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-		  gctl_t.gTimer_ctl_select_led =0;
+		  if(MODE_KEY_VALUE() ==KEY_DOWN){
+		      pro_t.buzzer_sound_flag = 1;
+			  pro_t.mode_key_confirm_flag = mode_key_select;
+			  gctl_t.select_main_fun_numbers++; // 0,1,2
+			  if(gctl_t.select_main_fun_numbers > 2){
+				gctl_t.select_main_fun_numbers = 0;
+			   }
+			   
 
 		
+			  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+			  gctl_t.gTimer_ctl_select_led =0;
 
+		
+		  }
 	
 	break;
 
 	case KEY_DEC_Pin:
-
-	DEC_Key_Fun();
+	pro_t.buzzer_sound_flag = 1;
+     pro_t.gKey_value = dec_key_id;
+	//DEC_Key_Fun();
 
 	break;
 
 
 	case KEY_ADD_Pin:
-
-	ADD_Key_Fun();
+	  pro_t.buzzer_sound_flag = 1;
+      pro_t.gKey_value = add_key_id;
+	//ADD_Key_Fun();
 
 
 	break;
