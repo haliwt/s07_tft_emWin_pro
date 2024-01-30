@@ -166,6 +166,10 @@ uint8_t KEY_Scan(void)
 void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
  
+    
+   if(!pro_t.gTimer_pro_detect_key_ms) return ;
+
+	pro_t.gTimer_pro_detect_key_ms=0;
 	switch(GPIO_Pin){
 
 	case KEY_POWER_Pin:
