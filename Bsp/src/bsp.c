@@ -709,7 +709,7 @@ void ADD_Key_Fun(void)
 	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
 		//Buzzer_KeySound();
-		pro_t.buzzer_sound_flag = 1;
+		//pro_t.buzzer_sound_flag = 1;
 
 		switch(pro_t.mode_key_confirm_flag){
 
@@ -776,7 +776,7 @@ void DEC_Key_Fun(void)
 	   	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
 
 			//Buzzer_KeySound();
-			pro_t.buzzer_sound_flag = 1;
+			//pro_t.buzzer_sound_flag = 1;
 	   	
 	     switch(pro_t.mode_key_confirm_flag){
 
