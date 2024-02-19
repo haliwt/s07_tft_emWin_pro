@@ -113,8 +113,7 @@ typedef struct{
    //time
  
    //modke key
- 
-
+   uint8_t mode_key_pressed_flag;
    uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
 
@@ -153,6 +152,7 @@ typedef struct{
   uint8_t gTimer_pro_set_tem_value_blink;
   uint8_t gTimer_pro_set_timer_time;
   uint8_t gTimer_pro_detect_key_ms ;
+  uint8_t gTimer_pro_mode_key_adjust;
 	
 
 }PRO_T;

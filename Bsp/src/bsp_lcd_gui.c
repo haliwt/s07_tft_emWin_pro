@@ -52,10 +52,7 @@ void TFT_Display_Handler(void)
 ***********************************************************************************************/
 void TFT_Display_Temp_Symbol(void)
 {
-
-   
-
-	TFT_Disp_Temp_Symbol_24_24(130,40); //temp symbol 
+   TFT_Disp_Temp_Symbol_24_24(130,40); //temp symbol 
 #if TFT_DISP_TEMP_24
 	TFT_Disp_Temp_24_24_onBlack(122,10,2); //temp symbol 
 
@@ -112,7 +109,7 @@ void TFT_Display_WorksTime(void)
         if(gctl_t.disp_works_minutes>59){
             gctl_t.disp_works_minutes=0;
             gctl_t.disp_works_hours++;
-            if(gctl_t.disp_works_hours > 23){
+            if(gctl_t.disp_works_hours > 99){
                 gctl_t.disp_works_hours=0;
             }
         }
@@ -126,8 +123,8 @@ void TFT_Display_WorksTime(void)
     //display works of words of chines 
     TFT_Disp_WorksTime_24_24_onBlack(112,150,0,0);//works one "工"
 	TFT_Disp_WorksTime_24_24_onBlack(136,150,0,1);//works tow "作"
-	TFT_Disp_WorksTime_24_24_onBlack(160,150,0,2);//
-	TFT_Disp_WorksTime_24_24_onBlack(184,150,0,3);//
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,0,2);//"时"
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,0,3);//“间”
 	
 	//works time value
 	
@@ -147,7 +144,7 @@ void TFT_DonnotDisp_Works_Time(void)
 		   if(gctl_t.disp_works_minutes>59){
 			   gctl_t.disp_works_minutes=0;
 			   gctl_t.disp_works_hours++;
-			   if(gctl_t.disp_works_hours > 23){
+			   if(gctl_t.disp_works_hours > 99){
 				   gctl_t.disp_works_hours=0;
 			   }
 		   }
@@ -158,7 +155,7 @@ void TFT_DonnotDisp_Works_Time(void)
  * 
  * Function Name: static void TFT_Disp_Set_TimerTime(void)
  * Function: set timer time of TFT of numbers blink.
- * Input Ref:
+ * Input Ref: bc : 1-don't display numbers, 0-display numbers
  * Return Ref:
  * 
 *********************************************************************************/
@@ -166,6 +163,7 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
 {
 
    static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
+   static uint8_t set_timer_hours=0xff,set_timer_minutes=0xff;
 
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
@@ -173,23 +171,29 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
 	timer_decade_minutes = gctl_t.gSet_timer_minutes / 10;
 	timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
 
-    //display works of words of chines 
-    TFT_Disp_WorksTime_24_24_onBlack(112,150,1,0);//works one "定时时间"
-	TFT_Disp_WorksTime_24_24_onBlack(136,150,1,1);//
-	TFT_Disp_WorksTime_24_24_onBlack(160,150,1,2);//
-	TFT_Disp_WorksTime_24_24_onBlack(184,150,1,3);//
+    //display works of words of chinese 
+    TFT_Disp_WorksTime_24_24_onBlack(112,150,1,0);//works one "定"
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,1,1);//"时"
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,1,2);//“时”
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,1,3);//“间”
 	
 	//works time value
+	if(set_timer_hours != gctl_t.gSet_timer_hours){
+		set_timer_hours = gctl_t.gSet_timer_hours;
 	
 	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,bc,timer_decade_hours);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,bc,timer_unit_hours);
 //	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
-	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
-
+	}
+	
+    if(set_timer_minutes !=gctl_t.gSet_timer_minutes){
+		set_timer_minutes = gctl_t.gSet_timer_minutes;
+		
+		TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
+		TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+    }
 
 }
-
 /********************************************************************************
  * 
  * Function Name: void TFT_Disp_Timer_Split_Symbol(void)
@@ -354,78 +358,6 @@ void TFT_St7789_FillBlock(uint16_t xstart,uint16_t ystart,uint16_t block_width,u
         }
     }
 }
-/*******************************************************************************************
-*
-* Function Name:void TFT_ST7789_FillPicture(uint32_t xstart,uint32_t ystart,uint32_t block_width,uint32_t block_height,uint32_t *black_data)
-* Function : fill picture 
-* Input Ref: xstart,ystart ->start pointer, picture of block_width,picture of block_height
-*            block_data is picture of array of data
-* Return Ref: NO
-*
-******************************************************************************************/
-#if 0
-void TFT_ST7789_FillPicture(uint16_t xstart,uint16_t ystart,uint16_t block_width,uint16_t block_height,const uint8_t *block_data)
-{
-   uint16_t i,j;
-  
-   // TFT_SetWindow(xstart,ystart,(xstart+block_width-1),(ystart+block_height-1));
-  // LCD_Address_Set(xstart,ystart,block_width,block_height);
-   if(z==9600)z=0;
-   DISP_WINDOWS();
-
-  for(i=0;i<block_width;i++){
-
-       for(j=0;j<block_height;j++){
-         
-         LCD_Write_Data(*(block_data +z));
-		 z++;
-		 LCD_Write_Data(*(block_data+z));
-		 z++;
-		 if(z==9600)z=0;
-		
-	     
-	   }
-
-
-
-  }
-}
-#endif 
-
-
-/**********************************************************************
- * Function Name:void TFT_ShowString(u16 x,u16 y,char *str,u8 fw,u8 fh,u8 mode)
- * Function: 在指定位置开始显示一个字符串,支持自动换行
- * Input Ref: (x,y):起始坐标,width,height:区域
-            //str  :字符串
-            //fw:字宽
-            //fh:字高
-            //mode:0,非叠加方式;1,叠加方式
- * Return Ref: NO 
-**********************************************************************/
-//void TFT_ShowString(uint16_t x,uint16_t y,char *str,uint8_t fw,uint8_t fh,uint8_t mode)
-//{
-//    while((*str<='~')&&(*str>=' '))//判断是不是非法字符!
-//    {
-//        if(x>(LCD_Width-(fw))) {
-//            x=0;
-//            y+=fh;
-//        }
-//        if(y>(LCD_Height-fh)) {
-//            y=x=0;   //TFT_Clear();
-//        }
-//        TFT_ShowChar(x,y,*str,fw,fh,mode);
-//        x+=fw;
-//        str++;
-//    }
-//}
-
-/***************************************************************************************
- * @brief       指定的区域填充颜色块
- * @param       (sx,sy),(ex,ey):填充矩形对角坐标，区域大小:(ex - sx + 1) * (ey - sy + 1)
- * @param       color: 填充颜色的首地址
- * @retval      ÎÞ
- ***************************************************************************************/
 
 /*********************************************************************
  * 

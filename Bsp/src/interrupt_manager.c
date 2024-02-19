@@ -56,6 +56,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_tem_value_blink++;
 	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
 	  pro_t.gTimer_pro_set_timer_time++;
+	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  
 	  
 	 

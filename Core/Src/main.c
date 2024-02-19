@@ -127,12 +127,12 @@ int main(void)
 	keyvalue = ReadKey();
 	Key_Process_Handler(keyvalue);
 	//#else
-     NORMAL_KEY_2_Handler();
+    NORMAL_KEY_2_Handler();
 
 	#endif 
-	
-	TFT_Process_Handler();
-	WIFI_Process_Handler();
+
+   TFT_Process_Handler();
+   WIFI_Process_Handler();
 	
 	
   }
