@@ -88,95 +88,6 @@ void bsp_Idle(void)
 	/* 例如 uIP 协议，可以插入uip轮询函数 */
 	//TOUCH_CapScan();
 }
-
-
-/*
-*********************************************************************************************************
-*	函 数 名: void Key_Process_Handler(void)
-*	功能说明: 处理按键输入和输出
-*			 
-*	形    参: 无
-*	返 回 值: 无
-*********************************************************************************************************
-*/
-#if 0
-void Key_Process_Handler(uint8_t keyvalue)
-{
-    static uint8_t key_flag;
-    switch(keyvalue){
-
-		case power_key_id:
-
-	      key_flag = key_flag ^ 0x01;
-
-	      if(key_flag ==1){
-
-		
-				pro_t.key_power_be_pressed_flag =1;
-
-				pro_t.gPower_On = power_on;   
-				pro_t.long_key_flag =0;
-				pro_t.run_process_step=0;
-				pro_t.buzzer_sound_flag = 1;
-
-			}
-			else{
-//				pro_t.buzzer_sound_flag = 1;
-//				pro_t.key_power_be_pressed_flag =1;
-//				pro_t.long_key_flag =0;
-//
-//				pro_t.gPower_On = power_off;   
-//
-//				//  Power_Off_Fun();
-//
-//				pro_t.run_process_step=0xff;
-                
-				power_off_counter++;
-			}
-
-	    break;
-
-		case mode_key_id:
-
-				
-			//Buzzer_KeySound();
-				pro_t.buzzer_sound_flag = 1;
-				pro_t.mode_key_confirm_flag = mode_key_select;
-				gctl_t.select_main_fun_numbers++; // 0,1,2
-				if(gctl_t.select_main_fun_numbers > 2){
-				gctl_t.select_main_fun_numbers = 0;
-				}
-
-		
-				pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-				gctl_t.gTimer_ctl_select_led =0;
-		   
-			   
-		   
-		
-		   if(pro_t.long_key_flag ==1){
-			  Buzzer_KeySound();
-			  pro_t.gTimer_pro_mode_key_timer=0;
-			  Mode_Long_Key_Fun();
-			 
-		
-		   }
-
-		break;
-
-		case add_key_id:
-			 DEC_Key_Fun();
-
-		break;
-
-		case dec_key_id:
-			ADD_Key_Fun();
-
-
-		break;
-	}
-}
-#endif 
 /*
 *********************************************************************************************************
 *
@@ -193,6 +104,44 @@ void TFT_Process_Handler(void)
 		pro_t.buzzer_sound_flag=0;
 		Buzzer_KeySound();
 	}
+
+    if(pro_t.key_power_be_pressed_flag==1){
+         if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
+            pro_t.key_power_be_pressed_flag =0;
+			pro_t.gTimer_pro_wifi_led =0;
+            pro_t.wifi_led_fast_blink_flag=1;
+			
+			 
+        }
+
+		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
+
+            pro_t.key_power_be_pressed_flag=0;
+            if( pro_t.gPower_On == power_off){
+				
+			 pro_t.gPower_On = power_on;   
+            pro_t.long_key_flag =0;
+            pro_t.run_process_step=0;
+			Buzzer_KeySound();
+
+		
+			
+		  }
+		  else{
+			 Buzzer_KeySound();
+  
+	         pro_t.long_key_flag =0;
+			 
+			 pro_t.gPower_On = power_off;   
+	         pro_t.gKey_value= power_key_id;
+			   
+			pro_t.run_process_step=0xff;
+			  
+			 }
+		  }
+     }
+
+
 	if(pro_t.mode_key_pressed_flag ==1){
 
 		//mode key be pressed long times
@@ -299,7 +248,7 @@ static void TFT_Pocess_Command_Handler(void)
         gctl_t.timer_time_define_flag =0;
 		gctl_t.gTimer_ctl_disp_second=0;
 		pro_t.long_key_flag =0;
-		pro_t.key_power_be_pressed_flag =0;
+
         pro_t.gPower_On= power_on;
 
 
@@ -332,8 +281,8 @@ static void TFT_Pocess_Command_Handler(void)
 	   pro_t.run_process_step=pro_run_main_fun;
 	   
 	case pro_run_main_fun: //2
-       pro_t.run_process_step=0xf2;
-	 Wifi_Fast_Led_Blink();
+      pro_t.run_process_step=0xf2;
+	  Wifi_Fast_Led_Blink();
 		
 	  if(pro_t.gTimer_pro_ms >4){ 
 			 pro_t.gTimer_pro_ms =0;
@@ -932,22 +881,6 @@ static void Ptc_Temperature_Compare_Value(void)
 }
 
 
-void NORMAL_KEY_2_Handler(void)
-{
-     
-    
-	if(!pro_t.gTimer_pro_detect_key_ms) return ;
-
-	pro_t.gTimer_pro_detect_key_ms=0;
-// 
-//	Power_Key_Detected();
-//	Mode_Key_Detected();
-//	ADD_Key_Detected();
-//	DEC_Key_Detected();
-
-
-
-}
 #if 0
 /**********************************************************************************************************
     **

@@ -25,8 +25,6 @@ void WIFI_Process_Handler(void)
      Tencent_Cloud_Rx_Handler();
 	 Json_Parse_Command_Fun();
     }
-
-
 }
 /**********************************************************************
 	*

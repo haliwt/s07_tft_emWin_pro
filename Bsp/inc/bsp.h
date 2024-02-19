@@ -153,6 +153,7 @@ typedef struct{
   uint8_t gTimer_pro_set_timer_time;
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
+  uint8_t gTimer_pro_power_key_adjust;
 	
 
 }PRO_T;
@@ -168,7 +169,7 @@ void bsp_Idle(void);
 void Key_Process_Handler(uint8_t keyvalue);
 void TFT_Process_Handler(void);
 
-void NORMAL_KEY_2_Handler(void);
+
 
 void ADD_Key_Fun(void);
 void DEC_Key_Fun(void);
