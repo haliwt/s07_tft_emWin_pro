@@ -50,7 +50,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
-	  pro_t.gTimer_pro_long_key_timer_flag++;
+	 // pro_t.gTimer_pro_long_key_timer_flag++;
 	  pro_t.gTimer_pro_timer_mode_times++;
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;

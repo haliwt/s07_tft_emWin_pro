@@ -163,12 +163,12 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
 {
 
    static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
-   static uint8_t set_timer_hours=0xff,set_timer_minutes=0xff;
+   static uint8_t set_timer_hours=0xff,set_timer_minutes = 0xff;
 
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
 
-	timer_decade_minutes = gctl_t.gSet_timer_minutes / 10;
+	timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;
 	timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
 
     //display works of words of chinese 
@@ -180,20 +180,23 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
 	//works time value
 	if(set_timer_hours != gctl_t.gSet_timer_hours){
 		set_timer_hours = gctl_t.gSet_timer_hours;
-	
+	    
 	TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,bc,timer_decade_hours);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,bc,timer_unit_hours);
 //	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
+
+	
+	}
+
+	if(set_timer_minutes != gctl_t.gSet_timer_minutes){
+		set_timer_minutes = gctl_t.gSet_timer_minutes;
+
+	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
+	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+
 	}
 	
-    if(set_timer_minutes !=gctl_t.gSet_timer_minutes){
-		set_timer_minutes = gctl_t.gSet_timer_minutes;
-		
-		TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
-		TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
-    }
-
-}
+  }
 /********************************************************************************
  * 
  * Function Name: void TFT_Disp_Timer_Split_Symbol(void)

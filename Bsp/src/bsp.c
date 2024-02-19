@@ -26,6 +26,7 @@ static void TFT_Donnot_Set_Timer_Time(void);
 //static void DEC_Key_Fun(void);
 static void Key_Interrup_Handler(void);
 
+static uint16_t mode_key_long_flag;
 
 
 void bsp_Init(void);
@@ -203,6 +204,7 @@ void TFT_Process_Handler(void)
 			//pro_t.mode_key_confirm_flag =  mode_key_timer_time;
 			//TFT_Disp_Set_TimerTime(0);
 			pro_t.gTimer_pro_mode_key_timer = 0; 
+			pro_t.gTimer_pro_set_timer_time=0;
 			Mode_Long_Key_Fun();
 
 		}
@@ -399,23 +401,21 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			    if(pro_t.gTimer_pro_mode_key_timer > 3 ){
+			    if(pro_t.gTimer_pro_mode_key_timer > 3){
                     
-                    if(pro_t.gTimer_pro_set_timer_time < 2){
-					     TFT_Disp_Set_TimerTime(0);//1-don't display numbers 0-display numbers
+                    if(pro_t.gTimer_pro_set_timer_time < 3){
+					     TFT_Disp_Set_TimerTime(1);//1-don't display numbers 0-display numbers
                     }
-					else if(pro_t.gTimer_pro_set_timer_time >2  && pro_t.gTimer_pro_set_timer_time < 5){
+					else {
 
-						TFT_Disp_Set_TimerTime(1); //1-don't display numbers, 0-display numbers //turn off disp timer time
-
-					}
-					else{
-						timer_blink_times++;
-						pro_t.gTimer_pro_set_timer_time=0;
-
+						TFT_Disp_Set_TimerTime(0); //1-don't display numbers, 0-display numbers //turn off disp timer time
+                        timer_blink_times++;
+					    
 					}
 					
-					if(timer_blink_times > 2){
+					
+					
+					if(timer_blink_times > 0 && mode_key_long_flag >0){
 						timer_blink_times =0;
 						if(gctl_t.gSet_timer_hours >0 ){
 
@@ -423,11 +423,14 @@ static void TFT_Pocess_Command_Handler(void)
 							pro_t.mode_key_confirm_flag =0xff;
 							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 							gctl_t.timer_time_define_flag = 1;
+							gctl_t.gSet_timer_minutes =0;
+							mode_key_long_flag=0;
 							
 							
 
 						}
 						else{
+							mode_key_long_flag=0;
 							gctl_t.timer_time_define_flag = 0;
 							pro_t.mode_key_confirm_flag =0xff;
 							pro_t.timer_mode_flag = works_time;
@@ -436,15 +439,26 @@ static void TFT_Pocess_Command_Handler(void)
 						}
 					}
 
+					if(timer_blink_times > 0 && mode_key_long_flag ==0){ //add key and dec key don't be pressed key
+						timer_blink_times =0;
+						if(gctl_t.timer_time_define_flag ==1){
+							pro_t.timer_mode_flag = timer_time;
+							pro_t.mode_key_confirm_flag =0xff;
+						    gctl_t.timer_time_define_flag = 1;
+
+						}
+						else{
+						pro_t.mode_key_confirm_flag =0xff;
+					    gctl_t.timer_time_define_flag = 0;
+						pro_t.mode_key_confirm_flag =0xff;
+						pro_t.timer_mode_flag = works_time;
+						}
+					}
+
 				}
 				
 				TFT_DonnotDisp_Works_Time();
-				
-				if(pro_t.gTimer_pro_long_key_timer_flag > 2){ //exit mode key for long time key  flag
-
-					pro_t.long_key_flag =0;
 					
-				}	
 
 			break;
 		}
@@ -466,11 +480,11 @@ static void TFT_Pocess_Command_Handler(void)
 
 			 case 1:
 				Wifi_Fast_Led_Blink();
-			     if(pro_t.gTimer_pro_long_key_timer_flag > 2){
-				 	
-			        pro_t.long_key_flag =0;
-
-			     }
+//			     if(pro_t.gTimer_pro_long_key_timer_flag > 2){
+//				 	
+//			        pro_t.long_key_flag =0;
+//
+//			     }
 			 	pro_t.run_process_step=1;
              break;
 
@@ -542,14 +556,8 @@ static void TFT_Pocess_Command_Handler(void)
 
 		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
 
-//                if(gctl_t.timer_time_define_flag == 1){
-//					if(pro_t.timer_mode_flag == timer_time)pro_t.timer_mode_flag=works_time;
-//					else pro_t.timer_mode_flag = timer_time;
-//                }
 				Mode_Key_Select_Fun();
-             
-
-			 }
+             }
 			 else{
 
                 pro_t.mode_key_confirm_flag = 0xff;
@@ -642,6 +650,11 @@ static void Power_On_Fun(void)
   //timer timing
 	 gctl_t.gSet_timer_hours =0;
 	 gctl_t.gSet_timer_minutes =0;
+	 mode_key_long_flag=0;
+
+	gctl_t.disp_works_hours=0;
+	gctl_t.disp_works_minutes=0;
+	gctl_t.gTimer_ctl_disp_second=0;
 
 }
      
@@ -664,16 +677,15 @@ static void Power_Off_Fun(void)
    gctl_t.ultrasonic_flag =0;
 
 	pro_t.timer_mode_flag=0;
-	
-    
-    pro_t.wifi_led_fast_blink_flag=0;
-	
-
-    gctl_t.gSet_timer_hours =0;
+	pro_t.wifi_led_fast_blink_flag=0;
+	gctl_t.gSet_timer_hours =0;
 
 	gctl_t.ptc_warning = 0;
 	gctl_t.fan_warning=0;
-
+	//clear set timer timing value and flag 
+		
+		
+		
 
 }
 void power_off_fan_run(void)
@@ -701,7 +713,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	  	  pro_t.mode_key_confirm_flag = mode_key_timer_time;
 		  pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
 
-		  pro_t.gTimer_pro_long_key_timer_flag=0; //long key exit "mode_long_key flag" flag
+		//  pro_t.gTimer_pro_long_key_timer_flag=0; //long key exit "mode_long_key flag" flag
 		  pro_t.gTimer_pro_mode_key_timer=0;
 		  pro_t.gTimer_pro_set_timer_time=0;
 		  
@@ -750,8 +762,9 @@ void ADD_Key_Fun(void)
 		break;
 
 		case mode_key_timer_time:
-            gctl_t.gSet_timer_minutes =0;
-
+           
+			mode_key_long_flag++;
+			gctl_t.gSet_timer_minutes=0;
 			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
 			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
 
@@ -811,7 +824,8 @@ void DEC_Key_Fun(void)
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
-	            gctl_t.gSet_timer_minutes =0;
+	            mode_key_long_flag++;
+				gctl_t.gSet_timer_minutes=0;
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
 				if(gctl_t.gSet_timer_hours  < 0){//if(pro_t.dispTime_minutes < 0){
 
@@ -821,6 +835,7 @@ void DEC_Key_Fun(void)
 				}
 			 pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_timer_time=0;
+			 	
 			TFT_Disp_Set_TimerTime(0);
 			break;
 

@@ -187,17 +187,15 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 		  }
 		  else{
 		  	 pro_t.buzzer_sound_flag = 1;
-                pro_t.key_power_be_pressed_flag =1;
-	           pro_t.long_key_flag =0;
+             pro_t.key_power_be_pressed_flag =1;
+	         pro_t.long_key_flag =0;
 			 
-			   pro_t.gPower_On = power_off;   
-	           pro_t.gKey_value= power_key_id;
-			
-		
-		   		 pro_t.run_process_step=0xff;
+			 pro_t.gPower_On = power_off;   
+	         pro_t.gKey_value= power_key_id;
+			   
+			pro_t.run_process_step=0xff;
 			  
-			  
-           }
+			 }
 	     }
 		
     break;
