@@ -207,7 +207,7 @@ void TFT_Process_Handler(void)
 		   
 		}
        //
-       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.gTimer_pro_mode_key_adjust  < 3 && pro_t.mode_key_pressed_flag ==1){
+       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
 		pro_t.mode_key_pressed_flag =0;
 	   
 		Buzzer_KeySound();
