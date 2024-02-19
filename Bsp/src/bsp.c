@@ -99,6 +99,7 @@ void bsp_Idle(void)
 *	返 回 值: 无
 *********************************************************************************************************
 */
+#if 0
 void Key_Process_Handler(uint8_t keyvalue)
 {
     static uint8_t key_flag;
@@ -175,6 +176,7 @@ void Key_Process_Handler(uint8_t keyvalue)
 		break;
 	}
 }
+#endif 
 /*
 *********************************************************************************************************
 *
@@ -238,18 +240,14 @@ static void Key_Interrup_Handler(void)
 {
      switch(pro_t.gKey_value){
 
-         case power_key_id:
-		 	
-		  pro_t.gKey_value =0XFF;
-
-		 break;
+  
 
 		 
-		 case mode_key_id:
-
-           pro_t.gKey_value =0XFF;
-
-		 break;
+//		 case mode_key_id:
+//
+//           pro_t.gKey_value =0XFF;
+//
+//		 break;
 
 		 case add_key_id:
 		 	
@@ -295,8 +293,11 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 	 case 0:
+	 	
+		pro_t.gKey_value =0XFF;
 		Power_On_Fun();
-
+        gctl_t.timer_time_define_flag =0;
+		gctl_t.gTimer_ctl_disp_second=0;
 		pro_t.long_key_flag =0;
 		pro_t.key_power_be_pressed_flag =0;
         pro_t.gPower_On= power_on;
@@ -307,7 +308,8 @@ static void TFT_Pocess_Command_Handler(void)
 		TFT_BACKLIGHT_ON();
 		power_been_flag=1;
 		pro_t.long_key_flag =0;
-		pro_t.key_power_be_pressed_flag =0;
+		TFT_Display_WorksTime();
+		
 
 	 break;
 
@@ -415,6 +417,7 @@ static void TFT_Pocess_Command_Handler(void)
 							gctl_t.timer_time_define_flag = 0;
 							pro_t.mode_key_confirm_flag =0xff;
 							pro_t.timer_mode_flag = works_time;
+						    TFT_Display_WorksTime();
 						  
 
 						}
@@ -425,14 +428,13 @@ static void TFT_Pocess_Command_Handler(void)
 						if(gctl_t.timer_time_define_flag ==1){
 							pro_t.timer_mode_flag = timer_time;
 							pro_t.mode_key_confirm_flag =0xff;
-						    gctl_t.timer_time_define_flag = 1;
+						   
 
 						}
 						else{
 						pro_t.mode_key_confirm_flag =0xff;
-					    gctl_t.timer_time_define_flag = 0;
-						pro_t.mode_key_confirm_flag =0xff;
 						pro_t.timer_mode_flag = works_time;
+						TFT_Display_WorksTime();
 						}
 					}
 
@@ -586,6 +588,8 @@ static void TFT_Pocess_Command_Handler(void)
    	}
    }
    else{
+   	
+	pro_t.gKey_value =0XFF;
    	if(power_been_flag == 1){
 		power_been_flag =0;
 		TFT_BACKLIGHT_OFF();
@@ -618,13 +622,14 @@ static void Power_On_Fun(void)
    gctl_t.mode_flag = works_time;
    gctl_t.timer_time_define_flag = 0;
    //
-   pro_t.timer_mode_flag =works_time;
+
    gctl_t.plasma_flag = 1;
    gctl_t.ultrasonic_flag =1;
    
  	gctl_t.gSet_temperature_value =0; //run_t.temperature_set_flag = 0; //WT.EDIT 2023.01.31
-    gctl_t.gSet_timer_hours = 0; //run_t.setup_temperature_value=0; // //WT.EDIT 2023.01.31
-  //timer timing
+ 
+   //timer timing
+     pro_t.timer_mode_flag=works_time;
 	 gctl_t.gSet_timer_hours =0;
 	 gctl_t.gSet_timer_minutes =0;
 	 mode_key_long_flag=0;
@@ -652,7 +657,8 @@ static void Power_Off_Fun(void)
    pro_t.mode_key_confirm_flag=0xff;
    gctl_t.plasma_flag = 0;
    gctl_t.ultrasonic_flag =0;
-
+   //timer timing flag
+     pro_t.timer_mode_flag=works_time;
 	pro_t.timer_mode_flag=0;
 	pro_t.wifi_led_fast_blink_flag=0;
 	gctl_t.gSet_timer_hours =0;
@@ -744,7 +750,7 @@ void ADD_Key_Fun(void)
 			mode_key_long_flag++;
 			gctl_t.gSet_timer_minutes=0;
 			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
-			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
+			if(gctl_t.gSet_timer_hours  > 23){ //if(pro_t.dispTime_minutes > 59){
 
 			gctl_t.gSet_timer_hours =0;//pro_t.dispTime_hours =0;
 
