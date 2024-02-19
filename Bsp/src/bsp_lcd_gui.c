@@ -202,7 +202,7 @@ void TFT_Disp_Set_TimerTime_Init(void)
 {
 
    static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
-   static uint8_t set_timer_hours=0xff,set_timer_minutes = 0xff;
+   static uint8_t set_timer_hours=0xff;
    static uint8_t bc;
 
    bc = 0;
@@ -210,8 +210,7 @@ void TFT_Disp_Set_TimerTime_Init(void)
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
 
-	timer_decade_minutes=0;
-	timer_unit_minutes =0;
+
 
     //display works of words of chinese 
     TFT_Disp_WorksTime_24_24_onBlack(112,150,1,0);//works one "定"
@@ -230,10 +229,18 @@ void TFT_Disp_Set_TimerTime_Init(void)
 	
 	}
 
-	
-
-	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
-	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+	if(gctl_t.timer_time_define_flag == 1){
+        timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;
+	    timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
+        TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
+        TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+    }
+    else{
+	    timer_decade_minutes=0;
+	    timer_unit_minutes =0;
+        TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,bc,timer_decade_minutes);
+        TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,bc,timer_unit_minutes);
+    }
 
 
   }
@@ -242,7 +249,7 @@ void TFT_Disp_Set_TimerTime_Init(void)
  * 
  * Function Name: void TFT_Disp_Timer_Split_Symbol(void)
  * Function: display timer timing of split symbol
- * Input Ref:
+ * Input Ref: display timer ":" symbol 
  * Return Ref:
  * 
 *********************************************************************************/
