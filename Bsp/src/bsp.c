@@ -50,9 +50,6 @@ void bsp_Init(void)
 
 
 }
-
-
-
 /*
 *********************************************************************************************************
 *	函 数 名: bsp_Idle
@@ -197,17 +194,15 @@ void TFT_Process_Handler(void)
 	if(pro_t.mode_key_pressed_flag ==1){
 
 		//mode key be pressed long times
-		if(MODE_KEY_VALUE() ==KEY_DOWN){
-			if(pro_t.gTimer_pro_mode_key_adjust > 2 ){
+		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 2){
+			
 			pro_t.mode_key_pressed_flag =0;
             Buzzer_KeySound();
-			//pro_t.mode_key_confirm_flag =  mode_key_timer_time;
-			//TFT_Disp_Set_TimerTime(0);
 			pro_t.gTimer_pro_mode_key_timer = 0; 
 			pro_t.gTimer_pro_set_timer_time=0;
 			Mode_Long_Key_Fun();
 
-		}
+		   
 		}
        //
        if(MODE_KEY_VALUE() ==KEY_UP && pro_t.gTimer_pro_mode_key_adjust  < 3 && pro_t.mode_key_pressed_flag ==1){
@@ -217,7 +212,7 @@ void TFT_Process_Handler(void)
 		pro_t.mode_key_confirm_flag = mode_key_select;
 		gctl_t.select_main_fun_numbers++; // 0,1,2
 		if(gctl_t.select_main_fun_numbers > 2){
-		gctl_t.select_main_fun_numbers = 0;
+		  gctl_t.select_main_fun_numbers = 0;
 		}
 		
         
@@ -245,21 +240,13 @@ static void Key_Interrup_Handler(void)
 
          case power_key_id:
 		 	
-//		 	if(pro_t.buzzer_sound_flag ==1){
-//			   pro_t.buzzer_sound_flag=0;
-//			   Buzzer_KeySound();
-//			}
-
 		  pro_t.gKey_value =0XFF;
 
 		 break;
 
 		 
 		 case mode_key_id:
-//		    if(pro_t.buzzer_sound_flag ==1){
-//				pro_t.buzzer_sound_flag=0;
-//				Buzzer_KeySound();
-//		    }
+
            pro_t.gKey_value =0XFF;
 
 		 break;
@@ -274,10 +261,7 @@ static void Key_Interrup_Handler(void)
 		break;
 
 		case dec_key_id:
-//			if(pro_t.buzzer_sound_flag ==1){
-//			   pro_t.buzzer_sound_flag=0;
-//			   Buzzer_KeySound();
-//			}
+
 			ADD_Key_Fun();
 
 			 pro_t.gKey_value =0XFF;
@@ -366,24 +350,21 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_time: //timer_time 
 				if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
-						gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 
-	                 
-					    gctl_t.gSet_timer_minutes --;
+                    gctl_t.gSet_timer_minutes --;
 
-						
+					if(gctl_t.gSet_timer_minutes <0){
+					   gctl_t.gSet_timer_minutes =59;
+                       gctl_t.gSet_timer_hours --;
+					   
 
-						if(gctl_t.gSet_timer_minutes <0){
-						   gctl_t.gSet_timer_minutes =59;
-	                       gctl_t.gSet_timer_hours --;
-						   
+					}
+					if(gctl_t.gSet_timer_hours < 0){
 
-						}
-						if(gctl_t.gSet_timer_hours < 0){
+						pro_t.gPower_On = power_off;
 
-							pro_t.gPower_On = power_off;
-
-						}
+					}
 				}
 
 				TFT_Disp_Set_TimerTime(0);
@@ -403,7 +384,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			    if(pro_t.gTimer_pro_mode_key_timer > 3){
                     
-                    if(pro_t.gTimer_pro_set_timer_time < 3){
+                    if(pro_t.gTimer_pro_set_timer_time < 6){
 					     TFT_Disp_Set_TimerTime(1);//1-don't display numbers 0-display numbers
                     }
 					else {
@@ -480,11 +461,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			 case 1:
 				Wifi_Fast_Led_Blink();
-//			     if(pro_t.gTimer_pro_long_key_timer_flag > 2){
-//				 	
-//			        pro_t.long_key_flag =0;
-//
-//			     }
+
 			 	pro_t.run_process_step=1;
              break;
 
@@ -713,14 +690,15 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	  	  pro_t.mode_key_confirm_flag = mode_key_timer_time;
 		  pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
 
-		//  pro_t.gTimer_pro_long_key_timer_flag=0; //long key exit "mode_long_key flag" flag
+		
 		  pro_t.gTimer_pro_mode_key_timer=0;
 		  pro_t.gTimer_pro_set_timer_time=0;
-		  
-		  TFT_Disp_Set_TimerTime(0);
-		   
-	  	 }
-        }
+
+	     TFT_Disp_Set_TimerTime_Init();
+
+	   }
+	  	 
+      }
 }
 /************************************************************************
 	*

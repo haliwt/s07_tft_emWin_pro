@@ -49,9 +49,16 @@ void TFT_Display_Humidity_Symbol(void);
 
 void TFT_Display_WorksTime(void);
 
+
 void TFT_Disp_Set_TimerTime(uint8_t bc);
+void TFT_Disp_Set_TimerTime_Init(void);
+
+
 
 void TFT_DonnotDisp_Works_Time(void);
+
+
+
 
 
 
