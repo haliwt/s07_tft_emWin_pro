@@ -422,7 +422,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 
 
 		  }
-        // wifi_t.UART_Flag = 0;
+         wifi_t.usart2_rx_flag =0;
          wifi_t.wifi_uart_counter=0;
          
         

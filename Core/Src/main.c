@@ -110,7 +110,7 @@ int main(void)
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
  // UART_Start_Receive_IT(&huart1,inputBuf,1);
    //DMA usart2
- // UART_Start_Receive_IT(&huart2,wifi_usart_data.wifi_inputBuf,1);
+  HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
   
   /* USER CODE END 2 */
 

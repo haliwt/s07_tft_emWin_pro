@@ -59,11 +59,8 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
            if(send_power_off_flag==0){
             send_power_off_flag++;
-		    //run_t.RunCommand_Label=power_off;
-		   // pro.rx_command_tag= power_off;
-			//wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data
-			//SendWifiData_To_Cmd(0x01) ;
-			HAL_Delay(50);
+			wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
+			
                
            }
    			
@@ -71,13 +68,14 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
     
    
 }
-/***********************************************
+/********************************************************************************
    *
    *Function Name: void Wifi_RunCmd(void)
    *Funciton : separately update value 
+   *Input Ref:NO
+   *Return Ref:NO
    *
-   *
-***********************************************/
+*********************************************************************************/
 static void RunWifi_Command_Handler(void)
 {
   

@@ -81,6 +81,8 @@ typedef struct _WIFI_FUN{
 	
 	//wifi
 	unsigned char wifi_data[150]; 
+	uint8_t usart2_dataBuf[1];
+	uint8_t usart2_rx_flag;
 	uint8_t wifi_reconnect_read_flag;
 	uint8_t wifi_uart_counter;
 	uint8_t tencent_cloud_command_power_on;

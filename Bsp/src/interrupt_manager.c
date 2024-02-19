@@ -1,6 +1,94 @@
 #include "interrupt_manager.h"
 #include "bsp.h"
 
+/********************************************************************************
+	**
+	*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+	*Function :UART callback function  for UART interrupt for receive data
+	*Input Ref: structure UART_HandleTypeDef pointer
+	*Return Ref:NO
+	*
+*******************************************************************************/
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+    static uint8_t state=0;
+    uint32_t temp ;
+    //wifi usart2
+    if(huart->Instance==USART2)
+    {
+           
+         
+        //  USART2->ISR = 0xf5; 
+	
+	      if(wifi_t.linking_tencent_cloud_doing  ==1){
+
+			wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
+			wifi_t.wifi_uart_counter++;
+
+			if(*wifi_t.usart2_dataBuf==0X0A) // 0x0A = "\n"
+			{
+				wifi_t.usart2_rx_flag = 1;
+				Wifi_Rx_InputInfo_Handler();
+				wifi_t.wifi_uart_counter=0;
+			}
+
+	      } 
+		  else{
+
+		         if(wifi_t.get_rx_beijing_time_enable==1){
+					wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
+					wifi_t.wifi_uart_counter++;
+					//Subscribe_Rx_Interrupt_Handler();
+				}
+				else
+				Subscribe_Rx_Interrupt_Handler();
+	      }
+	  __HAL_UART_CLEAR_OREFLAG(&huart2);
+      HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
+	}
+
+	#if 0
+	if(huart->Instance==USART1)//if(huart==&huart1) // Motor Board receive data (filter)
+	{
+        //test_counter_usat1++;
+		switch(state)
+		{
+		case 0:  //#0
+			if(inputBuf[0] == 'T')  //hex :54 - "T" -fixed
+				state=1; //=1
+		
+			break;
+		case 1: //#1
+             if(inputBuf[0] == 'K')  //hex :4B - "K" -fixed
+				state=2; //=1
+			else
+			   state =0;
+			break;
+            
+        case 2:
+             inputCmd[0]= inputBuf[0];
+             state = 3;
+        
+        break;
+        
+        case 3:
+            inputCmd[1]= inputBuf[0];
+            run_t.decodeFlag =1;
+            state = 0;
+        
+        break;
+	
+		default:
+			state=0;
+			run_t.decodeFlag =0;
+		}
+		__HAL_UART_CLEAR_OREFLAG(&huart1); //WT.EDIT 2023.06.16
+		HAL_UART_Receive_IT(&huart1,inputBuf,1);//UART receive data interrupt 1 byte
+		
+	 }
+    #endif 
+  
+ }
 
 
 /*******************************************************************************

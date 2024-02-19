@@ -110,6 +110,10 @@ void TFT_Process_Handler(void)
             pro_t.key_power_be_pressed_flag =0;
 			pro_t.gTimer_pro_wifi_led =0;
             pro_t.wifi_led_fast_blink_flag=1;
+			//WIFI CONNCETOR
+			wifi_t.esp8266_login_cloud_success =0;
+			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
+			wifi_t.wifi_config_net_lable= wifi_set_restor;
 			Buzzer_KeySound();
 			
 			 
@@ -1002,7 +1006,7 @@ void DEC_Key_Detected(void)
 #endif 
 static void Wifi_Fast_Led_Blink(void)
 {
-   if(pro_t.wifi_led_fast_blink_flag==1){
+   if(pro_t.wifi_led_fast_blink_flag==1 && wifi_link_net_state()==0){
 	if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
 
 wifi_led:	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
