@@ -110,6 +110,7 @@ void TFT_Process_Handler(void)
             pro_t.key_power_be_pressed_flag =0;
 			pro_t.gTimer_pro_wifi_led =0;
             pro_t.wifi_led_fast_blink_flag=1;
+			Buzzer_KeySound();
 			
 			 
         }
@@ -122,13 +123,13 @@ void TFT_Process_Handler(void)
 			 pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
-			Buzzer_KeySound();
+		    pro_t.buzzer_sound_flag =1;
 
 		
 			
 		  }
 		  else{
-			 Buzzer_KeySound();
+			 pro_t.buzzer_sound_flag =1;
   
 	         pro_t.long_key_flag =0;
 			 
@@ -189,16 +190,7 @@ static void Key_Interrup_Handler(void)
 {
      switch(pro_t.gKey_value){
 
-  
-
-		 
-//		 case mode_key_id:
-//
-//           pro_t.gKey_value =0XFF;
-//
-//		 break;
-
-		 case add_key_id:
+       case add_key_id:
 		 	
 		 	
 			 DEC_Key_Fun();
