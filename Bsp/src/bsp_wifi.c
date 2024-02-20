@@ -79,7 +79,6 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 static void RunWifi_Command_Handler(void)
 {
   
-	
     static uint8_t first_sub,sub_to_tencent_flag;
 
 	static uint8_t  get_bj_times=0;
@@ -95,6 +94,7 @@ static void RunWifi_Command_Handler(void)
 		 
 		 
 	     if(wifi_link_net_state()==1){
+		 	pro_t.first_link_tencent_cloud_flag =1;
 		  	wifi_t.linking_tencent_cloud_doing=0;
 	        wifi_t.has_been_login_flag = 1;
 			wifi_t.get_rx_beijing_time_enable=0;
@@ -114,7 +114,7 @@ static void RunWifi_Command_Handler(void)
 	        SmartPhone_LinkTencent_Cloud();
 	     
 	      if(wifi_link_net_state()==1){
-			
+			    pro_t.first_link_tencent_cloud_flag =1;
 				wifi_t.get_rx_beijing_time_enable=0;
 			    wifi_t.runCommand_order_lable = wifi_tencent_publish_init_data;
                 

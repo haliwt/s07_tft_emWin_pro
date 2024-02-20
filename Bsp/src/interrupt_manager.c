@@ -115,7 +115,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	if(tm1 > 9){
 		tm1=0;
 		gctl_t.gTimer_ctl_select_led++;
-	    pro_t.gTimer_pro_detect_key_ms = 1;
+	    pro_t.gTimer_pro_detect_key_ms =1;
 	}
 	
 	
@@ -146,7 +146,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
-	  
+	  //wifi timer
+	  wifi_t.gTimer_publish_dht11++;
+	  wifi_t.gTimer_auto_detected_net_link_state++;
+	  wifi_t.gTimer_get_beijing_time++;
+	  wifi_t.gTimer_read_beijing_time++;
+	  wifi_t.gTimer_linking_tencen_counter++;
 	  
 	 
    }

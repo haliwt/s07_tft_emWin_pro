@@ -114,6 +114,7 @@ void TFT_Process_Handler(void)
 			wifi_t.esp8266_login_cloud_success =0;
 			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
 			wifi_t.wifi_config_net_lable= wifi_set_restor;
+			wifi_t.gTimer_linking_tencen_counter=0;
 			Buzzer_KeySound();
 			
 			 
@@ -238,7 +239,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 	static uint8_t power_been_flag,timer_blink_times;
-   
+    static uint8_t update_step;
   
 
    if(power_on_state() == power_on){
@@ -526,8 +527,45 @@ static void TFT_Pocess_Command_Handler(void)
       break;
 
 	  case pro_wifi_init:
+
+	   if(pro_t.first_link_tencent_cloud_flag ==1){
+
+	        switch(update_step){
+
+			  case 0 :
+			  	
+                 MqttData_Publish_SetOpen(0x01);
+			     update_step=1;
+
+			  break;
+
+
+			  case 1:
+
+	            Publish_Data_ToTencent_Initial_Data();
+				 update_step=2;
+
+			  break;
+
+			  case 2:
+			      Subscriber_Data_FromCloud_Handler();
+
+			      update_step=3;
+
+			  break;
+
+			  case 3:
+
+			     pro_t.first_link_tencent_cloud_flag++;
+				 update_step =0;
+
+			  break;
+
+			 }
+           
+       }
 	  	
-		
+  
 
 	  pro_t.run_process_step=pro_disp_dht11_value;
 
