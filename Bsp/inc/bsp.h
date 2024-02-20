@@ -79,6 +79,7 @@ typedef enum{
   pro_disp_works_time,
   pro_disp_wifi_led,
   pro_mode_key_fun,
+  pro_wifi_init
   
 
 

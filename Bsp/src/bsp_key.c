@@ -268,7 +268,7 @@ uint8_t ReadKey(void)
 			K1++;
 			if(K1 > 1990000 && pro_t.gPower_On ==power_on){
 	               K1= 0;
-				//gctl_t.wifi_flag =1;
+			
 				  pro_t.long_key_flag =1;
 				 // gctl_t.gKey_value = wifi_fun_on;
 	              return   KEY_POWER_LONG_DOWN;
@@ -416,7 +416,7 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 				pro_t.long_key_flag =1;
 				pro_t.wifi_led_fast_blink_flag=0;
 				 pro_t.gTimer_pro_wifi_led =0;
-				gctl_t.wifi_flag =0;
+				//gctl_t.wifi_flag =0;
 				return KEY_POWER_LONG_DOWN;
 			}
 		}
@@ -430,7 +430,7 @@ KEYState_TypeDef POWER_KEY_StateRead(void)
 		//  SendData_Set_Wifi(0x01);
 		  pro_t.long_key_flag =1;
 		  pro_t.wifi_led_fast_blink_flag=0;
-		 gctl_t.wifi_flag =0;
+		// gctl_t.wifi_flag =0;
 		 pro_t.gTimer_pro_wifi_led =0;
 		 return KEY_POWER_LONG_DOWN;
 

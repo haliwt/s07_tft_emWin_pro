@@ -7,7 +7,7 @@ bsp_ctl gctl_t;
 
 
 uint8_t (*power_on_state)(void);
-uint8_t (*wifi_state)(void);
+
 uint8_t (*mode_state)(void);
 
 uint8_t (*ptc_state)(void); //adjust of ptc is open or close
@@ -28,7 +28,7 @@ uint8_t (*fan_error_state)(void);
 static uint8_t power_default_fun(void);
 
 
-static uint8_t Wifi_Default_Handler(void);
+
 static uint8_t Mode_Default_Handler(void);
 
 static uint8_t Ptc_Default_Handler(void);
@@ -57,9 +57,10 @@ void bsp_ctl_init(void)
    gctl_t.ultrasonic_flag =1;
    
   // UartVarInit();
+
    Power_Handler(power_default_fun);
   
-   Wifi_State_Handler(Wifi_Default_Handler);
+  
    Mode_State_Handler(Mode_Default_Handler);
    
    Ptc_State_Handler(Ptc_Default_Handler);
@@ -109,17 +110,7 @@ void Power_Handler(uint8_t(* power_on_handler)(void))
  * Return Ref:
  * 
 *****************************************************************************/
-void Wifi_State_Handler(uint8_t(*wifi_handler)(void))
-{
-       wifi_state = wifi_handler;              
-      
-}
-static uint8_t Wifi_Default_Handler(void)
-{
-     if(gctl_t.wifi_flag == 1)return 1;
-	 else return 0;
 
-}
 
 void Mode_State_Handler(uint8_t(*mode_handler)(void))
 {
@@ -311,7 +302,7 @@ uint8_t Fan_Error_Default_Handler(void)
 void Device_Action_Handler(void)
 {
 
-   if(wifi_state() == 1){
+   if(wifi_link_net_state() == 1){
       LED_WIFI_ICON_ON();
 
    }

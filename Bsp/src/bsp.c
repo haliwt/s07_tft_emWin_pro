@@ -263,6 +263,11 @@ static void TFT_Pocess_Command_Handler(void)
 		power_been_flag=1;
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
+	   if(wifi_link_net_state() ==1){
+	  	
+    	  Subscriber_Data_FromCloud_Handler();
+        
+       }
 		
 
 	 break;
@@ -405,7 +410,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
 		//  Ptc_Temperature_Compare_Value();
 		  
-	    if(wifi_state() ==0){
+	    if(wifi_link_net_state() ==0){
 		  
 			if(pro_t.mode_key_confirm_flag ==mode_key_select){
 
@@ -504,8 +509,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 		   case mode_key_confirm:
 			 
-
-				Mode_Key_Confirm_Fun();
+                Mode_Key_Confirm_Fun();
 				pro_t.mode_key_confirm_flag = 0xff;
 
 			break;
@@ -518,24 +522,17 @@ static void TFT_Pocess_Command_Handler(void)
           }
       
 	
-		pro_t.run_process_step=1;
+		pro_t.run_process_step=pro_wifi_init;
       break;
 
-	 case 6: //wif_fun
-	 	
-	   if(wifi_state() ==1){
+	  case pro_wifi_init:
+	  	
 		
-		 // SendData_Set_Command(WIFI_CONNECT_SUCCESS);
-		 // wifi_link_flag =0;
-        }
-		else{
-		//	wifi_link_flag =0;
 
-        }
+	  pro_t.run_process_step=pro_disp_dht11_value;
 
-	 pro_t.run_process_step=2;
+	  break;
 
-	 break;
 
     default:
     break;
@@ -977,6 +974,7 @@ void Mode_Key_Detected(void)
 
 
 }
+#endif 
 
 /**********************************************************************************************************
     **
@@ -986,24 +984,7 @@ void Mode_Key_Detected(void)
     *Return Ref:NO
     *
 *********************************************************************************************************/
-void ADD_Key_Detected(void)
-{
-//	if(ADD_KEY_StateRead()==KEY_DOWN){
-          ADD_Key_Fun();
- //   }
 
-
-}
-void DEC_Key_Detected(void)
-{
-	// if(DEC_KEY_StateRead()==KEY_DOWN){
-	 	
-
-		 DEC_Key_Fun();
-	// }
-
-}
-#endif 
 static void Wifi_Fast_Led_Blink(void)
 {
    if(pro_t.wifi_led_fast_blink_flag==1 && wifi_link_net_state()==0){

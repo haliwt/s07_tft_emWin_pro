@@ -96,9 +96,7 @@ static void RunWifi_Command_Handler(void)
 		 
 	     if(wifi_link_net_state()==1){
 		  	wifi_t.linking_tencent_cloud_doing=0;
-	
-	       
-			wifi_t.has_been_login_flag = 1;
+	        wifi_t.has_been_login_flag = 1;
 			wifi_t.get_rx_beijing_time_enable=0;
 			wifi_t.runCommand_order_lable = wifi_tencent_publish_init_data;//wifi_tencent_subscription_data;
 			
@@ -320,7 +318,7 @@ static void AutoReconnect_Wifi_Neware_Function(void)
 		det_no_wifi_net++;
 		wifi_t.auto_link_cloud_flag=0;
 		wifi_t.esp8266_login_cloud_success=0;
-		gctl_t.wifi_flag = 0;
+	
 
 	}
 
@@ -340,7 +338,7 @@ static void AutoReconnect_Wifi_Neware_Function(void)
 			wifi_t.linking_tencent_cloud_doing =0;
 
 			//SendWifiData_To_Cmd(0x01) ;
-			HAL_Delay(30);
+			//HAL_Delay(30);
 
 
 			Subscriber_Data_FromCloud_Handler();

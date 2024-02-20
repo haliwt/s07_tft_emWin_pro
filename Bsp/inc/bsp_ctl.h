@@ -31,7 +31,7 @@ typedef enum{
 
 typedef struct _bsp_ctl{
 
-    uint8_t wifi_flag;
+    
 	uint8_t mode_flag;
 	uint8_t ptc_flag;
 	uint8_t plasma_flag;
@@ -56,7 +56,7 @@ typedef struct _bsp_ctl{
    int8_t select_main_fun_numbers;
 
    //command
-   uint8_t rx_command_tag;
+
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
    uint8_t gSet_temperature_value_flag;
@@ -76,8 +76,6 @@ extern bsp_ctl gctl_t;
 extern uint8_t (*power_on_state)(void);
 
 
-
-extern uint8_t (*wifi_state)(void);
 extern uint8_t (*mode_state)(void);
 
 extern uint8_t (*ptc_state)(void); //adjust of ptc is open or close
