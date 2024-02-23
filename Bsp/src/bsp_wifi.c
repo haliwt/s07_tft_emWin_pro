@@ -94,7 +94,7 @@ static void RunWifi_Command_Handler(void)
 		 
 		 
 	     if(wifi_link_net_state()==1){
-		 	pro_t.first_link_tencent_cloud_flag =1;
+		 
 		  	wifi_t.linking_tencent_cloud_doing=0;
 	        wifi_t.has_been_login_flag = 1;
 			wifi_t.get_rx_beijing_time_enable=0;
@@ -114,7 +114,7 @@ static void RunWifi_Command_Handler(void)
 	        SmartPhone_LinkTencent_Cloud();
 	     
 	      if(wifi_link_net_state()==1){
-			    pro_t.first_link_tencent_cloud_flag =1;
+			   
 				wifi_t.get_rx_beijing_time_enable=0;
 			    wifi_t.runCommand_order_lable = wifi_tencent_publish_init_data;
                 
@@ -180,15 +180,16 @@ static void RunWifi_Command_Handler(void)
 
 				}
 
-//				if(wifi_t.real_hours < 25 && wifi_t.real_minutes < 61){
+			  if(wifi_t.real_hours < 25 && wifi_t.real_minutes < 61){
 
-//				SendData_Real_GMT(wifi_t.real_hours);
-//				HAL_Delay(10);
-//				SendData_Real_GMT_Minute(wifi_t.real_minutes);
-//				HAL_Delay(10);
-//				SendData_Real_GMT_Second(wifi_t.real_seconds);
-//				HAL_Delay(10);
-//				}
+				
+				gctl_t.disp_works_hours   = wifi_t.real_hours;
+				
+				gctl_t.disp_works_minutes = wifi_t.real_minutes;
+				
+				gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
+
+				}
 
 			  }
 
@@ -212,7 +213,7 @@ static void RunWifi_Command_Handler(void)
 
 
 
-	   case wifi_tencent_publish_dht11_data://6
+	   case wifi_tencent_publish_dht11_data://06
 	   
 		wifi_t.get_rx_beijing_time_enable=0;
 		if(power_on_state() == power_on){

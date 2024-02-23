@@ -110,7 +110,8 @@ void TFT_Process_Handler(void)
             pro_t.key_power_be_pressed_flag =0;
 			pro_t.gTimer_pro_wifi_led =0;
             pro_t.wifi_led_fast_blink_flag=1;
-			//WIFI CONNCETOR
+			
+			//WIFI CONNCETOR process
 			wifi_t.esp8266_login_cloud_success =0;
 			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
 			wifi_t.wifi_config_net_lable= wifi_set_restor;
@@ -264,11 +265,7 @@ static void TFT_Pocess_Command_Handler(void)
 		power_been_flag=1;
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
-	   if(wifi_link_net_state() ==1){
-	  	
-    	  Subscriber_Data_FromCloud_Handler();
-        
-       }
+	  
 		
 
 	 break;
@@ -291,7 +288,7 @@ static void TFT_Pocess_Command_Handler(void)
 	   
 	   pro_t.run_process_step=pro_run_main_fun;
 	   
-	case pro_run_main_fun: //2
+	case pro_run_main_fun: //02
       pro_t.run_process_step=0xf2;
 	  Wifi_Fast_Led_Blink();
 		
@@ -344,7 +341,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			    if(pro_t.gTimer_pro_mode_key_timer > 3){
+			if(pro_t.gTimer_pro_mode_key_timer > 3){
                     
                     if(pro_t.gTimer_pro_set_timer_time < 6){
 					     TFT_Disp_Set_TimerTime(1);//1-don't display numbers 0-display numbers
@@ -356,9 +353,7 @@ static void TFT_Pocess_Command_Handler(void)
 					    
 					}
 					
-					
-					
-					if(timer_blink_times > 0 && mode_key_long_flag >0){
+			        if(timer_blink_times > 0 && mode_key_long_flag >0){
 						timer_blink_times =0;
 						if(gctl_t.gSet_timer_hours >0 ){
 
@@ -398,9 +393,9 @@ static void TFT_Pocess_Command_Handler(void)
 						}
 					}
 
-				}
+			}
 				
-				TFT_DonnotDisp_Works_Time();
+			TFT_DonnotDisp_Works_Time();
 					
 
 			break;
@@ -450,7 +445,7 @@ static void TFT_Pocess_Command_Handler(void)
 	   pro_t.run_process_step=pro_mode_key_fun;
 	 break;
 
-	case pro_mode_key_fun://5 //mode key function selection 
+	case pro_mode_key_fun://05 //mode key function selection 
 
 	    switch(pro_t.mode_key_confirm_flag){
 
@@ -499,7 +494,7 @@ static void TFT_Pocess_Command_Handler(void)
              }
 			 else{
 
-                pro_t.mode_key_confirm_flag = 0xff;
+                pro_t.mode_key_confirm_flag = 0xff; //
 				
 
 			 }
@@ -525,47 +520,28 @@ static void TFT_Pocess_Command_Handler(void)
 	
 		pro_t.run_process_step=pro_wifi_init;
       break;
-
+      // handler of wifi 
 	  case pro_wifi_init:
 
-	   if(pro_t.first_link_tencent_cloud_flag ==1){
+	  
 
-	        switch(update_step){
-
-			  case 0 :
-			  	
-                 MqttData_Publish_SetOpen(0x01);
-			     update_step=1;
-
-			  break;
-
-
-			  case 1:
-
-	            Publish_Data_ToTencent_Initial_Data();
-				 update_step=2;
-
-			  break;
-
-			  case 2:
-			      Subscriber_Data_FromCloud_Handler();
-
-			      update_step=3;
-
-			  break;
-
-			  case 3:
-
-			     pro_t.first_link_tencent_cloud_flag++;
-				 update_step =0;
-
-			  break;
-
-			 }
-           
-       }
-	  	
-  
+//	   if(wifi_link_net_state() ==1 && update_step==0){
+//	   	  update_step ++ ;
+//
+//	      //MqttData_Publish_SetOpen(0x01);
+//	  	
+//    	  Subscriber_Data_FromCloud_Handler();
+//	      HAL_Delay(100);
+//        
+//       }
+//
+//	   if(wifi_link_net_state() ==1 && update_step==1){
+//	   	  update_step ++ ;
+//	  	
+//    	  Publish_Data_ToTencent_Initial_Data();
+//	      HAL_Delay(100);
+//        
+//       }
 
 	  pro_t.run_process_step=pro_disp_dht11_value;
 

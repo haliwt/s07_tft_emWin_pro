@@ -114,7 +114,7 @@ typedef struct{
    //time
 
    //wifi info
-   uint8_t first_link_tencent_cloud_flag;
+  
  
    //modke key
    uint8_t mode_key_pressed_flag;
