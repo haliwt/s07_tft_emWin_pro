@@ -92,8 +92,8 @@ typedef struct _WIFI_FUN{
 	uint8_t reconnect_tencent_cloud_flag;
 	uint8_t wifi_power_on_flag;
     //sensor dht11 
-	uint8_t gDht11_temperature;
-	uint8_t gDht11_humidity;
+	
+
 	uint8_t set_temperature_value ;
 
 	//fan

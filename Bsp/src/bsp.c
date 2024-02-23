@@ -522,26 +522,30 @@ static void TFT_Pocess_Command_Handler(void)
       break;
       // handler of wifi 
 	  case pro_wifi_init:
+ 
+	     
+	   if(wifi_link_net_state() ==1 && update_step==0){
+	   	  update_step ++ ;
 
-	  
+		   MqttData_Publish_SetOpen(0x01);
+		    HAL_Delay(200);
+	  	
+    	  Publish_Data_ToTencent_Initial_Data();
+	      HAL_Delay(200);
+        
+       }
 
-//	   if(wifi_link_net_state() ==1 && update_step==0){
-//	   	  update_step ++ ;
-//
-//	      //MqttData_Publish_SetOpen(0x01);
-//	  	
-//    	  Subscriber_Data_FromCloud_Handler();
-//	      HAL_Delay(100);
-//        
-//       }
-//
-//	   if(wifi_link_net_state() ==1 && update_step==1){
-//	   	  update_step ++ ;
-//	  	
-//    	  Publish_Data_ToTencent_Initial_Data();
-//	      HAL_Delay(100);
-//        
-//       }
+	   if(wifi_link_net_state() ==1 && update_step==1){
+	   	  update_step ++ ;
+
+	      //MqttData_Publish_SetOpen(0x01);
+	  	
+    	  Subscriber_Data_FromCloud_Handler();
+	      HAL_Delay(350);
+        
+       }
+
+	   
 
 	  pro_t.run_process_step=pro_disp_dht11_value;
 
