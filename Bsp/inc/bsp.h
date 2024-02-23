@@ -120,6 +120,7 @@ typedef struct{
    uint8_t mode_key_pressed_flag;
    uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
+   uint8_t mode_key_special_fun;
 
    //temperature 
      uint8_t set_temperature_value_flag;

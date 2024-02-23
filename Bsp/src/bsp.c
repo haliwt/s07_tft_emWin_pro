@@ -11,6 +11,7 @@ static void Ptc_Temperature_Compare_Value(void);
 //static void DEC_Key_Detected(void);
 
 
+static void mode_key_fun_handler(void);
 
 static void Mode_Long_Key_Fun(void);
 
@@ -227,8 +228,88 @@ static void Key_Interrup_Handler(void)
 
 	 }
 
+	 mode_key_fun_handler();
+
+   
+}
+/******************************************************************************
+	*
+	*Function Name:static void mode_key_fun_handler(void)
+	*Funcion: speical of mode key fun
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+******************************************************************************/
+static void mode_key_fun_handler(void)
+{
+
+  switch(pro_t.mode_key_confirm_flag){
+
+      case mode_key_temp:
+		  if(pro_t.gTimer_pro_mode_key_timer > 4){
+
+                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
+
+					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
+
+
+				  }
+				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 1 && pro_t.gTimer_pro_set_tem_value_blink < 3){
+
+					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
+
+
+				  }
+				  else{
+                    pro_t.gTimer_pro_set_tem_value_blink=0;
+                    led_blink_times++;
+				  }
+
+                  if(led_blink_times ==1){
+				  	led_blink_times=0;
+					  pro_t.mode_key_confirm_flag = 0xff;
+					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
+					  pro_t.set_temperature_value_flag= 1;
+					
+
+                  }
+
+			}
+			   
+			
+			break;
+
+
+			case mode_key_select:
+
+		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
+
+				Mode_Key_Select_Fun();
+             }
+			 else{
+                
+                pro_t.mode_key_confirm_flag = 0xff; //
+				
+                Device_Action_Handler();
+			 }
+
+
+		   break;
+
+
+		   case mode_key_confirm:
+			 
+                Mode_Key_Confirm_Fun();
+				pro_t.mode_key_confirm_flag = 0xff;
+
+			break;
+
+	    }
+
 
 }
+
+
 /******************************************************************************
 	*
 	*Function Name:void TFT_Pocess_Command_Handler(void)
@@ -444,84 +525,9 @@ static void TFT_Pocess_Command_Handler(void)
 
 		}
 		  
-	   pro_t.run_process_step=pro_mode_key_fun;
-	 break;
-
-	case pro_mode_key_fun://05 //mode key function selection 
-
-	    switch(pro_t.mode_key_confirm_flag){
-
-
-			case mode_key_temp:
-				
-
-			if(pro_t.gTimer_pro_mode_key_timer > 4){
-
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
-
-					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
-
-
-				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 1 && pro_t.gTimer_pro_set_tem_value_blink < 3){
-
-					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
-
-
-				  }
-				  else{
-                    pro_t.gTimer_pro_set_tem_value_blink=0;
-                    led_blink_times++;
-				  }
-
-                  if(led_blink_times ==1){
-				  	led_blink_times=0;
-					  pro_t.mode_key_confirm_flag = 0xff;
-					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
-					  pro_t.set_temperature_value_flag= 1;
-					
-
-                  }
-
-				}
-			
-			break;
-
-
-			case mode_key_select:
-
-		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
-
-				Mode_Key_Select_Fun();
-             }
-			 else{
-
-                pro_t.mode_key_confirm_flag = 0xff; //
-				
-
-			 }
-
-
-		   break;
-
-
-		   case mode_key_confirm:
-			 
-                Mode_Key_Confirm_Fun();
-				pro_t.mode_key_confirm_flag = 0xff;
-
-			break;
-
-
-		   default:
-
-		   break;
-
-          }
-      
-	
-		pro_t.run_process_step=pro_wifi_init;
-      break;
+	  pro_t.run_process_step=pro_wifi_init;
+	 break; 
+		  
       // handler of wifi 
 	  case pro_wifi_init:
 
@@ -627,14 +633,10 @@ static void Power_On_Fun(void)
 
 static void Power_Off_Fun(void)
 {
-	 		 
-     
 	LED_Mode_Key_Off();
 	LED_Power_Key_Off();
 
 	Power_Off_Led();
-
- 
    gctl_t.mode_flag = 0;
    pro_t.gPower_On = power_off;
    pro_t.mode_key_confirm_flag=0xff;
@@ -649,10 +651,6 @@ static void Power_Off_Fun(void)
 	gctl_t.ptc_warning = 0;
 	gctl_t.fan_warning=0;
 	//clear set timer timing value and flag 
-		
-		
-		
-
 }
 void power_off_fan_run(void)
 {
@@ -811,16 +809,7 @@ void DEC_Key_Fun(void)
 	    	}
 	   	  }
 		}
-
-  //    DisplayPanel_Ref_Handler();
-     
-
-
-
 }
-
-
-
 /**********************************************************************************************************
     **
     *Function Name:static void Ptc_Temperature_Compare_Value(void)

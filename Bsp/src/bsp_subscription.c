@@ -601,13 +601,17 @@ void Json_Parse_Command_Fun(void)
 
 	  case OPEN_ON_ITEM:
       	buzzer_sound();
+		pro_t.gPower_On = power_on;   
+        pro_t.long_key_flag =0;
+        pro_t.run_process_step=0;
+		pro_t.gKey_value = power_key_id;
 		MqttData_Publish_SetOpen(1);  
 		HAL_Delay(50);//300
 
 		gctl_t.ptc_warning =0;
 		gctl_t.fan_warning =0;
 		
-	    pro_t.gPower_On = power_on;
+	   
 	    wifi_t.wifi_rx_data_buzzer_sound_flag =0;
 
 		wifi_t.response_wifi_signal_label = 0xff;
