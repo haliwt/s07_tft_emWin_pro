@@ -47,7 +47,7 @@ void bsp_Init(void)
 {
 
    pro_t.mode_key_confirm_flag=0xff;
-   Buzzer_Sound_Fun_Init();
+  // Buzzer_Sound_Fun_Init();
 
 
 }

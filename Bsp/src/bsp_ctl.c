@@ -59,6 +59,8 @@ void bsp_ctl_init(void)
   // UartVarInit();
 
    Power_Handler(power_default_fun);
+
+   Buzzer_Sound_Fun_Init();
   
   
    Mode_State_Handler(Mode_Default_Handler);

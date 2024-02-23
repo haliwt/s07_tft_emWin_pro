@@ -666,7 +666,7 @@ void Json_Parse_Command_Fun(void)
 			
 		
 	  	}
-       wifi_t.wifi_rx_data_buzzer_sound_flag=1;
+       wifi_t.wifi_rx_data_buzzer_sound_flag=0;
 		
 	   wifi_t.response_wifi_signal_label = 0xff;
 	   break;
