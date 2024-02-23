@@ -60,8 +60,8 @@ static serviceInfo    sg_info;
 //static char *sg_property_name[] = {"opne", "sonic", "find", "nowtemperature","state","ptc","Anion","temperature","Humidity"};
 void Mqtt_Value_Init(void)
 {
-     wifi_t.set_wind_speed_value=100;
-    wifi_t.set_temperature_value=40 ;
+    wifi_t.set_wind_speed_value=100;
+    gctl_t.gSet_temperature_value=40 ;
    	sg_info.open=1;
     sg_info.state=1;
     sg_info.ptc=1; 
@@ -70,7 +70,7 @@ void Mqtt_Value_Init(void)
     sg_info.find= wifi_t.set_wind_speed_value;
 	//if(wifi_t.set_temperature_value <20)wifi_t.set_temperature_value = 20;
 	//else if(wifi_t.set_temperature_value > 40 )wifi_t.set_temperature_value = 40;
-	sg_info.set_temperature =  wifi_t.set_temperature_value ;
+	sg_info.set_temperature =  gctl_t.gSet_temperature_value ;
 	
 }
 static void Mqtt_Value_update_data(void)
@@ -83,9 +83,9 @@ static void Mqtt_Value_update_data(void)
 	sg_info.anion =gctl_t.plasma_flag;
 	sg_info.sonic = gctl_t.ultrasonic_flag ;
     sg_info.find =  wifi_t.set_wind_speed_value;
-    if(wifi_t.set_temperature_value <20)wifi_t.set_temperature_value = 20;
-	else if(wifi_t.set_temperature_value > 40)wifi_t.set_temperature_value = 40;
-	sg_info.set_temperature = wifi_t.set_temperature_value;
+    if(gctl_t.gSet_temperature_value <20)gctl_t.gSet_temperature_value = 20;
+	else if(gctl_t.gSet_temperature_value > 40)gctl_t.gSet_temperature_value = 40;
+	sg_info.set_temperature = gctl_t.gSet_temperature_value;
 
 }
 
@@ -98,9 +98,9 @@ static void Mqtt_power_off_Value(void)
     sg_info.anion=0;  //灭菌
 	sg_info.sonic =0;  //驱虫
     sg_info.find= wifi_t.set_wind_speed_value;
-	if(wifi_t.set_temperature_value <20)wifi_t.set_temperature_value = 20;
-	else if(wifi_t.set_temperature_value > 40 )wifi_t.set_temperature_value = 40;
-	sg_info.set_temperature =  wifi_t.set_temperature_value ;
+	if(gctl_t.gSet_temperature_value <20)gctl_t.gSet_temperature_value = 20;
+	else if(gctl_t.gSet_temperature_value > 40 )gctl_t.gSet_temperature_value = 40;
+	sg_info.set_temperature =  gctl_t.gSet_temperature_value ;
 	
 }
 

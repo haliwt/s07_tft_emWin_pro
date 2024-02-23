@@ -1,6 +1,11 @@
 #include "bsp_buzzer.h"
 #include "bsp.h"
 
+void (*buzzer_sound)(void);
+
+
+
+
 static void Buzzer_KeySound_Off(void);
 /*
 *********************************************************************************************************
@@ -10,6 +15,16 @@ static void Buzzer_KeySound_Off(void);
 *	Return Ref: 0 ????? 1????????
 *********************************************************************************************************
 */
+
+void Buzzer_Sound_Fun_Init(void)
+{
+
+	Buzzer_KeySound_Handler(Buzzer_KeySound);
+
+
+}
+
+
 void Buzzer_KeySound(void)
 {
 
@@ -61,6 +76,14 @@ void Buzzer_Ptc_Error_Sound(void)
 	Buzzer_KeySound();
 	HAL_Delay(50);
 
+
+}
+
+
+void Buzzer_KeySound_Handler(void(*sound_handler)(void))
+{
+
+   buzzer_sound = sound_handler;
 
 }
 

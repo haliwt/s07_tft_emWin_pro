@@ -43,8 +43,6 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
         self_power_on_flag ++ ;
 	
         Buzzer_KeySound();
-
-    
 		InitWifiModule_Hardware();//InitWifiModule();
 		HAL_Delay(1000);
         SmartPhone_TryToLink_TencentCloud();
@@ -140,12 +138,12 @@ static void RunWifi_Command_Handler(void)
 			do{
 			  
 				 MqttData_Publish_SetOpen(0x01);
-		         HAL_Delay(200);
+		         HAL_Delay(50);//
 		         Publish_Data_ToTencent_Initial_Data();
-				 HAL_Delay(350);
+				 HAL_Delay(200);//
 
 				Subscriber_Data_FromCloud_Handler();
-				HAL_Delay(350);
+				HAL_Delay(200);//
 	           
 
 			   
@@ -219,7 +217,7 @@ static void RunWifi_Command_Handler(void)
 		if(power_on_state() == power_on){
 			if(wifi_t.app_timer_power_off_flag == 0 && power_on_state() ==power_on && (wifi_t.app_timer_power_on_flag==0||wifi_t.app_timer_power_on_flag==3)){
 			Update_Dht11_Totencent_Value();
-			HAL_Delay(300);
+			HAL_Delay(100);//300
 
 			}
 
@@ -257,7 +255,7 @@ static void RunWifi_Command_Handler(void)
 		     wifi_t.get_rx_beijing_time_enable=1; //enable beijing times
 		     wifi_t.wifi_uart_counter=0;
              Get_BeiJing_Time_Cmd();
-			 HAL_Delay(2000); //200
+			 HAL_Delay(100); //200
 			 wifi_t.gTimer_read_beijing_time=0;
 	   	 	}
 
@@ -339,15 +337,13 @@ static void AutoReconnect_Wifi_Neware_Function(void)
 			wifi_t.auto_link_cloud_flag=0xff;
 			wifi_t.linking_tencent_cloud_doing =0;
 
-			//SendWifiData_To_Cmd(0x01) ;
-			//HAL_Delay(30);
 
 
 			Subscriber_Data_FromCloud_Handler();
-			HAL_Delay(300);
+			HAL_Delay(200);//300
 
 			Publish_Data_ToTencent_Update_Data();
-			HAL_Delay(300);
+			HAL_Delay(200);//300
 		}
 	}
 

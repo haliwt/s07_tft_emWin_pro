@@ -47,6 +47,7 @@ void bsp_Init(void)
 {
 
    pro_t.mode_key_confirm_flag=0xff;
+   Buzzer_Sound_Fun_Init();
 
 
 }
@@ -294,9 +295,8 @@ static void TFT_Pocess_Command_Handler(void)
       pro_t.run_process_step=0xf2;
 	  Wifi_Fast_Led_Blink();
 		
-	  if(pro_t.gTimer_pro_ms >4){ 
+	  if(pro_t.gTimer_pro_ms >7){ //8s
 			 pro_t.gTimer_pro_ms =0;
-			 pro_t.run_process_step=0xff;
 			 Wifi_Fast_Led_Blink();
 
 		     Device_Action_Handler();
@@ -770,9 +770,6 @@ void DEC_Key_Fun(void)
 
 	if(power_on_state() ==power_on){
 	   	if(gctl_t.ptc_warning ==0 && gctl_t.fan_warning ==0){
-
-			//Buzzer_KeySound();
-			//pro_t.buzzer_sound_flag = 1;
 	   	
 	     switch(pro_t.mode_key_confirm_flag){
 

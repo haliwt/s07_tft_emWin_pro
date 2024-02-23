@@ -131,9 +131,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	 pro_t.gTimer_pro_feed_dog++;
 	
-
-	
-	 pro_t.gTimer_pro_tft++;
+     pro_t.gTimer_pro_tft++;
 	 gctl_t.gTimer_ctl_disp_second++;
 	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
