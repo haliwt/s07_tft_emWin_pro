@@ -124,23 +124,7 @@ void  Fan_error_state_Handler(uint8_t(*fan_error_handler)(void));
 void Mode_Key_Select_Fun(void);
 void Mode_Key_Confirm_Fun(void);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void Device_Action_Led_OnOff_Handler(void);
 
 
 

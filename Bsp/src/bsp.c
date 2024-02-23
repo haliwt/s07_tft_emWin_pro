@@ -285,12 +285,13 @@ static void mode_key_fun_handler(void)
 		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
 
 				Mode_Key_Select_Fun();
+				
              }
 			 else{
                 
                 pro_t.mode_key_confirm_flag = 0xff; //
 				
-                Device_Action_Handler();
+                Device_Action_Led_OnOff_Handler();
 			 }
 
 
@@ -298,7 +299,7 @@ static void mode_key_fun_handler(void)
 
 
 		   case mode_key_confirm:
-			 
+			    Device_Action_Led_OnOff_Handler();
                 Mode_Key_Confirm_Fun();
 				pro_t.mode_key_confirm_flag = 0xff;
 
