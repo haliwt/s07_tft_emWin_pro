@@ -82,13 +82,15 @@ void Subscriber_Data_FromCloud_Handler(void)
 ********************************************************************************/
 void Subscribe_Rx_Interrupt_Handler(void)
 {
-      static uint8_t det_wifi_link;
+
+
+	static uint8_t det_wifi_link;
     switch(wifi_t.rx_data_state)
       {
       case 0:  //#0
 
             
-         if((sub_array[0]== '"') ||sub_array[0]=='+') //hex :54 - "T" -fixed
+         if((wifi_t.usart2_dataBuf[0]== '"') ||wifi_t.usart2_dataBuf[0]=='+') //hex :54 - "T" -fixed
             wifi_t.rx_data_state=1; //=1
           else{
                wifi_t.rx_counter=0;
@@ -98,7 +100,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
       case 1:
       
-         if((sub_array[0]== 'p')  ||sub_array[0]=='T')//hex :54 - "T" -fixed
+         if((wifi_t.usart2_dataBuf[0]== 'p')  ||wifi_t.usart2_dataBuf[0]=='T')//hex :54 - "T" -fixed
             wifi_t.rx_data_state=2; //=1
           else{
                wifi_t.rx_counter=0;
@@ -107,7 +109,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
             
          break;
       case 2: //#1
-             if((sub_array[0]== 'a')||sub_array[0]=='C')  //hex :4B - "K" -fixed
+             if((wifi_t.usart2_dataBuf[0]== 'a')||wifi_t.usart2_dataBuf[0]=='C')  //hex :4B - "K" -fixed
             wifi_t.rx_data_state=3; //=1
          else{
             wifi_t.rx_data_state =0;
@@ -116,7 +118,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
          break;
             
         case 3:
-            if((sub_array[0]== 'r')||sub_array[0]=='M')    //hex :4B - "K" -fixed
+            if((wifi_t.usart2_dataBuf[0]== 'r')||wifi_t.usart2_dataBuf[0]=='M')    //hex :4B - "K" -fixed
             wifi_t.rx_data_state=4; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -126,7 +128,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
         break;
         
         case 4:
-            if((sub_array[0]== 'a')  ||sub_array[0]=='Q')  //hex :4B - "K" -fixed
+            if((wifi_t.usart2_dataBuf[0]== 'a')  ||wifi_t.usart2_dataBuf[0]=='Q')  //hex :4B - "K" -fixed
             wifi_t.rx_data_state=5; //=1
          else{
             wifi_t.rx_data_state =0;
@@ -136,7 +138,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
         break;
 
       case 5:
-       if((sub_array[0]== 'm') ||sub_array[0]=='T')   //hex :4B - "K" -fixed
+       if((wifi_t.usart2_dataBuf[0]== 'm') ||wifi_t.usart2_dataBuf[0]=='T')   //hex :4B - "K" -fixed
          wifi_t.rx_data_state=6; //=1
          else{
            wifi_t.rx_data_state=0;
@@ -147,7 +149,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
       
       case 6:
-       if((sub_array[0]== 's')||sub_array[0]=='T')    //hex :4B - "K" -fixed
+       if((wifi_t.usart2_dataBuf[0]== 's')||wifi_t.usart2_dataBuf[0]=='T')    //hex :4B - "K" -fixed
          wifi_t.rx_data_state=7; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -157,10 +159,10 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
       case 7:
-       if((sub_array[0]== '"')||sub_array[0]=='R' ||sub_array[0]=='C' ){  //hex :4B - "K" -fixed
+       if((wifi_t.usart2_dataBuf[0]== '"')||wifi_t.usart2_dataBuf[0]=='R' ||wifi_t.usart2_dataBuf[0]=='C' ){  //hex :4B - "K" -fixed
          wifi_t.rx_data_state=8; //=1
     	}
-		else if(sub_array[0]==':' ){
+		else if(wifi_t.usart2_dataBuf[0]==':' ){
 
              wifi_t.rx_data_state=8;
 			 det_wifi_link=1;//wifi_t.wifi_reconnect_read_flag = wifi_t[0];
@@ -173,7 +175,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
        case 8:
-       if((sub_array[0]== ':') ||sub_array[0]=='E' ||sub_array[0]=='O' ) //hex :4B - "K" -fixed
+       if((wifi_t.usart2_dataBuf[0]== ':') ||wifi_t.usart2_dataBuf[0]=='E' ||wifi_t.usart2_dataBuf[0]=='O' ) //hex :4B - "K" -fixed
          wifi_t.rx_data_state=9; //=1
          else{
            wifi_t.rx_data_state =0;
@@ -186,7 +188,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
 
       case 9:
-       if((sub_array[0]== '{') ||sub_array[0]=='C' ||sub_array[0]=='N'){ //hex :4B - "K" -fixed
+       if((wifi_t.usart2_dataBuf[0]== '{') ||wifi_t.usart2_dataBuf[0]=='C' ||wifi_t.usart2_dataBuf[0]=='N'){ //hex :4B - "K" -fixed
          wifi_t.rx_data_state=10; //=1
        	}
          else{
@@ -200,12 +202,12 @@ void Subscribe_Rx_Interrupt_Handler(void)
         
          if(wifi_t.rx_data_success==0){
 		 	
-         	wifi_t.wifi_data[wifi_t.rx_counter] = sub_array[0];
+         	wifi_t.wifi_data[wifi_t.rx_counter] = wifi_t.usart2_dataBuf[0];
             wifi_t.rx_counter++ ;
 	
 		    
             
-         if(sub_array[0]=='}' || sub_array[0]==0x0A) //0x7D='}', 0x0A = line feed // end
+         if(wifi_t.usart2_dataBuf[0]=='}' || wifi_t.usart2_dataBuf[0]==0x0A) //0x7D='}', 0x0A = line feed // end
          {
             wifi_t.rx_data_success=1;
             wifi_t.rx_data_state=0;
@@ -214,7 +216,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
             
           
          }
-		 else if(sub_array[0]=='O' || sub_array[0]=='N'){ //auto reconect be detected 
+		 else if(wifi_t.usart2_dataBuf[0]=='O' || wifi_t.usart2_dataBuf[0]=='N'){ //auto reconect be detected 
 
                   wifi_t.rx_data_state=11; //=1
 
@@ -237,7 +239,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 
 
 	  case 11:
-		if(sub_array[0]=='N' ||sub_array[0]==':'){
+		if(wifi_t.usart2_dataBuf[0]=='N' ||wifi_t.usart2_dataBuf[0]==':'){
 		
 			wifi_t.rx_data_state=12; //=1
 		
@@ -251,7 +253,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
       case 12:
-		if(sub_array[0]=='N' || sub_array[0]=='O'){
+		if(wifi_t.usart2_dataBuf[0]=='N' || wifi_t.usart2_dataBuf[0]=='O'){
 		
 			wifi_t.rx_data_state=13; //=1
 		
@@ -265,13 +267,13 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 13:
-		if(sub_array[0]=='E' ){
+		if(wifi_t.usart2_dataBuf[0]=='E' ){
 		
 			wifi_t.rx_data_state=14; //=1
 		
 		
 		}
-		else if(sub_array[0]=='K'){
+		else if(wifi_t.usart2_dataBuf[0]=='K'){
 
 
             wifi_t.wifi_reconnect_read_flag = 0;
@@ -287,7 +289,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 14:
-		if(sub_array[0]=='C'){
+		if(wifi_t.usart2_dataBuf[0]=='C'){
 		
 			wifi_t.rx_data_state=15; //=1
 		
@@ -301,7 +303,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 15:
-		if(sub_array[0]=='T'){
+		if(wifi_t.usart2_dataBuf[0]=='T'){
 		
 			wifi_t.rx_data_state=16; //=1
 		
@@ -315,7 +317,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 16:
-		if(sub_array[0]=='I'){
+		if(wifi_t.usart2_dataBuf[0]=='I'){
 		
 			wifi_t.rx_data_state=17; //=1
 		
@@ -329,7 +331,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 17:
-		if(sub_array[0]=='N'){
+		if(wifi_t.usart2_dataBuf[0]=='N'){
 		
 				wifi_t.rx_data_state=18; //=1
 		
@@ -343,7 +345,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
       break;
 
 	  case 18:
-		if(sub_array[0]=='G'){
+		if(wifi_t.usart2_dataBuf[0]=='G'){
 		
 			wifi_t.wifi_reconnect_read_flag = 1;
 		    wifi_t.rx_data_state =0;
@@ -367,7 +369,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
          
        break;
       }
- 
+    
 
 }
  
@@ -869,9 +871,9 @@ void Wifi_Rx_Beijing_Time_Handler(void)
       case 0:  //#0
 
             
-         if(sub_array[0]== 0x01 || sub_array[0]== 0x02 ||sub_array[0]== 0x03 ||sub_array[0]== 0x04 
-		 	|| sub_array[0]== 0x05 ||sub_array[0]== 0x06 ||sub_array[0]== 0x07 ||sub_array[0]== 0x08 
-		 	|| sub_array[0]== 0x09 ||sub_array[0]== 0x0a ||sub_array[0]== 0x0b ||sub_array[0]== 0x0c ){ 
+         if(wifi_t.usart2_dataBuf[0]== 0x01 || wifi_t.usart2_dataBuf[0]== 0x02 ||wifi_t.usart2_dataBuf[0]== 0x03 ||wifi_t.usart2_dataBuf[0]== 0x04 
+		 	|| wifi_t.usart2_dataBuf[0]== 0x05 ||wifi_t.usart2_dataBuf[0]== 0x06 ||wifi_t.usart2_dataBuf[0]== 0x07 ||wifi_t.usart2_dataBuf[0]== 0x08 
+		 	|| wifi_t.usart2_dataBuf[0]== 0x09 ||wifi_t.usart2_dataBuf[0]== 0x0a ||wifi_t.usart2_dataBuf[0]== 0x0b ||wifi_t.usart2_dataBuf[0]== 0x0c ){ 
              wifi_t.rx_data_state=1; //=1
 		  }
 		  else{
@@ -883,7 +885,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
          break;
 
 	  case 1:
-	  	 if(sub_array[0]== ' ')
+	  	 if(wifi_t.usart2_dataBuf[0]== ' ')
 		  	 wifi_t.rx_data_state=2; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -893,12 +895,12 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 
       case 2:
       
-           wifi_t.real_hours=sub_array[0];
+           wifi_t.real_hours=wifi_t.usart2_dataBuf[0];
            wifi_t.rx_data_state=3; //=1
          break;
 
 	  case 3:
-	  	  if(sub_array[0]== ':')
+	  	  if(wifi_t.usart2_dataBuf[0]== ':')
 		  	 wifi_t.rx_data_state=4; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -907,13 +909,13 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 	  	break;
       case 4: //#1
       
-            wifi_t.real_minutes = sub_array[0];
+            wifi_t.real_minutes = wifi_t.usart2_dataBuf[0];
             wifi_t.rx_data_state=5; //=1
        
          break;
 
 	  case 5:
-	  	 if(sub_array[0]== ':')
+	  	 if(wifi_t.usart2_dataBuf[0]== ':')
 		  	 wifi_t.rx_data_state=6; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -922,7 +924,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 	  break;
             
         case 6:
-           wifi_t.real_seconds = sub_array[0];
+           wifi_t.real_seconds = wifi_t.usart2_dataBuf[0];
            wifi_t.rx_data_state=7; //=1
            
            
@@ -930,7 +932,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
         break;
 
 		case 7:
-			if(sub_array[0]== ' ')
+			if(wifi_t.usart2_dataBuf[0]== ' ')
 		  	 wifi_t.rx_data_state=8; //=1
 		  else{
 		      wifi_t.rx_data_state=0; //=1
@@ -940,7 +942,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 		break;
 		  
 		case 8:
-			 if(sub_array[0]==20){
+			 if(wifi_t.usart2_dataBuf[0]==20){
                 wifi_t.get_rx_beijing_time_enable=0 ;
 				wifi_t.rx_data_state=0; //=1
 				  
