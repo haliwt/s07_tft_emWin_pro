@@ -41,7 +41,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 					//Subscribe_Rx_Interrupt_Handler();
 				}
 				else
-				Subscribe_Rx_Interrupt_Handler();
+					Subscribe_Rx_Interrupt_Handler();
 	      }
 	  __HAL_UART_CLEAR_OREFLAG(&huart2);
       HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);

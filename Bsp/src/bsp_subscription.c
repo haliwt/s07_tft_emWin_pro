@@ -205,7 +205,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 	
 		    
             
-         if(sub_array[0]=='}' || sub_array[0]==0x0A) //0x7D='}' // end
+         if(sub_array[0]=='}' || sub_array[0]==0x0A) //0x7D='}', 0x0A = line feed // end
          {
             wifi_t.rx_data_success=1;
             wifi_t.rx_data_state=0;

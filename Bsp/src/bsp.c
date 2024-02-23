@@ -240,7 +240,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 	static uint8_t power_been_flag,timer_blink_times;
-    static uint8_t update_step;
+    static uint8_t update_step,power_times;
   
 
    if(power_on_state() == power_on){
@@ -263,8 +263,10 @@ static void TFT_Pocess_Command_Handler(void)
 
 		TFT_BACKLIGHT_ON();
 		power_been_flag=1;
+		power_times = 1;
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
+		
 	  
 		
 
@@ -522,9 +524,18 @@ static void TFT_Pocess_Command_Handler(void)
       break;
       // handler of wifi 
 	  case pro_wifi_init:
+
+
+	   if(wifi_link_net_state() ==1 && power_times==1){
+	   	  power_times =0;
+	   	  MqttData_Publish_SetOpen(0x01);
+		  HAL_Delay(200);
+
+	   }
  
 	     
 	   if(wifi_link_net_state() ==1 && update_step==0){
+	   	 
 	   	  update_step ++ ;
 
 		   MqttData_Publish_SetOpen(0x01);
@@ -562,6 +573,10 @@ static void TFT_Pocess_Command_Handler(void)
 		power_been_flag =0;
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
+		if(wifi_link_net_state() ==1){
+			MqttData_Publish_SetOpen(0x00); //smart phone is power off
+			HAL_Delay(200);
+		}
         
 	}
 	LED_Mode_Key_Off();
