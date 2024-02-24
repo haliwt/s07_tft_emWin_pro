@@ -4,6 +4,9 @@
 #include "bsp.h"
 
 
+static void smartphone_app_timer_power_on_handler(void);
+
+
 uint8_t TCMQTTRCVPUB[40];
 
 
@@ -441,7 +444,7 @@ void Tencent_Cloud_Rx_Handler(void)
          wifi_t.set_beijing_time_flag =0; //WT.EDIT 2023.06.12
 		 // wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
 	
-     if(wifi_t.received_data_from_tencent_cloud ==0x25){
+     if(wifi_t.received_data_from_tencent_cloud ==0x36){ //36
 	    wifi_t.received_data_from_tencent_cloud=0;
 		wifi_t.get_rx_beijing_time_enable=0;
 		wifi_t.response_wifi_signal_label = APP_TIMER_POWER_ON_REF;
@@ -807,23 +810,16 @@ void Json_Parse_Command_Fun(void)
 
 	       wifi_t.set_beijing_time_flag=0;
 		   wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
+
+		   smartphone_app_timer_power_on_handler();
 	  	
-		   if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
 		   
-			   wifi_t.app_timer_power_on_flag = 1;
-		       wifi_t.app_timer_power_off_flag = 0;
-			   MqttData_Publish_SetOpen(1);  
-			   HAL_Delay(50);//
-			   
-			
-               wifi_t.wifi_rx_data_buzzer_sound_flag=0;
-			  
-		  }
 		   
             if(strstr((char *)TCMQTTRCVPUB,"open\":0")){
 		      	buzzer_sound();
+			    pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
 		        wifi_t.app_timer_power_off_flag = 1;
-			    wifi_t.app_timer_power_on_flag = 0;
+			 
                 __HAL_UART_CLEAR_OREFLAG(&huart2);
 		 			MqttData_Publish_SetOpen(0);  
 			       HAL_Delay(50);//
@@ -1025,5 +1021,188 @@ void Parse_Json_Statement(void)
 
 }
 
+/*****************************************************************************
+	*
+	*Function Name:static void smartphone_app_timer_power_on_handler(void)
+	*Function:
+	*Inpur Ref:
+	*Retern Ref:
+	*
+*****************************************************************************/
+static void smartphone_app_timer_power_on_handler(void)
+{
 
 
+	if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":0,\"open\":1,\"ptc\":0")){
+
+        buzzer_sound();
+		
+		pro_t.gPower_On = power_on;   
+		pro_t.long_key_flag =0;
+		pro_t.run_process_step=0;
+		pro_t.gKey_value = power_key_id;
+
+		
+       gctl_t.ultrasonic_flag=0;
+	   gctl_t.plasma_flag=0;
+	   gctl_t.ptc_flag=0;
+	  
+        MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+		HAL_Delay(50);//
+
+		pro_t.gTimer_pro_key_select_fun =0;
+	    pro_t.set_moke_key_select_fun =1;
+   
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":0,\"open\":1,\"ptc\":1")){
+
+	    buzzer_sound();
+		
+		pro_t.gPower_On = power_on;   
+		pro_t.long_key_flag =0;
+		pro_t.run_process_step=0;
+		pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=0;
+	   gctl_t.plasma_flag=0;
+	   gctl_t.ptc_flag=1;
+	  
+
+		MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+		HAL_Delay(200);//
+
+		pro_t.gTimer_pro_key_select_fun =0;
+	    pro_t.set_moke_key_select_fun =1;
+
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":1,\"open\":1,\"ptc\":1")){
+		
+		buzzer_sound();
+
+		pro_t.gPower_On = power_on;	 
+		pro_t.long_key_flag =0;
+		pro_t.run_process_step=0;
+		pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=0;
+	   gctl_t.plasma_flag=1;
+	   gctl_t.ptc_flag=1;
+	  
+
+		MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+		HAL_Delay(200);//
+
+		pro_t.gTimer_pro_key_select_fun =0;
+		pro_t.set_moke_key_select_fun =1;
+
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":1,\"open\":1,\"ptc\":1")){
+		
+		buzzer_sound();
+			   
+	   pro_t.gPower_On = power_on;	 
+	   pro_t.long_key_flag =0;
+	   pro_t.run_process_step=0;
+	   pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=1;
+	   gctl_t.plasma_flag=1;
+	   gctl_t.ptc_flag=1;
+	  
+
+	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+	   HAL_Delay(200);//
+
+	   pro_t.gTimer_pro_key_select_fun =0;
+	   pro_t.set_moke_key_select_fun =1;
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":1,\"open\":1,\"ptc\":0")){
+	   buzzer_sound();
+			   
+	   pro_t.gPower_On = power_on;	 
+	   pro_t.long_key_flag =0;
+	   pro_t.run_process_step=0;
+	   pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=1;
+	   gctl_t.plasma_flag=1;
+	   gctl_t.ptc_flag=0;
+	  
+
+	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+	   HAL_Delay(200);//
+
+	   pro_t.gTimer_pro_key_select_fun =0;
+	   pro_t.set_moke_key_select_fun =1;
+
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":0,\"open\":1,\"ptc\":0")){
+	   buzzer_sound();
+			   
+	   pro_t.gPower_On = power_on;	 
+	   pro_t.long_key_flag =0;
+	   pro_t.run_process_step=0;
+	   pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=1;
+	   gctl_t.plasma_flag=0;
+	   gctl_t.ptc_flag=0;
+	  
+
+	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+	   HAL_Delay(50);//
+
+	   pro_t.gTimer_pro_key_select_fun =0;
+	   pro_t.set_moke_key_select_fun =1;
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":0,\"open\":1,\"ptc\":1")){
+	   buzzer_sound();
+			   
+	   pro_t.gPower_On = power_on;	 
+	   pro_t.long_key_flag =0;
+	   pro_t.run_process_step=0;
+	   pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=1;
+	   gctl_t.plasma_flag=0;
+	   gctl_t.ptc_flag=1;
+	  
+
+	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+	   HAL_Delay(50);//
+
+	   pro_t.gTimer_pro_key_select_fun =0;
+	   pro_t.set_moke_key_select_fun =1;
+
+	}
+	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":1,\"open\":1,\"ptc\":0")){
+	   buzzer_sound();
+			   
+	   pro_t.gPower_On = power_on;	 
+	   pro_t.long_key_flag =0;
+	   pro_t.run_process_step=0;
+	   pro_t.gKey_value = power_key_id;
+
+	   gctl_t.ultrasonic_flag=0;
+	   gctl_t.plasma_flag=1;
+	   gctl_t.ptc_flag=0;
+	  
+
+	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+	   HAL_Delay(50);//
+
+	   pro_t.gTimer_pro_key_select_fun =0;
+	   pro_t.set_moke_key_select_fun =1;
+
+	}
+	
+
+
+}
+
+	

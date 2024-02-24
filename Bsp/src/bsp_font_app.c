@@ -403,7 +403,6 @@ void TFT_display_char32_32_noBackColor(const uint8_t *address ,uint16_t startX,u
 	uint16_t column;
 	uint8_t tm=0;
 	uint8_t temp;
-	uint16_t x = 0;
 	uint16_t y = 0;
 	for(column = 0; column < 128; column++) //2个字 1个字是16 
 	{

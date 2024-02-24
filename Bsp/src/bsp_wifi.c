@@ -47,8 +47,7 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 		HAL_Delay(1000);
         SmartPhone_TryToLink_TencentCloud();
 		if(wifi_link_net_state()==1){
-			
-		     wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;//04
+			wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;//04
 	    }
        
     }
@@ -215,11 +214,7 @@ static void RunWifi_Command_Handler(void)
 	   
 		wifi_t.get_rx_beijing_time_enable=0;
 		if(power_on_state() == power_on){
-			if(wifi_t.app_timer_power_off_flag == 0 && power_on_state() ==power_on && (wifi_t.app_timer_power_on_flag==0||wifi_t.app_timer_power_on_flag==3)){
-			Update_Dht11_Totencent_Value();
-			HAL_Delay(100);//300
-
-			}
+			
 
 
 			if(wifi_t.gTimer_get_beijing_time > 423 && power_on_state() ==power_on){ //&& gctl_t.power_on_send_bejing_times==0){ //

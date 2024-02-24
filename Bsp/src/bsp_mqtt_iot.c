@@ -34,6 +34,7 @@ static void property_report_SetFan(uint8_t fan);
 static void property_report_SetTime(uint8_t time);
 static void property_report_SetState(uint8_t dat);
 static void property_report_power_off_state(void);
+static void app_power_on_property_report_state(uint8_t open_data,uint8_t plasma_data,uint8_t ptc_data,uint8_t ultra_data);
 
 
 
@@ -181,6 +182,30 @@ static void property_report_power_off_state(void)
 
 
 }
+/***************************************************************************************************************************************
+	*
+	*Function Name:static void property_report_Temp_Humidity(void)
+	*Function :send data to tencent cloud only read temperature and humidity of data
+	*Input Ref: only read temperature value and humidiy value
+	*           
+	*Return Ref:
+	*
+****************************************************************************************************************************************/
+static void app_power_on_property_report_state(uint8_t open_data,uint8_t plasma_data,uint8_t ptc_data,uint8_t ultra_data)
+{
+	char       message[256]    = {0};
+    int        message_len     = 0;
+
+ 
+   message_len = snprintf(message, sizeof(message),"\"{\\\"method\\\":\\\"report\\\"\\,\\\"clientToken\\\":\\\"up01\\\"\\,\\\"params\\\":{\\\"open\\\":%d\\,\\\"Anion\\\":%d\\,\\\"ptc\\\":%d\\,\\\"sonic\\\":%d}}\"\r\n",
+                             open_data,plasma_data,ptc_data,ultra_data);
+                               
+ 
+  at_send_data((uint8_t *)message, message_len);
+
+
+}
+
 
 
 /********************************************************************************
@@ -410,6 +435,14 @@ void MqttData_Publish_PowerOff_Ref(void) //
    property_topic_publish();
 
    property_report_power_off_state();
+
+}
+
+void MqttData_Publis_App_PowerOn_Ref(uint8_t open_data,uint8_t plasma_data,uint8_t ptc_data,uint8_t ultra_data)
+{
+   property_topic_publish();
+
+   app_power_on_property_report_state(open_data,plasma_data,ptc_data,ultra_data);
 
 }
 

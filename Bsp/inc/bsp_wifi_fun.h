@@ -112,7 +112,7 @@ typedef struct _WIFI_FUN{
 
 	//smart phone of ref
 	uint8_t app_timer_power_off_flag;
-	uint8_t app_timer_power_on_flag;
+	
 
 	//wifi gtimer
 	uint8_t gTimer_read_beijing_time;
