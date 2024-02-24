@@ -340,7 +340,8 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 
         pro_t.gPower_On= power_on;
-
+		
+   
 
 		pro_t.run_process_step=1;
 
@@ -582,8 +583,9 @@ static void TFT_Pocess_Command_Handler(void)
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
 		if(wifi_link_net_state() ==1){
-			MqttData_Publish_SetOpen(0x00); //smart phone is power off
-			HAL_Delay(100);
+			
+		    MqttData_Publish_PowerOff_Ref();
+		    HAL_Delay(200);
 		}
         
 	}

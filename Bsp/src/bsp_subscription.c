@@ -965,62 +965,7 @@ void Wifi_Rx_Beijing_Time_Handler(void)
 void Wifi_Get_Beijing_Time_Handler(void)
 {
  /*AT+CIPSNTPTIME?+CIPSNTPTIME:Wed Jan 11 19:31:04 2023 OK */
-
-
-
 }
-
-void Parse_Json_Statement(void)
-{
-
- 
-     if(strstr((char *)TCMQTTRCVPUB,"ptc\":0")){
-				
-			gctl_t.ptc_flag=0;
-				  
-		}
-		else if(strstr((char *)TCMQTTRCVPUB,"ptc\":1")){
-				
-				    gctl_t.ptc_flag=1;
-				  
-					
-		}
-		
-		if(strstr((char *)TCMQTTRCVPUB,"Anion\":0")){
-			
-				  gctl_t.plasma_flag=0;
-				
-				
-			 
-		}
-		else if(strstr((char *)TCMQTTRCVPUB,"Anion\":1")){
-			
-				gctl_t.plasma_flag=1;
-				
-			
-				
-		}
-		
-		if(strstr((char *)TCMQTTRCVPUB,"sonic\":0")){
-			
-			     gctl_t.ultrasonic_flag=0;
-				
-			
-		}
-		else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1")){
-			
-				gctl_t.ultrasonic_flag=1;
-				
-		   }
-
-
-
-
-
-
-
-}
-
 /*****************************************************************************
 	*
 	*Function Name:static void smartphone_app_timer_power_on_handler(void)
@@ -1048,7 +993,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	   gctl_t.ptc_flag=0;
 	  
         MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-		HAL_Delay(50);//
+		HAL_Delay(200);//
 
 		pro_t.gTimer_pro_key_select_fun =0;
 	    pro_t.set_moke_key_select_fun =1;
@@ -1154,7 +1099,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	  
 
 	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(50);//
+	   HAL_Delay(200);//
 
 	   pro_t.gTimer_pro_key_select_fun =0;
 	   pro_t.set_moke_key_select_fun =1;
@@ -1174,7 +1119,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	  
 
 	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(50);//
+	   HAL_Delay(200);//
 
 	   pro_t.gTimer_pro_key_select_fun =0;
 	   pro_t.set_moke_key_select_fun =1;
@@ -1194,7 +1139,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	  
 
 	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(50);//
+	   HAL_Delay(200);//
 
 	   pro_t.gTimer_pro_key_select_fun =0;
 	   pro_t.set_moke_key_select_fun =1;

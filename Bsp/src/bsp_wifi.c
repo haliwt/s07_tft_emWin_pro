@@ -52,19 +52,18 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
     }
 
-	 if(wifi_link_net_state()==1 && power_on_state()  !=power_on ){
-       
-           if(send_power_off_flag==0){
-            send_power_off_flag++;
-			wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
-			
-               
-           }
-   			
-	}
+//	 if(wifi_link_net_state()==1 && power_on_state()  ==power_off && pro_t.power_on_flag==1){
+//       
+//           pro_t.power_on_flag=0;
+//            
+//		    MqttData_Publish_PowerOff_Ref();
+//		    HAL_Delay(200);
+//			
+//     }
+
+}
     
    
-}
 /********************************************************************************
    *
    *Function Name: void Wifi_RunCmd(void)
