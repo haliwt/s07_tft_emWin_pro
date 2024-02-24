@@ -444,9 +444,10 @@ void Tencent_Cloud_Rx_Handler(void)
          wifi_t.set_beijing_time_flag =0; //WT.EDIT 2023.06.12
 		 // wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
 	
-     if(wifi_t.received_data_from_tencent_cloud ==0x36){ //36
+     if(wifi_t.received_data_from_tencent_cloud ==0x25){ //36
 	    wifi_t.received_data_from_tencent_cloud=0;
 		wifi_t.get_rx_beijing_time_enable=0;
+		wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
 		wifi_t.response_wifi_signal_label = APP_TIMER_POWER_ON_REF;
 	    __HAL_UART_CLEAR_OREFLAG(&huart2);
 		strcpy((char*)TCMQTTRCVPUB,(char *)wifi_t.wifi_data);
@@ -454,16 +455,7 @@ void Tencent_Cloud_Rx_Handler(void)
 	
 	}
 	else{
-		//	strcpy((char*)TCMQTTRCVPUB,(char *)wifi_t.wifi_data);
 
-    
-//    if(strstr((char *)wifi_t.wifi_data,"nowtemperature\":")){ //WT.EDIT 2023.update
-//              return ;
-//     }
-//
-//    if(strstr((char *)wifi_t.wifi_data,"Humidity\":")){
-//              return ;
-//     }
 
    if(strstr((char *)wifi_t.wifi_data,"open\":0")){
 		  wifi_t.response_wifi_signal_label = OPEN_OFF_ITEM;
@@ -977,7 +969,59 @@ void Wifi_Get_Beijing_Time_Handler(void)
 static void smartphone_app_timer_power_on_handler(void)
 {
 
+    if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
 
+		if(strstr((char *)TCMQTTRCVPUB,"sonic\":1")){
+
+			 gctl_t.ultrasonic_flag=1;
+
+		}
+        else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0")){
+
+             gctl_t.ultrasonic_flag=0;
+
+		}
+
+		if(strstr((char *)TCMQTTRCVPUB,"Anion\":1")){
+			 gctl_t.plasma_flag=1;
+        }
+		else if(strstr((char *)TCMQTTRCVPUB,"Anion\":0")){
+			 gctl_t.plasma_flag=0;
+        }
+
+		if(strstr((char *)TCMQTTRCVPUB,"ptc\":1")){
+			
+			gctl_t.ptc_flag=1;
+		}
+		else if(strstr((char *)TCMQTTRCVPUB,"ptc\":0")){
+			
+			gctl_t.ptc_flag=0;
+		}
+
+
+		buzzer_sound();
+		
+		pro_t.gPower_On = power_on;   
+		pro_t.long_key_flag =0;
+		pro_t.run_process_step=0;
+		pro_t.gKey_value = power_key_id;
+
+		wifi_t.smartphone_app_power_on_flag=1;
+
+	    MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
+		HAL_Delay(200);//
+
+		pro_t.gTimer_pro_key_select_fun =0;
+	    pro_t.set_moke_key_select_fun =1;
+
+    
+
+
+    }
+}
+      
+#if 0
+    
 	if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":0,\"open\":1,\"ptc\":0")){
 
         buzzer_sound();
@@ -1145,9 +1189,8 @@ static void smartphone_app_timer_power_on_handler(void)
 	   pro_t.set_moke_key_select_fun =1;
 
 	}
-	
+#endif 
 
 
-}
 
 	

@@ -91,8 +91,9 @@ typedef struct _WIFI_FUN{
 	uint8_t response_wifi_signal_label;
 	uint8_t reconnect_tencent_cloud_flag;
 	uint8_t wifi_rx_data_buzzer_sound_flag;
-    //sensor dht11 
-
+    //smart phone 
+    uint8_t smartphone_app_power_on_flag;
+    
 
 	//fan
 	uint8_t set_wind_speed_value;

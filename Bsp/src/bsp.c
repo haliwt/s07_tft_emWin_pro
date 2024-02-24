@@ -535,9 +535,9 @@ static void TFT_Pocess_Command_Handler(void)
 	  case pro_wifi_init:
 
 
-	   if(wifi_link_net_state() ==1 && power_times==1){
+	   if(wifi_link_net_state() ==1 && power_times==1 && wifi_t.smartphone_app_power_on_flag==0){
 	   	  power_times =0;
-	   	  MqttData_Publish_SetOpen(0x01);
+	   	  MqttData_Publish_PowerOn_Ref();
 		  HAL_Delay(200);
 
 	   }
@@ -576,7 +576,7 @@ static void TFT_Pocess_Command_Handler(void)
     break;
    	}
    }
-   else{
+   else{ //power_off
    	
    	if(power_been_flag == 1){
 		power_been_flag =0;
@@ -589,6 +589,7 @@ static void TFT_Pocess_Command_Handler(void)
 		}
         
 	}
+	wifi_t.smartphone_app_power_on_flag=0;
 	LED_Mode_Key_Off();
 	Breath_Led();
 
@@ -609,18 +610,20 @@ static void Power_On_Fun(void)
   LED_Mode_Key_On();
   LED_Power_Key_On();
   Power_On_Led_Init();
-   gctl_t.ptc_flag = 1;
+
+  if(wifi_t.smartphone_app_power_on_flag==0){
+	  gctl_t.ptc_flag = 1;
+      gctl_t.plasma_flag = 1;
+	  gctl_t.ultrasonic_flag =1;
+	  
+
+  }
+   
+   gctl_t.gSet_temperature_value =40;
 
    pro_t.mode_key_confirm_flag=0xff;
    gctl_t.mode_flag = works_time;
    gctl_t.timer_time_define_flag = 0;
-   //
-
-   gctl_t.plasma_flag = 1;
-   gctl_t.ultrasonic_flag =1;
-   
- 	gctl_t.gSet_temperature_value =0; //run_t.temperature_set_flag = 0; //WT.EDIT 2023.01.31
- 
    //timer timing
      pro_t.timer_mode_flag=works_time;
 	 gctl_t.gSet_timer_hours =0;
