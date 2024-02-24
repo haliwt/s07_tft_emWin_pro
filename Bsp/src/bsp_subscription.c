@@ -11,6 +11,7 @@ uint8_t TCMQTTRCVPUB[40];
 
 
 
+
 //处理腾讯云下发的数据
 /*******************************************************************************
    **
@@ -437,7 +438,8 @@ void Wifi_Rx_InputInfo_Handler(void)
 ********************************************************************************/
 void Tencent_Cloud_Rx_Handler(void)
 {
-    
+
+   
 
     if(wifi_t.rx_data_success==1){
          wifi_t.rx_data_success=0;
@@ -567,7 +569,7 @@ void Tencent_Cloud_Rx_Handler(void)
 void Json_Parse_Command_Fun(void)
 {
 
-  uint8_t i;
+     uint8_t i;
     static uint8_t wind_hundred, wind_decade,wind_unit,temp_decade,temp_unit;
 	
 
@@ -579,17 +581,18 @@ void Json_Parse_Command_Fun(void)
 
       case OPEN_OFF_ITEM:
 
-           if(wifi_t.app_timer_power_off_flag ==0){
+       
+		 
 		   	buzzer_sound();
 		 	MqttData_Publish_SetOpen(0);  
 			HAL_Delay(50);//350
 
 
 			pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
-            wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+            
 		
 	
-        }
+        
         wifi_t.response_wifi_signal_label = 0xff;
         
 	  break;
@@ -599,7 +602,7 @@ void Json_Parse_Command_Fun(void)
 		pro_t.gPower_On = power_on;   
         pro_t.long_key_flag =0;
         pro_t.run_process_step=0;
-		pro_t.gKey_value = power_key_id;
+		//pro_t.gKey_value = power_key_id;
 		MqttData_Publish_SetOpen(1);  
 		HAL_Delay(50);//300
 
@@ -607,7 +610,7 @@ void Json_Parse_Command_Fun(void)
 		gctl_t.fan_warning =0;
 		
 	   
-	    wifi_t.wifi_rx_data_buzzer_sound_flag =0;
+	 
 
 		wifi_t.response_wifi_signal_label = 0xff;
 
@@ -627,7 +630,7 @@ void Json_Parse_Command_Fun(void)
 		
 	     }
 		
-          wifi_t.wifi_rx_data_buzzer_sound_flag=0;  
+          
 		
           wifi_t.response_wifi_signal_label=0xff;
 	  	}
@@ -646,7 +649,7 @@ void Json_Parse_Command_Fun(void)
 
 		
 		
-	  	 wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+	 
 	     wifi_t.response_wifi_signal_label = 0xff;
 
 	  	}
@@ -665,7 +668,7 @@ void Json_Parse_Command_Fun(void)
 			
 		
 	  	}
-       wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+      
 		
 	   wifi_t.response_wifi_signal_label = 0xff;
 	   break;
@@ -682,7 +685,7 @@ void Json_Parse_Command_Fun(void)
 			
 		
 	  	}
-         wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+       
 	   wifi_t.response_wifi_signal_label=0xff;
 	    break;
 
@@ -698,7 +701,7 @@ void Json_Parse_Command_Fun(void)
 	
 		
         }
-         wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+        
 	   wifi_t.response_wifi_signal_label=0xff;
 	  	break;
 
@@ -711,7 +714,7 @@ void Json_Parse_Command_Fun(void)
 			HAL_Delay(50);
             gctl_t.ultrasonic_flag=1;
 		}
-         wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+      
 	   wifi_t.response_wifi_signal_label=0xff;
 	  	break;
 
@@ -719,13 +722,13 @@ void Json_Parse_Command_Fun(void)
 	  if(power_on_state() ==power_on){
 	  	    buzzer_sound();
 	        gctl_t.mode_flag=timer_time;
-            MqttData_Publish_SetState(2);
+            MqttData_Publish_SetState(2); //timer model  = 2
 			HAL_Delay(50);
             //do someting 
             
 			
         }
-       wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+       
 	   wifi_t.response_wifi_signal_label = 0xff;
 	  break;
 		
@@ -733,11 +736,11 @@ void Json_Parse_Command_Fun(void)
 	  	 if(power_on_state() ==power_on){
 		    buzzer_sound();
 		    gctl_t.mode_flag=works_time;
-            MqttData_Publish_SetState(1);
+            MqttData_Publish_SetState(1); //beijing timing = 1
 			HAL_Delay(50);
           
         }
-        wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+
 	   wifi_t.response_wifi_signal_label = 0xff;
 	  	break;
 
@@ -757,7 +760,7 @@ void Json_Parse_Command_Fun(void)
 			
           
        }
-      wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+     
 	
 	  wifi_t.response_wifi_signal_label = 0xff;
 	  break;
@@ -793,7 +796,7 @@ void Json_Parse_Command_Fun(void)
 			}
             
 		}
-        wifi_t.wifi_rx_data_buzzer_sound_flag=0;
+        
 	 
 	    wifi_t.response_wifi_signal_label = 0xff;
 	  	break;
@@ -802,25 +805,8 @@ void Json_Parse_Command_Fun(void)
 
 	       wifi_t.set_beijing_time_flag=0;
 		   wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
-
+         
 		   smartphone_app_timer_power_on_handler();
-	  	
-		   
-		   
-            if(strstr((char *)TCMQTTRCVPUB,"open\":0")){
-		      	buzzer_sound();
-			    pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
-		        wifi_t.app_timer_power_off_flag = 1;
-			 
-                __HAL_UART_CLEAR_OREFLAG(&huart2);
-		 			MqttData_Publish_SetOpen(0);  
-			       HAL_Delay(50);//
-		
-
-             wifi_t.wifi_rx_data_buzzer_sound_flag=0;
-		      
-				
-			}
 
 	     wifi_t.response_wifi_signal_label=0xff;
 
@@ -832,12 +818,7 @@ void Json_Parse_Command_Fun(void)
 
    if(wifi_t.response_wifi_signal_label==0xff){
         
-        if(wifi_t.wifi_rx_data_buzzer_sound_flag ==1){
-		   wifi_t.wifi_rx_data_buzzer_sound_flag=0;
-   	       buzzer_sound();
-        }
-         
-		wifi_t.response_wifi_signal_label=0xf0;
+        wifi_t.response_wifi_signal_label=0xf0;
 
 		for(i=0;i<20;i++){
 		   wifi_t.wifi_data[i]=0;
@@ -970,6 +951,7 @@ static void smartphone_app_timer_power_on_handler(void)
 {
 
     if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
+		wifi_t.smartphone_app_power_on_flag=1;
 
 		if(strstr((char *)TCMQTTRCVPUB,"sonic\":1")){
 
@@ -1004,9 +986,9 @@ static void smartphone_app_timer_power_on_handler(void)
 		pro_t.gPower_On = power_on;   
 		pro_t.long_key_flag =0;
 		pro_t.run_process_step=0;
-		pro_t.gKey_value = power_key_id;
+		//pro_t.gKey_value = power_key_id;
 
-		wifi_t.smartphone_app_power_on_flag=1;
+		
 
 	    MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
 		HAL_Delay(200);//
@@ -1014,7 +996,14 @@ static void smartphone_app_timer_power_on_handler(void)
 		pro_t.gTimer_pro_key_select_fun =0;
 	    pro_t.set_moke_key_select_fun =1;
 
-    
+        MqttData_Publis_SetFan(0x64);
+		HAL_Delay(20);//
+
+		MqttData_Publis_SetTemp(0x28);
+		HAL_Delay(20);//
+
+		MqttData_Publish_SetState(1); //Ai model,//beijing timing = 1
+        HAL_Delay(20);//
 
 
     }

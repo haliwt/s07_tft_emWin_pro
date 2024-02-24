@@ -36,7 +36,7 @@ void WIFI_Process_Handler(void)
 **********************************************************************/
 static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 {
-    static uint8_t self_power_on_flag=0,send_power_off_flag=0;
+    static uint8_t self_power_on_flag=0,send_power_off_flag;
     
 
 	if(self_power_on_flag==0){
@@ -52,14 +52,15 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
     }
 
-//	 if(wifi_link_net_state()==1 && power_on_state()  ==power_off && pro_t.power_on_flag==1){
-//       
-//           pro_t.power_on_flag=0;
-//            
-//		    MqttData_Publish_PowerOff_Ref();
-//		    HAL_Delay(200);
-//			
-//     }
+	if(wifi_link_net_state() ==1 && send_power_off_flag==0 && pro_t.gPower_On== power_off){
+
+	        send_power_off_flag++;
+			
+		    MqttData_Publish_PowerOff_Ref();
+			
+		    HAL_Delay(200);
+	}
+
 
 }
     
@@ -253,17 +254,19 @@ static void RunWifi_Command_Handler(void)
 			 wifi_t.gTimer_read_beijing_time=0;
 	   	 	}
 
-		   //if(wifi_t.gTimer_read_beijing_time > 2 && wifi_t.gTimer_read_beijing_time < 4)
+		   //if(wifi_t.gTimer_read_beijing_time > 2 && wifi_t.gTimer_read_beijing_time < 4){
 	       if(wifi_t.gTimer_read_beijing_time > 1 && wifi_t.gTimer_read_beijing_time < 5){//
 				wifi_t.gTimer_read_beijing_time=0;
 			   	Get_Beijing_Time();
 				HAL_Delay(300);
 			    wifi_t.beijing_time_flag = 1;
-				
-			  	wifi_t.real_hours = (wifi_t.wifi_data[134]-0x30)*10 + wifi_t.wifi_data[135]-0x30;
-				wifi_t.real_minutes =(wifi_t.wifi_data[137]-0x30)*10 + wifi_t.wifi_data[138]-0x30;
+			    if(wifi_t.gTimer_read_beijing_time > 2){
+			  	 wifi_t.real_hours = (wifi_t.wifi_data[134]-0x30)*10 + wifi_t.wifi_data[135]-0x30;
+				 wifi_t.real_minutes =(wifi_t.wifi_data[137]-0x30)*10 + wifi_t.wifi_data[138]-0x30;
 			     wifi_t.real_seconds = (wifi_t.wifi_data[140]-0x30)*10 + wifi_t.wifi_data[141]-0x30;
 			     wifi_t.get_rx_beijing_time_enable=0; //enable beijing times
+
+				}
 				
 		         wifi_t.runCommand_order_lable=wifi_publish_update_tencent_cloud_data;
 	       }

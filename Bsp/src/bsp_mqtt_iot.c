@@ -91,7 +91,7 @@ static void Mqtt_Value_update_data(void)
 static void Mqtt_power_off_Value(void)
 {
     wifi_t.set_wind_speed_value=10;
-	gctl_t.gSet_temperature_value=20
+	gctl_t.gSet_temperature_value=20;
    	sg_info.open=0;
     sg_info.state=1;
     sg_info.ptc=0; 
@@ -445,15 +445,6 @@ void MqttData_Publish_SetState(uint8_t sdat) //Ai model
 
 }
 
-void MqttData_Publish_PowerOn_Ref(void)
-{
-
-	property_topic_publish();
-	
-	property_report_power_on_state();
-
-
-}//power on 
 
 
 void MqttData_Publish_PowerOff_Ref(void) //
