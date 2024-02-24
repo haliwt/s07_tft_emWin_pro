@@ -121,6 +121,7 @@ typedef struct{
    uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
    uint8_t mode_key_special_fun;
+   uint8_t set_moke_key_select_fun;
 
    //temperature 
      uint8_t set_temperature_value_flag;
@@ -145,7 +146,7 @@ typedef struct{
  
   uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
-  uint8_t gTimer_pro_ms;
+  uint8_t gTimer_pro_key_select_fun;
 	uint8_t gTime_pro_run_voice_time;
 	uint8_t gTimer_pro_tft;
 	uint8_t gTimer_pro_time_split_symbol;

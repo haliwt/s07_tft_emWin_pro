@@ -377,8 +377,9 @@ static void TFT_Pocess_Command_Handler(void)
       pro_t.run_process_step=0xf2;
 	  Wifi_Fast_Led_Blink();
 		
-	  if(pro_t.gTimer_pro_ms >7){ //8s
-			 pro_t.gTimer_pro_ms =0;
+	  if(pro_t.gTimer_pro_key_select_fun >1 && pro_t.set_moke_key_select_fun ==1){ //8s
+			 pro_t.gTimer_pro_key_select_fun =0;
+			 pro_t.set_moke_key_select_fun =0;
 			 Wifi_Fast_Led_Blink();
 
 		     Device_Action_Handler();
@@ -1008,50 +1009,33 @@ void Mode_Key_Detected(void)
 static void Wifi_Fast_Led_Blink(void)
 {
    if(pro_t.wifi_led_fast_blink_flag==1 && wifi_link_net_state()==0){
-	if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
+wifi_led: if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
 
-wifi_led:	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
+	if( pro_t.gTimer_pro_wifi_fast_led < 80 ){ //50ms
 
-	 LED_WIFI_ICON_ON();
-	 
-
+	         LED_WIFI_ICON_ON();
 	}
-	
-	if(pro_t.gTimer_pro_wifi_fast_led > 80 && pro_t.gTimer_pro_wifi_fast_led< 161){
+	else if(pro_t.gTimer_pro_wifi_fast_led > 79 && pro_t.gTimer_pro_wifi_fast_led< 161){
 
         
 		LED_WIFI_ICON_OFF();
 	}
-	
-
-	 
-	 if(pro_t.gTimer_pro_wifi_fast_led > 159){
+	else{
 
 		pro_t.gTimer_pro_wifi_fast_led=0;
-		if(pro_t.gTimer_pro_wifi_led > 165){ //2'46s
-	      pro_t.wifi_led_fast_blink_flag=0;
+		goto wifi_led;
 
-
-	    }
-		else{
-		   LED_WIFI_ICON_OFF();
-		   HAL_Delay(2);
-		   goto wifi_led;
-
-		}
-
-	 }
-	}
-	if(pro_t.gTimer_pro_wifi_led > 165){ //2'46s
-	    pro_t.wifi_led_fast_blink_flag=0;
-
-
-	}
+		
+	  }
    }
+   else{
 	
+	 pro_t.wifi_led_fast_blink_flag=0;
+   }
+
+  }
 }
-
-
+	
 /**********************************************************************************************************
     **
     *Function Name:TFT_Donnot_Set_Timer_Time();

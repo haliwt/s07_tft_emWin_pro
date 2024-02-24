@@ -314,11 +314,15 @@ void Device_Action_Handler(void)
 
      Ptc_On();
 	 LED_PTC_ICON_ON();
+     MqttData_Publish_SetPtc(0x01);  
+	 HAL_Delay(30);//350
 
   }
   else{
     Ptc_Off();
 	LED_PTC_ICON_OFF();
+    MqttData_Publish_SetPtc(0); 
+	HAL_Delay(30);//350
 
 
   }
@@ -327,10 +331,14 @@ void Device_Action_Handler(void)
    if(plasma_state() == 1){
        Plasma_On();
 	   LED_KILL_ICON_ON();
+       MqttData_Publish_SetPlasma(0x01);
+	   HAL_Delay(30);
    }
    else{
       Plasma_Off();
 	  LED_KILL_ICON_OFF();
+      MqttData_Publish_SetPlasma(0);
+	  HAL_Delay(30);
 
    }
 
@@ -338,12 +346,16 @@ void Device_Action_Handler(void)
 
       Ultrasonic_Pwm_Output();
 	  LED_RAT_ICON_ON();
+      MqttData_Publish_SetUltrasonic(1);
+	  HAL_Delay(30);
 	  
    }
    else{
 
 	  Ultrasonic_Pwm_Stop();
 	  LED_RAT_ICON_OFF();
+      MqttData_Publish_SetUltrasonic(0);
+	  HAL_Delay(30);
 
    }
 
@@ -567,9 +579,8 @@ void Mode_Key_Confirm_Fun(void)
 
 			}
 			
-
-        
-		
+        pro_t.set_moke_key_select_fun =1;
+        pro_t.gTimer_pro_key_select_fun=0;
       break;
 
 	  case plasma_fun:
@@ -589,7 +600,8 @@ void Mode_Key_Confirm_Fun(void)
      	    }
 			
 	 
-
+       pro_t.set_moke_key_select_fun =1;
+        pro_t.gTimer_pro_key_select_fun=0;
 	  break;
 
 	  case rat_fun: //cat
@@ -608,6 +620,8 @@ void Mode_Key_Confirm_Fun(void)
 		}
 	   
 	  
+	  pro_t.set_moke_key_select_fun =1;
+	  pro_t.gTimer_pro_key_select_fun=0;
 
 
 	  break;
