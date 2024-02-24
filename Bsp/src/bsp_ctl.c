@@ -17,8 +17,8 @@ uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
 uint8_t (*dht11_humidity_value)(void);
 uint8_t (*dht11_temp_value)(void);
 
-uint8_t (*smartphone_set_timer_timing)(void);
-uint8_t (*smartphone_set_temp_value)(void);
+uint8_t (*set_key_timer_timing)(void);
+uint8_t (*set_temp_value)(void);
 
 
 
@@ -44,6 +44,7 @@ static uint8_t Ptc_Error_Default_Handler(void);
 
 static uint8_t Fan_Error_Default_Handler(void);
 
+static uint8_t set_temp_value_default_handler(void);
 
 
 
@@ -70,9 +71,12 @@ void bsp_ctl_init(void)
    Plasma_State_Handler(Plasma_Default_Handler);
    Ultrasonic_state_Handler(Ultrasonic_Default_Handler);
 
+   Set_Temp_Handler(set_temp_value_default_handler);
+
    Dht11_humidity_Value_Handler(dht11_humidity_default_Handler);
    Dht11_temp_value_Handler(dht11_tmep_default_Handler);
 
+   
    
    Ptc_error_state_Handler(Ptc_Error_Default_Handler);
    Fan_error_state_Handler(Fan_Error_Default_Handler);
@@ -207,6 +211,21 @@ uint8_t Ultrasonic_Default_Handler(void)
 	}
 	
 }
+
+static uint8_t set_temp_value_default_handler(void)
+{
+
+       return gctl_t.gSet_temperature_value ;
+
+}
+
+
+void Set_Temp_Handler(uint8_t(*set_temp_value_handler)(void))
+{
+   set_temp_value = set_temp_value_handler;
+
+}
+
 /*****************************************************************************
  * 
  * Function Name: sensor temp and humidity of function

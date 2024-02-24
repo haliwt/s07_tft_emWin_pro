@@ -86,8 +86,8 @@ extern uint8_t (*ultrasonic_state)(void); //adjust of ultrasoic is open or close
 extern uint8_t (*dht11_humidity_value)(void);
 extern uint8_t (*dht11_temp_value)(void);
 
-extern uint8_t (*smartphone_set_timer_timing)(void);
-extern uint8_t (*smartphone_set_temp_value)(void);
+extern uint8_t (*set_key_timer_timing)(void);
+extern uint8_t (*set_temp_value)(void);
 
 
 
@@ -115,8 +115,8 @@ void Dht11_temp_value_Handler(uint8_t(*temp_handler)(void));
 void  Ptc_Error_State_Handler(uint8_t(*ptc_error_handler)(void));
 void  Fan_Error_state_Handler(uint8_t(*fan_error_handler)(void));
 
-void Smartphone_Set_Timer_Handler(uint8_t(*set_timer_handler)(void));
-void Smartphone_Set_Temp_Handler(uint8_t(*set_temp_value_handler)(void));
+void Set_Timer_Handler(uint8_t(*set_timer_handler)(void));
+void Set_Temp_Handler(uint8_t(*set_temp_value_handler)(void));
 
 void  Ptc_error_state_Handler(uint8_t(*error_handler)(void));
 void  Fan_error_state_Handler(uint8_t(*fan_error_handler)(void));
