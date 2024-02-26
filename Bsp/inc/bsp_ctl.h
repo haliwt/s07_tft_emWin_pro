@@ -46,7 +46,7 @@ typedef struct _bsp_ctl{
    uint8_t timer_time_define_flag;
 
    
-   uint8_t set_temp_has_been_flag;
+ 
    
    uint8_t disp_works_minutes;
    int8_t gSet_timer_minutes ;

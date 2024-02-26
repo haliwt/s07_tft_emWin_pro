@@ -587,7 +587,7 @@ void Json_Parse_Command_Fun(void)
 		 	MqttData_Publish_SetOpen(0);  
 			HAL_Delay(50);//350
 
-
+            wifi_t.esp8266_login_cloud_success=1;
 			pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
             
 		
@@ -602,7 +602,7 @@ void Json_Parse_Command_Fun(void)
 		pro_t.gPower_On = power_on;   
         pro_t.long_key_flag =0;
         pro_t.run_process_step=0;
-		//pro_t.gKey_value = power_key_id;
+		wifi_t.esp8266_login_cloud_success=1;
 		MqttData_Publish_SetOpen(1);  
 		HAL_Delay(50);//300
 
@@ -647,10 +647,7 @@ void Json_Parse_Command_Fun(void)
 		 HAL_Delay(50);
 	     gctl_t.ptc_flag=0;
 
-		
-		
-	 
-	     wifi_t.response_wifi_signal_label = 0xff;
+		wifi_t.response_wifi_signal_label = 0xff;
 
 	  	}
 	  	break;
@@ -664,13 +661,8 @@ void Json_Parse_Command_Fun(void)
             MqttData_Publish_SetPlasma(0);
 			HAL_Delay(50);
            gctl_t.plasma_flag=0;
-		  
-			
-		
-	  	}
-      
-		
-	   wifi_t.response_wifi_signal_label = 0xff;
+		}
+       wifi_t.response_wifi_signal_label = 0xff;
 	   break;
 		
 	  case ANION_ON_ITEM: //plasma 
@@ -755,6 +747,8 @@ void Json_Parse_Command_Fun(void)
             if(gctl_t.gSet_temperature_value <20 )   gctl_t.gSet_temperature_value=20;
             MqttData_Publis_SetTemp( gctl_t.gSet_temperature_value);
 			HAL_Delay(50);//350
+			gctl_t.gSet_temperature_value_flag =1;
+			pro_t.gTimer_pro_temp_delay= 100;
 			pro_t.gTimer_pro_mode_key_timer = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			
@@ -1009,176 +1003,7 @@ static void smartphone_app_timer_power_on_handler(void)
     }
 }
       
-#if 0
-    
-	if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":0,\"open\":1,\"ptc\":0")){
 
-        buzzer_sound();
-		
-		pro_t.gPower_On = power_on;   
-		pro_t.long_key_flag =0;
-		pro_t.run_process_step=0;
-		pro_t.gKey_value = power_key_id;
-
-		
-       gctl_t.ultrasonic_flag=0;
-	   gctl_t.plasma_flag=0;
-	   gctl_t.ptc_flag=0;
-	  
-        MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-		HAL_Delay(200);//
-
-		pro_t.gTimer_pro_key_select_fun =0;
-	    pro_t.set_moke_key_select_fun =1;
-   
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":0,\"open\":1,\"ptc\":1")){
-
-	    buzzer_sound();
-		
-		pro_t.gPower_On = power_on;   
-		pro_t.long_key_flag =0;
-		pro_t.run_process_step=0;
-		pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=0;
-	   gctl_t.plasma_flag=0;
-	   gctl_t.ptc_flag=1;
-	  
-
-		MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-		HAL_Delay(200);//
-
-		pro_t.gTimer_pro_key_select_fun =0;
-	    pro_t.set_moke_key_select_fun =1;
-
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":1,\"open\":1,\"ptc\":1")){
-		
-		buzzer_sound();
-
-		pro_t.gPower_On = power_on;	 
-		pro_t.long_key_flag =0;
-		pro_t.run_process_step=0;
-		pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=0;
-	   gctl_t.plasma_flag=1;
-	   gctl_t.ptc_flag=1;
-	  
-
-		MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-		HAL_Delay(200);//
-
-		pro_t.gTimer_pro_key_select_fun =0;
-		pro_t.set_moke_key_select_fun =1;
-
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":1,\"open\":1,\"ptc\":1")){
-		
-		buzzer_sound();
-			   
-	   pro_t.gPower_On = power_on;	 
-	   pro_t.long_key_flag =0;
-	   pro_t.run_process_step=0;
-	   pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=1;
-	   gctl_t.plasma_flag=1;
-	   gctl_t.ptc_flag=1;
-	  
-
-	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(200);//
-
-	   pro_t.gTimer_pro_key_select_fun =0;
-	   pro_t.set_moke_key_select_fun =1;
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":1,\"open\":1,\"ptc\":0")){
-	   buzzer_sound();
-			   
-	   pro_t.gPower_On = power_on;	 
-	   pro_t.long_key_flag =0;
-	   pro_t.run_process_step=0;
-	   pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=1;
-	   gctl_t.plasma_flag=1;
-	   gctl_t.ptc_flag=0;
-	  
-
-	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(200);//
-
-	   pro_t.gTimer_pro_key_select_fun =0;
-	   pro_t.set_moke_key_select_fun =1;
-
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":0,\"open\":1,\"ptc\":0")){
-	   buzzer_sound();
-			   
-	   pro_t.gPower_On = power_on;	 
-	   pro_t.long_key_flag =0;
-	   pro_t.run_process_step=0;
-	   pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=1;
-	   gctl_t.plasma_flag=0;
-	   gctl_t.ptc_flag=0;
-	  
-
-	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(200);//
-
-	   pro_t.gTimer_pro_key_select_fun =0;
-	   pro_t.set_moke_key_select_fun =1;
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":1,\"Anion\":0,\"open\":1,\"ptc\":1")){
-	   buzzer_sound();
-			   
-	   pro_t.gPower_On = power_on;	 
-	   pro_t.long_key_flag =0;
-	   pro_t.run_process_step=0;
-	   pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=1;
-	   gctl_t.plasma_flag=0;
-	   gctl_t.ptc_flag=1;
-	  
-
-	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(200);//
-
-	   pro_t.gTimer_pro_key_select_fun =0;
-	   pro_t.set_moke_key_select_fun =1;
-
-	}
-	else if(strstr((char *)TCMQTTRCVPUB,"sonic\":0,\"Anion\":1,\"open\":1,\"ptc\":0")){
-	   buzzer_sound();
-			   
-	   pro_t.gPower_On = power_on;	 
-	   pro_t.long_key_flag =0;
-	   pro_t.run_process_step=0;
-	   pro_t.gKey_value = power_key_id;
-
-	   gctl_t.ultrasonic_flag=0;
-	   gctl_t.plasma_flag=1;
-	   gctl_t.ptc_flag=0;
-	  
-
-	   MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-	   HAL_Delay(200);//
-
-	   pro_t.gTimer_pro_key_select_fun =0;
-	   pro_t.set_moke_key_select_fun =1;
-
-	}
-#endif 
 
 
 

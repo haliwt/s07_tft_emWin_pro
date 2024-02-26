@@ -246,21 +246,21 @@ static void mode_key_fun_handler(void)
   switch(pro_t.mode_key_confirm_flag){
 
       case mode_key_temp:
-		  if(pro_t.gTimer_pro_mode_key_timer > 4){
 
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 2){
+          if(pro_t.gTimer_pro_mode_key_timer < 4){
+		  	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+          }
+		  else{
+
+                  if(pro_t.gTimer_pro_set_tem_value_blink < 5){
 
 					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
 
 
 				  }
-				  else if(pro_t.gTimer_pro_set_tem_value_blink  > 1 && pro_t.gTimer_pro_set_tem_value_blink < 3){
-
-					  TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
-
-
-				  }
 				  else{
+
+					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
                     pro_t.gTimer_pro_set_tem_value_blink=0;
                     led_blink_times++;
 				  }
@@ -538,6 +538,11 @@ static void TFT_Pocess_Command_Handler(void)
 			
 
 		}
+		else{
+
+		  LED_WIFI_ICON_ON();
+
+		}
 		  
 	  pro_t.run_process_step=pro_wifi_init;
 	 break; 
@@ -643,9 +648,9 @@ static void Power_On_Fun(void)
 	 gctl_t.gSet_timer_minutes =0;
 	 mode_key_long_flag=0;
 
-	gctl_t.disp_works_hours=0;
-	gctl_t.disp_works_minutes=0;
-	gctl_t.gTimer_ctl_disp_second=0;
+	//gctl_t.disp_works_hours=0;
+	//gctl_t.disp_works_minutes=0;
+	//gctl_t.gTimer_ctl_disp_second=0;
 
 }
      
@@ -731,23 +736,22 @@ void ADD_Key_Fun(void)
 
 			pro_t.mode_key_confirm_flag=mode_key_temp;
 
-			case mode_key_temp: //set temperature value add number
-
+		case mode_key_temp: //set temperature value add number
+			pro_t.buzzer_sound_flag = 1;
 			gctl_t.gSet_temperature_value ++;
-			if( gctl_t.gSet_temperature_value < 20){
-			gctl_t.gSet_temperature_value=20;
-			}
-
-			if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
+			if( gctl_t.gSet_temperature_value < 20)gctl_t.gSet_temperature_value=20;
+			
+            if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
 
 
 			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+			pro_t.gTimer_pro_set_tem_value_blink=0;
 
-			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
+			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
 
 		case mode_key_timer_time:
-           
+           pro_t.buzzer_sound_flag = 1;
 			mode_key_long_flag++;
 			gctl_t.gSet_timer_minutes=0;
 			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
@@ -764,6 +768,7 @@ void ADD_Key_Fun(void)
 		break;
 
 		case mode_key_select:
+			pro_t.buzzer_sound_flag = 1;
 			pro_t.mode_key_confirm_flag = mode_key_confirm;
 
 
@@ -773,7 +778,7 @@ void ADD_Key_Fun(void)
 		}	
 		}
 	}
-       //  DisplayPanel_Ref_Handler();
+
 }
 /************************************************************************
 	*
@@ -796,16 +801,18 @@ void DEC_Key_Fun(void)
 		 	pro_t.mode_key_confirm_flag= mode_key_temp;
 
 		   case mode_key_temp:  //default tempearture value 
-	       
+	         pro_t.buzzer_sound_flag = 1;
 			 gctl_t.gSet_temperature_value--;
 			if( gctl_t.gSet_temperature_value<20)  gctl_t.gSet_temperature_value=40;
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
+			 pro_t.gTimer_pro_set_tem_value_blink =0;
 
-			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
+			    pro_t.buzzer_sound_flag = 1;
 	            mode_key_long_flag++;
 				gctl_t.gSet_timer_minutes=0;
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
@@ -822,6 +829,7 @@ void DEC_Key_Fun(void)
 			break;
 
 			 case mode_key_select:
+			 	pro_t.buzzer_sound_flag = 1;
 				pro_t.mode_key_confirm_flag = mode_key_confirm;
 			break;
 
@@ -840,7 +848,7 @@ void DEC_Key_Fun(void)
 *********************************************************************************************************/
 static void Ptc_Temperature_Compare_Value(void)
 {
-      //set up temparature value 
+   
       switch(gctl_t.gSet_temperature_value_flag){
 
       case 1:
@@ -852,23 +860,23 @@ static void Ptc_Temperature_Compare_Value(void)
 		  if(set_temp_value() <= dht11_temp_value()|| dht11_temp_value() >40){//envirment temperature
 	  
 				gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;
-			  
+			    Ptc_Off();
+		        LED_PTC_ICON_OFF();
                  
 
             }
-			else if((set_temp_value() -3) > dht11_temp_value()||  dht11_temp_value() <38){
+			else if((set_temp_value() -2) > dht11_temp_value()){
 	  
 		         gctl_t.ptc_flag = 1;//run_t.gDry = 1;
+		         Ptc_On();
+			     LED_PTC_ICON_ON();
 			    
             }
 				 
 	   }
 
 	   	//send temp value to smart phone 
-	  	if(gctl_t.set_temp_has_been_flag==1){
-			gctl_t.set_temp_has_been_flag =0;
-
-		}
+	
        break;
 
 
@@ -877,51 +885,33 @@ static void Ptc_Temperature_Compare_Value(void)
            if(pro_t.gTimer_pro_temp_delay > 66  && gctl_t.ptc_warning==0 ){ //WT.EDIT 2023.07.27 over 40 degree shut of ptc off
                 pro_t.gTimer_pro_temp_delay=0;
 
-            if(set_temp_value() >19 && set_temp_value() < 41){
-           
-               if(dht11_temp_value() >40 || set_temp_value() <= dht11_temp_value()){//envirment temperature
+             if(dht11_temp_value() >40){//envirment temperature
                
-                 gctl_t.ptc_flag = 0;
-               
-                }
-               else if(dht11_temp_value() <38 || (set_temp_value() -2) > dht11_temp_value() ){
-               
-                  gctl_t.ptc_flag = 1;
-                
-
-			   }
-                          
-
-            }
-            else{
-
-			 
-                 if(dht11_temp_value() >40){//envirment temperature
-               
-                 	gctl_t.ptc_flag  = 0;
+                gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;
+			    Ptc_Off();
+		        LED_PTC_ICON_OFF();
               
                 
            
                }
                else if(dht11_temp_value() <38){
                
-                  gctl_t.ptc_flag = 1;
+				 gctl_t.ptc_flag = 1;//run_t.gDry = 1;
+		         Ptc_On();
+			     LED_PTC_ICON_ON();
+                
                 
                  
                 }
 
             }
-          }
+          
 
         break;
         
      }
 
 }
-
-
- 
-
 /**********************************************************************************************************
     **
     *Function Name:void Power_Key_Detected(void)
