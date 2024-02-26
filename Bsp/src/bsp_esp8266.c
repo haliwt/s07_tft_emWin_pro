@@ -243,15 +243,26 @@ void SmartPhone_LinkTencent_Cloud(void)
 	if(wifi_t.soft_ap_config_success==1){
 
        wifi_t.soft_ap_config_success=0;
-	   
-	   HAL_UART_Transmit(&huart2, "AT+TCMQTTCONN=1,5000,240,0,1\r\n", strlen("AT+TCMQTTCONN=1,5000,240,0,1\r\n"), 5000);//开始连接
-     
-	   HAL_Delay(1000);
-       HAL_Delay(1000);
-      
-      // SendWifiData_To_Cmd(1);//To tell display panel wifi be connetor to tencent cloud is success
+	   if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_8){
+	   	      wifi_t.link_tencent_step_counter =driver_esp8266_step_9;
+			  wifi_t.gTimer_login_tencent_times=0;
+	       HAL_UART_Transmit(&huart2, "AT+TCMQTTCONN=1,5000,240,0,1\r\n", strlen("AT+TCMQTTCONN=1,5000,240,0,1\r\n"), 5000);//开始连接
+	   }
+
+	   if(wifi_t.gTimer_login_tencent_times >1){
+	   	  wifi_t.gTimer_login_tencent_times =0;
+	     if(wifi_link_net_state()==1){
+			   
+				wifi_t.get_rx_beijing_time_enable=0;
+			    wifi_t.runCommand_order_lable = wifi_tencent_publish_init_data;
+                
+				
+			}
+		 }
+
+	   }
+           
 	 
-     }
 	
  	 free(device_submassage);
 
