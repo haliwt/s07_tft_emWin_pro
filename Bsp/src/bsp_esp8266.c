@@ -108,6 +108,7 @@ void Wifi_SoftAP_Config_Handler(void)
            //InitWifiModule();
            ReConnect_Wifi_Net_ATReset_Hardware();//InitWifiModule_Hardware();
 		   HAL_Delay(1000);
+	       Wifi_Fast_Led_Blink();
            wifi_t.wifi_config_net_lable =wifi_set_cwmode;
 	break;
 
@@ -116,8 +117,10 @@ void Wifi_SoftAP_Config_Handler(void)
     	    WIFI_IC_ENABLE();
          	HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
         	HAL_Delay(1000);
+			Wifi_Fast_Led_Blink();
            // Decode_Function();
 			HAL_Delay(1000);
+		    Wifi_Fast_Led_Blink();
            // Decode_Function();
 			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
 			wifi_t.wifi_config_net_lable =wifi_set_softap;
@@ -133,11 +136,11 @@ void Wifi_SoftAP_Config_Handler(void)
             sprintf((char *)device_massage, "AT+TCPRDINFOSET=1,\"%s\",\"%s\",\"UYIJIA01-%d\"\r\n", PRODUCT_ID, DEVICE_SECRET,ic_id);
 			usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
 	  		HAL_Delay(1000);
-          //  Decode_Function();
+            Wifi_Fast_Led_Blink();
             HAL_Delay(1000);
-          //  Decode_Function();
+            Wifi_Fast_Led_Blink();
 			HAL_Delay(1000);
-         //   Decode_Function();
+            Wifi_Fast_Led_Blink();
 	        
 			wifi_t.wifi_config_net_lable=wifi_set_tcdevreg;
 		
@@ -147,13 +150,13 @@ void Wifi_SoftAP_Config_Handler(void)
 	 case wifi_set_tcdevreg://dynamic register
 		 HAL_UART_Transmit(&huart2, "AT+TCDEVREG\r\n", strlen("AT+TCDEVREG\r\n"), 0xffff); //动态注册 
 	      HAL_Delay(1000);
-     //Decode_Function();
+         Wifi_Fast_Led_Blink();
 		 HAL_Delay(1000);
-        // Decode_Function();
+         Wifi_Fast_Led_Blink();
 		HAL_Delay(1000);
-       // Decode_Function();
+         Wifi_Fast_Led_Blink();
 		HAL_Delay(1000);
-      //  Decode_Function();
+        Wifi_Fast_Led_Blink();
 
 	  
 	     wifi_t.wifi_config_net_lable=wifi_set_tcsap;
@@ -164,19 +167,19 @@ void Wifi_SoftAP_Config_Handler(void)
 	 case wifi_set_tcsap: //5
 	 
             HAL_Delay(1000);
-          //  Decode_Function();
+           Wifi_Fast_Led_Blink();
 		    HAL_Delay(1000);
-          //  Decode_Function();
+           Wifi_Fast_Led_Blink();
 			HAL_Delay(1000);
-          //  Decode_Function();
+           Wifi_Fast_Led_Blink();
 		    HAL_Delay(1000);
-          //  Decode_Function();
+
 	        sprintf((char *)device_massage, "AT+TCSAP=\"UYIJIA01-%d\"\r\n",ic_id);
             usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
 			 HAL_Delay(1000);
-           //  Decode_Function();
+            Wifi_Fast_Led_Blink();
              HAL_Delay(1000);
-          //   Decode_Function();
+            Wifi_Fast_Led_Blink();
 			 wifi_t.soft_ap_config_flag =1;
 			 wifi_t.linking_tencent_cloud_doing =1; //enable usart2 receive wifi  data
 			 wifi_t.wifi_uart_counter=0;

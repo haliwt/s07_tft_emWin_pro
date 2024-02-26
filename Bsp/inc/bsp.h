@@ -181,7 +181,7 @@ void TFT_Process_Handler(void);
 
 void ADD_Key_Fun(void);
 void DEC_Key_Fun(void);
-
+void Wifi_Fast_Led_Blink(void);
 
 
 #endif 

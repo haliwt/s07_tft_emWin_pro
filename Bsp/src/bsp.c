@@ -20,7 +20,7 @@ static void TFT_Pocess_Command_Handler(void);
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
-static void Wifi_Fast_Led_Blink(void);
+
 
 static void TFT_Donnot_Set_Timer_Time(void);
 //static void ADD_Key_Fun(void);
@@ -874,8 +874,6 @@ static void Ptc_Temperature_Compare_Value(void)
             }
 				 
 	   }
-
-	   	//send temp value to smart phone 
 	
        break;
 
@@ -920,8 +918,7 @@ static void Ptc_Temperature_Compare_Value(void)
     *Return Ref:NO
     *
 *********************************************************************************************************/
-
-static void Wifi_Fast_Led_Blink(void)
+void Wifi_Fast_Led_Blink(void)
 {
    if(pro_t.wifi_led_fast_blink_flag==1 && wifi_link_net_state()==0){
 wifi_led: if(pro_t.gTimer_pro_wifi_led < 166){//2'46s

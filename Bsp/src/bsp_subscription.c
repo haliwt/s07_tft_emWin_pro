@@ -751,12 +751,8 @@ void Json_Parse_Command_Fun(void)
 			pro_t.gTimer_pro_temp_delay= 100;
 			pro_t.gTimer_pro_mode_key_timer = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-			
-          
-       }
-     
-	
-	  wifi_t.response_wifi_signal_label = 0xff;
+		}
+      wifi_t.response_wifi_signal_label = 0xff;
 	  break;
 
 	  case FAN_ITEM:

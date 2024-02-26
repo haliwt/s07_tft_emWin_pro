@@ -106,7 +106,7 @@ static void RunWifi_Command_Handler(void)
 
 		   if(power_on_state() == power_on){
 			
-			 
+			Wifi_Fast_Led_Blink(); 
 			Wifi_SoftAP_Config_Handler();
 	        SmartPhone_LinkTencent_Cloud();
 	     
