@@ -38,13 +38,10 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 {
     static uint8_t self_power_on_flag=0,send_power_off_flag;
     
-
-	if(self_power_on_flag==0){
-        self_power_on_flag ++ ;
-	
-        Buzzer_KeySound();
+   
+	if(wifi_t.first_power_on_link_net==0 && wifi_t.power_on_login_tencent_cloud_flag !=5){
+        //Buzzer_KeySound();
 		InitWifiModule_Hardware();//InitWifiModule();
-		HAL_Delay(1000);
         SmartPhone_TryToLink_TencentCloud();
 		if(wifi_link_net_state()==1){
 			wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;//04
@@ -60,11 +57,7 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 			
 		    HAL_Delay(200);
 	}
-
-
 }
-    
-   
 /********************************************************************************
    *
    *Function Name: void Wifi_RunCmd(void)
@@ -217,7 +210,7 @@ static void RunWifi_Command_Handler(void)
 			
 
 
-			if(wifi_t.gTimer_get_beijing_time > 423 && power_on_state() ==power_on){ //&& gctl_t.power_on_send_bejing_times==0){ //
+			if(wifi_t.gTimer_get_beijing_time > 240 && power_on_state() ==power_on){ //&& gctl_t.power_on_send_bejing_times==0){ //
 			wifi_t.gTimer_get_beijing_time=0;
 
 			wifi_t.set_beijing_time_flag=1; //set beijing times .

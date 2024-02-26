@@ -154,6 +154,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_read_beijing_time++;
 	  wifi_t.gTimer_publish_dht11++;
 	  wifi_t.gTimer_linking_tencent_duration;
+	  wifi_t.gTimer_power_first_link_tencent ++;
 	 
 	  
 	 

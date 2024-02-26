@@ -95,6 +95,8 @@ typedef struct _WIFI_FUN{
 	
     //smart phone 
     uint8_t smartphone_app_power_on_flag;
+    uint8_t first_power_on_link_net;
+	uint8_t power_on_login_tencent_cloud_flag;
     
 
 	//fan
@@ -132,6 +134,7 @@ typedef struct _WIFI_FUN{
 	uint8_t gTimer_publish_dht11;
 	uint8_t gTimer_auto_detected_net_link_state;
 	uint8_t gTimer_login_tencent_times;
+	uint8_t gTimer_power_first_link_tencent ;
     uint16_t gTimer_get_beijing_time;
 	
 	

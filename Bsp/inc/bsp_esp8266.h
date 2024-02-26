@@ -58,7 +58,7 @@ void InitWifiModule_Hardware(void);
 
 
 
-void InitWifiModule(void);
+
 
 void Wifi_Link_SmartConfig_Handler(void);
 
