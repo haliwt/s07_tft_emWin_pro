@@ -4,11 +4,9 @@ PRO_T pro_t;
 
 uint8_t led_blink_times;
 
+static void Key_Speical_Power_Fun_Handler(void);
+static void Key_Speical_Mode_Fun_Handler(void);
 static void Ptc_Temperature_Compare_Value(void);
-//static void Power_Key_Detected(void);
-//static void Mode_Key_Detected(void);
-//static void ADD_Key_Detected(void);
-//static void DEC_Key_Detected(void);
 
 
 static void mode_key_fun_handler(void);
@@ -107,85 +105,10 @@ void TFT_Process_Handler(void)
 		pro_t.buzzer_sound_flag=0;
 		Buzzer_KeySound();
 	}
-    if(pro_t.key_power_be_pressed_flag==1){
-         if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
-            pro_t.key_power_be_pressed_flag =0;
-			pro_t.gTimer_pro_wifi_led =0;
-            pro_t.wifi_led_fast_blink_flag=1;
-			
-			//WIFI CONNCETOR process
-			wifi_t.esp8266_login_cloud_success =0;
-			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
-			wifi_t.wifi_config_net_lable= wifi_set_restor;
-			wifi_t.gTimer_linking_tencen_counter=0;
-			Buzzer_KeySound();
-			
-			 
-        }
-
-		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
-
-            pro_t.key_power_be_pressed_flag=0;
-            if( pro_t.gPower_On == power_off){
-				
-			 pro_t.gPower_On = power_on;   
-            pro_t.long_key_flag =0;
-            pro_t.run_process_step=0;
-		    pro_t.gKey_value = power_key_id;
-
-		
-			
-		  }
-		  else{
-			 pro_t.gKey_value = power_key_id;
-  
-	         pro_t.long_key_flag =0;
-			 
-			 pro_t.gPower_On = power_off;   
-	    
-			   
-			pro_t.run_process_step=0xff;
-			  
-			 }
-		  }
-     }
-
-    //modke _key_long_time
-	if(pro_t.mode_key_pressed_flag ==1){
-
-		//mode key be pressed long times
-		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 2){
-			
-			pro_t.mode_key_pressed_flag =0;
-            Buzzer_KeySound();
-			pro_t.gTimer_pro_mode_key_timer = 0; 
-			pro_t.gTimer_pro_set_timer_time=0;
-			Mode_Long_Key_Fun();
-
-		   
-		}
-       //
-       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
-		pro_t.mode_key_pressed_flag =0;
-	   
-		
-		pro_t.mode_key_confirm_flag = mode_key_select;
-		gctl_t.select_main_fun_numbers++; // 0,1,2
-		if(gctl_t.select_main_fun_numbers > 2){
-		  gctl_t.select_main_fun_numbers = 0;
-		}
-		
-        
-		pro_t.buzzer_sound_flag =1;
-
-		pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-		gctl_t.gTimer_ctl_select_led =0;
-	   }
-		
-		
-	}
+	Key_Speical_Power_Fun_Handler();
+	Key_Speical_Mode_Fun_Handler();
 	
-	Key_Interrup_Handler();
+    Key_Interrup_Handler();
 	TFT_Pocess_Command_Handler();
 }
 /******************************************************************************
@@ -231,6 +154,106 @@ static void Key_Interrup_Handler(void)
 	 mode_key_fun_handler();
 
    
+}
+/******************************************************************************
+	*
+	*Function Name:static void Key_Speical_Power_Fun_Handler(void)
+	*Funcion: speical of power key function
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+******************************************************************************/
+static void Key_Speical_Power_Fun_Handler(void)
+{
+	//be pressed long time key of function
+	 if(pro_t.key_power_be_pressed_flag==1){
+         if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
+            pro_t.key_power_be_pressed_flag =0;
+			pro_t.gTimer_pro_wifi_led =0;
+            pro_t.wifi_led_fast_blink_flag=1;
+			
+			//WIFI CONNCETOR process
+			wifi_t.link_tencent_step_counter=0;
+			wifi_t.esp8266_login_cloud_success =0;
+			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
+			wifi_t.wifi_config_net_lable= wifi_set_restor;
+			wifi_t.gTimer_login_tencent_times=0;
+			Buzzer_KeySound();
+			
+			 
+        }
+	//sort time key of fun
+		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
+
+            pro_t.key_power_be_pressed_flag=0;
+            if( pro_t.gPower_On == power_off){
+				
+			 pro_t.gPower_On = power_on;   
+            pro_t.long_key_flag =0;
+            pro_t.run_process_step=0;
+		    pro_t.gKey_value = power_key_id;
+
+		
+			
+		  }
+		  else{
+			 pro_t.gKey_value = power_key_id;
+  
+	         pro_t.long_key_flag =0;
+			 
+			 pro_t.gPower_On = power_off;   
+	    
+			   
+			pro_t.run_process_step=0xff;
+			  
+			 }
+		  }
+     }
+}
+/******************************************************************************
+	*
+	*Function Name:static void Key_Speical_Mode_Fun_Handler(void)
+	*Funcion: speical of mode key fun
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+******************************************************************************/
+static void Key_Speical_Mode_Fun_Handler(void)
+{
+ //modke _key_long_time
+	if(pro_t.mode_key_pressed_flag ==1){
+
+		//mode key be pressed long times
+		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 2){
+			
+			pro_t.mode_key_pressed_flag =0;
+            Buzzer_KeySound();
+			pro_t.gTimer_pro_mode_key_timer = 0; 
+			pro_t.gTimer_pro_set_timer_time=0;
+			Mode_Long_Key_Fun();
+
+		   
+		}
+       //
+       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
+		pro_t.mode_key_pressed_flag =0;
+	   
+		
+		pro_t.mode_key_confirm_flag = mode_key_select;
+		gctl_t.select_main_fun_numbers++; // 0,1,2
+		if(gctl_t.select_main_fun_numbers > 2){
+		  gctl_t.select_main_fun_numbers = 0;
+		}
+		
+        
+		pro_t.buzzer_sound_flag =1;
+
+		pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+		gctl_t.gTimer_ctl_select_led =0;
+	   }
+		
+		
+	}
 }
 /******************************************************************************
 	*

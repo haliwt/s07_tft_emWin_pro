@@ -2,6 +2,8 @@
 #include "bsp.h"
 
 
+static void delay_chip_wifi_led_fast_blink(void);
+
 static uint32_t ic_id;
 
  uint8_t *sub_buf;
@@ -68,13 +70,32 @@ void InitWifiModule_Hardware(void)
 void ReConnect_Wifi_Net_ATReset_Hardware(void)
 {
 	    WIFI_IC_DISABLE();
-		HAL_Delay(1000);
-		//HAL_Delay(1000);
-		//HAL_Delay(1000);
+		HAL_Delay(100);
+		Wifi_Fast_Led_Blink();
+		HAL_Delay(200);
+		Wifi_Fast_Led_Blink();
 		WIFI_IC_ENABLE();
+		HAL_Delay(200);
+		Wifi_Fast_Led_Blink();
 		//at_send_data("AT+RESTORE\r\n", strlen("AT+RESTORE\r\n"));
-		at_send_data("AT+RST\r\n", strlen("AT+RST\r\n"));
-		HAL_Delay(1000);
+		if(wifi_t.link_tencent_step_counter==0){
+		 wifi_t.link_tencent_step_counter=1;
+		 wifi_t.gTimer_login_tencent_times=0;
+		 at_send_data("AT+RST\r\n", strlen("AT+RST\r\n"));
+
+		}
+
+        if(wifi_t.gTimer_login_tencent_times > 0){
+		  wifi_t.gTimer_login_tencent_times=0;
+
+          wifi_t.link_tencent_step_counter=driver_esp8266_step_2;
+
+
+		}
+		
+
+		
+		
 
 
 
@@ -105,85 +126,92 @@ void Wifi_SoftAP_Config_Handler(void)
   {
 
     case wifi_set_restor:
-           //InitWifiModule();
-           ReConnect_Wifi_Net_ATReset_Hardware();//InitWifiModule_Hardware();
-		   HAL_Delay(1000);
-	       Wifi_Fast_Led_Blink();
-           wifi_t.wifi_config_net_lable =wifi_set_cwmode;
+           Wifi_Fast_Led_Blink();
+           ReConnect_Wifi_Net_ATReset_Hardware();//InitWifiModule_Hardware()
+		   Wifi_Fast_Led_Blink();
+	       if(wifi_t.link_tencent_step_counter==driver_esp8266_step_2)
+             wifi_t.wifi_config_net_lable =wifi_set_cwmode;
 	break;
 
 
 	 case wifi_set_cwmode:
     	    WIFI_IC_ENABLE();
-         	HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
-        	HAL_Delay(1000);
 			Wifi_Fast_Led_Blink();
-           // Decode_Function();
-			HAL_Delay(1000);
-		    Wifi_Fast_Led_Blink();
-           // Decode_Function();
-			//HAL_UART_Transmit(&huart2, "AT+CIPMUX=1\r\n", strlen("AT+CIPMUX=1\r\n"), 5000);
-			wifi_t.wifi_config_net_lable =wifi_set_softap;
-			//gctl_t.randomName[0]=HAL_GetUIDw0();
-	        ic_id = HAL_GetUIDw0();
-		
+	        if(wifi_t.link_tencent_step_counter==driver_esp8266_step_2){
+				wifi_t.link_tencent_step_counter =driver_esp8266_step_3;
+				wifi_t.gTimer_login_tencent_times=0;
+         	   HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
+	        }
+
+			if(wifi_t.gTimer_login_tencent_times > 1){
+				wifi_t.gTimer_login_tencent_times=0;
+				wifi_t.wifi_config_net_lable =wifi_set_softap;
+				ic_id = HAL_GetUIDw0();
+
+
+			}
+	       
+		   
+			Wifi_Fast_Led_Blink();
 
 	 break;
 
 	  case wifi_set_softap:
             WIFI_IC_ENABLE();
-			
+			if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_3){
+				wifi_t.link_tencent_step_counter =driver_esp8266_step_4;
+				wifi_t.gTimer_login_tencent_times=0;
             sprintf((char *)device_massage, "AT+TCPRDINFOSET=1,\"%s\",\"%s\",\"UYIJIA01-%d\"\r\n", PRODUCT_ID, DEVICE_SECRET,ic_id);
 			usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
-	  		HAL_Delay(1000);
-            Wifi_Fast_Led_Blink();
-            HAL_Delay(1000);
-            Wifi_Fast_Led_Blink();
-			HAL_Delay(1000);
-            Wifi_Fast_Led_Blink();
-	        
-			wifi_t.wifi_config_net_lable=wifi_set_tcdevreg;
+
+			}
+			if(wifi_t.gTimer_login_tencent_times > 2){
+	  		
+              wifi_t.gTimer_login_tencent_times =0;
+              wifi_t.wifi_config_net_lable=wifi_set_tcdevreg;
+			}
 		
-	
+	       Wifi_Fast_Led_Blink();
 
 
 	 case wifi_set_tcdevreg://dynamic register
-		 HAL_UART_Transmit(&huart2, "AT+TCDEVREG\r\n", strlen("AT+TCDEVREG\r\n"), 0xffff); //动态注册 
-	      HAL_Delay(1000);
-         Wifi_Fast_Led_Blink();
-		 HAL_Delay(1000);
-         Wifi_Fast_Led_Blink();
-		HAL_Delay(1000);
-         Wifi_Fast_Led_Blink();
-		HAL_Delay(1000);
-        Wifi_Fast_Led_Blink();
 
-	  
-	     wifi_t.wifi_config_net_lable=wifi_set_tcsap;
+	     if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_4){
+		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_5;
+				wifi_t.gTimer_login_tencent_times=0;
+		     HAL_UART_Transmit(&huart2, "AT+TCDEVREG\r\n", strlen("AT+TCDEVREG\r\n"), 0xffff); //动态注册 
+
+	     }
+		 if(wifi_t.gTimer_login_tencent_times > 6){
+	         wifi_t.gTimer_login_tencent_times =0;
+             wifi_t.wifi_config_net_lable=wifi_set_tcsap;
+         }
+	     Wifi_Fast_Led_Blink();
 
 	 break;
 
 
 	 case wifi_set_tcsap: //5
 	 
-            HAL_Delay(1000);
-           Wifi_Fast_Led_Blink();
-		    HAL_Delay(1000);
-           Wifi_Fast_Led_Blink();
-			HAL_Delay(1000);
-           Wifi_Fast_Led_Blink();
-		    HAL_Delay(1000);
+           if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_5){
+		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_6;
+			  wifi_t.gTimer_login_tencent_times=0;
 
 	        sprintf((char *)device_massage, "AT+TCSAP=\"UYIJIA01-%d\"\r\n",ic_id);
             usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
-			 HAL_Delay(1000);
-            Wifi_Fast_Led_Blink();
-             HAL_Delay(1000);
-            Wifi_Fast_Led_Blink();
+           }
+
+		   
+		  if(wifi_t.gTimer_login_tencent_times > 1){
+		   
+			 wifi_t.gTimer_login_tencent_times = 0;
+
 			 wifi_t.soft_ap_config_flag =1;
 			 wifi_t.linking_tencent_cloud_doing =1; //enable usart2 receive wifi  data
 			 wifi_t.wifi_uart_counter=0;
 			 wifi_t.wifi_config_net_lable=0xff;
+		  }
+		  Wifi_Fast_Led_Blink();
 			
 	 break;
 
@@ -210,9 +238,12 @@ void SmartPhone_LinkTencent_Cloud(void)
 	if(wifi_t.soft_ap_config_success==1){
 
        wifi_t.soft_ap_config_success=0;
+	   
 	   HAL_UART_Transmit(&huart2, "AT+TCMQTTCONN=1,5000,240,0,1\r\n", strlen("AT+TCMQTTCONN=1,5000,240,0,1\r\n"), 5000);//开始连接
+     
+	   HAL_Delay(1000);
        HAL_Delay(1000);
-       HAL_Delay(1000);
+      
       // SendWifiData_To_Cmd(1);//To tell display panel wifi be connetor to tencent cloud is success
 	 
      }
@@ -352,8 +383,20 @@ void AutoRepeate_Link_Tencent_Cloud(void)
 
 
 
+/************************************************************************
+**
+*
+*
+*
+*
+*
+************************************************************************/
+static void delay_chip_wifi_led_fast_blink(void)
+{
+    
 
 
 
+}
 
 

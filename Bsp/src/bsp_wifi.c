@@ -120,7 +120,7 @@ static void RunWifi_Command_Handler(void)
 		   }
            
            if(wifi_link_net_state()==0){
-             if(wifi_t.gTimer_linking_tencen_counter < 166){
+             if(wifi_t.gTimer_linking_tencent_duration < 166){
                  wifi_t.runCommand_order_lable = wifi_link_tencent_cloud;
              }
              else{

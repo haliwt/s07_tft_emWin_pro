@@ -72,6 +72,7 @@ typedef struct _WIFI_FUN{
     uint8_t cmp_flag;
 	uint8_t send_tencent_cloud_data_lable;
     uint8_t subscrible_receive_data_label;
+	uint8_t link_tencent_step_counter;
     //esp8266 up ref
 
 	uint8_t runCommand_order_lable;
@@ -90,6 +91,7 @@ typedef struct _WIFI_FUN{
 	uint8_t auto_link_cloud_flag;
 	uint8_t response_wifi_signal_label;
 	uint8_t reconnect_tencent_cloud_flag;
+
 	
     //smart phone 
     uint8_t smartphone_app_power_on_flag;
@@ -117,7 +119,7 @@ typedef struct _WIFI_FUN{
 
 	//wifi gtimer
 	uint8_t gTimer_read_beijing_time;
-	uint8_t gTimer_linking_tencen_counter;
+	uint8_t gTimer_linking_tencent_duration;
 	
 
   
@@ -129,7 +131,9 @@ typedef struct _WIFI_FUN{
 	uint8_t gTimer_subscriber_send ;
 	uint8_t gTimer_publish_dht11;
 	uint8_t gTimer_auto_detected_net_link_state;
+	uint8_t gTimer_login_tencent_times;
     uint16_t gTimer_get_beijing_time;
+	
 	
 		
 	

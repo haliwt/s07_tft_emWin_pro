@@ -36,6 +36,19 @@ typedef enum _esp8266_para{
 }esp8266_para;
 
 
+typedef enum{
+
+  driver_esp8266_rest=0x01,
+  driver_esp8266_step_2,
+  driver_esp8266_step_3,
+  driver_esp8266_step_4,
+  driver_esp8266_step_5,
+  driver_esp8266_step_6,
+
+
+}wifi_link_step;
+
+
 
 
 void InitWifiModule_Hardware(void);
