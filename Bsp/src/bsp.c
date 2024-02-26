@@ -165,7 +165,7 @@ static void Key_Interrup_Handler(void)
 ******************************************************************************/
 static void Key_Speical_Power_Fun_Handler(void)
 {
-	//be pressed long time key of function
+	//be pressed long time key of function that link tencent cloud funtion 
 	 if(pro_t.key_power_be_pressed_flag==1){
          if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
             pro_t.key_power_be_pressed_flag =0;
@@ -178,6 +178,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
 			wifi_t.wifi_config_net_lable= wifi_set_restor;
 			wifi_t.gTimer_login_tencent_times=0;
+			wifi_t.gTimer_linking_tencent_duration=0; //166s -2分7秒
 			Buzzer_KeySound();
 			
 			 

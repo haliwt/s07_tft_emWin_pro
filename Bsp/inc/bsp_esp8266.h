@@ -44,6 +44,9 @@ typedef enum{
   driver_esp8266_step_4,
   driver_esp8266_step_5,
   driver_esp8266_step_6,
+  driver_esp8266_step_7,
+  driver_esp8266_step_8,
+  driver_esp8266_step_9
 
 
 }wifi_link_step;

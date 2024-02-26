@@ -69,35 +69,39 @@ void InitWifiModule_Hardware(void)
 
 void ReConnect_Wifi_Net_ATReset_Hardware(void)
 {
-	    WIFI_IC_DISABLE();
-		HAL_Delay(100);
-		Wifi_Fast_Led_Blink();
-		HAL_Delay(200);
-		Wifi_Fast_Led_Blink();
-		WIFI_IC_ENABLE();
-		HAL_Delay(200);
-		Wifi_Fast_Led_Blink();
+	  
+	   if(wifi_t.link_tencent_step_counter==0){
+		  wifi_t.gTimer_login_tencent_times=0;
+		  wifi_t.link_tencent_step_counter=driver_esp8266_rest;
+		   WIFI_IC_DISABLE();
+		   
+	   }
+	
+	   if(wifi_t.gTimer_login_tencent_times > 0 && wifi_t.link_tencent_step_counter==driver_esp8266_rest){
+		   wifi_t.gTimer_login_tencent_times=0;
+		   wifi_t.link_tencent_step_counter=driver_esp8266_step_2;
+		   WIFI_IC_ENABLE();
+		   
+
+		}
 		//at_send_data("AT+RESTORE\r\n", strlen("AT+RESTORE\r\n"));
-		if(wifi_t.link_tencent_step_counter==0){
-		 wifi_t.link_tencent_step_counter=1;
+		if(wifi_t.link_tencent_step_counter==driver_esp8266_step_2){
+		 wifi_t.link_tencent_step_counter=driver_esp8266_step_3;
 		 wifi_t.gTimer_login_tencent_times=0;
 		 at_send_data("AT+RST\r\n", strlen("AT+RST\r\n"));
 
 		}
 
         if(wifi_t.gTimer_login_tencent_times > 0){
+		   WIFI_IC_ENABLE();
 		  wifi_t.gTimer_login_tencent_times=0;
 
-          wifi_t.link_tencent_step_counter=driver_esp8266_step_2;
+          wifi_t.link_tencent_step_counter=driver_esp8266_step_4;
 
 
 		}
 		
-
-		
-		
-
-
+	  Wifi_Fast_Led_Blink();
 
 }
 
@@ -129,16 +133,17 @@ void Wifi_SoftAP_Config_Handler(void)
            Wifi_Fast_Led_Blink();
            ReConnect_Wifi_Net_ATReset_Hardware();//InitWifiModule_Hardware()
 		   Wifi_Fast_Led_Blink();
-	       if(wifi_t.link_tencent_step_counter==driver_esp8266_step_2)
+	       if(wifi_t.link_tencent_step_counter==driver_esp8266_step_4){
              wifi_t.wifi_config_net_lable =wifi_set_cwmode;
+		   }
 	break;
 
 
 	 case wifi_set_cwmode:
     	    WIFI_IC_ENABLE();
 			Wifi_Fast_Led_Blink();
-	        if(wifi_t.link_tencent_step_counter==driver_esp8266_step_2){
-				wifi_t.link_tencent_step_counter =driver_esp8266_step_3;
+	        if(wifi_t.link_tencent_step_counter==driver_esp8266_step_4){
+				wifi_t.link_tencent_step_counter =driver_esp8266_step_5;
 				wifi_t.gTimer_login_tencent_times=0;
          	   HAL_UART_Transmit(&huart2, "AT+CWMODE=3\r\n", strlen("AT+CWMODE=3\r\n"), 5000);
 	        }
@@ -158,14 +163,14 @@ void Wifi_SoftAP_Config_Handler(void)
 
 	  case wifi_set_softap:
             WIFI_IC_ENABLE();
-			if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_3){
-				wifi_t.link_tencent_step_counter =driver_esp8266_step_4;
+			if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_5){
+				wifi_t.link_tencent_step_counter =driver_esp8266_step_6;
 				wifi_t.gTimer_login_tencent_times=0;
             sprintf((char *)device_massage, "AT+TCPRDINFOSET=1,\"%s\",\"%s\",\"UYIJIA01-%d\"\r\n", PRODUCT_ID, DEVICE_SECRET,ic_id);
 			usart2_flag = at_send_data(device_massage, strlen((const char *)device_massage));
 
 			}
-			if(wifi_t.gTimer_login_tencent_times > 2){
+			if(wifi_t.gTimer_login_tencent_times > 4){
 	  		
               wifi_t.gTimer_login_tencent_times =0;
               wifi_t.wifi_config_net_lable=wifi_set_tcdevreg;
@@ -176,13 +181,13 @@ void Wifi_SoftAP_Config_Handler(void)
 
 	 case wifi_set_tcdevreg://dynamic register
 
-	     if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_4){
-		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_5;
+	     if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_6){
+		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_7;
 				wifi_t.gTimer_login_tencent_times=0;
 		     HAL_UART_Transmit(&huart2, "AT+TCDEVREG\r\n", strlen("AT+TCDEVREG\r\n"), 0xffff); //动态注册 
 
 	     }
-		 if(wifi_t.gTimer_login_tencent_times > 6){
+		 if(wifi_t.gTimer_login_tencent_times > 4){//6
 	         wifi_t.gTimer_login_tencent_times =0;
              wifi_t.wifi_config_net_lable=wifi_set_tcsap;
          }
@@ -193,8 +198,8 @@ void Wifi_SoftAP_Config_Handler(void)
 
 	 case wifi_set_tcsap: //5
 	 
-           if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_5){
-		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_6;
+           if(wifi_t.link_tencent_step_counter ==driver_esp8266_step_7){
+		 	wifi_t.link_tencent_step_counter =driver_esp8266_step_8;
 			  wifi_t.gTimer_login_tencent_times=0;
 
 	        sprintf((char *)device_massage, "AT+TCSAP=\"UYIJIA01-%d\"\r\n",ic_id);
