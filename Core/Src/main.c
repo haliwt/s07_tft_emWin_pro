@@ -110,8 +110,8 @@ int main(void)
   //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
  // UART_Start_Receive_IT(&huart1,inputBuf,1);
-   //DMA usart2
   HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
+  HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);
   pro_t.buzzer_sound_flag=1;
   /* USER CODE END 2 */
 
@@ -129,9 +129,11 @@ int main(void)
 	Key_Process_Handler(keyvalue);
 
     #endif 
-
+	
+   Voice_Decoder_Handler();
    TFT_Process_Handler();
    WIFI_Process_Handler();
+   
 	
 	
   }

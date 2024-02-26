@@ -33,12 +33,16 @@
 #include "bsp_font.h"
 #include "bsp_font_app.h"
 
+
 //wifi
 #include "bsp_wifi_fun.h"
 #include "bsp_esp8266.h"
 #include "bsp_publish.h"
 #include "bsp_subscription.h"
 #include "bsp_mqtt_iot.h"
+
+//voice 
+#include "bsp_voice.h"
 
 
 
@@ -182,6 +186,9 @@ void TFT_Process_Handler(void);
 void ADD_Key_Fun(void);
 void DEC_Key_Fun(void);
 void Wifi_Fast_Led_Blink(void);
+
+void Mode_Long_Key_Fun(void);;
+
 
 
 #endif 

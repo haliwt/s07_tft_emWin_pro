@@ -284,10 +284,7 @@ void SmartPhone_LinkTencent_Cloud(void)
 		 }
 
 	   }
-           
-	 
-	
- 	 free(device_submassage);
+    free(device_submassage);
 
 }
 

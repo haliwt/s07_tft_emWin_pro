@@ -1,6 +1,8 @@
 #include "interrupt_manager.h"
 #include "bsp.h"
 
+uint8_t voice_inputBuf[1];
+
 /********************************************************************************
 	**
 	*Function Name:void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
@@ -11,7 +13,7 @@
 *******************************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    static uint8_t state=0;
+    static uint8_t state=0,state_uart1;
     uint32_t temp ;
     //wifi usart2
     if(huart->Instance==USART2)
@@ -45,49 +47,115 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 				}
 	      }
-	  __HAL_UART_CLEAR_OREFLAG(&huart2);
+	  
+	__HAL_UART_CLEAR_NEFLAG(&huart2);
+	__HAL_UART_CLEAR_FEFLAG(&huart2);
+	__HAL_UART_CLEAR_OREFLAG(&huart2);
+	__HAL_UART_CLEAR_OREFLAG(&huart2);
+	__HAL_UART_CLEAR_TXFECF(&huart2);
       HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
 	}
 
-	#if 0
-	if(huart->Instance==USART1)//if(huart==&huart1) // Motor Board receive data (filter)
+	#if 1   //voice sound communcation
+	if(huart->Instance==USART1) // Motor Board receive data (filter)
 	{
-        //test_counter_usat1++;
-		switch(state)
+		
+	#if 1	
+		switch(state_uart1)
 		{
 		case 0:  //#0
-			if(inputBuf[0] == 'T')  //hex :54 - "T" -fixed
-				state=1; //=1
-		
+			if(voice_inputBuf[0]==0xA5)  //hex :4D - "M" -fixed mainboard
+				state_uart1=1; //=1
 			break;
 		case 1: //#1
-             if(inputBuf[0] == 'K')  //hex :4B - "K" -fixed
-				state=2; //=1
+			if(voice_inputBuf[0]==0xFA) //hex : 41 -'A'  -fixed master
+			{
+				state_uart1=2; 
+			}
 			else
-			   state =0;
+				state_uart1=0; 
 			break;
-            
-        case 2:
-             inputCmd[0]= inputBuf[0];
-             state = 3;
-        
-        break;
-        
-        case 3:
-            inputCmd[1]= inputBuf[0];
-            run_t.decodeFlag =1;
-            state = 0;
-        
-        break;
+
+	   case 2:
+	      if(voice_inputBuf[0]==0) //hex : 41 -'A'	-fixed master
+		   {
+			   state_uart1=3; 
+		   }
+		   else
+			  state_uart1=0; 
+
+
+	   break;
+
+	   case 3:
+	      if(voice_inputBuf[0]==0x81) //hex : 41 -'A'	-fixed master
+		   {
+			   state_uart1=4; 
+		   }
+		   else
+			  state_uart1=0; 
+
+
+	   break;
+
+	   case 4:
+	      if(voice_inputBuf[0] >0 && voice_inputBuf[0] < 0x38) //hex : 41 -'A'	-fixed master
+		   {
+               v_t.RxBuf[0]=voice_inputBuf[0];
+			   state_uart1=5; 
+		   }
+		   else
+			  state_uart1=0; 
+
+
+	   break;
+
+	   case 5:
+	      if(voice_inputBuf[0]==0x00) //hex : 41 -'A'	-fixed master
+		   {
+			   state_uart1=6; 
+		   }
+		   else
+			  state_uart1=0; 
+
+
+	   break;
+
+	   case 6:
+	      if(voice_inputBuf[0] >0x20 && voice_inputBuf[0] < 0x58) //hex : 41 -'A'	-fixed master
+		   {
+               v_t.RxBuf[1]=voice_inputBuf[0];
+			   state_uart1=7; 
+		   }
+		   else
+			  state_uart1=0; 
+
+
+	   break;
+
+	   case 7:
+	      if(voice_inputBuf[0]==0xFB) //hex : 41 -'A'	-fixed master
+		   {
+               v_t.rx_voice_data_enable = 1;
+			   state_uart1=0; 
+
+		  }
+		  
+
+     break;
+	  }
+	#endif 
+	HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//UART receive data interrupt 1 byte
+
+	  
+	__HAL_UART_CLEAR_NEFLAG(&huart1);
+	__HAL_UART_CLEAR_FEFLAG(&huart1);
+	__HAL_UART_CLEAR_OREFLAG(&huart1);
+	__HAL_UART_CLEAR_OREFLAG(&huart1);
+	__HAL_UART_CLEAR_TXFECF(&huart1);
+
+	}
 	
-		default:
-			state=0;
-			run_t.decodeFlag =0;
-		}
-		__HAL_UART_CLEAR_OREFLAG(&huart1); //WT.EDIT 2023.06.16
-		HAL_UART_Receive_IT(&huart1,inputBuf,1);//UART receive data interrupt 1 byte
-		
-	 }
     #endif 
   
  }

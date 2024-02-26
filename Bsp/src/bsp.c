@@ -11,7 +11,7 @@ static void Ptc_Temperature_Compare_Value(void);
 
 static void mode_key_fun_handler(void);
 
-static void Mode_Long_Key_Fun(void);
+
 
 static void TFT_Pocess_Command_Handler(void);
 
@@ -179,7 +179,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			wifi_t.wifi_config_net_lable= wifi_set_restor;
 			wifi_t.gTimer_login_tencent_times=0;
 			wifi_t.gTimer_linking_tencent_duration=0; //166s -2分7秒
-			Buzzer_KeySound();
+			buzzer_sound();
 			
 			 
         }
