@@ -204,7 +204,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
-	 // pro_t.gTimer_pro_long_key_timer_flag++;
+
 	  pro_t.gTimer_pro_timer_mode_times++;
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;
@@ -219,10 +219,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_get_beijing_time++;
 	  wifi_t.gTimer_read_beijing_time++;
 	
-	  wifi_t.gTimer_read_beijing_time++;
-	  wifi_t.gTimer_publish_dht11++;
+	  
+	 
 	  wifi_t.gTimer_linking_tencent_duration;
 	  wifi_t.gTimer_power_first_link_tencent ++;
+	  wifi_t.gTimer_main_pro_times++;
 	 
 	  
 	 

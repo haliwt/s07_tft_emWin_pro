@@ -71,7 +71,7 @@ static void RunWifi_Command_Handler(void)
   
     static uint8_t first_sub,sub_to_tencent_flag,disp_beijing;
 
-	static uint8_t  get_bj_times=0;
+	static uint8_t  get_bj_times=0,step_flag;
 
      switch(wifi_t.runCommand_order_lable){
 
@@ -88,7 +88,9 @@ static void RunWifi_Command_Handler(void)
 		  	wifi_t.linking_tencent_cloud_doing=0;
 	        wifi_t.has_been_login_flag = 1;
 			wifi_t.get_rx_beijing_time_enable=0;
+			wifi_t.gTimer_main_pro_times =0;
 			wifi_t.runCommand_order_lable = wifi_tencent_publish_init_data;//wifi_tencent_subscription_data;
+			step_flag =1;
 			
 				
 		  }
@@ -127,34 +129,52 @@ static void RunWifi_Command_Handler(void)
 	  	
 	  	case wifi_tencent_publish_init_data://03
 		  
-			do{
-			  
-				 MqttData_Publish_SetOpen(0x01);
-		         HAL_Delay(50);//
-		         Publish_Data_ToTencent_Initial_Data();
-				 HAL_Delay(200);//
+			
+			     if(step_flag ==1){
+				 	step_flag++;
+				    MqttData_Publish_SetOpen(0x01);
+					wifi_t.gTimer_main_pro_times=0;
 
-				Subscriber_Data_FromCloud_Handler();
-				HAL_Delay(200);//
-	           
+			     }
+				 if(step_flag==2 && wifi_t.gTimer_main_pro_times>0 ){
+				 	step_flag++;
 
-			   
-			     sub_to_tencent_flag=0;
-				
-				wifi_t.runCommand_order_lable= wifi_tencent_subscription_data;
-	           
-			}while(sub_to_tencent_flag);
+					 Publish_Data_ToTencent_Initial_Data();
+				     wifi_t.gTimer_main_pro_times =0;
+
+				 }
+
+				 if(step_flag==3 && wifi_t.gTimer_main_pro_times>0 ){
+				 	step_flag++;
+		           Publish_Data_ToTencent_Initial_Data();
+				   wifi_t.gTimer_main_pro_times =0;
+
+				 }
+
+				 
+				 if(step_flag==4 && wifi_t.gTimer_main_pro_times>0 ){
+				 	step_flag++;
+				     Subscriber_Data_FromCloud_Handler();
+				     wifi_t.gTimer_main_pro_times =0;
+				 }
+				 
+	            if(step_flag==5 && wifi_t.gTimer_main_pro_times>0 ){
+				 	step_flag++;
+                  wifi_t.runCommand_order_lable= wifi_publish_update_tencent_cloud_data;
+
+	            }
+	      
 		
 		 
        	break;
 
 		
-		case wifi_tencent_subscription_data://04
-           
-		   wifi_t.runCommand_order_lable= wifi_publish_update_tencent_cloud_data;
-					
-			
-		break;
+//		case wifi_tencent_subscription_data://04
+//           
+//		   wifi_t.runCommand_order_lable= wifi_publish_update_tencent_cloud_data;
+//					
+//			
+//		break;
 
 	   	case wifi_publish_update_tencent_cloud_data://05
             
