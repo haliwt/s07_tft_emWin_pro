@@ -136,6 +136,29 @@ void TFT_Display_WorksTime(void)
 
 }
 
+void TFT_Only_Disp_Timing(void)
+{
+
+static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+	
+	    temp_decade_hours = gctl_t.disp_works_hours /10;
+		temp_unit_hours = gctl_t.disp_works_hours % 10;
+
+		temp_decade_minutes = gctl_t.disp_works_minutes/10;
+		temp_unit_minutes = gctl_t.disp_works_minutes%10;
+
+
+
+		TFT_Disp_WorkTime_Value_48_48_onBlack(112,185,0,temp_decade_hours);
+		TFT_Disp_WorkTime_Value_48_48_onBlack(136,185,0,temp_unit_hours);
+	//	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
+		TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,0,temp_decade_minutes);
+		TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,0,temp_unit_minutes);
+
+
+
+}
+
 void TFT_DonnotDisp_Works_Time(void)
 {
 	if(gctl_t.gTimer_ctl_disp_second > 59){

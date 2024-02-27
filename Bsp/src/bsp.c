@@ -3,6 +3,7 @@
 PRO_T pro_t;
 
 uint8_t led_blink_times;
+uint8_t update_step;
 
 
 
@@ -388,7 +389,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 	static uint8_t timer_blink_times;
-    static uint8_t update_step,power_times;
+    static uint8_t power_times;
   
 
    if(power_on_state() == power_on){
@@ -616,39 +617,48 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 	   if(wifi_link_net_state() ==1 && power_times==1 && wifi_t.smartphone_app_power_on_flag==0){
-	   	  power_times =0;
-	   	
+	   	  power_times ++;
+	   	  update_step=1;
 	      MqttData_Publish_Init();
-		  HAL_Delay(200);
+	      wifi_t.gTimer_main_pro_times=0;
 
 	   }
  
 	     
-	   if(wifi_link_net_state() ==1 && update_step==0){
+	   if(wifi_link_net_state() ==1 && update_step==1 &&  wifi_t.gTimer_main_pro_times > 0){
 	   	 
 	   	  update_step ++ ;
 
 		   MqttData_Publish_SetOpen(0x01);
-		    HAL_Delay(200);
-	  	
+	       wifi_t.gTimer_main_pro_times=0;
+	   
+	   }
+
+	   if(wifi_link_net_state() ==1 && update_step==2 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
     	  Publish_Data_ToTencent_Initial_Data();
-	      HAL_Delay(200);
+	       wifi_t.gTimer_main_pro_times=0;
         
        }
 
-	   if(wifi_link_net_state() ==1 && update_step==1){
-	   	  update_step ++ ;
-
-	      //MqttData_Publish_SetOpen(0x01);
+       if(wifi_link_net_state() ==1 && update_step==3 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
 	  	
     	  Subscriber_Data_FromCloud_Handler();
-	      HAL_Delay(350);
+
+		    wifi_t.gTimer_main_pro_times=0;
+	     
         
        }
 
 	   
+      if(wifi_link_net_state() ==1 && update_step==4 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
+	       pro_t.run_process_step=pro_disp_dht11_value;
+	        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
+      }
 
-	  pro_t.run_process_step=pro_disp_dht11_value;
+	  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
 
 	  break;
 
