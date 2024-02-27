@@ -3,7 +3,7 @@
 PRO_T pro_t;
 
 uint8_t led_blink_times;
-uint8_t power_been_flag;
+
 
 
 static void Key_Speical_Power_Fun_Handler(void);
@@ -109,37 +109,40 @@ void TFT_Process_Handler(void)
 	}
 	
 	Key_Speical_Power_Fun_Handler();
+
+	switch(pro_t.gPower_On){
 	
-	if(pro_t.gPower_On == power_on){
+	 case 
 		
 	    Key_Speical_Mode_Fun_Handler();
     	Key_Interrup_Handler();
 	    TFT_Pocess_Command_Handler();
-	}
-	else{
+
+		break;
+
+	case power_off:
+
 		
    	
-   	if(power_been_flag == 1){
-		power_been_flag =0;
-		//TFT_BACKLIGHT_OFF();
-		//Power_Off_Fun();
-		if(wifi_link_net_state() ==1){
+   	if(pro_t.power_off_flag == 1){
+		pro_t.power_off_flag =0;
+		TFT_BACKLIGHT_OFF();
+		Power_Off_Fun();
+   	}
+	if(wifi_link_net_state() ==1){
 			
-		    MqttData_Publish_PowerOff_Ref();
-
-	
-			
-		   // HAL_Delay(200);
-		}
+		MqttData_Publish_PowerOff_Ref();
+    }
         
-	}
-	wifi_t.smartphone_app_power_on_flag=0;
+	
+	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	LED_Mode_Key_Off();
 	Breath_Led();
 
-   }
+  
+	break;
 
-	
+	}
 	
 }
 /******************************************************************************

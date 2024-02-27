@@ -245,8 +245,8 @@ static void voice_cmd_fun(uint8_t cmd)
 
 		}
 		else{
-			
-		
+			buzzer_sound();
+		    pro_t.power_off_flag=1;
 			pro_t.gPower_On = power_off;   
 		
 			
@@ -291,13 +291,11 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	case voice_close_ptc:
 		 if(ptc_state() == 0){
-            // SendData_Buzzer();
+          
             buzzer_sound();
 
 		 }
 		 else{
-			// SendData_Set_Command(VOICE_DRY_OFF);
-			// ctl_t.gPtc_flag =0;
 			buzzer_sound();
 			gctl_t.ptc_flag =0;
 			Ptc_Off();
@@ -311,8 +309,8 @@ static void voice_cmd_fun(uint8_t cmd)
 			
 		}
 		else{
-		 //SendData_Set_Command(PLASMA_ON );
-		 //ctl_t.gPlasma_flag=1;
+
+		 buzzer_sound();//SendData_Buzzer();
 		 gctl_t.plasma_flag=1;
 		 Plasma_On();
 		 LED_KILL_ICON_ON() ;
@@ -325,8 +323,7 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	 }
 	 else{
-   	 //SendData_Set_Command(PLASMA_OFF);
-	 //ctl_t.gPlasma_flag=0;
+   	     buzzer_sound();
 	     gctl_t.plasma_flag=0;
 		 Plasma_Off();
 		 LED_KILL_ICON_OFF() ;
@@ -339,8 +336,7 @@ static void voice_cmd_fun(uint8_t cmd)
 
          }
 		 else{
-			// SendData_Set_Command(BUG_ON);
-			// ctl_t.gBug_flag=1;
+			buzzer_sound();
             gctl_t.ultrasonic_flag =1;
 			Ultrasonic_Pwm_Output();
 		    LED_RAT_ICON_ON();
@@ -352,8 +348,7 @@ static void voice_cmd_fun(uint8_t cmd)
 
 		}
 		else{
-		 //SendData_Set_Command(BUG_OFF);
-		 //ctl_t.gBug_flag=0;
+	     buzzer_sound();
 		  gctl_t.ultrasonic_flag =0;
 		 Ultrasonic_Pwm_Stop();
 		 LED_RAT_ICON_OFF();
