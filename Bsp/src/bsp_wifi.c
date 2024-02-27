@@ -235,9 +235,10 @@ static void RunWifi_Command_Handler(void)
 		   //if(wifi_t.gTimer_read_beijing_time > 2 && wifi_t.gTimer_read_beijing_time < 4){
 	       if(wifi_t.gTimer_read_beijing_time > 0 && beijing_step ==1){//
 			    beijing_step ++;
+				wifi_t.beijing_time_flag =0;
 			   	Get_Beijing_Time();
 				wifi_t.gTimer_read_beijing_time=0;
-				wifi_t.beijing_time_flag =0;
+				
 
 	       }
 
