@@ -71,10 +71,11 @@ void SmartPhone_TryToLink_TencentCloud(void)
    }
 	if(wifi_t.power_on_login_tencent_cloud_flag==3){
 		wifi_t.power_on_login_tencent_cloud_flag++;
-		wifi_t.gTimer_power_first_link_tencent=0;
-       HAL_UART_Transmit(&huart2, "AT+TCMQTTCONN=1,5000,240,0,1\r\n", strlen("AT+TCMQTTCONN=1,5000,240,0,1\r\n"), 5000);//开始连接
+		
+       HAL_UART_Transmit(&huart2, "AT+TCMQTTCONN=1,5000,240,0,1\r\n", strlen("AT+TCMQTTCONN=1,5000,240,0,1\r\n"), 0xffff);//开始连接
+	   wifi_t.gTimer_power_first_link_tencent=0;
 	}
-	if(wifi_t.gTimer_power_first_link_tencent >2 &&  wifi_t.power_on_login_tencent_cloud_flag==4){
+	if(wifi_t.gTimer_power_first_link_tencent >3 &&  wifi_t.power_on_login_tencent_cloud_flag==4){
 		wifi_t.gTimer_power_first_link_tencent=0;
 		wifi_t.power_on_login_tencent_cloud_flag++;
 		wifi_t.first_power_on_link_net ++;
