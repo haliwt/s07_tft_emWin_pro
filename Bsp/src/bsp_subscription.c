@@ -392,7 +392,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 					
                     wifi_t.auto_link_tencent_cloud_login_success =1;
 					
-					
+					wifi_t.repeat_login_tencent_cloud=0;
 				    wifi_t.esp8266_login_cloud_success=1;
 					wifi_t.soft_ap_config_flag=0;
                	}
@@ -404,7 +404,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 				 
                      wifi_t.auto_link_tencent_cloud_login_success =1;
 					
-				 
+				     wifi_t.repeat_login_tencent_cloud=0;
 	                 wifi_t.esp8266_login_cloud_success=1;
 				  //link to tencent cloud is success .
 	              wifi_t.linking_tencent_cloud_doing=0; //release this flag.
@@ -421,17 +421,17 @@ void Wifi_Rx_InputInfo_Handler(void)
 			 	
                   wifi_t.auto_link_tencent_cloud_login_success =1;
 				  wifi_t.esp8266_login_cloud_success=1;
+			      wifi_t.repeat_login_tencent_cloud=0;
 				
 	              wifi_t.linking_tencent_cloud_doing=0;
-				//  wifi_t.auto_link_cloud_flag=0xff;
-				 // wifi_t.wifi_reconnect_read_flag = 0;
+		
 				  wifi_t.soft_ap_config_flag=0;
 			  }
 
 
 
 		  }
-        // wifi_t.usart2_rx_flag =0;
+       
          wifi_t.wifi_uart_counter=0;
          
         
@@ -597,10 +597,14 @@ void Json_Parse_Command_Fun(void)
 			HAL_Delay(50);//350
 
             wifi_t.esp8266_login_cloud_success=1;
+			
+			pro_t.power_off_flag=0;
 			pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
             
 		
-	
+	    wifi_t.gTimer_auto_detected_net_state_times=0;
+		wifi_t.auto_link_step=0;
+		 wifi_t.linking_tencent_cloud_doing =0;
         
         wifi_t.response_wifi_signal_label = 0xff;
         
@@ -617,7 +621,9 @@ void Json_Parse_Command_Fun(void)
 
 		gctl_t.ptc_warning =0;
 		gctl_t.fan_warning =0;
-		
+		wifi_t.gTimer_auto_detected_net_state_times=0;
+		wifi_t.auto_link_step=0;
+		 wifi_t.linking_tencent_cloud_doing =0;
 	   
 	 
 
@@ -635,7 +641,9 @@ void Json_Parse_Command_Fun(void)
          MqttData_Publish_SetPtc(0x01);
 	  	 HAL_Delay(50);//350ms
 	     gctl_t.ptc_flag=1;
-		
+		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		 wifi_t.auto_link_step=0;
+		  wifi_t.linking_tencent_cloud_doing =0;
 		
 	     }
 		
@@ -657,6 +665,10 @@ void Json_Parse_Command_Fun(void)
 	     gctl_t.ptc_flag=0;
 
 		wifi_t.response_wifi_signal_label = 0xff;
+		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		 	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
+
 
 	  	}
 	  	break;
@@ -670,8 +682,12 @@ void Json_Parse_Command_Fun(void)
             MqttData_Publish_SetPlasma(0);
 			HAL_Delay(50);
            gctl_t.plasma_flag=0;
+		   wifi_t.gTimer_auto_detected_net_state_times=0;
+		   	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 		}
        wifi_t.response_wifi_signal_label = 0xff;
+		
 	   break;
 		
 	  case ANION_ON_ITEM: //plasma 
@@ -682,6 +698,9 @@ void Json_Parse_Command_Fun(void)
             MqttData_Publish_SetPlasma(1);
 		    HAL_Delay(50);//350
            gctl_t.plasma_flag=1;
+		    wifi_t.gTimer_auto_detected_net_state_times=0;
+			wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 		   
 			
 		
@@ -704,6 +723,9 @@ void Json_Parse_Command_Fun(void)
         }
         
 	   wifi_t.response_wifi_signal_label=0xff;
+		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		 	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
 	  case SONIC_ON_ITEM://ultransonic on
@@ -717,6 +739,9 @@ void Json_Parse_Command_Fun(void)
 		}
       
 	   wifi_t.response_wifi_signal_label=0xff;
+		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		 	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
 	  case STATE_TIMER_MODEL_ITEM:
@@ -731,6 +756,8 @@ void Json_Parse_Command_Fun(void)
         }
        
 	   wifi_t.response_wifi_signal_label = 0xff;
+	   wifi_t.gTimer_auto_detected_net_state_times=0;
+	   	wifi_t.auto_link_step=0;
 	  break;
 		
 	  case STATE_AI_MODEL_ITEM:
@@ -743,6 +770,9 @@ void Json_Parse_Command_Fun(void)
         }
 
 	   wifi_t.response_wifi_signal_label = 0xff;
+		  wifi_t.gTimer_auto_detected_net_state_times=0;
+		  	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
 	  case TEMPERATURE_ITEM:
@@ -762,6 +792,9 @@ void Json_Parse_Command_Fun(void)
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 		}
       wifi_t.response_wifi_signal_label = 0xff;
+	    wifi_t.gTimer_auto_detected_net_state_times=0;
+			wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 	  break;
 
 	  case FAN_ITEM:
@@ -787,7 +820,7 @@ void Json_Parse_Command_Fun(void)
 			else{
 				 wifi_t.set_wind_speed_value=0;
 
-			    MqttData_Publis_SetFan( wifi_t.set_wind_speed_value);
+			    MqttData_Publis_SetFan(wifi_t.set_wind_speed_value);
 				HAL_Delay(50);
 				//do seomthing 
 
@@ -798,6 +831,9 @@ void Json_Parse_Command_Fun(void)
         
 	 
 	    wifi_t.response_wifi_signal_label = 0xff;
+		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		 	wifi_t.auto_link_step=0;
+			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
 	  case APP_TIMER_POWER_ON_REF :
@@ -808,6 +844,9 @@ void Json_Parse_Command_Fun(void)
 		   smartphone_app_timer_power_on_handler();
 
 	     wifi_t.response_wifi_signal_label=0xff;
+		  wifi_t.gTimer_auto_detected_net_state_times=0;
+		  wifi_t.auto_link_step=0;
+		  wifi_t.linking_tencent_cloud_doing =0;
 
 	  break;
 

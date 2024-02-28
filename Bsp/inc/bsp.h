@@ -118,6 +118,7 @@ typedef struct{
    uint8_t buzzer_sound_flag;
   
    //time
+   uint8_t mode_key_select_flag ;
    
 
    //wifi info

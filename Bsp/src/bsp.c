@@ -137,7 +137,7 @@ void TFT_Process_Handler(void)
 		
     }
         
-
+    wifi_t.repeat_login_tencent_cloud=0;
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	LED_Mode_Key_Off();
 	
@@ -273,6 +273,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
             Buzzer_KeySound();
 			pro_t.gTimer_pro_mode_key_timer = 0; 
 			pro_t.gTimer_pro_set_timer_time=0;
+			pro_t.mode_key_select_flag =0;
 			Mode_Long_Key_Fun();
 
 		   
@@ -283,6 +284,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 	   
 		
 		pro_t.mode_key_confirm_flag = mode_key_select;
+	    pro_t.mode_key_select_flag =1;
 		gctl_t.select_main_fun_numbers++; // 0,1,2
 		if(gctl_t.select_main_fun_numbers > 2){
 		  gctl_t.select_main_fun_numbers = 0;
@@ -336,7 +338,7 @@ static void mode_key_fun_handler(void)
 					  pro_t.mode_key_confirm_flag = 0xff;
 					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
 					  pro_t.set_temperature_value_flag= 1;
-					
+					  
 
                   }
 
@@ -356,6 +358,7 @@ static void mode_key_fun_handler(void)
 			 else{
                 
                 pro_t.mode_key_confirm_flag = 0xff; //
+                pro_t.mode_key_select_flag =0;
 				
                 Device_Action_Led_OnOff_Handler();
 			 }
@@ -570,7 +573,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
 	    if(wifi_link_net_state() ==0){
 		  
-			if(pro_t.mode_key_confirm_flag ==mode_key_select){
+			if(pro_t.mode_key_select_flag ==1){
 
 				LED_WIFI_ICON_OFF();
 
@@ -613,52 +616,59 @@ static void TFT_Pocess_Command_Handler(void)
 	 break; 
 		  
       // handler of wifi 
-	  case pro_wifi_init:
+	  case pro_wifi_init: //7
 
+       if(wifi_link_net_state() ==1){
+		   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud ==0 && wifi_t.smartphone_app_power_on_flag==0){
+		   	  wifi_t.repeat_login_tencent_cloud ++;
+			  update_step =1;
+		      MqttData_Publish_Init();
+		      wifi_t.gTimer_main_pro_times=0;
 
-	   if(wifi_link_net_state() ==1 && power_times==1 && wifi_t.smartphone_app_power_on_flag==0){
-	   	  power_times ++;
-	   	  update_step=1;
-	      MqttData_Publish_Init();
-	      wifi_t.gTimer_main_pro_times=0;
+		   }
+	 
+		     
+		   if(wifi_link_net_state() ==1 && update_step==1 &&  wifi_t.gTimer_main_pro_times > 0){
+		   	 
+		   	  update_step ++ ;
+
+			   MqttData_Publish_SetOpen(0x01);
+		       wifi_t.gTimer_main_pro_times=0;
+		   
+		   }
+
+		   if(wifi_link_net_state() ==1 && update_step==2 &&  wifi_t.gTimer_main_pro_times > 0){
+		  	  update_step++;
+	    	  Publish_Data_ToTencent_Initial_Data();
+		       wifi_t.gTimer_main_pro_times=0;
+	        
+	       }
+
+	       if(wifi_link_net_state() ==1 && update_step==3 &&  wifi_t.gTimer_main_pro_times > 0){
+		  	  update_step++;
+		  	
+	    	  Subscriber_Data_FromCloud_Handler();
+
+			    wifi_t.gTimer_main_pro_times=0;
+		     
+	        
+	       }
+
+		   
+	      if(wifi_link_net_state() ==1 && update_step==4 &&  wifi_t.gTimer_main_pro_times > 0){
+		  	  update_step++;
+		       pro_t.run_process_step=pro_disp_dht11_value;
+		        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
+	      }
+
+		  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
+       }
+	   else{
+
+		   pro_t.run_process_step=pro_disp_dht11_value;
+
 
 	   }
- 
-	     
-	   if(wifi_link_net_state() ==1 && update_step==1 &&  wifi_t.gTimer_main_pro_times > 0){
-	   	 
-	   	  update_step ++ ;
-
-		   MqttData_Publish_SetOpen(0x01);
-	       wifi_t.gTimer_main_pro_times=0;
-	   
-	   }
-
-	   if(wifi_link_net_state() ==1 && update_step==2 &&  wifi_t.gTimer_main_pro_times > 0){
-	  	  update_step++;
-    	  Publish_Data_ToTencent_Initial_Data();
-	       wifi_t.gTimer_main_pro_times=0;
-        
-       }
-
-       if(wifi_link_net_state() ==1 && update_step==3 &&  wifi_t.gTimer_main_pro_times > 0){
-	  	  update_step++;
-	  	
-    	  Subscriber_Data_FromCloud_Handler();
-
-		    wifi_t.gTimer_main_pro_times=0;
-	     
-        
-       }
-
-	   
-      if(wifi_link_net_state() ==1 && update_step==4 &&  wifi_t.gTimer_main_pro_times > 0){
-	  	  update_step++;
-	       pro_t.run_process_step=pro_disp_dht11_value;
-	        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
-      }
-
-	  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
 
 	  break;
 

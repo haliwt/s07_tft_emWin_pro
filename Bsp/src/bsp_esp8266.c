@@ -63,9 +63,9 @@ void InitWifiModule_Hardware(void)
 void SmartPhone_TryToLink_TencentCloud(void)
 {
     
-   if(wifi_t.power_on_login_tencent_cloud_flag==2){
+  if(wifi_t.power_on_login_tencent_cloud_flag==2){
    	wifi_t.power_on_login_tencent_cloud_flag++;
-	wifi_t.linking_tencent_cloud_doing =1; // link tencent cloud from internet URL
+	wifi_t.linking_tencent_cloud_doing =1; //enable usart2 receive wifi  data
     wifi_t.wifi_uart_counter=0;
 	wifi_t.soft_ap_config_flag =0;
    }
@@ -84,8 +84,7 @@ void SmartPhone_TryToLink_TencentCloud(void)
 	    }
 
 	}
-	
-	   
+
 }
 /****************************************************************************************
 *****************************************************************************************/
