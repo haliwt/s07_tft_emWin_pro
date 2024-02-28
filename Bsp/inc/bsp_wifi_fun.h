@@ -82,12 +82,13 @@ typedef struct _WIFI_FUN{
 	//wifi
 	unsigned char wifi_data[150]; 
 	uint8_t usart2_dataBuf[1];
-	uint8_t usart2_rx_flag;
-	uint8_t wifi_reconnect_read_flag;
+	//uint8_t usart2_rx_flag;
+	uint8_t auto_link_tencent_cloud_login_success;
+	
 	uint8_t wifi_uart_counter;
 	uint8_t tencent_cloud_command_power_on;
-	uint8_t wifi_run_set_restart_flag;
-	uint8_t auto_link_cloud_flag;
+	
+	
 	uint8_t response_wifi_signal_label;
 	uint8_t reconnect_tencent_cloud_flag;
 
@@ -114,7 +115,8 @@ typedef struct _WIFI_FUN{
 	uint8_t set_beijing_time_flag;
 	uint8_t beijing_time_flag ;
 
-	//smart phone of ref
+	//auto link net
+	uint8_t auto_detected_link_tencent_cloud_state;
 	
 	
 
@@ -125,13 +127,13 @@ typedef struct _WIFI_FUN{
 
   
 
-    uint8_t gTimer_reconnect_wifi_order;
+  
 	uint8_t gTimer_beijing_time;
 	uint8_t gTimer_reconnect_wifi;
 	uint8_t gTimer_power_off;
 	uint8_t gTimer_subscriber_send ;
 	uint8_t gTimer_publish_dht11;
-	uint8_t gTimer_auto_detected_net_link_state;
+	uint8_t gTimer_auto_detected_net_state_times;
 	uint8_t gTimer_login_tencent_times;
 	uint8_t gTimer_power_first_link_tencent ;
 	uint8_t gTimer_main_pro_times;

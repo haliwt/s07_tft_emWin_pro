@@ -87,8 +87,7 @@ void Subscriber_Data_FromCloud_Handler(void)
 void Subscribe_Rx_Interrupt_Handler(void)
 {
 
-
-	static uint8_t det_wifi_link;
+    static uint8_t det_wifi_link;
     switch(wifi_t.rx_data_state)
       {
       case 0:  //#0
@@ -280,7 +279,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 		else if(wifi_t.usart2_dataBuf[0]=='K'){
 
 
-            wifi_t.wifi_reconnect_read_flag = 0;
+           // wifi_t.wifi_reconnect_read_flag = 0;
 		    wifi_t.rx_data_state =0;
             wifi_t.rx_counter=0;
 
@@ -351,7 +350,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 	  case 18:
 		if(wifi_t.usart2_dataBuf[0]=='G'){
 		
-			wifi_t.wifi_reconnect_read_flag = 1;
+			//wifi_t.wifi_reconnect_read_flag = 1;
 		    wifi_t.rx_data_state =0;
             wifi_t.rx_counter=0;
 		
@@ -390,18 +389,26 @@ void Wifi_Rx_InputInfo_Handler(void)
 
                if(strstr((const char*)wifi_t.data,"+TCSAP:WIFI_CONNECT_SUCCESS")){
               		wifi_t.soft_ap_config_success=1;
-					wifi_t.esp8266_login_cloud_success=1;
+					
+                    wifi_t.auto_link_tencent_cloud_login_success =1;
+					
+					
+				    wifi_t.esp8266_login_cloud_success=1;
 					wifi_t.soft_ap_config_flag=0;
                	}
 
 			
             else{
 				  if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
-	              wifi_t.esp8266_login_cloud_success=1;
+
+				 
+                     wifi_t.auto_link_tencent_cloud_login_success =1;
+					
+				 
+	                 wifi_t.esp8266_login_cloud_success=1;
+				  //link to tencent cloud is success .
+	              wifi_t.linking_tencent_cloud_doing=0; //release this flag.
 				
-	              wifi_t.linking_tencent_cloud_doing=0;
-				  wifi_t.auto_link_cloud_flag=0xff;
-				  wifi_t.wifi_reconnect_read_flag = 0;
 				  wifi_t.soft_ap_config_flag=0;
 				  
 			  }
@@ -411,18 +418,20 @@ void Wifi_Rx_InputInfo_Handler(void)
 		  else{
 
 		     if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
-	              wifi_t.esp8266_login_cloud_success=1;
+			 	
+                  wifi_t.auto_link_tencent_cloud_login_success =1;
+				  wifi_t.esp8266_login_cloud_success=1;
 				
 	              wifi_t.linking_tencent_cloud_doing=0;
-				  wifi_t.auto_link_cloud_flag=0xff;
-				  wifi_t.wifi_reconnect_read_flag = 0;
+				//  wifi_t.auto_link_cloud_flag=0xff;
+				 // wifi_t.wifi_reconnect_read_flag = 0;
 				  wifi_t.soft_ap_config_flag=0;
 			  }
 
 
 
 		  }
-         wifi_t.usart2_rx_flag =0;
+        // wifi_t.usart2_rx_flag =0;
          wifi_t.wifi_uart_counter=0;
          
         

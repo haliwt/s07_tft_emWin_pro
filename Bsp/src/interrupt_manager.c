@@ -21,15 +21,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
            
          
         //  USART2->ISR = 0xf5; 
-	
-	      if(wifi_t.linking_tencent_cloud_doing  ==1){
+	     
+	      if(wifi_t.linking_tencent_cloud_doing  ==1){ //link tencent netware of URL
 
 			wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
 			wifi_t.wifi_uart_counter++;
 
 			if(*wifi_t.usart2_dataBuf==0X0A) // 0x0A = "\n"
 			{
-				wifi_t.usart2_rx_flag = 1;
+				//wifi_t.usart2_rx_flag = 1;
 				Wifi_Rx_InputInfo_Handler();
 				wifi_t.wifi_uart_counter=0;
 			}
@@ -40,20 +40,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		         if(wifi_t.get_rx_beijing_time_enable==1){
 					wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
 					wifi_t.wifi_uart_counter++;
-					//Subscribe_Rx_Interrupt_Handler();
 				}
 				else{
 					Subscribe_Rx_Interrupt_Handler();
 
 				}
 	      }
+	  HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
 	  
 	__HAL_UART_CLEAR_NEFLAG(&huart2);
 	__HAL_UART_CLEAR_FEFLAG(&huart2);
 	__HAL_UART_CLEAR_OREFLAG(&huart2);
 	__HAL_UART_CLEAR_OREFLAG(&huart2);
 	__HAL_UART_CLEAR_TXFECF(&huart2);
-      HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
+     
 	}
 
 	#if 1   //voice sound communcation
@@ -215,7 +215,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  //wifi counter 
 	  wifi_t.gTimer_login_tencent_times++;
 	  wifi_t.gTimer_publish_dht11++;
-	  wifi_t.gTimer_auto_detected_net_link_state++;
+	  wifi_t.gTimer_auto_detected_net_state_times++;
 	  wifi_t.gTimer_get_beijing_time++;
 	  wifi_t.gTimer_read_beijing_time++;
 	
