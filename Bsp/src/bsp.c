@@ -128,6 +128,7 @@ void TFT_Process_Handler(void)
    	
    	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
+	  
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
    	}
@@ -137,6 +138,7 @@ void TFT_Process_Handler(void)
 		
     }
         
+	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	LED_Mode_Key_Off();
@@ -241,6 +243,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			 buzzer_sound();
 			 TFT_BACKLIGHT_OFF();
 		     Power_Off_Fun();
+			
   
 	         pro_t.long_key_flag =0;
 			 
@@ -568,10 +571,7 @@ static void TFT_Pocess_Command_Handler(void)
 	break;
 
 	case pro_disp_wifi_led: //4
-		  
-		
-		  
-	    if(wifi_link_net_state() ==0){
+		  if(wifi_link_net_state() ==0){
 		  
 			if(pro_t.mode_key_select_flag ==1){
 
