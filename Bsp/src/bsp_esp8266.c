@@ -356,7 +356,7 @@ void PowerOn_Self_Auto_Link_Tencent_Cloud(void)
 
 
 
-void Reconnection_Wifi_Order(void)
+void Wifi_Link_Tencent_Net_State(void)
 {
 
    HAL_UART_Transmit(&huart2, "AT+TCMQTTSTATE?\r\n", strlen("AT+TCMQTTSTATE?\r\n"), 5000);
@@ -366,6 +366,18 @@ void Reconnection_Wifi_Order(void)
  
   
 }
+
+void Wifi_Reconnect_Tencent_Net(void)
+{
+
+   HAL_UART_Transmit(&huart2, "AT+CWJAP\r\n", strlen("AT+CWJAP\r\n"), 5000);
+
+   //AT+CWRECONNCFG?
+ //  HAL_UART_Transmit(&huart2, "AT+CWRECONNCFG?\r\n", strlen("AT+CWRECONNCFG?\r\n"), 5000);
+ 
+  
+}
+
 
 
 
