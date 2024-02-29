@@ -601,15 +601,12 @@ void Json_Parse_Command_Fun(void)
 
             wifi_t.esp8266_login_cloud_success=1;
 			
-			pro_t.power_off_flag=0;
+			pro_t.power_off_flag=1;
 			pro_t.gPower_On = power_off; //WT.EDIT 2024.02.20
             
 		
-	    wifi_t.gTimer_auto_detected_net_state_times=0;
-		
-		 wifi_t.linking_tencent_cloud_doing =0;
-        
-        wifi_t.response_wifi_signal_label = 0xff;
+	    wifi_t.gTimer_auto_detected_net_state_times=0; //don't need check wifi if has or not
+		wifi_t.response_wifi_signal_label = 0xff;
         
 	  break;
 
@@ -624,12 +621,7 @@ void Json_Parse_Command_Fun(void)
 
 		gctl_t.ptc_warning =0;
 		gctl_t.fan_warning =0;
-		wifi_t.gTimer_auto_detected_net_state_times=0;
-		
-		 wifi_t.linking_tencent_cloud_doing =0;
-	   
-	 
-
+		wifi_t.gTimer_auto_detected_net_state_times=0;//don't need check wifi if has or not
 		wifi_t.response_wifi_signal_label = 0xff;
 
 	  break;
@@ -644,15 +636,15 @@ void Json_Parse_Command_Fun(void)
          MqttData_Publish_SetPtc(0x01);
 	  	 HAL_Delay(50);//350ms
 	     gctl_t.ptc_flag=1;
-		 wifi_t.gTimer_auto_detected_net_state_times=0;
+		
 		 
-		  wifi_t.linking_tencent_cloud_doing =0;
+		
 		
 	     }
 		
           
-		
-          wifi_t.response_wifi_signal_label=0xff;
+		 wifi_t.gTimer_auto_detected_net_state_times=0;//don't need check wifi if has or not
+         wifi_t.response_wifi_signal_label=0xff;
 	  	}
 	    
 	   break;
