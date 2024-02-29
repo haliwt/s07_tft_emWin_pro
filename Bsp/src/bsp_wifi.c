@@ -59,13 +59,32 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
     }
 
-	if(wifi_link_net_state() ==1 && send_power_off_flag==0 && pro_t.gPower_On== power_off){
+	if(wifi_link_net_state() ==1 && send_power_off_flag !=3 && pro_t.gPower_On== power_off){
 
-	        send_power_off_flag++;
+	      if(send_power_off_flag==0){
+			  send_power_off_flag++;
+		     MqttData_Publish_PowerOff_Ref();
+			 wifi_t.gTimer_power_first_link_tencent =0;
+
+		    }
+
+		    if(send_power_off_flag==1 && wifi_t.gTimer_power_first_link_tencent >0){
+			  send_power_off_flag++;
+
+			    Subscriber_Data_FromCloud_Handler();
+			    wifi_t.gTimer_power_first_link_tencent =0;
+
+		    }
+
+			if(send_power_off_flag==2 && wifi_t.gTimer_power_first_link_tencent >0){
+
+				  send_power_off_flag=3;
+				  wifi_t.gTimer_power_first_link_tencent=0;
+            }
+
 			
-		    MqttData_Publish_PowerOff_Ref();
 			
-		    HAL_Delay(200);
+		  
 	}
 }
 /********************************************************************************
@@ -199,7 +218,7 @@ static void RunWifi_Command_Handler(void)
 				  
 
 				
-				  if(wifi_t.auto_link_tencent_cloud_success==0){
+				  if(wifi_t.auto_link_login_tencent_cloud_flag==0){
 				  	    wifi_t.get_rx_auto_repeat_net_enable=1;
 				        Wifi_Link_Tencent_Net_State();
 				        wifi_t.gTimer_publish_dht11=0;
@@ -228,7 +247,7 @@ static void RunWifi_Command_Handler(void)
 
 		      if(wifi_t.gTimer_publish_dht11 >0){
 
-		        switch(wifi_t.auto_link_tencent_cloud_success){
+		        switch(wifi_t.auto_link_login_tencent_cloud_flag){
 
 
 				case 0:  //link net is ok
@@ -399,28 +418,28 @@ void Wifi_Rx_Auto_Link_Net_Handler(void)
 
 			 wifi_t.esp8266_login_cloud_success=0;
              wifi_t.gTimer_auto_detected_net_state_times=0;
-		     wifi_t.auto_link_tencent_cloud_success =1;
+		     wifi_t.auto_link_login_tencent_cloud_flag =1;
 				  
 	    }
 		else if(strstr((const char*)wifi_t.auto_det_data,"+TCMQTTRECONNECTING")){
 
 			 wifi_t.esp8266_login_cloud_success=0;
              wifi_t.gTimer_auto_detected_net_state_times=0;
-		     wifi_t.auto_link_tencent_cloud_success =1;
+		     wifi_t.auto_link_login_tencent_cloud_flag =1;
 				  
 	    }
 		else if(strstr((const char*)wifi_t.auto_det_data,"ONNECTING")){
 
 			 wifi_t.esp8266_login_cloud_success=0;
              wifi_t.gTimer_auto_detected_net_state_times=0;
-		     wifi_t.auto_link_tencent_cloud_success =1;
+		     wifi_t.auto_link_login_tencent_cloud_flag =1;
 				  
 	    }
 		
 		else if(strstr((const char*)wifi_t.auto_det_data,"QTTSTATE:1")){
 
 		   wifi_t.esp8266_login_cloud_success= 1;
-		   wifi_t.auto_link_tencent_cloud_success =0;
+		   wifi_t.auto_link_login_tencent_cloud_flag =0;
 
 
        }

@@ -619,8 +619,8 @@ static void TFT_Pocess_Command_Handler(void)
 	  case pro_wifi_init: //7
 
        if(wifi_link_net_state() ==1){
-	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud ==0 && wifi_t.smartphone_app_power_on_flag==0){
-	   	  wifi_t.repeat_login_tencent_cloud ++;
+	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud_init_ref ==0 && wifi_t.smartphone_app_power_on_flag==0){
+	   	  wifi_t.repeat_login_tencent_cloud_init_ref ++;
 		  update_step =1;
 	      MqttData_Publish_Init();
 	      wifi_t.gTimer_main_pro_times=0;

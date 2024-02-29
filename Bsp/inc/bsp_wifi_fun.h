@@ -81,7 +81,7 @@ typedef struct _WIFI_FUN{
 	uint8_t has_been_login_flag;
     uint8_t soft_ap_config_flag;
     uint8_t get_rx_beijing_time_enable;
-	uint8_t auto_link_tencent_cloud_success;
+	uint8_t auto_link_login_tencent_cloud_flag;
 	
 	//wifi
 	unsigned char wifi_data[150]; 
@@ -103,7 +103,7 @@ typedef struct _WIFI_FUN{
     uint8_t smartphone_app_power_on_flag;
     uint8_t first_power_on_link_net;
 	uint8_t power_on_login_tencent_cloud_flag;
-	uint8_t repeat_login_tencent_cloud;
+	uint8_t repeat_login_tencent_cloud_init_ref;
     
 
 	//fan

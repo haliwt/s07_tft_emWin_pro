@@ -390,12 +390,12 @@ void Wifi_Rx_InputInfo_Handler(void)
                if(strstr((const char*)wifi_t.data,"+TCSAP:WIFI_CONNECT_SUCCESS")){
               		wifi_t.soft_ap_config_success=1;
 					
-                
+                    wifi_t.auto_link_login_tencent_cloud_flag=0;
 			        
 					wifi_t.gTimer_auto_detected_net_state_times=0;
-					wifi_t.repeat_login_tencent_cloud=0;
-				    wifi_t.esp8266_login_cloud_success=1;
-					 wifi_t.linking_tencent_cloud_doing=0; //release this flag.
+					wifi_t.repeat_login_tencent_cloud_init_ref=0; //init hardware 
+					wifi_t.esp8266_login_cloud_success=1;
+					wifi_t.linking_tencent_cloud_doing=0; //release this flag.
 					wifi_t.soft_ap_config_flag=0;
                	}
 
@@ -403,13 +403,11 @@ void Wifi_Rx_InputInfo_Handler(void)
             else{
 				  if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
 
-				 
-                   
-					
-				     wifi_t.repeat_login_tencent_cloud=0;
+				     wifi_t.repeat_login_tencent_cloud_init_ref=0;
 	                 wifi_t.esp8266_login_cloud_success=1;
+				     wifi_t.auto_link_login_tencent_cloud_flag=0;
 				  //link to tencent cloud is success .
-	              wifi_t.linking_tencent_cloud_doing=0; //release this flag.
+	              wifi_t.linking_tencent_cloud_doing=0; //release this flag. usart
 				
 				  wifi_t.soft_ap_config_flag=0;
 				  wifi_t.gTimer_auto_detected_net_state_times=0;
@@ -424,9 +422,10 @@ void Wifi_Rx_InputInfo_Handler(void)
 			 	
                  
 				  wifi_t.esp8266_login_cloud_success=1;
-			      wifi_t.repeat_login_tencent_cloud=0;
+			      wifi_t.repeat_login_tencent_cloud_init_ref=0;
 				
 	              wifi_t.linking_tencent_cloud_doing=0;
+				  wifi_t.auto_link_login_tencent_cloud_flag=0;
 		
 				  wifi_t.soft_ap_config_flag=0;
 				  wifi_t.gTimer_auto_detected_net_state_times=0;
