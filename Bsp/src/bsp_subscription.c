@@ -776,7 +776,7 @@ void Json_Parse_Command_Fun(void)
             gctl_t.gSet_temperature_value = temp_decade*10 +  temp_unit;
             if(gctl_t.gSet_temperature_value > 40)   gctl_t.gSet_temperature_value=40;
             if(gctl_t.gSet_temperature_value <20 )   gctl_t.gSet_temperature_value=20;
-            MqttData_Publis_SetTemp( gctl_t.gSet_temperature_value);
+            MqttData_Publis_SetTemp(gctl_t.gSet_temperature_value);
 			HAL_Delay(50);//350
 			gctl_t.gSet_temperature_value_flag =1;
 			pro_t.gTimer_pro_temp_delay= 100;
@@ -835,7 +835,7 @@ void Json_Parse_Command_Fun(void)
          
 		   smartphone_app_timer_power_on_handler();
 
-	     wifi_t.response_wifi_signal_label=0xff;
+	      wifi_t.response_wifi_signal_label=0xff;
 		  wifi_t.gTimer_auto_detected_net_state_times=0;
 		 
 		  wifi_t.linking_tencent_cloud_doing =0;
@@ -980,6 +980,11 @@ void Wifi_Get_Beijing_Time_Handler(void)
 static void smartphone_app_timer_power_on_handler(void)
 {
 
+   static uint8_t app_step;
+
+    if(app_step==0){
+
+	   app_step++;
     if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
 		wifi_t.smartphone_app_power_on_flag=1;
 
@@ -1009,34 +1014,33 @@ static void smartphone_app_timer_power_on_handler(void)
 			
 			gctl_t.ptc_flag=0;
 		}
+     
+      }
+    }
 
 
+	if(app_step==1){
+	
 		buzzer_sound();
-		
+
+		Device_Action_Handler();
 		pro_t.gPower_On = power_on;   
 		pro_t.long_key_flag =0;
 		pro_t.run_process_step=0;
-		//pro_t.gKey_value = power_key_id;
+		wifi_t.smartphone_app_power_on_flag=1;
 
+        MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
 		
-
-	    MqttData_Publis_App_PowerOn_Ref(0x01,gctl_t.plasma_flag,gctl_t.ptc_flag,gctl_t.ultrasonic_flag);
-		HAL_Delay(200);//
+		HAL_Delay(300);//
 
 		pro_t.gTimer_pro_key_select_fun =0;
 	    pro_t.set_moke_key_select_fun =1;
 
-        MqttData_Publis_SetFan(0x64);
-		HAL_Delay(20);//
+       
+		app_step=0;
 
-		MqttData_Publis_SetTemp(0x28);
-		HAL_Delay(20);//
-
-		MqttData_Publish_SetState(1); //Ai model,//beijing timing = 1
-        HAL_Delay(20);//
-
-
-    }
+	}
+    
 }
       
 

@@ -213,8 +213,8 @@ static void app_power_on_property_report_state(uint8_t open_data,uint8_t plasma_
     int        message_len     = 0;
 
  
-   message_len = snprintf(message, sizeof(message),"\"{\\\"method\\\":\\\"report\\\"\\,\\\"clientToken\\\":\\\"up01\\\"\\,\\\"params\\\":{\\\"open\\\":%d\\,\\\"Anion\\\":%d\\,\\\"ptc\\\":%d\\,\\\"sonic\\\":%d}}\"\r\n",
-                             open_data,plasma_data,ptc_data,ultra_data);
+     message_len = snprintf(message, sizeof(message),"\"{\\\"method\\\":\\\"report\\\"\\,\\\"clientToken\\\":\\\"up01\\\"\\,\\\"params\\\":{\\\"open\\\":%d\\,\\\"Anion\\\":%d\\,\\\"ptc\\\":%d\\,\\\"sonic\\\":%d\\,\\\"state\\\":%d\\,\\\"find\\\":%d\\,\\\"temperature\\\":%d}}\"\r\n",
+                             open_data,plasma_data,ptc_data,ultra_data,0x01,0x64,0x28);
                                
  
   at_send_data((uint8_t *)message, message_len);
