@@ -381,7 +381,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 void Wifi_Rx_InputInfo_Handler(void)
 {
     
-           strcpy((char *)wifi_t.data, (const char *)wifi_t.wifi_data);
+          strcpy((char *)wifi_t.data, (const char *)wifi_t.wifi_data);
           wifi_t.data_size = wifi_t.wifi_uart_counter;
 
 
@@ -390,10 +390,12 @@ void Wifi_Rx_InputInfo_Handler(void)
                if(strstr((const char*)wifi_t.data,"+TCSAP:WIFI_CONNECT_SUCCESS")){
               		wifi_t.soft_ap_config_success=1;
 					
-                    wifi_t.auto_link_tencent_cloud_login_success =1;
-					
+                
+			        
+					wifi_t.gTimer_auto_detected_net_state_times=0;
 					wifi_t.repeat_login_tencent_cloud=0;
 				    wifi_t.esp8266_login_cloud_success=1;
+					 wifi_t.linking_tencent_cloud_doing=0; //release this flag.
 					wifi_t.soft_ap_config_flag=0;
                	}
 
@@ -402,7 +404,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 				  if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
 
 				 
-                     wifi_t.auto_link_tencent_cloud_login_success =1;
+                   
 					
 				     wifi_t.repeat_login_tencent_cloud=0;
 	                 wifi_t.esp8266_login_cloud_success=1;
@@ -410,6 +412,7 @@ void Wifi_Rx_InputInfo_Handler(void)
 	              wifi_t.linking_tencent_cloud_doing=0; //release this flag.
 				
 				  wifi_t.soft_ap_config_flag=0;
+				  wifi_t.gTimer_auto_detected_net_state_times=0;
 				  
 			  }
            
@@ -419,13 +422,14 @@ void Wifi_Rx_InputInfo_Handler(void)
 
 		     if(strstr((const char*)wifi_t.data,"+TCMQTTCONN:OK")){
 			 	
-                  wifi_t.auto_link_tencent_cloud_login_success =1;
+                 
 				  wifi_t.esp8266_login_cloud_success=1;
 			      wifi_t.repeat_login_tencent_cloud=0;
 				
 	              wifi_t.linking_tencent_cloud_doing=0;
 		
 				  wifi_t.soft_ap_config_flag=0;
+				  wifi_t.gTimer_auto_detected_net_state_times=0;
 			  }
 
 
@@ -603,7 +607,7 @@ void Json_Parse_Command_Fun(void)
             
 		
 	    wifi_t.gTimer_auto_detected_net_state_times=0;
-		wifi_t.auto_link_step=0;
+		
 		 wifi_t.linking_tencent_cloud_doing =0;
         
         wifi_t.response_wifi_signal_label = 0xff;
@@ -622,7 +626,7 @@ void Json_Parse_Command_Fun(void)
 		gctl_t.ptc_warning =0;
 		gctl_t.fan_warning =0;
 		wifi_t.gTimer_auto_detected_net_state_times=0;
-		wifi_t.auto_link_step=0;
+		
 		 wifi_t.linking_tencent_cloud_doing =0;
 	   
 	 
@@ -642,7 +646,7 @@ void Json_Parse_Command_Fun(void)
 	  	 HAL_Delay(50);//350ms
 	     gctl_t.ptc_flag=1;
 		 wifi_t.gTimer_auto_detected_net_state_times=0;
-		 wifi_t.auto_link_step=0;
+		 
 		  wifi_t.linking_tencent_cloud_doing =0;
 		
 	     }
@@ -666,7 +670,7 @@ void Json_Parse_Command_Fun(void)
 
 		wifi_t.response_wifi_signal_label = 0xff;
 		 wifi_t.gTimer_auto_detected_net_state_times=0;
-		 	wifi_t.auto_link_step=0;
+		 	
 			 wifi_t.linking_tencent_cloud_doing =0;
 
 
@@ -683,8 +687,7 @@ void Json_Parse_Command_Fun(void)
 			HAL_Delay(50);
            gctl_t.plasma_flag=0;
 		   wifi_t.gTimer_auto_detected_net_state_times=0;
-		   	wifi_t.auto_link_step=0;
-			 wifi_t.linking_tencent_cloud_doing =0;
+		   	wifi_t.linking_tencent_cloud_doing =0;
 		}
        wifi_t.response_wifi_signal_label = 0xff;
 		
@@ -699,7 +702,7 @@ void Json_Parse_Command_Fun(void)
 		    HAL_Delay(50);//350
            gctl_t.plasma_flag=1;
 		    wifi_t.gTimer_auto_detected_net_state_times=0;
-			wifi_t.auto_link_step=0;
+			
 			 wifi_t.linking_tencent_cloud_doing =0;
 		   
 			
@@ -724,7 +727,7 @@ void Json_Parse_Command_Fun(void)
         
 	   wifi_t.response_wifi_signal_label=0xff;
 		 wifi_t.gTimer_auto_detected_net_state_times=0;
-		 	wifi_t.auto_link_step=0;
+		 	
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
@@ -740,7 +743,8 @@ void Json_Parse_Command_Fun(void)
       
 	   wifi_t.response_wifi_signal_label=0xff;
 		 wifi_t.gTimer_auto_detected_net_state_times=0;
-		 	wifi_t.auto_link_step=0;
+
+		 
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
@@ -757,7 +761,7 @@ void Json_Parse_Command_Fun(void)
        
 	   wifi_t.response_wifi_signal_label = 0xff;
 	   wifi_t.gTimer_auto_detected_net_state_times=0;
-	   	wifi_t.auto_link_step=0;
+	   
 	  break;
 		
 	  case STATE_AI_MODEL_ITEM:
@@ -771,7 +775,7 @@ void Json_Parse_Command_Fun(void)
 
 	   wifi_t.response_wifi_signal_label = 0xff;
 		  wifi_t.gTimer_auto_detected_net_state_times=0;
-		  	wifi_t.auto_link_step=0;
+		  
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
@@ -793,7 +797,7 @@ void Json_Parse_Command_Fun(void)
 		}
       wifi_t.response_wifi_signal_label = 0xff;
 	    wifi_t.gTimer_auto_detected_net_state_times=0;
-			wifi_t.auto_link_step=0;
+			
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  break;
 
@@ -832,7 +836,7 @@ void Json_Parse_Command_Fun(void)
 	 
 	    wifi_t.response_wifi_signal_label = 0xff;
 		 wifi_t.gTimer_auto_detected_net_state_times=0;
-		 	wifi_t.auto_link_step=0;
+		 	
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
@@ -845,7 +849,7 @@ void Json_Parse_Command_Fun(void)
 
 	     wifi_t.response_wifi_signal_label=0xff;
 		  wifi_t.gTimer_auto_detected_net_state_times=0;
-		  wifi_t.auto_link_step=0;
+		 
 		  wifi_t.linking_tencent_cloud_doing =0;
 
 	  break;

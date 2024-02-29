@@ -17,6 +17,8 @@ typedef enum _wifi_state_t{
 	wifi_link_tencent_cloud, //2
 	wifi_tencent_publish_init_data, //3
 	wifi_publish_update_tencent_cloud_data,//4
+	wifi_atuo_link_cloud_ref,
+	wifi_auto_repeat_link_cloud,
 	wifi_tencent_publish_dht11_data,//5
 	wifi_get_beijing_time,
 	wifi_disconnect,
@@ -44,6 +46,7 @@ typedef struct _WIFI_FUN{
 	
 
     uint8_t data[512];
+	uint8_t auto_det_data[150];
     uint8_t  data_size;
     uint8_t flag;
 	uint8_t wifi_RunState;
@@ -78,20 +81,20 @@ typedef struct _WIFI_FUN{
 	uint8_t has_been_login_flag;
     uint8_t soft_ap_config_flag;
     uint8_t get_rx_beijing_time_enable;
+	uint8_t auto_link_tencent_cloud_times;
 	
 	//wifi
 	unsigned char wifi_data[150]; 
 	uint8_t usart2_dataBuf[1];
-    uint8_t auto_link_step;
-
+  
+    //uint8_t usart2_rx_flag;
 	
-	//uint8_t usart2_rx_flag;
-	uint8_t auto_link_tencent_cloud_login_success;
 	
 	uint8_t wifi_uart_counter;
 	uint8_t tencent_cloud_command_power_on;
+	uint8_t get_rx_auto_repeat_net_enable;
 	
-	
+	//
 	uint8_t response_wifi_signal_label;
 	uint8_t reconnect_tencent_cloud_flag;
 
@@ -121,18 +124,11 @@ typedef struct _WIFI_FUN{
 
 	//auto link net
 
-	
-	
-
-	//wifi gtimer
+    //wifi gtimer
 	uint8_t gTimer_read_beijing_time;
 	uint8_t gTimer_linking_tencent_duration;
 	
-
-  
-
-  
-	uint8_t gTimer_beijing_time;
+    uint8_t gTimer_beijing_time;
 	uint8_t gTimer_reconnect_wifi;
 	uint8_t gTimer_power_off;
 	uint8_t gTimer_subscriber_send ;

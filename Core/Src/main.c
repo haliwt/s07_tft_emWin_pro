@@ -96,7 +96,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM3_Init();
   MX_TIM17_Init();
-  MX_USART1_UART_Init();
+  //MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   delay_init(64); 
@@ -112,7 +112,7 @@ int main(void)
  // UART_Start_Receive_IT(&huart1,inputBuf,1);
   HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
   
-  HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
+ // HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
   pro_t.buzzer_sound_flag=1;
   /* USER CODE END 2 */
 
@@ -131,7 +131,7 @@ int main(void)
 
     #endif 
 	
-   Voice_Decoder_Handler();
+   //Voice_Decoder_Handler();
    TFT_Process_Handler();
    WIFI_Process_Handler();
    

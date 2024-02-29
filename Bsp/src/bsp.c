@@ -137,7 +137,7 @@ void TFT_Process_Handler(void)
 		
     }
         
-    wifi_t.repeat_login_tencent_cloud=0;
+
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	LED_Mode_Key_Off();
 	
@@ -619,49 +619,49 @@ static void TFT_Pocess_Command_Handler(void)
 	  case pro_wifi_init: //7
 
        if(wifi_link_net_state() ==1){
-		   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud ==0 && wifi_t.smartphone_app_power_on_flag==0){
-		   	  wifi_t.repeat_login_tencent_cloud ++;
-			  update_step =1;
-		      MqttData_Publish_Init();
-		      wifi_t.gTimer_main_pro_times=0;
+	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud ==0 && wifi_t.smartphone_app_power_on_flag==0){
+	   	  wifi_t.repeat_login_tencent_cloud ++;
+		  update_step =1;
+	      MqttData_Publish_Init();
+	      wifi_t.gTimer_main_pro_times=0;
 
-		   }
-	 
-		     
-		   if(wifi_link_net_state() ==1 && update_step==1 &&  wifi_t.gTimer_main_pro_times > 0){
-		   	 
-		   	  update_step ++ ;
+	   }
+ 
+	     
+	   if(wifi_link_net_state() ==1 && update_step==1 &&  wifi_t.gTimer_main_pro_times > 0){
+	   	 
+	   	  update_step ++ ;
 
-			   MqttData_Publish_SetOpen(0x01);
-		       wifi_t.gTimer_main_pro_times=0;
-		   
-		   }
+		   MqttData_Publish_SetOpen(0x01);
+	       wifi_t.gTimer_main_pro_times=0;
+	   
+	   }
 
-		   if(wifi_link_net_state() ==1 && update_step==2 &&  wifi_t.gTimer_main_pro_times > 0){
-		  	  update_step++;
-	    	  Publish_Data_ToTencent_Initial_Data();
-		       wifi_t.gTimer_main_pro_times=0;
-	        
-	       }
+	   if(wifi_link_net_state() ==1 && update_step==2 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
+    	  Publish_Data_ToTencent_Initial_Data();
+	       wifi_t.gTimer_main_pro_times=0;
+        
+       }
 
-	       if(wifi_link_net_state() ==1 && update_step==3 &&  wifi_t.gTimer_main_pro_times > 0){
-		  	  update_step++;
-		  	
-	    	  Subscriber_Data_FromCloud_Handler();
+       if(wifi_link_net_state() ==1 && update_step==3 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
+	  	
+    	  Subscriber_Data_FromCloud_Handler();
 
-			    wifi_t.gTimer_main_pro_times=0;
-		     
-	        
-	       }
+		    wifi_t.gTimer_main_pro_times=0;
+	     
+        
+       }
 
-		   
-	      if(wifi_link_net_state() ==1 && update_step==4 &&  wifi_t.gTimer_main_pro_times > 0){
-		  	  update_step++;
-		       pro_t.run_process_step=pro_disp_dht11_value;
-		        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
-	      }
+	   
+      if(wifi_link_net_state() ==1 && update_step==4 &&  wifi_t.gTimer_main_pro_times > 0){
+	  	  update_step++;
+	       pro_t.run_process_step=pro_disp_dht11_value;
+	        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
+      }
 
-		  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
+	  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
        }
 	   else{
 

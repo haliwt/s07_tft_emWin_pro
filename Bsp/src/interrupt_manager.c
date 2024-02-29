@@ -41,6 +41,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 					wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
 					wifi_t.wifi_uart_counter++;
 				}
+				else if(wifi_t.get_rx_auto_repeat_net_enable ==1){
+
+					wifi_t.wifi_data[wifi_t.wifi_uart_counter] = wifi_t.usart2_dataBuf[0];
+					wifi_t.wifi_uart_counter++;
+
+					if(*wifi_t.usart2_dataBuf==0X0A) // 0x0A = "\n"
+					{
+						
+						Wifi_Rx_Auto_Link_Net_Handler();
+						wifi_t.wifi_uart_counter=0;
+					}
+
+
+				}
 				else{
 					Subscribe_Rx_Interrupt_Handler();
 
@@ -56,7 +70,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      
 	}
 
-	#if 1   //voice sound communcation
+	#if 0  //voice sound communcation
 	if(huart->Instance==USART1) // Motor Board receive data (filter)
 	{
 		
