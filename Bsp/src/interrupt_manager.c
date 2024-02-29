@@ -70,7 +70,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      
 	}
 
-	#if 0  //voice sound communcation
+	#if 1  //voice sound communcation
 	if(huart->Instance==USART1) // Motor Board receive data (filter)
 	{
 		
