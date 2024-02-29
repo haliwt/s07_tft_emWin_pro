@@ -230,7 +230,7 @@ static void Key_Speical_Power_Fun_Handler(void)
             pro_t.key_power_be_pressed_flag=0;
             if( pro_t.gPower_On == power_off){
 				
-			 pro_t.gPower_On = power_on;   
+			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
 		    pro_t.gKey_value = power_key_id;
@@ -714,9 +714,7 @@ static void Power_On_Fun(void)
 	 gctl_t.gSet_timer_minutes =0;
 	 mode_key_long_flag=0;
 
-	//gctl_t.disp_works_hours=0;
-	//gctl_t.disp_works_minutes=0;
-	//gctl_t.gTimer_ctl_disp_second=0;
+
 
 }
      
@@ -733,6 +731,7 @@ static void Power_Off_Fun(void)
    pro_t.mode_key_confirm_flag=0xff;
    gctl_t.plasma_flag = 0;
    gctl_t.ultrasonic_flag =0;
+   gctl_t.ptc_flag = 0;
    //timer timing flag
      pro_t.timer_mode_flag=works_time;
 	pro_t.timer_mode_flag=0;
