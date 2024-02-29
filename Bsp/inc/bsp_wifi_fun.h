@@ -56,6 +56,7 @@ typedef struct _WIFI_FUN{
 	uint8_t esp8266_login_cloud_success;
 
 	uint8_t subscribe_cloud_success;
+	uint8_t power_off_step;
 	
 	
 	uint8_t esp8266_dynamic_reg_flag;

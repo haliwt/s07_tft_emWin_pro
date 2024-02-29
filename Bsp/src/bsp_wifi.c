@@ -41,7 +41,7 @@ void WIFI_Process_Handler(void)
 **********************************************************************/
 static void MainBoard_Self_Inspection_PowerOn_Fun(void)
 {
-    static uint8_t self_power_on_flag=0,send_power_off_flag;
+   
     
    
 	if(wifi_t.first_power_on_link_net==0 && wifi_t.power_on_login_tencent_cloud_flag !=5){
@@ -54,26 +54,26 @@ static void MainBoard_Self_Inspection_PowerOn_Fun(void)
        
     }
 
-	if(wifi_link_net_state() ==1 && send_power_off_flag !=3 && pro_t.gPower_On== power_off){
+	if(wifi_link_net_state() ==1 && wifi_t.power_off_step !=3 && pro_t.gPower_On== power_off){
 
-	      if(send_power_off_flag==0){
-			  send_power_off_flag++;
+	      if(wifi_t.power_off_step==0){
+			  wifi_t.power_off_step++;
 		     MqttData_Publish_PowerOff_Ref();
 			 wifi_t.gTimer_power_first_link_tencent =0;
 
 		    }
 
-		    if(send_power_off_flag==1 && wifi_t.gTimer_power_first_link_tencent >0){
-			  send_power_off_flag++;
+		    if(wifi_t.power_off_step==1 && wifi_t.gTimer_power_first_link_tencent >0){
+			  wifi_t.power_off_step++;
 
 			    Subscriber_Data_FromCloud_Handler();
 			    wifi_t.gTimer_power_first_link_tencent =0;
 
 		    }
 
-			if(send_power_off_flag==2 && wifi_t.gTimer_power_first_link_tencent >0){
+			if(wifi_t.power_off_step==2 && wifi_t.gTimer_power_first_link_tencent >0){
 
-				  send_power_off_flag=3;
+				  wifi_t.power_off_step=3;
 				  wifi_t.gTimer_power_first_link_tencent=0;
             }
 
@@ -383,7 +383,7 @@ static void auto_repeat_link_netware_fun(void)
 void Wifi_Rx_Auto_Link_Net_Handler(void)
 {
 
-       uint8_t i;
+   
 	   strncpy((char *)wifi_t.auto_det_data, (const char *)wifi_t.wifi_data,150);
 	   wifi_t.get_rx_auto_repeat_net_enable =1;
 

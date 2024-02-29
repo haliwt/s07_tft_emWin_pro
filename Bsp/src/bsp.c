@@ -128,7 +128,7 @@ void TFT_Process_Handler(void)
    	
    	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
-	  
+	    wifi_t.power_off_step=0; 
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
    	}
@@ -137,7 +137,7 @@ void TFT_Process_Handler(void)
 		MqttData_Publish_PowerOff_Ref();
 		
     }
-        
+      
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
@@ -244,7 +244,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			 TFT_BACKLIGHT_OFF();
 		     Power_Off_Fun();
 			
-  
+             wifi_t.power_off_step=0; 
 	         pro_t.long_key_flag =0;
 			 
 			 pro_t.gPower_On = power_off;   

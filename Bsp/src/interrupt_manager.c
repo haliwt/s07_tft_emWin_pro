@@ -227,6 +227,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
 	  //wifi counter 
+	 
 	  wifi_t.gTimer_login_tencent_times++;
 	  wifi_t.gTimer_publish_dht11++;
 	  wifi_t.gTimer_auto_detected_net_state_times++;

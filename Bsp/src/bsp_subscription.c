@@ -87,7 +87,7 @@ void Subscriber_Data_FromCloud_Handler(void)
 void Subscribe_Rx_Interrupt_Handler(void)
 {
 
-    static uint8_t det_wifi_link;
+  
     switch(wifi_t.rx_data_state)
       {
       case 0:  //#0
@@ -168,7 +168,7 @@ void Subscribe_Rx_Interrupt_Handler(void)
 		else if(wifi_t.usart2_dataBuf[0]==':' ){
 
              wifi_t.rx_data_state=8;
-			 det_wifi_link=1;//wifi_t.wifi_reconnect_read_flag = wifi_t[0];
+			 
 		}
 		else{
            wifi_t.rx_data_state =0;
@@ -584,14 +584,11 @@ void Json_Parse_Command_Fun(void)
      uint8_t i;
     static uint8_t wind_hundred, wind_decade,wind_unit,temp_decade,temp_unit;
 	
-
+     
 
    switch(wifi_t.response_wifi_signal_label){
-       wifi_t.set_beijing_time_flag =0;
-	   wifi_t.get_rx_beijing_time_enable=0; //enab
-	
-
-      case OPEN_OFF_ITEM:
+       
+	case OPEN_OFF_ITEM:
 
        
 		 
