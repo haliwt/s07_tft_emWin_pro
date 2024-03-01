@@ -4,6 +4,7 @@ PRO_T pro_t;
 
 uint8_t led_blink_times;
 uint8_t update_step;
+uint8_t fan_continuce_run_flag;
 
 
 
@@ -104,7 +105,7 @@ void bsp_Idle(void)
 void TFT_Process_Handler(void)
 {
 	
-    
+   static uint8_t fan_continuce_flag;
 	if(pro_t.buzzer_sound_flag ==1){
 		pro_t.buzzer_sound_flag=0;
 		Buzzer_KeySound();
@@ -129,14 +130,32 @@ void TFT_Process_Handler(void)
    	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
 	    wifi_t.power_off_step=0; 
+	    fan_continuce_flag =1;
+		pro_t.gTimer_pro_fan =0;
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
+		
    	}
 	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 50){
 		wifi_t.gTimer_main_pro_times=0;	
 		MqttData_Publish_PowerOff_Ref();
 		
     }
+
+	if(fan_continuce_flag ==1){
+
+	    if(fan_continuce_flag <61){
+            Fan_Run();        
+
+		}
+		else{
+			fan_continuce_flag++;
+
+            Fan_Stop();
+		}
+      
+
+	}
       
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
@@ -242,15 +261,14 @@ static void Key_Speical_Power_Fun_Handler(void)
 		  else{
 			 //pro_t.gKey_value = power_key_id;
 			 buzzer_sound();
-			 TFT_BACKLIGHT_OFF();
-		     Power_Off_Fun();
+			 pro_t.power_off_flag=1;
+			// TFT_BACKLIGHT_OFF();
+		    // Power_Off_Fun();
 			
-             wifi_t.power_off_step=0; 
-	         pro_t.long_key_flag =0;
+            // wifi_t.power_off_step=0; 
+	        pro_t.long_key_flag =0;
 			 
-			 pro_t.gPower_On = power_off;   
-	    
-			   
+			pro_t.gPower_On = power_off;   
 			pro_t.run_process_step=0xff;
 			  
 			 }
@@ -394,9 +412,9 @@ static void mode_key_fun_handler(void)
 ******************************************************************************/
 static void TFT_Pocess_Command_Handler(void)
 {
-   //key input run function
-	static uint8_t timer_blink_times;
-   // static uint8_t power_times;
+   
+	static uint8_t timer_blink_times,fan_2_hours_stop;
+
   
 
    if(power_on_state() == power_on){
@@ -409,16 +427,13 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.gKey_value =0XFF;
 	    
 		Power_On_Fun();
-	    
+	    Fan_Run();
+		gctl_t.gTimer_ctl_total_continue_time =0;
         gctl_t.timer_time_define_flag =0;
 		gctl_t.gTimer_ctl_disp_second=0;
 		pro_t.long_key_flag =0;
 
-        pro_t.gPower_On= power_on;
-		
-   
-
-		pro_t.run_process_step=1;
+         pro_t.run_process_step=1;
 
 		TFT_BACKLIGHT_ON();
 		
@@ -451,14 +466,49 @@ static void TFT_Pocess_Command_Handler(void)
 	case pro_run_main_fun: //02
       pro_t.run_process_step=0xf2;
 	  Wifi_Fast_Led_Blink();
+
+	  switch(gctl_t.time_out_flag){
+
+	  	case 0:
 		
-	  if(pro_t.gTimer_pro_key_select_fun >1 && pro_t.set_moke_key_select_fun ==1){ //8s
+	      if(pro_t.gTimer_pro_key_select_fun > 6 && pro_t.set_moke_key_select_fun ==1){ //8s
 			 pro_t.gTimer_pro_key_select_fun =0;
 			 pro_t.set_moke_key_select_fun =0;
 			 Wifi_Fast_Led_Blink();
+             fan_2_hours_stop=0;
+			
 
+			
 		     Device_Action_Handler();
-	    }
+             
+	      }
+	   break;
+
+	   case 1:
+          Device_stop_Action_Fun();
+		  if(fan_continuce_run_flag ==1){
+             if(fan_2_hours_stop==0){
+			 	fan_2_hours_stop++;
+                pro_t.gTimer_pro_fan=0;
+
+			 }
+
+			 if(pro_t.gTimer_pro_fan < 61 && fan_2_hours_stop==1){
+
+                   Fan_Run();
+			 }
+			 else{
+
+				 fan_2_hours_stop++;
+				 Fan_Stop();
+
+			 }
+
+		  }
+	        
+
+	   break;
+	  }
 	    pro_t.run_process_step=pro_disp_works_time;
 	 break;
 

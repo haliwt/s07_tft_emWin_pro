@@ -40,6 +40,7 @@ typedef struct _bsp_ctl{
 
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
+	uint8_t time_out_flag;
    
     //time
    uint8_t disp_works_hours;
@@ -66,6 +67,7 @@ typedef struct _bsp_ctl{
    uint8_t gTimer_ctl_disp_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
    uint8_t gTimer_ctl_select_led;
+   uint8_t gTimer_ctl_total_continue_time;
    
 
 }bsp_ctl;
@@ -128,6 +130,7 @@ void Mode_Key_Confirm_Fun(void);
 
 void Device_Action_Led_OnOff_Handler(void);
 
+void Device_stop_Action_Fun(void);
 
 
 #endif 

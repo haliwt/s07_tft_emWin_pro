@@ -141,6 +141,17 @@ void TFT_Display_WorksTime(void)
 	TFT_Disp_WorkTime_Value_48_48_onBlack(184,185,0,temp_decade_minutes);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(218,185,0,temp_unit_minutes);
 
+	if(gctl_t.gTimer_ctl_total_continue_time > 119 && gctl_t.gTimer_ctl_total_continue_time < 131){
+
+	      gctl_t.time_out_flag =1;
+
+	}
+	else{
+
+		gctl_t.time_out_flag =0;
+
+	}
+
 }
 
 void TFT_Only_Disp_Timing(void)
@@ -179,6 +190,17 @@ void TFT_DonnotDisp_Works_Time(void)
 			   }
 		   }
 	  }
+
+	if(gctl_t.gTimer_ctl_total_continue_time > 119 && gctl_t.gTimer_ctl_total_continue_time < 131){
+
+	      gctl_t.time_out_flag =1;
+
+	}
+	else{
+
+		gctl_t.time_out_flag =0;
+
+	}
 
 }
 /********************************************************************************

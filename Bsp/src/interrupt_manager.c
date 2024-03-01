@@ -185,7 +185,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   static uint16_t tm0;
-  static uint8_t tm1;
+  static uint8_t tm1,tm2;
  
 
     
@@ -205,6 +205,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
 	if(tm0>999){ //1000 *1ms = 1000ms = 1s
 		tm0=0;
+		tm2++;
 
 	 pro_t.gTimer_pro_key_select_fun ++;
 	
@@ -215,6 +216,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
      pro_t.gTimer_pro_tft++;
 	 gctl_t.gTimer_ctl_disp_second++;
+	 pro_t.gTimer_pro_fan++;  //fan continuce counter 60s
 	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
@@ -239,6 +241,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_linking_tencent_duration;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
+
+	  if(tm2 > 59){//1 minute
+          tm2 =0;
+		  gctl_t.gTimer_ctl_total_continue_time++;
+	  }
 	 
 	  
 	 

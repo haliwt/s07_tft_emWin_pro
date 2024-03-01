@@ -48,6 +48,9 @@ static uint8_t set_temp_value_default_handler(void);
 
 
 
+
+
+
 void bsp_ctl_init(void)
 {
 
@@ -323,6 +326,8 @@ uint8_t Fan_Error_Default_Handler(void)
 void Device_Action_Handler(void)
 {
 
+    Fan_Run();
+
    if(wifi_link_net_state() == 1){
       LED_WIFI_ICON_ON();
 
@@ -382,6 +387,29 @@ void Device_Action_Handler(void)
 
 }
 
+/*****************************************************************************
+ * 
+ * Function Name: void Device_Stop_Action_Handler(void)
+ * Function:
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+*****************************************************************************/
+void Device_stop_Action_Fun(void)
+{
+    Ptc_Off();
+	Plasma_Off();
+    Ultrasonic_Pwm_Stop();
+}
+
+/*****************************************************************************
+ * 
+ * Function Name: void Device_Stop_Action_Handler(void)
+ * Function:
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+*****************************************************************************/
 void Device_Action_Led_OnOff_Handler(void)
 {
 
