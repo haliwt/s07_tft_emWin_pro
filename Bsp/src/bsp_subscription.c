@@ -1054,7 +1054,7 @@ static void smartphone_app_timer_power_on_handler(void)
 		HAL_Delay(300);//
 
 		pro_t.gTimer_pro_key_select_fun =0;
-	    pro_t.set_moke_key_select_fun =1;
+	
 
        
 		app_step=0;

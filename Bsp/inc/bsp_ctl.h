@@ -131,6 +131,7 @@ void Mode_Key_Confirm_Fun(void);
 void Device_Action_Led_OnOff_Handler(void);
 
 void Device_stop_Action_Fun(void);
+void Device_NoAction_Power_Off(void);
 
 
 #endif 

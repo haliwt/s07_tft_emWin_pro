@@ -134,6 +134,8 @@ void TFT_Process_Handler(void)
 		pro_t.gTimer_pro_fan =0;
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
+		Device_NoAction_Power_Off();
+		LED_Mode_Key_Off();
 		
    	}
 	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 50){
@@ -144,7 +146,7 @@ void TFT_Process_Handler(void)
 
 	if(fan_continuce_flag ==1){
 
-	    if(fan_continuce_flag <61){
+	    if(pro_t.gTimer_pro_fan <61){
             Fan_Run();        
 
 		}
@@ -160,7 +162,7 @@ void TFT_Process_Handler(void)
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
-	LED_Mode_Key_Off();
+	
 	TFT_DonnotDisp_Works_Time();
 	
 	Breath_Led();
@@ -434,6 +436,8 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 
          pro_t.run_process_step=1;
+		 pro_t.gTimer_pro_key_select_fun =10;
+		 pro_t.gTimer_pro_tft = 30;
 
 		TFT_BACKLIGHT_ON();
 		
@@ -449,7 +453,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 	   Wifi_Fast_Led_Blink();
 
-	   if(pro_t.gTimer_pro_tft > 9 &&  pro_t.wifi_led_fast_blink_flag==0){
+	   if(pro_t.gTimer_pro_tft > 28 &&  pro_t.wifi_led_fast_blink_flag==0){
 	   	   pro_t.gTimer_pro_tft=0;
          
 		    Update_DHT11_Value();
@@ -471,15 +475,12 @@ static void TFT_Pocess_Command_Handler(void)
 
 	  	case 0:
 		
-	      if(pro_t.gTimer_pro_key_select_fun > 6 && pro_t.set_moke_key_select_fun ==1){ //8s
+	      if(pro_t.gTimer_pro_key_select_fun > 8 ){ //8s
 			 pro_t.gTimer_pro_key_select_fun =0;
-			 pro_t.set_moke_key_select_fun =0;
+			
 			 Wifi_Fast_Led_Blink();
              fan_2_hours_stop=0;
-			
-
-			
-		     Device_Action_Handler();
+			 Device_Action_Handler();
              
 	      }
 	   break;
@@ -751,8 +752,6 @@ static void Power_On_Fun(void)
 	  gctl_t.ptc_flag = 1;
       gctl_t.plasma_flag = 1;
 	  gctl_t.ultrasonic_flag =1;
-	  
-
   }
    
    gctl_t.gSet_temperature_value =40;

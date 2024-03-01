@@ -326,7 +326,8 @@ uint8_t Fan_Error_Default_Handler(void)
 void Device_Action_Handler(void)
 {
 
-    Fan_Run();
+
+   Fan_Run();
 
    if(wifi_link_net_state() == 1){
       LED_WIFI_ICON_ON();
@@ -385,6 +386,22 @@ void Device_Action_Handler(void)
 
 
 
+}
+
+
+void Device_NoAction_Power_Off(void)
+{
+	
+	Ptc_Off();
+	LED_PTC_ICON_OFF();
+	
+	Plasma_Off();
+	LED_KILL_ICON_OFF();
+		
+	
+	Ultrasonic_Pwm_Stop();
+	LED_RAT_ICON_OFF();
+		
 }
 
 /*****************************************************************************
@@ -626,7 +643,7 @@ void Mode_Key_Confirm_Fun(void)
 
 			}
 			
-        pro_t.set_moke_key_select_fun =1;
+       
         pro_t.gTimer_pro_key_select_fun=0;
       break;
 
@@ -647,7 +664,7 @@ void Mode_Key_Confirm_Fun(void)
      	    }
 			
 	 
-       pro_t.set_moke_key_select_fun =1;
+     
         pro_t.gTimer_pro_key_select_fun=0;
 	  break;
 
@@ -667,7 +684,7 @@ void Mode_Key_Confirm_Fun(void)
 		}
 	   
 	  
-	  pro_t.set_moke_key_select_fun =1;
+	  
 	  pro_t.gTimer_pro_key_select_fun=0;
 
 

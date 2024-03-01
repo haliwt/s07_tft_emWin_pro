@@ -115,7 +115,7 @@ int main(void)
   HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
   pro_t.buzzer_sound_flag=1;
   /* USER CODE END 2 */
-
+ 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
