@@ -132,7 +132,7 @@ void TFT_Process_Handler(void)
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
    	}
-	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 30){
+	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 50){
 		wifi_t.gTimer_main_pro_times=0;	
 		MqttData_Publish_PowerOff_Ref();
 		
@@ -142,6 +142,7 @@ void TFT_Process_Handler(void)
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	LED_Mode_Key_Off();
+	TFT_DonnotDisp_Works_Time();
 	
 	Breath_Led();
 
@@ -395,7 +396,7 @@ static void TFT_Pocess_Command_Handler(void)
 {
    //key input run function
 	static uint8_t timer_blink_times;
-    static uint8_t power_times;
+   // static uint8_t power_times;
   
 
    if(power_on_state() == power_on){
@@ -420,7 +421,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.run_process_step=1;
 
 		TFT_BACKLIGHT_ON();
-		power_times = 1;
+		
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
 		
@@ -486,6 +487,7 @@ static void TFT_Pocess_Command_Handler(void)
 				}
 
 				TFT_Disp_Set_TimerTime(0);
+				TFT_DonnotDisp_Works_Time();
 			break;
 
 			case works_time:
@@ -766,8 +768,8 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	   if(gctl_t.fan_warning ==0 && gctl_t.ptc_warning ==0){
 	  	  pro_t.mode_key_confirm_flag = mode_key_timer_time;
 		  pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
-
-		
+		  gctl_t.timer_timing_words_changed_flag ++;
+		  gctl_t.timing_words_changed_flag++;
 		  pro_t.gTimer_pro_mode_key_timer=0;
 		  pro_t.gTimer_pro_set_timer_time=0;
 

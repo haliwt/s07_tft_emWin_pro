@@ -736,14 +736,23 @@ void Json_Parse_Command_Fun(void)
 			 wifi_t.linking_tencent_cloud_doing =0;
 	  	break;
 
-	  case STATE_TIMER_MODEL_ITEM:
+	  case STATE_TIMER_MODEL_ITEM: //display timer timing of value  
 	  if(power_on_state() ==power_on){
 	  	    buzzer_sound();
 	        gctl_t.mode_flag=timer_time;
             MqttData_Publish_SetState(2); //timer model  = 2
 			HAL_Delay(50);
-            //do someting 
-            
+            //do someting
+			if(pro_t.timer_mode_flag == timer_time){
+				gctl_t.timer_timing_words_changed_flag++;
+				TFT_Disp_Set_TimerTime(0);
+			}
+			else{
+     
+				pro_t.timer_mode_flag=timer_set_time;
+				pro_t.gTimer_pro_mode_key_timer =4;
+			}
+			
 			
         }
        
@@ -752,12 +761,16 @@ void Json_Parse_Command_Fun(void)
 	   
 	  break;
 		
-	  case STATE_AI_MODEL_ITEM:
+	  case STATE_AI_MODEL_ITEM: //display works timing 
 	  	 if(power_on_state() ==power_on){
 		    buzzer_sound();
 		    gctl_t.mode_flag=works_time;
             MqttData_Publish_SetState(1); //beijing timing = 1
 			HAL_Delay(50);
+			//do something
+			 pro_t.timer_mode_flag=works_time;//0
+			 gctl_t.timing_words_changed_flag++;
+			 TFT_Display_WorksTime();
           
         }
 
