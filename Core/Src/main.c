@@ -93,8 +93,8 @@ int main(void)
   MX_ADC1_Init();
   MX_IWDG_Init();
   MX_SPI1_Init();
-  MX_TIM1_Init();
-  MX_TIM3_Init();
+ // MX_TIM1_Init();
+  MX_TIM14_Init();
   MX_TIM17_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
@@ -125,6 +125,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
+#if 1
 	#if NORMAL_KEY                   
 	keyvalue = ReadKey();
 	Key_Process_Handler(keyvalue);
@@ -135,6 +136,17 @@ int main(void)
    TFT_Process_Handler();
    WIFI_Process_Handler();
    
+#endif 
+	
+//    Ptc_On();
+//    HAL_Delay(3000);
+//	gctl_t.ptc_flag = 1;
+//    gctl_t.plasma_flag = 1;
+//	gctl_t.ultrasonic_flag =1;
+//	Device_Action_Handler();
+//	//Ptc_Off();
+//   // HAL_Delay(3000);
+//	WIFI_Process_Handler();
 	
 	
   }

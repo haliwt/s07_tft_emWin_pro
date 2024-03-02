@@ -10,6 +10,9 @@ void Ptc_On(void);
 void Ptc_Off(void);
 
 
+void Ptc_OnOff_Handler(void);
+
+
 
 #endif 
 

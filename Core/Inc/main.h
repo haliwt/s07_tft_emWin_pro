@@ -95,10 +95,17 @@ void Error_Handler(void);
 //FUN 
 #define PLASMA_CTL_Pin GPIO_PIN_7
 #define PLASMA_CTL_GPIO_Port GPIOA
+
+
+//relay CONTROL gpio
 #define RELAY_CTL_Pin GPIO_PIN_0
 #define RELAY_CTL_GPIO_Port GPIOB
+
+
 #define BEEP_PWM_Pin GPIO_PIN_1
 #define BEEP_PWM_GPIO_Port GPIOB
+
+
 
 #define ULTRA_PWM_Pin GPIO_PIN_8
 #define ULTRA_PWM_GPIO_Port GPIOA

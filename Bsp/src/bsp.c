@@ -444,6 +444,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
 		
+		
 	  
 		
 
@@ -452,6 +453,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 case pro_disp_dht11_value: //1 //display works time + "temperature value " + "humidity value"
 
 	   Wifi_Fast_Led_Blink();
+	
 
 	   if(pro_t.gTimer_pro_tft > 28 &&  pro_t.wifi_led_fast_blink_flag==0){
 	   	   pro_t.gTimer_pro_tft=0;
@@ -468,6 +470,7 @@ static void TFT_Pocess_Command_Handler(void)
 	   pro_t.run_process_step=pro_run_main_fun;
 	   
 	case pro_run_main_fun: //02
+	
       pro_t.run_process_step=0xf2;
 	  Wifi_Fast_Led_Blink();
 
@@ -514,7 +517,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 break;
 
 	 case pro_disp_works_time: //display works times and timer timing .
-	 	
+
 		Wifi_Fast_Led_Blink();
 		switch(pro_t.timer_mode_flag){
 
@@ -616,6 +619,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 
     case pro_set_temperature:
+		
         Ptc_Temperature_Compare_Value();
 
 	
@@ -624,6 +628,7 @@ static void TFT_Pocess_Command_Handler(void)
 	break;
 
 	case pro_disp_wifi_led: //4
+	
 		  if(wifi_link_net_state() ==0){
 		  
 			if(pro_t.mode_key_select_flag ==1){
@@ -670,6 +675,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
       // handler of wifi 
 	  case pro_wifi_init: //7
+	 
 
        if(wifi_link_net_state() ==1 && wifi_t.smartphone_app_power_on_flag==0){
 	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud_init_ref ==0 ){
@@ -714,11 +720,15 @@ static void TFT_Pocess_Command_Handler(void)
 	        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
       }
 
-	  if( update_step==5)  pro_t.run_process_step=pro_disp_dht11_value;
-       }
+	  if( update_step==5){
+	  	  pro_t.run_process_step=pro_disp_dht11_value;
+		  
+	   }
+      }
 	   else{
 
 		   pro_t.run_process_step=pro_disp_dht11_value;
+	
 
 
 	   }
