@@ -27,8 +27,8 @@ void TFT_Display_Handler(void)
 
 	TFT_Display_Humidity_Symbol();
 	
-	lcd_draw_rectangle(157,35,163,110,WHITE);
-	TFT_St7789_FillBlock(157,35,6,75,WHITE);
+	//lcd_draw_rectangle(157,35,163,110,WHITE); //rectangle 
+	//TFT_St7789_FillBlock(157,35,6,75,WHITE);
 
 	TFT_Display_WorksTime();
 
@@ -45,7 +45,7 @@ void TFT_Display_Handler(void)
 /***********************************************************************************************
 	*
 	*Function Name:void TFT_Display_Temp_Symbol(void)
-	*Function : special TFT of itme
+	*Function : display chinese "温度"
 	*Input: NO
 	*Return: NO 
 	*
@@ -83,7 +83,7 @@ void TFT_Display_Humidity_Symbol(void)
     TFT_Disp_Humidity_24_24_onBlack(268,100,0);
     TFT_Disp_Humidity_24_24_onBlack(292,100,1);
 #else
-    TFT_Disp_Humidity_20_20(278,90,0);//(275,90,0)
+    TFT_Disp_Humidity_20_20(278,90,0);//(275,90,0)//humidity symbol %
 	TFT_Disp_Humidity_20_20(298,90,1);//(295,90,1)
 
 #endif 
