@@ -112,13 +112,15 @@ void TFT_Process_Handler(void)
 	}
 	
 	Key_Speical_Power_Fun_Handler();
+	Key_Speical_Mode_Fun_Handler();
+	Key_Interrup_Handler();
 
 	switch(pro_t.gPower_On){
 	
 	case power_on:
 		
-	    Key_Speical_Mode_Fun_Handler();
-    	Key_Interrup_Handler();
+	   
+    	
 	    TFT_Pocess_Command_Handler();
 
 		break;
@@ -321,7 +323,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 		
 		
 	}
-	 mode_key_fun_handler();
+     mode_key_fun_handler();
 }
 /******************************************************************************
 	*
@@ -354,6 +356,7 @@ static void mode_key_fun_handler(void)
 					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
                     pro_t.gTimer_pro_set_tem_value_blink=0;
                     led_blink_times++;
+					
 				  }
 
                   if(led_blink_times ==1){
