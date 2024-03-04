@@ -1,275 +1,5 @@
 #include "bsp.h"
 
-#if 0
-
-
-
-/******************************************************************************************************
-*
-//在指定位置显示一个字符,包括部分字符
-//函数说明：显示字符
-//入口数据：x,y    起点坐标
-//		chr    要显示的字符
-//		mode   1叠加方式  0非叠加方式
-*
-******************************************************************************************************/
-void TFT_ShowChar(uint16_t x,uint16_t y,uint8_t chr,uint8_t fw,uint8_t fh,uint8_t mode)
-{
-    uint8_t temp, t, tbit;
-    uint8_t y0=y;
-    uint8_t *p;	
-	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
-
-	LCD_WIDTH =320;
-	LCD_HEIGHT = 240;
-	
-	
-	csize=(fh/8+((fh%8)?1:0))*fw/2;// 得到字体一个字符对应点阵集所占的字节数	
- 
-    chr=chr-' ';//得到偏移后的值
- 
-    //if(fw==6&&fh==8)        p = (uint8_t *)asc2_0608[chr];	//调用0608ascii字体
-    //else if(fw==6&&fh==12)  p = (uint8_t *)asc2_0612[chr];	//调用0612ascii字体
-    //else if(fw==8&&fh==16)  p = (uint8_t *)asc2_0816[chr];	//调用0612ascii字体
-    if(fw==12&&fh==24){
-	//	p = (uint8_t *)asc2_1224[chr];   //调用1224ascii字体
-        csize =36;
-    }
-    else if(fw==48 && fh ==48){
-		p= (uint8_t *)font4848_no[chr];
-		csize =144;
-
-    }
-    else return;	//没有的字库
-	for(t = 0; t < csize; t++)	/*遍历打印所有像素点到LCD */
-	{   
-		temp = p[t];
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			y++; //
-			
-			if(y >= LCD_HEIGHT){
-				pro_t.lcd_over_height_flag;
-				return;		/* 超区域了 */
-
-			}
- 
-			if((y - y0) == fh){
-				y = y0;
-				x++;
-				if(x >= LCD_WIDTH){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-				}
-				break;
-			}
-		}  	 
-	}  	  
-}
-
-#endif 
-/******************************************************************************************************
-*
-*Function Name:void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-*Function :
-	//在指定位置显示一个字符,包括部分字符
-	//函数说明：显示字符
-*Input Ref：x,y    起点坐标
-	//		chr    要显示的字符
-	//		mode   1叠加方式  0非叠加方式
-*Return Ref: NO
-*
-******************************************************************************************************/
-#if 0
-void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-{
-    uint8_t temp, t, tbit;
-    uint8_t x0=x;
-    
-	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
-
-	LCD_WIDTH =320;
-	LCD_HEIGHT = 240;
-	
-   
-	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
-	{   
-	
-		temp = font4848_no[num][t]; 
-		
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			//y++; // 垂直扫描
-			x++;//水平扫描
-
-			if(x >= LCD_WIDTH){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-			}
-			
-			if((x - x0) == 24){
-				x = x0;
-				y++;
-				
-			    if(y >= LCD_HEIGHT){
-				pro_t.lcd_over_height_flag=1;
-				return;		/* 超区域了 */
-
-			     }
- 
-				break;
-			}
-		}  	 
-	}  
-  
-	
-}
-#endif 
-/******************************************************************************************************
-*
-*Function Name:void TFT_ShowChar_144(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-*Function :
-	//在指定位置显示一个字符,包括部分字符
-	//函数说明：显示字符
-*Input Ref：x,y    起点坐标
-	//		chr    要显示的字符
-	//		mode   1叠加方式  0非叠加方式
-*Return Ref: NO
-*
-******************************************************************************************************/
-#if 0
-void TFT_ShowChar_256(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-{
-    uint16_t temp, t, tbit;
-    uint16_t x0=x;
-    
-	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
-
-	LCD_WIDTH =320;
-	LCD_HEIGHT = 240;
-	
-   
-	for(t = 0; t < 256; t++)	/*遍历打印所有像素点到LCD */
-	{   
-	
-		temp = font6464_no[num][t]; 
-		
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			//y++; // 垂直扫描
-			x++;//水平扫描
-
-			if(x >= LCD_WIDTH){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-			}
-			
-			if((x - x0) == 32){
-				x = x0;
-				y++;
-				
-			    if(y >= LCD_HEIGHT){
-				pro_t.lcd_over_height_flag=1;
-				return;		/* 超区域了 */
-
-			     }
- 
-				break;
-			}
-		}  	 
-	}  
-  
-	
-}
-
-/********************************************************************
-*
-* name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-* description  : 绘制字符串，可设置前景色和背景色
-* Input        : 字体宽度，高度，字符，字符颜色，背景颜色
-* Return       : 
-*
-********************************************************************/
-void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
-{
-    uint16_t temp, t, tbit;
-    uint16_t x0=x;
-    
-	static uint16_t LCD_HEIGHT,LCD_WIDTH,color,csize;
-
-	LCD_WIDTH =320;
-	LCD_HEIGHT = 240;
-	
-   
-	for(t = 0; t < 576; t++)	/*遍历打印所有像素点到LCD */
-	{   
-	
-		temp = font9696_no[num][t]; 
-		
-		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
-		{	
-			
-			
-			if(temp & 0x80)	color = WHITE;
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			TFT_DrawPoint(x, y,color );
-			
-			temp <<= 1;			
-			//y++; // 垂直扫描
-			x++;//水平扫描
-
-			if(x >= LCD_WIDTH){
-                    pro_t.lcd_over_width_flag =1;
-					return;	/* 超区域了 */
-
-			}
-			
-			if((x - x0) == 48){
-				x = x0;
-				y++;
-				
-			    if(y >= LCD_HEIGHT){
-				pro_t.lcd_over_height_flag=1;
-				return;		/* 超区域了 */
-
-			     }
- 
-				break;
-			}
-		}  	 
-	}  
-  
-	
-}
-#endif 
 /********************************************************************
 *
 * name         : void TFT_ShowChar_576(uint16_t x,uint16_t y,uint8_t num,uint8_t mode)
@@ -793,29 +523,47 @@ void TFT_Disp_Humidity_Symbol_24_24(uint16_t x,uint16_t y)
 ****************************************************************************************/
 void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uint8_t num)
 {
-    uint16_t temp, t, tbit,mode;
+    uint16_t temp, t, tbit,mode,bc;
     uint16_t x0=x;
     mode =0;
 	static uint16_t color;
 
-	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
+	//for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
+	for(t = 0; t < 116; t++)
 	{   
 	
-		temp = font4848_works_time_value[num][t]; 
+		//temp = font4848_works_time_value[num][t]; 
+		temp = font_pic_time_value[num][t];
+		
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
 			
+			if(temp & 0x80){
+				
+				color =BLACK; // WHITE;
+
+			}
+			else if(0 == mode){
+				if(bc==0)
+				  color = WHITE;//BLACK;
+				else
+				  color = BLACK;
+
+			}
+			else color = BLACK;
 			
+			#if 0
 			if(temp & 0x80){
 				if(sel==0)
-				   color = WHITE;
+				  color = WHITE;
 				else
 				   color = BLACK;
 
 			}
 			else if(0 == mode)	color = BLACK;
 			else color = BLACK;
+			#endif 
 			TFT_DrawPoint(x, y,color );
 			
 			temp <<= 1;			
@@ -828,7 +576,7 @@ void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uin
 
 			}
 			
-			if((x - x0) == 24){
+			if((x - x0) == 26){//
 				x = x0;
 				y++;
 				
@@ -862,7 +610,7 @@ void TFT_Disp_Time_Split_Symbol(uint16_t x,uint16_t y,uint8_t dat)
 	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
 	{   
 	
-		temp = font4848_works_time_value[10][t]; 
+		temp = font4848_time_colon_symbol[0][t]; 
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
