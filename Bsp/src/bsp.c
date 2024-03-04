@@ -125,9 +125,7 @@ void TFT_Process_Handler(void)
 
 	case power_off:
 
-	
-   	
-   	if(pro_t.power_off_flag == 1){
+	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
 	    wifi_t.power_off_step=0; 
 	    fan_continuce_flag =1;
