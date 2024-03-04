@@ -71,7 +71,7 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 	if(ptc_temp_voltage < 373 || ptc_temp_voltage ==373){ //87 degree
   
 	    gctl_t.plasma_flag = 0; //turn off
-	    Ptc_On(); //turn off
+	  //  Ptc_On(); //turn off
         Buzzer_Ptc_Error_Sound();
    	      
    }

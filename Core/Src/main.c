@@ -70,6 +70,7 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 
+
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -125,30 +126,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
-#if 1
-	#if NORMAL_KEY                   
-	keyvalue = ReadKey();
-	Key_Process_Handler(keyvalue);
-
-    #endif 
-	
-   Voice_Decoder_Handler();
-   TFT_Process_Handler();
-   WIFI_Process_Handler();
-   
-#endif 
-	
-//    Ptc_On();
-//    HAL_Delay(3000);
-//	gctl_t.ptc_flag = 1;
-//    gctl_t.plasma_flag = 1;
-//	gctl_t.ultrasonic_flag =1;
-//	Device_Action_Handler();
-//	//Ptc_Off();
-//   // HAL_Delay(3000);
-//	WIFI_Process_Handler();
-	
-	
+    Voice_Decoder_Handler();
+	TFT_Process_Handler();
+    WIFI_Process_Handler();
   }
   /* USER CODE END 3 */
 }

@@ -337,7 +337,7 @@ void Device_Action_Handler(void)
 
   if(ptc_state()== 1){
 
-     Ptc_On();
+    // Ptc_On();
 	 LED_PTC_ICON_ON();
      MqttData_Publish_SetPtc(0x01);  
 	 HAL_Delay(30);//350
@@ -632,7 +632,7 @@ void Mode_Key_Confirm_Fun(void)
     
             if(gctl_t.ptc_flag==0){
 				LED_PTC_ICON_ON(); 
-			    Ptc_On();
+			   // Ptc_On();
 				gctl_t.ptc_flag = 1;
 
 		    }

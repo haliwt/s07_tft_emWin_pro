@@ -282,7 +282,7 @@ static void voice_cmd_fun(uint8_t cmd)
 		// ctl_t.gPtc_flag =1;
 		buzzer_sound();
 		gctl_t.ptc_flag =1;
-		Ptc_On();
+		//Ptc_On();
 	    LED_PTC_ICON_ON();
 
 	 }

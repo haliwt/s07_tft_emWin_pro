@@ -994,7 +994,7 @@ static void Ptc_Temperature_Compare_Value(void)
 			else if((set_temp_value() -2) > dht11_temp_value()){
 	  
 		         gctl_t.ptc_flag = 1;//run_t.gDry = 1;
-		         Ptc_On();
+		       //  Ptc_On();
 			     LED_PTC_ICON_ON();
 			    
             }
@@ -1021,7 +1021,7 @@ static void Ptc_Temperature_Compare_Value(void)
                else if(dht11_temp_value() <38){
                
 				 gctl_t.ptc_flag = 1;//run_t.gDry = 1;
-		         Ptc_On();
+		       //  Ptc_On();
 			     LED_PTC_ICON_ON();
                 
                 

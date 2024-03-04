@@ -21,7 +21,7 @@ void Ptc_OnOff_Handler(void)
 {
    if(ptc_state()== 1){
 
-     Ptc_On();
+    // Ptc_On();
 	 HAL_Delay(200);
 	 LED_PTC_ICON_ON();
      MqttData_Publish_SetPtc(0x01);  
