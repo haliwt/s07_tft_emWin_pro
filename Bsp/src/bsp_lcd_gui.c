@@ -271,6 +271,9 @@ void TFT_Disp_Set_TimerTime_Init(void)
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
 
+	timer_decade_minutes=0;
+	timer_unit_minutes =0;
+
 
     if(disp_timer_words != gctl_t.timer_timing_words_changed_flag){
 		disp_timer_words = gctl_t.timer_timing_words_changed_flag;
@@ -283,29 +286,22 @@ void TFT_Disp_Set_TimerTime_Init(void)
     }
 	
 	//works time value
-	if(set_timer_hours != gctl_t.gSet_timer_hours){
-		set_timer_hours = gctl_t.gSet_timer_hours;
+	if(gctl_t.timer_time_define_flag == 0){
+		//set_timer_hours = gctl_t.gSet_timer_hours;
 	    
 		TFT_Disp_WorkTime_Value_48_48_onBlack(100,188,bc,timer_decade_hours);
 		TFT_Disp_WorkTime_Value_48_48_onBlack(134,188,bc,timer_unit_hours);
-	
-
-	
+	     
+        TFT_Disp_WorkTime_Value_48_48_onBlack(186,188,bc,timer_decade_minutes);
+        TFT_Disp_WorkTime_Value_48_48_onBlack(220,188,bc,timer_unit_minutes);
 	}
 
 	if(gctl_t.timer_time_define_flag == 1){
-        timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;
-	    timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
+     
         TFT_Disp_WorkTime_Value_48_48_onBlack(186,188,bc,timer_decade_minutes);
         TFT_Disp_WorkTime_Value_48_48_onBlack(220,188,bc,timer_unit_minutes);
     }
-    else{
-	    timer_decade_minutes=0;
-	    timer_unit_minutes =0;
-        TFT_Disp_WorkTime_Value_48_48_onBlack(186,188,bc,timer_decade_minutes);
-        TFT_Disp_WorkTime_Value_48_48_onBlack(220,188,bc,timer_unit_minutes);
-    }
-
+   
 
   }
 
