@@ -126,9 +126,25 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
+	
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
+ 
+
+	#if 0
+	TFT_BACKLIGHT_ON();
+		
+	
+	TFT_Display_WorksTime();
+
+	Ptc_On();
+	Fan_Run();
+	Power_On_Led_Init();
+	HAL_Delay(5000);
+	Ptc_Off();
+	HAL_Delay(5000);
+	#endif
 	
   }
   /* USER CODE END 3 */

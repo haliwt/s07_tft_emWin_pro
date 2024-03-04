@@ -140,10 +140,10 @@ void TFT_Display_WorksTime(void)
 	
 	TFT_Disp_WorkTime_Value_48_48_onBlack(100,188,0,temp_decade_hours);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(134,188,0,temp_unit_hours);
-//	TFT_Disp_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
+    //symbol colon
 	TFT_Disp_WorkTime_Value_48_48_onBlack(186,188,0,temp_decade_minutes);
 	TFT_Disp_WorkTime_Value_48_48_onBlack(220,188,0,temp_unit_minutes);
-
+    //recoder 2 hours continuce after have a rest 10 minutes
 	if(gctl_t.gTimer_ctl_total_continue_time > 119 && gctl_t.gTimer_ctl_total_continue_time < 131){
 
 	      gctl_t.time_out_flag =1;

@@ -76,7 +76,7 @@ void bsp_Idle(void)
 	}
 	
 	/* --- 喂狗 */
-    if(pro_t.gTimer_pro_feed_dog > 3){ //16s
+    if(pro_t.gTimer_pro_feed_dog > 5){ //16s
 	pro_t.gTimer_pro_feed_dog = 0;	
 	iwdg_feed();
 
@@ -467,8 +467,7 @@ static void TFT_Pocess_Command_Handler(void)
 	   pro_t.run_process_step=pro_run_main_fun;
 	   
 	case pro_run_main_fun: //02
-	
-      pro_t.run_process_step=0xf2;
+
 	  Wifi_Fast_Led_Blink();
 
 	  switch(gctl_t.time_out_flag){
@@ -480,7 +479,7 @@ static void TFT_Pocess_Command_Handler(void)
 			
 			 Wifi_Fast_Led_Blink();
              fan_2_hours_stop=0;
-			 Device_Action_Handler();
+			 Device_Action_Publish_Handler();
              
 	      }
 	   break;
@@ -1030,10 +1029,10 @@ static void Ptc_Temperature_Compare_Value(void)
                 
            
                }
-               else if(dht11_temp_value() <38){
+               else if(dht11_temp_value() <39){
                
 				 gctl_t.ptc_flag = 1;//run_t.gDry = 1;
-		       //  Ptc_On();
+		         Ptc_On();
 			     LED_PTC_ICON_ON();
                 
                 
