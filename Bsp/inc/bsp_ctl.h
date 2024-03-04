@@ -41,6 +41,7 @@ typedef struct _bsp_ctl{
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
 	uint8_t time_out_flag;
+	uint8_t set_temperature_value_flag ;
    
     //time
    uint8_t disp_works_hours;
@@ -132,6 +133,10 @@ void Device_Action_Led_OnOff_Handler(void);
 
 void Device_stop_Action_Fun(void);
 void Device_NoAction_Power_Off(void);
+
+
+void Device_Action_No_Wifi_Handler(void);
+
 
 
 #endif 

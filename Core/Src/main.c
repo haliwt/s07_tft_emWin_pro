@@ -129,7 +129,7 @@ int main(void)
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
-	TFT_Display_WorksTime();
+	
   }
   /* USER CODE END 3 */
 }

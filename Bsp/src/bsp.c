@@ -212,7 +212,7 @@ static void Key_Interrup_Handler(void)
 
 	 }
 
-	 mode_key_fun_handler();
+	// mode_key_fun_handler();
 
    
 }
@@ -321,6 +321,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 		
 		
 	}
+	 mode_key_fun_handler();
 }
 /******************************************************************************
 	*
@@ -415,14 +416,12 @@ static void TFT_Pocess_Command_Handler(void)
    
 	static uint8_t timer_blink_times,fan_2_hours_stop;
 
-  
-
-   if(power_on_state() == power_on){
+    if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
 
 
-	 case 0:
+	case 0:
 	 	
 		pro_t.gKey_value =0XFF;
 	    
@@ -442,11 +441,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
 		
-		
-	  
-		
-
-	 break;
+	break;
 
 	 case pro_disp_dht11_value: //1 //display works time + "temperature value " + "humidity value"
 
@@ -457,6 +452,7 @@ static void TFT_Pocess_Command_Handler(void)
 	   	   pro_t.gTimer_pro_tft=0;
          
 		    Update_DHT11_Value();
+	        Device_Action_No_Wifi_Handler();
 		
             if(pro_t.mode_key_confirm_flag != mode_key_temp){
 			   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
@@ -617,6 +613,20 @@ static void TFT_Pocess_Command_Handler(void)
 
 
     case pro_set_temperature:
+
+	   
+
+	    if(gctl_t.set_temperature_value_flag==1 && pro_t.gTimer_pro_set_tem_value_blink > 3){
+
+            gctl_t.set_temperature_value_flag=0;
+			gctl_t.gSet_temperature_value_flag =1;
+
+            pro_t.gTimer_pro_temp_delay =66;
+
+			
+
+
+		}
 		
         Ptc_Temperature_Compare_Value();
 
@@ -870,7 +880,7 @@ void ADD_Key_Fun(void)
 
 			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
 			pro_t.gTimer_pro_set_tem_value_blink=0;
-
+            gctl_t.set_temperature_value_flag =1;
 			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
 
@@ -924,6 +934,7 @@ void DEC_Key_Fun(void)
 
 		 	pro_t.mode_key_confirm_flag= mode_key_temp;
 
+
 		   case mode_key_temp:  //default tempearture value 
 	         pro_t.buzzer_sound_flag = 1;
 			 gctl_t.gSet_temperature_value--;
@@ -931,7 +942,7 @@ void DEC_Key_Fun(void)
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
-
+			  gctl_t.set_temperature_value_flag =1;
 			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
