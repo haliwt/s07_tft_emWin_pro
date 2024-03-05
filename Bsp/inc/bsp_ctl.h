@@ -32,7 +32,7 @@ typedef enum{
 typedef struct _bsp_ctl{
 
     
-	uint8_t mode_flag;
+	uint8_t model_AI_flag;
 	uint8_t ptc_flag;
 	uint8_t plasma_flag;
 	uint8_t ultrasonic_flag;
@@ -63,12 +63,13 @@ typedef struct _bsp_ctl{
 
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
-   uint8_t gSet_temperature_value_flag;
-
+   
+   //timer timing 
    uint8_t gTimer_ctl_disp_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
    uint8_t gTimer_ctl_select_led;
    uint8_t gTimer_ctl_total_continue_time;
+   uint8_t gTimer_ctl_det_dth11 ;
    
 
 }bsp_ctl;

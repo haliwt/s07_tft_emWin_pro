@@ -79,9 +79,9 @@ typedef enum{
 
   pro_init,
   pro_disp_dht11_value,
-  pro_run_main_fun,
+  pro_run_continue_two_hours,
   pro_disp_works_time,
-  pro_set_temperature,
+  pro_disp_and_set_temperature,
   pro_disp_wifi_led,
   pro_mode_key_fun,
   pro_wifi_init
@@ -126,7 +126,7 @@ typedef struct{
  
    //modke key
    uint8_t mode_key_pressed_flag;
-   uint8_t timer_mode_flag;
+   uint8_t key_input_model_timer_or_timing;
    uint8_t mode_key_confirm_flag;
    uint8_t mode_key_special_fun;
  
@@ -173,6 +173,7 @@ typedef struct{
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
+  uint8_t gTimer_pro_disp_tempe_value;
 	
 
 }PRO_T;

@@ -129,7 +129,7 @@ void Mode_State_Handler(uint8_t(*mode_handler)(void))
 
 static uint8_t Mode_Default_Handler(void)
 {
-      if(gctl_t.mode_flag==1)return 1;
+      if(gctl_t.model_AI_flag==1)return 1;
 	  else return 0;
 
 }
@@ -326,50 +326,58 @@ uint8_t Fan_Error_Default_Handler(void)
 void Device_Action_Publish_Handler(void)
 {
 
-
-   Fan_Run();
+   
+  static uint8_t wifi_publis_item;
 
    if(wifi_link_net_state() == 1){
       LED_WIFI_ICON_ON();
 
    }
    
+  switch(wifi_publis_item){
 
+  case 0:
   if(ptc_state()== 1){
 
-     Ptc_On();
+    // Ptc_On();
 	 LED_PTC_ICON_ON();
      MqttData_Publish_SetPtc(0x01);  
 	 HAL_Delay(30);//350
 
   }
   else{
-    Ptc_Off();
+   // Ptc_Off();
 	LED_PTC_ICON_OFF();
     MqttData_Publish_SetPtc(0); 
 	HAL_Delay(30);//350
 
 
   }
-   
+  wifi_publis_item=1;
+  break;
+
+  case 1:
 
    if(plasma_state() == 1){
-       Plasma_On();
+      // Plasma_On();
 	   LED_KILL_ICON_ON();
        MqttData_Publish_SetPlasma(0x01);
 	   HAL_Delay(30);
    }
    else{
-      Plasma_Off();
+     // Plasma_Off();
 	  LED_KILL_ICON_OFF();
       MqttData_Publish_SetPlasma(0);
 	  HAL_Delay(30);
 
    }
+    wifi_publis_item=2;
+  break;
 
+  case 2:
    if(ultrasonic_state()==1){
 
-      Ultrasonic_Pwm_Output();
+     // Ultrasonic_Pwm_Output();
 	  LED_RAT_ICON_ON();
       MqttData_Publish_SetUltrasonic(1);
 	  HAL_Delay(30);
@@ -377,13 +385,15 @@ void Device_Action_Publish_Handler(void)
    }
    else{
 
-	  Ultrasonic_Pwm_Stop();
+	 // Ultrasonic_Pwm_Stop();
 	  LED_RAT_ICON_OFF();
       MqttData_Publish_SetUltrasonic(0);
 	  HAL_Delay(30);
 
    }
-
+    wifi_publis_item=0;
+   break;
+  }
 
 
 }

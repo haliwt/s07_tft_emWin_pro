@@ -536,14 +536,14 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"state\":1")){
            if(power_on_state() ==power_on){
-            gctl_t.mode_flag=works_time;
+            gctl_t.model_AI_flag=works_time;
 			wifi_t.response_wifi_signal_label = STATE_AI_MODEL_ITEM;
         	}
 		  
     }
     else if(strstr((char *)wifi_t.wifi_data,"state\":2")){
             if(power_on_state() ==power_on){
-            gctl_t.mode_flag=timer_time;
+            gctl_t.model_AI_flag=timer_time;
 			wifi_t.response_wifi_signal_label = STATE_TIMER_MODEL_ITEM;
             }
 			
@@ -739,17 +739,17 @@ void Json_Parse_Command_Fun(void)
 	  case STATE_TIMER_MODEL_ITEM: //display timer timing of value  
 	  if(power_on_state() ==power_on){
 	  	    buzzer_sound();
-	        gctl_t.mode_flag=timer_time;
+	        gctl_t.model_AI_flag=timer_time;
             MqttData_Publish_SetState(2); //timer model  = 2
 			HAL_Delay(50);
             //do someting
-			if(pro_t.timer_mode_flag == timer_time){
+			if(pro_t.key_input_model_timer_or_timing == timer_time){
 				gctl_t.timer_timing_words_changed_flag++;
 				TFT_Disp_Set_TimerTime(0);
 			}
 			else{
      
-				pro_t.timer_mode_flag=timer_set_time;
+				pro_t.key_input_model_timer_or_timing=timer_set_time;
 				pro_t.gTimer_pro_mode_key_timer =4;
 			}
 			
@@ -764,11 +764,11 @@ void Json_Parse_Command_Fun(void)
 	  case STATE_AI_MODEL_ITEM: //display works timing 
 	  	 if(power_on_state() ==power_on){
 		    buzzer_sound();
-		    gctl_t.mode_flag=works_time;
+		    gctl_t.model_AI_flag=works_time;
             MqttData_Publish_SetState(1); //beijing timing = 1
 			HAL_Delay(50);
 			//do something
-			 pro_t.timer_mode_flag=works_time;//0
+			 pro_t.key_input_model_timer_or_timing=works_time;//0
 			 gctl_t.timing_words_changed_flag++;
 			 TFT_Display_WorksTime();
           
@@ -791,7 +791,7 @@ void Json_Parse_Command_Fun(void)
             if(gctl_t.gSet_temperature_value <20 )   gctl_t.gSet_temperature_value=20;
             MqttData_Publis_SetTemp(gctl_t.gSet_temperature_value);
 			HAL_Delay(50);//350
-			gctl_t.gSet_temperature_value_flag =1;
+			gctl_t.set_temperature_value_flag=2;
 			pro_t.gTimer_pro_temp_delay= 100;
 			pro_t.gTimer_pro_mode_key_timer = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);

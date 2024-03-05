@@ -224,10 +224,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_timer_mode_times++;
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;
-	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
+	 
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
+	  pro_t.gTimer_pro_disp_tempe_value++;
+
+      //control timer 
+      gctl_t.gTimer_ctl_det_dth11 ++ ;
+	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
+
+
+	  
 	  //wifi counter 
 	 
 	  wifi_t.gTimer_login_tencent_times++;
@@ -236,11 +244,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_get_beijing_time++;
 	  wifi_t.gTimer_read_beijing_time++;
 	
-	  
-	 
 	  wifi_t.gTimer_linking_tencent_duration;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
+	  wifi_t.gTimer_publish_action_item ++;
+	  
 
 	  if(tm2 > 59){//1 minute
           tm2 =0;
