@@ -55,6 +55,7 @@ void TFT_Only_Disp_Timing(void);
 void TFT_Disp_Set_TimerTime(uint8_t bc);
 void TFT_Disp_Set_TimerTime_Init(void);
 
+void TFT_Display_Timer_Timing_Value(void);
 
 
 void TFT_DonnotDisp_Works_Time(void);

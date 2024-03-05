@@ -221,7 +221,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
 
-	  pro_t.gTimer_pro_timer_mode_times++;
+	
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;
 	 
@@ -229,10 +229,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
 	  pro_t.gTimer_pro_disp_tempe_value++;
+	  pro_t.gTimer_pro_display_timer_timing++;
 
       //control timer 
       gctl_t.gTimer_ctl_det_dth11 ++ ;
-	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
+	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
 
 
 	  

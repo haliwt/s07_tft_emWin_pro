@@ -119,6 +119,7 @@ typedef struct{
   
    //time
    uint8_t mode_key_select_flag ;
+  
    
 
    //wifi info
@@ -166,7 +167,7 @@ typedef struct{
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
 	//uint8_t gTimer_pro_long_key_timer_flag;
-  uint8_t gTimer_pro_timer_mode_times;
+ 
   uint8_t gTimer_pro_mode_key_timer;
   uint8_t gTimer_pro_set_tem_value_blink;
   uint8_t gTimer_pro_set_timer_time;
@@ -174,6 +175,7 @@ typedef struct{
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
   uint8_t gTimer_pro_disp_tempe_value;
+  uint8_t gTimer_pro_display_timer_timing;
 	
 
 }PRO_T;

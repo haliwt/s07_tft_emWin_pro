@@ -248,8 +248,6 @@ static void voice_cmd_fun(uint8_t cmd)
 			//buzzer_sound();
 		    pro_t.power_off_flag=1;
 			pro_t.gPower_On = power_off;   
-		
-			
 		}
 	break;
 
@@ -278,11 +276,8 @@ static void voice_cmd_fun(uint8_t cmd)
        //buzzer_sound();
 	 }
 	 else{
-		// SendData_Set_Command(VOICE_DRY_ON);
-		// ctl_t.gPtc_flag =1;
-		//buzzer_sound();
 		gctl_t.ptc_flag =1;
-		//Ptc_On();
+		Ptc_On();
 	    LED_PTC_ICON_ON();
 
 	 }
@@ -296,7 +291,7 @@ static void voice_cmd_fun(uint8_t cmd)
 
 		 }
 		 else{
-			buzzer_sound();
+			
 			gctl_t.ptc_flag =0;
 			Ptc_Off();
 		    LED_PTC_ICON_OFF();
@@ -374,7 +369,9 @@ static void  voice_set_temperature_value(uint8_t value)
 		//pro_t.buzzer_sound_flag =1;
 		gctl_t.gSet_temperature_value = value;
 
-		pro_t.gTimer_pro_mode_key_timer =0;
+		//pro_t.gTimer_pro_mode_key_timer =0;
+		gctl_t.set_temperature_value_flag=1;
+		pro_t.gTimer_pro_set_tem_value_blink =0;
 
        TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value); 
 
@@ -399,18 +396,14 @@ static void voice_set_timer_timing_value(uint8_t time)
 		 Mode_Long_Key_Fun();
 
 }
-	
-	
-		
-
-/***********************************************************
+/***********************************************************************************
  *  *
     *Function Name: static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
     *Function: from small to big sort
     *Input Ref: *pta is array ,look up key data
     *Return Ref:  NO
     * 
-***********************************************************/
+**************************************************************************************/
 static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
 {
    static uint8_t n;

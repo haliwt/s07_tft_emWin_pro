@@ -295,15 +295,15 @@ static void Key_Speical_Mode_Fun_Handler(void)
 			
 			pro_t.mode_key_pressed_flag =0;
             Buzzer_KeySound();
-			pro_t.gTimer_pro_mode_key_timer = 0; 
+			pro_t.gTimer_pro_mode_key_timer = 0;
+			
 			pro_t.gTimer_pro_set_timer_time=0;
 			pro_t.mode_key_select_flag =0;
 			Mode_Long_Key_Fun();
 
 		   
 		}
-       //
-       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
+       else if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
 		pro_t.mode_key_pressed_flag =0;
 	   
 		
@@ -338,66 +338,41 @@ static void mode_key_fun_handler(void)
 
   switch(pro_t.mode_key_confirm_flag){
 
-      case mode_key_temp:
-
-//          if(pro_t.gTimer_pro_mode_key_timer < 4){
-//		  	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-//          }
-//		  else{
-//
-//                  if(pro_t.gTimer_pro_set_tem_value_blink < 5){
-//
-//					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
-//
-//
-//				  }
-//				  else{
-//
-//					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
-//                    pro_t.gTimer_pro_set_tem_value_blink=0;
-//                    led_blink_times++;
-//					
-//				  }
-//
-//                  if(led_blink_times ==1){
-//				  	led_blink_times=0;
-			pro_t.mode_key_confirm_flag = 0xff;
-		
-					  
-
-               
-
-			
-			break;
+	case mode_key_temp:
 
 
-			case mode_key_select:
+		pro_t.mode_key_confirm_flag = 0xff;
 
-		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
-
-				Mode_Key_Select_Fun();
-				
-             }
-			 else{
-                
-                pro_t.mode_key_confirm_flag = 0xff; //
-                pro_t.mode_key_select_flag =0;
-				
-                Device_Action_Led_OnOff_Handler();
-			 }
+    break;
 
 
-		   break;
+	case mode_key_select:
+
+		if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
+
+		Mode_Key_Select_Fun();
+
+		}
+	else{
+
+		pro_t.mode_key_confirm_flag = 0xff; //
+		pro_t.mode_key_select_flag =0;
+
+		Device_Action_Led_OnOff_Handler();
+	}
 
 
-		   case mode_key_confirm:
-			    Device_Action_Led_OnOff_Handler();
-                Mode_Key_Confirm_Fun();
-				pro_t.mode_key_confirm_flag = 0xff;
+	break;
 
-			break;
 
-	    }
+	case mode_key_confirm:
+		Device_Action_Led_OnOff_Handler();
+		Mode_Key_Confirm_Fun();
+		pro_t.mode_key_confirm_flag = 0xff;
+
+	break;
+
+	}
 
 
 }
@@ -468,12 +443,11 @@ static void TFT_Pocess_Command_Handler(void)
 
 	  	case 0:
 		
-	      if(pro_t.gTimer_pro_key_select_fun > 8 || fan_2_hours_stop==2){ //8s
+	      if(pro_t.gTimer_pro_key_select_fun > 1 || fan_2_hours_stop==2){ //8s
 			 pro_t.gTimer_pro_key_select_fun =0;
-			
-			 Wifi_Fast_Led_Blink();
-		     Device_Action_No_Wifi_Handler();
+		
              fan_2_hours_stop=0;
+		     Fan_Run();
 		
              
 	      }
@@ -507,15 +481,16 @@ static void TFT_Pocess_Command_Handler(void)
 	    pro_t.run_process_step=pro_disp_works_time;
 	 break;
 
-	 case pro_disp_works_time: //display works times and timer timing .
+	 case pro_disp_works_time://3 //display works times and timer timing .
 
 		Wifi_Fast_Led_Blink();
 		switch(pro_t.key_input_model_timer_or_timing){
 
-			case timer_time: //timer_time 
-			
+			case timer_time: //1= timer_time 
+			   gctl_t.timer_time_define_flag = 1;
 				if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
 					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+					pro_t.gTimer_pro_display_timer_timing=15;
 
                     gctl_t.gSet_timer_minutes --;
 
@@ -530,11 +505,25 @@ static void TFT_Pocess_Command_Handler(void)
 						pro_t.gPower_On = power_off;
 
 					}
+
+				TFT_Disp_Set_TimerTime(0);
+				
 					
 				}
 
-				TFT_Disp_Set_TimerTime(0);
-				TFT_DonnotDisp_Works_Time();
+				if(pro_t.gTimer_pro_display_timer_timing > 1){
+
+					pro_t.gTimer_pro_display_timer_timing=0;
+
+					//TFT_Disp_Set_TimerTime(0);
+					TFT_Display_Timer_Timing_Value();
+				    HAL_Delay(300);
+					
+
+				}
+
+			
+				
 			break;
 
 			case works_time:
@@ -542,7 +531,13 @@ static void TFT_Pocess_Command_Handler(void)
 				if(gctl_t.gTimer_ctl_disp_second > 59){
 					TFT_Display_WorksTime();
 				}
+				
+                 if(pro_t.gTimer_pro_display_timer_timing > 5){
 
+					pro_t.gTimer_pro_display_timer_timing=0;
+					TFT_Display_WorksTime();
+                 }
+				 
 				TFT_Donnot_Set_Timer_Time();
     
 			break;
@@ -550,45 +545,45 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_set_time:
 
-			
+			TFT_Disp_Set_TimerTime_Init();
+		
 
-			 TFT_Disp_Set_TimerTime_Init();
-
-			if(pro_t.gTimer_pro_mode_key_timer > 3){
+			if(pro_t.gTimer_pro_set_timer_time > 4){
                     
 
 			if(gctl_t.gSet_timer_hours >0 ){
 
-							pro_t.key_input_model_timer_or_timing = timer_time;
-							pro_t.mode_key_confirm_flag =0xff;
-							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-							gctl_t.timer_time_define_flag = 1;
-							gctl_t.gSet_timer_minutes =0;
-						  TFT_Disp_Set_TimerTime_Init();
-						
-							
+					pro_t.key_input_model_timer_or_timing = timer_time;
+					pro_t.mode_key_confirm_flag =0xff;
+					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
+					gctl_t.timer_time_define_flag = 1;
+					gctl_t.gSet_timer_minutes =0;
+				    pro_t.gTimer_pro_display_timer_timing =20;
+				
+					
 
-						}
-						else{
-							mode_key_long_flag=0;
-							gctl_t.timer_time_define_flag = 0;
-							pro_t.mode_key_confirm_flag =0xff;
-							pro_t.key_input_model_timer_or_timing = works_time;
-						  
-						  
-
-						}
 				}
+				else{
+					mode_key_long_flag=0;
+					gctl_t.timer_time_define_flag = 0;
+					pro_t.mode_key_confirm_flag =0xff;
+					pro_t.key_input_model_timer_or_timing = works_time;
+				  
+				  
+
+				}
+			 }
 
 					
-             TFT_DonnotDisp_Works_Time();
+            // TFT_DonnotDisp_Works_Time();
 					
 
 			break;
 		}
 		pro_t.run_process_step=pro_disp_and_set_temperature;
 
-
+    break;
+	 
     case pro_disp_and_set_temperature:
 
        Wifi_Fast_Led_Blink();
@@ -620,11 +615,7 @@ static void TFT_Pocess_Command_Handler(void)
             if(pro_t.mode_key_confirm_flag != mode_key_temp){
 			   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
             }
-			
-
-	      }
-
-
+		}
 		break;
 	    }
 	
@@ -738,6 +729,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 				 Device_Action_Publish_Handler();
 		   }
+		   TFT_DonnotDisp_Works_Time();
 		   pro_t.run_process_step=pro_disp_dht11_value;
 	
 
@@ -882,9 +874,10 @@ void ADD_Key_Fun(void)
 
 
 			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
+			//confirm this item select 
 			pro_t.gTimer_pro_set_tem_value_blink=0;
             gctl_t.set_temperature_value_flag =1;
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
+			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
 
 		case mode_key_timer_time:
@@ -944,9 +937,10 @@ void DEC_Key_Fun(void)
 			if( gctl_t.gSet_temperature_value<20)  gctl_t.gSet_temperature_value=40;
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
+			//select temperature by pressed 
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
 			  gctl_t.set_temperature_value_flag =1;
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+			 TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
@@ -960,6 +954,8 @@ void DEC_Key_Fun(void)
 					
 					
 				}
+             //select timer timing flaf is success.
+			 pro_t.key_input_model_timer_or_timing=timer_set_time;//2
 			 pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_timer_time=0;
 			 	

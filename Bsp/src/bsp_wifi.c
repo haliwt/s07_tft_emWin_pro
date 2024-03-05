@@ -95,7 +95,7 @@ static void RunWifi_Command_Handler(void)
   
    static uint8_t  update_data_to_tencent_cloud_flag;
 
-
+   static uint8_t receive_beijing_time;
    switch(wifi_t.runCommand_order_lable){
 
          
@@ -195,12 +195,21 @@ static void RunWifi_Command_Handler(void)
 	if(wifi_t.real_hours < 25 && wifi_t.real_minutes < 61 && beijing_step ==3){
 
 		beijing_step ++;
-		gctl_t.disp_works_hours   = wifi_t.real_hours;
 
-		gctl_t.disp_works_minutes = wifi_t.real_minutes;
+	     if(receive_beijing_time==0){
 
-		gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
-		TFT_Only_Disp_Timing();
+			 receive_beijing_time++;
+
+	     }
+		 else{
+			gctl_t.disp_works_hours   = wifi_t.real_hours;
+
+			gctl_t.disp_works_minutes = wifi_t.real_minutes;
+
+			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
+			TFT_Only_Disp_Timing();
+
+		}
 
 	}
 
