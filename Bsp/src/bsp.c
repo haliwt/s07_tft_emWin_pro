@@ -488,6 +488,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 			case timer_time: //1= timer_time 
 			   gctl_t.timer_time_define_flag = 1;
+				gctl_t.display_timer_timing =1;
 				if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
 					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 				
@@ -524,9 +525,11 @@ static void TFT_Pocess_Command_Handler(void)
 			break;
 
 			case works_time:
+				
 
 				if(gctl_t.gTimer_ctl_disp_second > 59){
 					TFT_Display_WorksTime();
+					gctl_t.display_timer_timing=0;
 				}
 				
                  if(pro_t.gTimer_pro_display_timer_timing > 5){
@@ -565,6 +568,7 @@ static void TFT_Pocess_Command_Handler(void)
 					gctl_t.timer_time_define_flag = 0;
 					pro_t.mode_key_confirm_flag =0xff;
 					pro_t.key_input_model_timer_or_timing = works_time;
+					gctl_t.display_timer_timing=0;
 				  
 				  
 
@@ -1081,7 +1085,11 @@ wifi_led: if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
 *********************************************************************************************************/
 static void TFT_Donnot_Set_Timer_Time(void)
 {
-    if(gctl_t.timer_time_define_flag == 1){
+
+
+    if(gctl_t.display_timer_timing ==0){
+
+	if(gctl_t.timer_time_define_flag == 1){
 
 	if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
 		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
@@ -1101,6 +1109,8 @@ static void TFT_Donnot_Set_Timer_Time(void)
 		}
 
 	}
+
+   }
 
    }
 

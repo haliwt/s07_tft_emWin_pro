@@ -42,6 +42,7 @@ typedef struct _bsp_ctl{
 	uint8_t fan_warning;
 	uint8_t time_out_flag;
 	uint8_t set_temperature_value_flag ;
+	uint8_t display_timer_timing;
    
     //time
    uint8_t disp_works_hours;
