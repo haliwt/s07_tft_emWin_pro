@@ -207,7 +207,9 @@ static void RunWifi_Command_Handler(void)
 			gctl_t.disp_works_minutes = wifi_t.real_minutes;
 
 			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
-			TFT_Only_Disp_Timing();
+			if(pro_t.key_input_model_timer_or_timing== works_time){
+			       TFT_Only_Disp_Timing();
+			}
 
 		}
 
