@@ -490,7 +490,7 @@ static void TFT_Pocess_Command_Handler(void)
 			   gctl_t.timer_time_define_flag = 1;
 				if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
 					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-					pro_t.gTimer_pro_display_timer_timing=15;
+				
 
                     gctl_t.gSet_timer_minutes --;
 
@@ -511,19 +511,16 @@ static void TFT_Pocess_Command_Handler(void)
 					
 				}
 
-				if(pro_t.gTimer_pro_display_timer_timing > 1){
+				if(pro_t.gTimer_pro_display_timer_timing > 5){
 
 					pro_t.gTimer_pro_display_timer_timing=0;
 
 					//TFT_Disp_Set_TimerTime(0);
 					TFT_Display_Timer_Timing_Value();
-				    HAL_Delay(300);
-					
-
+			
 				}
 
 			
-				
 			break;
 
 			case works_time:
