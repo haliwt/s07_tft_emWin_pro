@@ -1087,9 +1087,9 @@ static void TFT_Donnot_Set_Timer_Time(void)
 {
 
 
-    if(gctl_t.display_timer_timing ==0){
+   
 
-	if(gctl_t.timer_time_define_flag == 1){
+	if(gctl_t.timer_time_define_flag == 1 && gctl_t.display_timer_timing ==0){
 
 	if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
 		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
@@ -1112,7 +1112,7 @@ static void TFT_Donnot_Set_Timer_Time(void)
 
    }
 
-   }
+ 
 
 }
 /**********************************************************************************************************
