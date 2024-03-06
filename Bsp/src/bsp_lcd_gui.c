@@ -186,8 +186,7 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 	    temp_decade_hours = gctl_t.disp_works_hours /10;
 		temp_unit_hours = gctl_t.disp_works_hours % 10;
 
-		temp_decade_minutes = gctl_t.disp_works_minutes/10;
-		temp_unit_minutes = gctl_t.disp_works_minutes%10;
+		
 
         //__disable_irq();
 		if(disp_hours !=  gctl_t.disp_works_hours){
@@ -202,6 +201,22 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 		}
 
 		
+
+		
+      if(gctl_t.gTimer_ctl_disp_second > 59){
+        gctl_t.gTimer_ctl_disp_second =0;
+        gctl_t.disp_works_minutes++;
+        if(gctl_t.disp_works_minutes>59){
+            gctl_t.disp_works_minutes=0;
+            gctl_t.disp_works_hours++;
+            if(gctl_t.disp_works_hours > 99){
+                gctl_t.disp_works_hours=0;
+            }
+        }
+    	}
+
+	  temp_decade_minutes = gctl_t.disp_works_minutes/10;
+		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 		
 	   if(disp_minutes !=gctl_t.disp_works_minutes){
 		disp_minutes =gctl_t.disp_works_minutes;
