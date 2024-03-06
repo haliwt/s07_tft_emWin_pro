@@ -211,7 +211,7 @@ void Voice_Decoder_Handler(void)
 	if(input_set_timer_timing_flag ==1 && pro_t.gTimer_pro_mode_key_timer > 3){
 
 		input_set_timer_timing_flag =0;
-		pro_t.key_input_model_timer_or_timing = timer_time;
+		pro_t.key_input_model_timer_or_timing = timer_time_id;
 		pro_t.mode_key_confirm_flag =0xff;
 		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 		gctl_t.timer_time_define_flag = 1;

@@ -714,7 +714,7 @@ void Mode_Key_Confirm_Fun(void)
 			}
 			
        
-        pro_t.gTimer_pro_key_select_fun=0;
+   
       break;
 
 	  case plasma_fun:
@@ -735,7 +735,7 @@ void Mode_Key_Confirm_Fun(void)
 			
 	 
      
-        pro_t.gTimer_pro_key_select_fun=0;
+      
 	  break;
 
 	  case rat_fun: //cat
@@ -755,7 +755,7 @@ void Mode_Key_Confirm_Fun(void)
 	   
 	  
 	  
-	  pro_t.gTimer_pro_key_select_fun=0;
+
 
 
 	  break;

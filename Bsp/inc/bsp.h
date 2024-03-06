@@ -32,6 +32,7 @@
 #include "bsp_tft_font.h"
 #include "bsp_font.h"
 #include "bsp_font_app.h"
+#include "bsp_bsp.h"
 
 
 //wifi
@@ -58,10 +59,10 @@
 
 typedef enum TIMING_T{
 
-   works_time,
-   timer_time,
-   timer_set_time,
-   timing_success ,
+   works_time_id,
+   timer_time_id,
+   timer_set_time_id,
+   timing_success_id ,
    /// @brief ：select function "ptc,kill,rat"
    fun_selection
    
@@ -150,7 +151,7 @@ typedef struct{
 
   	//timer timing function
   	uint8_t gTimer_pro_feed_dog;
-	uint8_t gTimer_pro_temp ;
+	
 	uint8_t gTimer_pro_temp_delay ;
 	
 	
@@ -160,9 +161,9 @@ typedef struct{
 
   uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
-  uint8_t gTimer_pro_key_select_fun;
+ 
 	uint8_t gTime_pro_run_voice_time;
-	uint8_t gTimer_pro_tft;
+	
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
@@ -199,6 +200,8 @@ void Wifi_Fast_Led_Blink(void);
 
 void Mode_Long_Key_Fun(void);;
 
+void Power_On_Fun(void);
+void Power_Off_Fun(void);
 
 
 #endif 

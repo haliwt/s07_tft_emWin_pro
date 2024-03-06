@@ -207,14 +207,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		tm0=0;
 		tm2++;
 
-	 pro_t.gTimer_pro_key_select_fun ++;
-	
 	 pro_t.gTimer_pro_temp_delay++;
-	 pro_t.gTimer_pro_temp++;
+	
 
 	 pro_t.gTimer_pro_feed_dog++;
 	
-     pro_t.gTimer_pro_tft++;
+     
 	 gctl_t.gTimer_ctl_disp_second++;
 	 pro_t.gTimer_pro_fan++;  //fan continuce counter 60s
 	 /*******************************************/
@@ -245,7 +243,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_get_beijing_time++;
 	  wifi_t.gTimer_read_beijing_time++;
 	
-	  wifi_t.gTimer_linking_tencent_duration;
+	  wifi_t.gTimer_linking_tencent_duration++;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
 	  wifi_t.gTimer_publish_action_item ++;
