@@ -48,6 +48,7 @@ typedef struct _bsp_ctl{
    uint8_t timer_time_define_flag;
    uint8_t timer_timing_words_changed_flag;
    uint8_t timing_words_changed_flag;
+   uint8_t test_input_run_write_data;
 
    
  
@@ -70,6 +71,7 @@ typedef struct _bsp_ctl{
    uint8_t gTimer_ctl_select_led;
    uint8_t gTimer_ctl_total_continue_time;
    uint8_t gTimer_ctl_det_dth11 ;
+   uint8_t gTimer_ctl_disp_works_time;
    
 
 }bsp_ctl;

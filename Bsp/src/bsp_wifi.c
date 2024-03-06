@@ -170,6 +170,8 @@ static void RunWifi_Command_Handler(void)
 
 
 	case wifi_publish_update_tencent_cloud_data://04
+	
+	disp_works_time_refresh();
     if(pro_t.key_input_model_timer_or_timing==works_time){
 	if(power_on_state() ==power_on && wifi_t.gTimer_get_beijing_time > 200 && (wifi_link_net_state()==1 && wifi_t.get_rx_auto_repeat_net_enable==0)){
 		wifi_t.beijing_time_flag =1;
@@ -248,6 +250,8 @@ static void RunWifi_Command_Handler(void)
 
 	case wifi_auto_repeat_link_cloud://06
 
+	disp_works_time_refresh();
+
 	if(wifi_t.gTimer_publish_dht11 >0){
 
 	switch(wifi_t.auto_link_login_tencent_cloud_flag){
@@ -279,6 +283,8 @@ static void RunWifi_Command_Handler(void)
 
 	case wifi_tencent_publish_dht11_data://07
 
+	disp_works_time_refresh();
+
 	if(power_on_state() == power_on && wifi_link_net_state()==1){
 
 	if(update_data_to_tencent_cloud_flag==0){
@@ -299,6 +305,7 @@ static void RunWifi_Command_Handler(void)
 	break;
 
 	case wifi_get_beijing_time://6
+	disp_works_time_refresh();
 
 
 		wifi_t.linking_tencent_cloud_doing =0;

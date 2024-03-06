@@ -521,12 +521,13 @@ void TFT_Disp_Humidity_Symbol_24_24(uint16_t x,uint16_t y)
 	*Return Ref:NO
 	*
 ****************************************************************************************/
-void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uint8_t num)
+void TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uint8_t num)
 {
-    uint16_t temp, t, tbit,mode,bc;
-    uint16_t x0=x;
-    mode =0;
+    uint8_t temp, t,mode,bc,tbit;
+    uint8_t x0=x;
+  
 	static uint16_t color;
+	  mode =0;
 
 	//for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
 	for(t = 0; t < 116; t++)
@@ -553,18 +554,7 @@ void TFT_Disp_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel,uin
 			}
 			else color = BLACK;
 			
-			#if 0
-			if(temp & 0x80){
-				if(sel==0)
-				  color = WHITE;
-				else
-				   color = BLACK;
-
-			}
-			else if(0 == mode)	color = BLACK;
-			else color = BLACK;
-			#endif 
-			TFT_DrawPoint(x, y,color );
+			TFT_DrawPoint(x, y,color);
 			
 			temp <<= 1;			
 			//y++; // 垂直扫描

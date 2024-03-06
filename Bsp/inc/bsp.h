@@ -84,6 +84,7 @@ typedef enum{
   pro_disp_and_set_temperature,
   pro_disp_wifi_led,
   pro_mode_key_fun,
+  pro_disp_works_or_timer_time,
   pro_wifi_init
   
 
@@ -183,6 +184,10 @@ typedef struct{
 
 extern PRO_T pro_t;
 
+
+extern void (*disp_works_time_refresh)(void);
+
+void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void));
 
 void bsp_Init(void);
 

@@ -107,6 +107,7 @@ int main(void)
   LCD_GPIO_Reset();
   TFT_BACKLIGHT_OFF();
   TFT_LCD_Init();
+  bsp_Init();
   
   //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
@@ -130,6 +131,8 @@ int main(void)
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
+	disp_works_time_refresh();
+	
  
 
 	#if 0

@@ -7,6 +7,7 @@ uint8_t update_step;
 uint8_t fan_continuce_run_flag;
 
 
+void (*disp_works_time_refresh)(void);
 
 static void Key_Speical_Power_Fun_Handler(void);
 static void Key_Speical_Mode_Fun_Handler(void);
@@ -29,6 +30,9 @@ static void TFT_Donnot_Set_Timer_Time(void);
 //static void DEC_Key_Fun(void);
 static void Key_Interrup_Handler(void);
 
+static void disp_works_time_default_fun(void);
+
+
 static uint16_t mode_key_long_flag;
 
 
@@ -50,7 +54,7 @@ void bsp_Init(void)
 {
 
    pro_t.mode_key_confirm_flag=0xff;
-  // Buzzer_Sound_Fun_Init();
+  Display_Works_Time_Refresh_Handler(disp_works_time_default_fun);
 
 
 }
@@ -74,6 +78,7 @@ void bsp_Idle(void)
        TFT_Display_Handler();
 
 	}
+
 	
 	/* --- 喂狗 */
     if(pro_t.gTimer_pro_feed_dog > 5){ //16s
@@ -421,8 +426,9 @@ static void TFT_Pocess_Command_Handler(void)
 	 case pro_disp_dht11_value: //1 //display works time + "temperature value " + "humidity value"
 
 	   Wifi_Fast_Led_Blink();
-	
 
+	   disp_works_time_refresh();
+	   
 	   if(gctl_t.gTimer_ctl_det_dth11 > 35 &&  pro_t.wifi_led_fast_blink_flag==0){
 	   	   gctl_t.gTimer_ctl_det_dth11 =0;
 		
@@ -438,6 +444,16 @@ static void TFT_Pocess_Command_Handler(void)
 	case pro_run_continue_two_hours: //02
 
 	  Wifi_Fast_Led_Blink();
+
+       disp_works_time_refresh();
+
+	 if(gctl_t.gTimer_ctl_disp_works_time> 4 && pro_t.key_input_model_timer_or_timing == works_time){//
+					gctl_t.gTimer_ctl_disp_works_time=0;
+
+				
+					//TFT_Display_WorksTime();
+					TFT_Only_Disp_Timing();
+            }
 
 	  switch(gctl_t.time_out_flag){
 
@@ -455,6 +471,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 	   case 1:
           Device_stop_Action_Fun();
+		  
 		  if(fan_continuce_run_flag ==1){
              if(fan_2_hours_stop==0){
 			 	fan_2_hours_stop=1;
@@ -511,11 +528,11 @@ static void TFT_Pocess_Command_Handler(void)
 					
 				}
 
-				if(pro_t.gTimer_pro_display_timer_timing > 5){
+				if(pro_t.gTimer_pro_display_timer_timing > 32){
 
 					pro_t.gTimer_pro_display_timer_timing=0;
 
-					//TFT_Disp_Set_TimerTime(0);
+				
 					TFT_Display_Timer_Timing_Value();
 				}
 
@@ -524,14 +541,35 @@ static void TFT_Pocess_Command_Handler(void)
 			case works_time:
 
 				if(gctl_t.gTimer_ctl_disp_second > 59){
+					
 					TFT_Display_WorksTime();
 				}
 				
-                 if(pro_t.gTimer_pro_display_timer_timing > 5){
+                // if(pro_t.gTimer_pro_display_timer_timing > 10){//
 
-					pro_t.gTimer_pro_display_timer_timing=0;
-					TFT_Display_WorksTime();
-                 }
+					
+					
+					do{
+					//TFT_Only_Disp_Timing_Hours();
+				    //HAL_Delay(200);
+				    //TFT_Display_WorksTime();
+				    //TFT_Only_Disp_Timing();
+				    TFT_Only_Disp_Timing_Hours();
+
+					}while(0);
+
+					do{
+
+					//TFT_Only_Disp_Timing_Minutes();
+					
+					 ///HAL_Delay(300);
+					 //TFT_Display_WorksTime();
+					 //TFT_Only_Disp_Timing();
+					 TFT_Only_Disp_Timing_Minutes();
+
+					}while(0);
+					// pro_t.gTimer_pro_display_timer_timing=0;
+               //  }
 				 
 				TFT_Donnot_Set_Timer_Time();
     
@@ -541,8 +579,8 @@ static void TFT_Pocess_Command_Handler(void)
 			case timer_set_time:
 
 			TFT_Disp_Set_TimerTime_Init();
-		
-
+		    
+             disp_works_time_refresh();
 			if(pro_t.gTimer_pro_set_timer_time > 4){
                     
 
@@ -582,6 +620,15 @@ static void TFT_Pocess_Command_Handler(void)
     case pro_disp_and_set_temperature:
 
        Wifi_Fast_Led_Blink();
+         disp_works_time_refresh();
+	
+          if(gctl_t.gTimer_ctl_disp_works_time> 4 && pro_t.key_input_model_timer_or_timing == works_time){//
+					gctl_t.gTimer_ctl_disp_works_time=0;
+
+				
+					//TFT_Display_WorksTime();
+					TFT_Only_Disp_Timing();
+            }
 
 	    switch(gctl_t.set_temperature_value_flag){
 
@@ -619,7 +666,7 @@ static void TFT_Pocess_Command_Handler(void)
 	break;
 
 	case pro_disp_wifi_led: //4
-	
+	       disp_works_time_refresh();
 		  if(wifi_link_net_state() ==0){
 		  
 			if(pro_t.mode_key_select_flag ==1){
@@ -666,7 +713,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
       // handler of wifi 
 	  case pro_wifi_init: //7
-	 
+	      disp_works_time_refresh();
 
        if(wifi_link_net_state() ==1 && wifi_t.smartphone_app_power_on_flag==0){
 	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud_init_ref ==0 ){
@@ -725,11 +772,23 @@ static void TFT_Pocess_Command_Handler(void)
 				 Device_Action_Publish_Handler();
 		   }
 		   TFT_DonnotDisp_Works_Time();
-		   pro_t.run_process_step=pro_disp_dht11_value;
+		  
 	
 
 
 	   }
+	   // pro_t.run_process_step=pro_disp_works_or_timer_time;
+
+		
+	  pro_t.run_process_step=pro_disp_dht11_value;
+
+	  break;
+
+
+	  case pro_disp_works_or_timer_time:
+
+          disp_works_time_refresh();
+	  pro_t.run_process_step=pro_disp_dht11_value;
 
 	  break;
 
@@ -1111,5 +1170,25 @@ static void TFT_Donnot_Set_Timer_Time(void)
     *Return Ref:NO
     *
 *********************************************************************************************************/
+void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void))
+{
+     
+   disp_works_time_refresh = works_time_handler;
+}
+
+static void disp_works_time_default_fun(void)
+{
+    if(pro_t.gPower_On == power_on){
+	if(gctl_t.gTimer_ctl_disp_works_time> 1 && pro_t.key_input_model_timer_or_timing == works_time){//
+
+		gctl_t.gTimer_ctl_disp_works_time=0;
+
+		TFT_Only_Disp_Timing();
+	}
+
+    }
+
+
+}
 
 

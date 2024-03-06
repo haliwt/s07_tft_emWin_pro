@@ -22,6 +22,7 @@ void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value);
 void TFT_Disp_Humidity_Value(uint8_t hum_value);
 
 
+void TFT_Only_Disp_Timing_Minutes(void);
 
 
 

@@ -234,8 +234,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       //control timer 
       gctl_t.gTimer_ctl_det_dth11 ++ ;
 	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
-
-
+      gctl_t.gTimer_ctl_disp_works_time++;
+ 
 	  
 	  //wifi counter 
 	 
