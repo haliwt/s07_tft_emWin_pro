@@ -170,8 +170,8 @@ static void RunWifi_Command_Handler(void)
 
 
 	case wifi_publish_update_tencent_cloud_data://04
-
-	if(power_on_state() ==power_on && wifi_t.gTimer_get_beijing_time > 180 && (wifi_link_net_state()==1 && wifi_t.get_rx_auto_repeat_net_enable==0 && pro_t.key_input_model_timer_or_timing==works_time_id)){
+    if(pro_t.key_input_model_timer_or_timing==works_time){
+	if(power_on_state() ==power_on && wifi_t.gTimer_get_beijing_time > 200 && (wifi_link_net_state()==1 && wifi_t.get_rx_auto_repeat_net_enable==0)){
 		wifi_t.beijing_time_flag =1;
 		wifi_t.gTimer_auto_detected_net_state_times =0;
 		wifi_t.gTimer_get_beijing_time=0;
@@ -182,6 +182,7 @@ static void RunWifi_Command_Handler(void)
 		
 
 
+	}
 	}
 
 	if(wifi_t.gTimer_publish_dht11 > 56){
@@ -207,9 +208,9 @@ static void RunWifi_Command_Handler(void)
 			gctl_t.disp_works_minutes = wifi_t.real_minutes;
 
 			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
-//			if(pro_t.key_input_model_timer_or_timing== works_time){
-//			       TFT_Only_Disp_Timing();
-//			}
+			// if(pro_t.key_input_model_timer_or_timing== works_time){
+			//        TFT_Only_Disp_Timing();
+			// }
 
 		}
 

@@ -536,14 +536,14 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"state\":1")){
            if(power_on_state() ==power_on){
-            gctl_t.model_AI_flag=works_time_id;
+            gctl_t.model_AI_flag=works_time;
 			wifi_t.response_wifi_signal_label = STATE_AI_MODEL_ITEM;
         	}
 		  
     }
     else if(strstr((char *)wifi_t.wifi_data,"state\":2")){
             if(power_on_state() ==power_on){
-            gctl_t.model_AI_flag=timer_time_id;
+            gctl_t.model_AI_flag=timer_time;
 			wifi_t.response_wifi_signal_label = STATE_TIMER_MODEL_ITEM;
             }
 			
@@ -739,17 +739,17 @@ void Json_Parse_Command_Fun(void)
 	  case STATE_TIMER_MODEL_ITEM: //display timer timing of value  
 	  if(power_on_state() ==power_on){
 	  	    buzzer_sound();
-	        gctl_t.model_AI_flag=timer_time_id;
+	        gctl_t.model_AI_flag=timer_time;
             MqttData_Publish_SetState(2); //timer model  = 2
 			HAL_Delay(50);
             //do someting
-			if(pro_t.key_input_model_timer_or_timing == timer_time_id){
+			if(pro_t.key_input_model_timer_or_timing == timer_time){
 				gctl_t.timer_timing_words_changed_flag++;
 				TFT_Disp_Set_TimerTime(0);
 			}
 			else{
      
-				pro_t.key_input_model_timer_or_timing=timer_set_time_id;
+				pro_t.key_input_model_timer_or_timing=timer_set_time;
 				pro_t.gTimer_pro_mode_key_timer =4;
 			}
 			
@@ -764,11 +764,11 @@ void Json_Parse_Command_Fun(void)
 	  case STATE_AI_MODEL_ITEM: //display works timing 
 	  	 if(power_on_state() ==power_on){
 		    buzzer_sound();
-		    gctl_t.model_AI_flag=works_time_id;
+		    gctl_t.model_AI_flag=works_time;
             MqttData_Publish_SetState(1); //beijing timing = 1
 			HAL_Delay(50);
 			//do something
-			 pro_t.key_input_model_timer_or_timing=works_time_id;//0
+			 pro_t.key_input_model_timer_or_timing=works_time;//0
 			 gctl_t.timing_words_changed_flag++;
 			 TFT_Display_WorksTime();
           
@@ -1053,7 +1053,7 @@ static void smartphone_app_timer_power_on_handler(void)
 		
 		HAL_Delay(300);//
 
-
+		pro_t.gTimer_pro_key_select_fun =0;
 	
 
        

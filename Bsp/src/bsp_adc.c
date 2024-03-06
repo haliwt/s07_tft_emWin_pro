@@ -5,7 +5,6 @@ static uint16_t Get_Adc_Channel(uint32_t ch) ;
 
 static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times);
 
-static void Ptc_Temperature_Compare_Value(void);
 
 /*****************************************************************
 *
