@@ -173,7 +173,7 @@ static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
 
 static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
-      do{
+     
       if(gctl_t.gTimer_ctl_disp_second > 59){
         gctl_t.gTimer_ctl_disp_second =0;
         gctl_t.disp_works_minutes++;
@@ -192,7 +192,7 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 		
 
    
-
+       __disable_irq();
 		if(default_hours_decade !=temp_decade_hours){
 			
 		   default_hours_decade =temp_decade_hours;
@@ -210,16 +210,10 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 	
 
 		}
+		__enable_irq();
 	
 
-      }while(0);
-
-		
-
-
-    
-
-	  temp_decade_minutes = gctl_t.disp_works_minutes/10;
+        temp_decade_minutes = gctl_t.disp_works_minutes/10;
 		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 		
 	
@@ -243,20 +237,6 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
 		__enable_irq();
 	
-	   
-
-	  
-	
-
-
-      
-	
-		 //   __enable_irq();
-
-		gctl_t.test_input_run_write_data ++;
-
-
-
 }
 
 void TFT_Only_Disp_Timing_Hours(void)
@@ -311,7 +291,7 @@ void TFT_Only_Disp_Timing_Hours(void)
 		
 
 
-		gctl_t.test_input_run_write_data ++;
+
 
 
 
