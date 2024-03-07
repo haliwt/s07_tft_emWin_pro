@@ -1164,7 +1164,7 @@ void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void))
 static void disp_works_time_default_fun(void)
 {
     if(pro_t.gPower_On == power_on){
-	if(gctl_t.gTimer_ctl_disp_works_time> 1 && pro_t.key_input_model_timer_or_timing == works_time){//
+	if(gctl_t.gTimer_ctl_disp_works_time> 0 && pro_t.key_input_model_timer_or_timing == works_time){//
 
 		gctl_t.gTimer_ctl_disp_works_time=0;
 
