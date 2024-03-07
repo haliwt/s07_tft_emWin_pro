@@ -216,14 +216,14 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
 		
 
-	 do{
+
     
 
 	  temp_decade_minutes = gctl_t.disp_works_minutes/10;
 		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 		
 	
-
+       __disable_irq();
 	    if(default_minutes_decade != temp_decade_minutes){
 			
 		   default_minutes_decade = temp_decade_minutes;
@@ -232,27 +232,25 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
 	    }
 
-		if(default_minutes_uint !=temp_unit_minutes ||(disp_unit_time < 5 && disp_unit_time !=0)){
+		if(default_minutes_uint !=temp_unit_minutes){
 			
 		   default_minutes_uint =temp_unit_minutes;
-		   disp_unit_time++;
+
 	  
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
 
 		}
+
+		__enable_irq();
 	
 	   
 
 	  
-	 }while(0);
+	
 
 
-	 if(disp_unit_time > 4 && disp_unit_time !=0){
-          disp_unit_time=0;
-
-
-
-	 }
+      
+	
 		 //   __enable_irq();
 
 		gctl_t.test_input_run_write_data ++;
