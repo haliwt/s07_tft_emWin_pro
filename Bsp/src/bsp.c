@@ -31,6 +31,8 @@ static void TFT_Donnot_Set_Timer_Time(void);
 static void Key_Interrup_Handler(void);
 
 static void disp_works_time_default_fun(void);
+static void Get_Beijing_Times(void);
+
 
 
 static uint16_t mode_key_long_flag;
@@ -541,29 +543,27 @@ static void TFT_Pocess_Command_Handler(void)
                 // if(pro_t.gTimer_pro_display_timer_timing > 10){//
 
 					
-					
-					do{
-					//TFT_Only_Disp_Timing_Hours();
-				    //HAL_Delay(200);
-				    //TFT_Display_WorksTime();
-				    //TFT_Only_Disp_Timing();
-				    TFT_Only_Disp_Timing_Hours();
+			if(wifi_t.get_beijing_time_success==1 && gctl_t.gTimer_ctl_disp_works_time> 0){
+				gctl_t.gTimer_ctl_disp_works_time=0;
+				Get_Beijing_Times();
 
-					}while(0);
+			}
+			else{
+				do{
+				
+			    TFT_Only_Disp_Timing_Hours();
 
-					do{
+				}while(0);
 
-					//TFT_Only_Disp_Timing_Minutes();
-					
-					 ///HAL_Delay(300);
-					 //TFT_Display_WorksTime();
-					 //TFT_Only_Disp_Timing();
-					 TFT_Only_Disp_Timing_Minutes();
+				do{
 
-					}while(0);
-					// pro_t.gTimer_pro_display_timer_timing=0;
-               //  }
-				 
+				
+				 TFT_Only_Disp_Timing_Minutes();
+
+				}while(0);
+		
+
+		    }
 				TFT_Donnot_Set_Timer_Time();
     
 			break;
@@ -1163,17 +1163,110 @@ void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void))
 
 static void disp_works_time_default_fun(void)
 {
-    if(pro_t.gPower_On == power_on){
-	if(gctl_t.gTimer_ctl_disp_works_time> 0 && pro_t.key_input_model_timer_or_timing == works_time){//
+      
+    static uint8_t beijing_flag;
 
-		gctl_t.gTimer_ctl_disp_works_time=0;
 
-		TFT_Only_Disp_Timing();
+	if(pro_t.gPower_On == power_on){
+		
+	if(wifi_t.get_beijing_time_success==1 && beijing_flag< 3){
+		
+		Get_Beijing_Times();
+
+		beijing_flag++;
+
+
 	}
+	else{
+		if(gctl_t.gTimer_ctl_disp_works_time> 0 && pro_t.key_input_model_timer_or_timing == works_time){//
 
+			gctl_t.gTimer_ctl_disp_works_time=0;
+
+			TFT_Only_Disp_Timing();
+		}
+
+	    }
     }
+
+
+	if(wifi_t.get_beijing_time_success==1 && gctl_t.gTimer_ctl_disp_works_time > 0){
+
+		beijing_flag=0;
+
+
+	}
 
 
 }
 
+
+static void Get_Beijing_Times(void)
+{
+  static  uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+  static uint8_t default_hours =0xff,default_minutes = 0xff; 
+  static uint8_t default_decade_hours=0xff,default_unit_hours = 0xff;
+  static uint8_t default_decade_minutes = 0xff,default_unit_minutes=0xff;
+  
+    temp_decade_hours = gctl_t.disp_works_hours /10;
+	temp_unit_hours = gctl_t.disp_works_hours % 10;
+
+	temp_decade_minutes = gctl_t.disp_works_minutes/10;
+	temp_unit_minutes = gctl_t.disp_works_minutes%10;
+
+	//gctl_t.timer_timing_words_changed_flag++ ; //表示要进入切换状态
+
+ 
+	//works time value
+	
+
+
+	 if(default_decade_hours != temp_decade_hours){
+		 default_decade_hours = temp_decade_hours;
+	    __disable_irq();
+	    TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,temp_decade_hours);
+		 __enable_irq();
+	 }
+	
+	
+	
+      if(default_unit_hours != temp_unit_hours){
+		  default_unit_hours = temp_unit_hours;
+		 __disable_irq();  
+			TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,temp_unit_hours);
+	
+		__enable_irq();
+		  
+	  }
+
+
+		
+
+ 
+	//display minutes numbers
+
+		
+    
+	if(default_decade_minutes != gctl_t.disp_works_minutes){
+		default_decade_minutes = gctl_t.disp_works_minutes;
+		__disable_irq();
+	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0,temp_decade_minutes);
+	
+		__enable_irq();
+		
+	}
+
+
+
+	if(default_unit_minutes != gctl_t.disp_works_minutes){
+		default_unit_minutes = gctl_t.disp_works_minutes;
+		__disable_irq();
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,temp_unit_minutes);
+	
+		__enable_irq();
+		
+
+	}
+	
+
+}
 

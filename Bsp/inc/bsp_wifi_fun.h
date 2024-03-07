@@ -59,6 +59,7 @@ typedef struct _WIFI_FUN{
 	uint8_t power_off_step;
 	
 	
+	
 	uint8_t esp8266_dynamic_reg_flag;
     uint8_t subscribe_flag;
 	uint8_t subscribe_rx_flag;
@@ -119,9 +120,12 @@ typedef struct _WIFI_FUN{
 	uint8_t real_seconds;
 	uint8_t restart_link_tencent_cloud ;
 	uint8_t received_data_from_tencent_cloud ;
+	
 	//beijing time
 	uint8_t set_beijing_time_flag;
 	uint8_t beijing_time_flag ;
+	
+	uint16_t get_beijing_time_success;
 
 	//auto link net
 

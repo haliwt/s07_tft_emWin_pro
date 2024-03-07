@@ -167,11 +167,11 @@ void TFT_Display_WorksTime(void)
 void TFT_Only_Disp_Timing(void)
 {
 
-static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
-static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
-static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
+	static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+	static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
+	static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
 
-static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
+	static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
      
       if(gctl_t.gTimer_ctl_disp_second > 59){
@@ -192,50 +192,59 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 		
 
    
-       __disable_irq();
+       
 		if(default_hours_decade !=temp_decade_hours){
 			
 		   default_hours_decade =temp_decade_hours;
-
+           __disable_irq();
 		   TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,default_hours_decade);
+			__enable_irq();
+				
 
 		}
+
+		
 
 		if(default_hours_uint !=temp_decade_hours){
 			
 		   default_hours_uint =temp_decade_hours;
 	
-	
+	 	__disable_irq();
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,default_hours_uint);
+	     __enable_irq();
 	
 
 		}
-		__enable_irq();
+
 	
 
         temp_decade_minutes = gctl_t.disp_works_minutes/10;
 		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 		
 	
-       __disable_irq();
+      
 	    if(default_minutes_decade != temp_decade_minutes){
 			
 		   default_minutes_decade = temp_decade_minutes;
-	
+	     __disable_irq();
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0, default_minutes_decade);
 
-	    }
+		__enable_irq();
+	
 
+	    }
 		if(default_minutes_uint !=temp_unit_minutes){
 			
 		   default_minutes_uint =temp_unit_minutes;
 
-	  
+	       __disable_irq();
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
+		
+			__enable_irq();
 
 		}
 
-		__enable_irq();
+		
 	
 }
 
@@ -247,17 +256,6 @@ void TFT_Only_Disp_Timing_Hours(void)
 	static uint8_t temp_decade_hours,temp_unit_hours;
 	static uint8_t  disp_hours =0xff;
 
-	if(gctl_t.gTimer_ctl_disp_second > 59){
-			   gctl_t.gTimer_ctl_disp_second =0;
-			   gctl_t.disp_works_minutes++;
-			   if(gctl_t.disp_works_minutes>59){
-				   gctl_t.disp_works_minutes=0;
-				   gctl_t.disp_works_hours++;
-				   if(gctl_t.disp_works_hours > 99){
-					   gctl_t.disp_works_hours=0;
-				   }
-			   }
-		  }
 
 	
 	    temp_decade_hours = gctl_t.disp_works_hours /10;
@@ -272,8 +270,10 @@ void TFT_Only_Disp_Timing_Hours(void)
 		if(default_hours_decade !=temp_decade_hours){
 			
 		   default_hours_decade =temp_decade_hours;
-
+           __disable_irq();
+		   iwdg_feed();
 		   TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,default_hours_decade);
+		   __enable_irq();
 
 		}
 
@@ -281,8 +281,10 @@ void TFT_Only_Disp_Timing_Hours(void)
 			
 		   default_hours_uint =temp_decade_hours;
 	
-	
+	    __disable_irq();
+		iwdg_feed();
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0, default_hours_uint);
+		__enable_irq();
 	
 
 		}
@@ -302,58 +304,34 @@ void TFT_Only_Disp_Timing_Minutes(void)
 
    static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
 
-	static uint8_t  temp_decade_minutes,temp_unit_minutes;
+	 uint8_t  temp_decade_minutes,temp_unit_minutes;
 	static uint8_t	disp_minutes = 0xff,disp_times_uint;
-
-
 	
-      if(gctl_t.gTimer_ctl_disp_second > 59){
-        gctl_t.gTimer_ctl_disp_second =0;
-        gctl_t.disp_works_minutes++;
-        if(gctl_t.disp_works_minutes>59){
-            gctl_t.disp_works_minutes=0;
-            gctl_t.disp_works_hours++;
-            if(gctl_t.disp_works_hours > 99){
-                gctl_t.disp_works_hours=0;
-            }
-        }
-    	}
-		
-		
-	
-			temp_decade_minutes = gctl_t.disp_works_minutes/10;
+      temp_decade_minutes = gctl_t.disp_works_minutes/10;
+	  temp_unit_minutes = gctl_t.disp_works_minutes%10;
 			
-	
-		//	__disable_irq();
-		
-		
-
-			if(default_minutes_decade != temp_decade_minutes){
+            if(default_minutes_decade != temp_decade_minutes){
 			
 		   		default_minutes_decade = temp_decade_minutes;
-	
+	            __disable_irq();
 				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0, default_minutes_decade);
+				__enable_irq();
 
 			}
 
-			temp_unit_minutes = gctl_t.disp_works_minutes%10;
+			
 
-			if(default_minutes_uint !=temp_unit_minutes ||  (disp_times_uint< 5 && disp_times_uint !=0) ){
+			if(default_minutes_uint !=temp_unit_minutes  ){
 					
 				   default_minutes_uint =temp_unit_minutes;
-				   disp_times_uint ++;
-			  
+				  
+			  __disable_irq();
 				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
+			  __enable_irq();
 
 			}
 
 
-			if(disp_times_uint > 4 &&  disp_times_uint !=0){
-
-                disp_times_uint =0;
-
-			}
-	
 	
 			
 			

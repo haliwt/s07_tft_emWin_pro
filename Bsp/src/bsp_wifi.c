@@ -213,6 +213,7 @@ static void RunWifi_Command_Handler(void)
 			// if(pro_t.key_input_model_timer_or_timing== works_time){
 			     //  TFT_Only_Disp_Timing();
 			// }
+			wifi_t.get_beijing_time_success ++;
 
 		}
 
