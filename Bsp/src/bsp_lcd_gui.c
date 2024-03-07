@@ -168,9 +168,12 @@ void TFT_Only_Disp_Timing(void)
 {
 
 static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
+static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
+
 static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 
-
+      do{
       if(gctl_t.gTimer_ctl_disp_second > 59){
         gctl_t.gTimer_ctl_disp_second =0;
         gctl_t.disp_works_minutes++;
@@ -188,46 +191,59 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 
 		
 
-        //__disable_irq();
-		if(disp_hours !=  gctl_t.disp_works_hours){
-		     disp_hours =  gctl_t.disp_works_hours;
+   
 
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,temp_decade_hours);
-	
-	
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,temp_unit_hours);
-	
+		if(default_hours_decade !=temp_decade_hours){
+			
+		   default_hours_decade =temp_decade_hours;
+
+		   TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,default_hours_decade);
 
 		}
 
-		
+		if(default_hours_uint !=temp_decade_hours){
+			
+		   default_hours_uint =temp_decade_hours;
+	
+	
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,default_hours_uint);
+	
+
+		}
+	
+
+      }while(0);
 
 		
-      if(gctl_t.gTimer_ctl_disp_second > 59){
-        gctl_t.gTimer_ctl_disp_second =0;
-        gctl_t.disp_works_minutes++;
-        if(gctl_t.disp_works_minutes>59){
-            gctl_t.disp_works_minutes=0;
-            gctl_t.disp_works_hours++;
-            if(gctl_t.disp_works_hours > 99){
-                gctl_t.disp_works_hours=0;
-            }
-        }
-    	}
+
+	 do{
+    
 
 	  temp_decade_minutes = gctl_t.disp_works_minutes/10;
 		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 		
-	   if(disp_minutes !=gctl_t.disp_works_minutes){
-		disp_minutes =gctl_t.disp_works_minutes;
 	
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0,temp_decade_minutes);
+
+	    if(default_minutes_decade != temp_decade_minutes){
+			
+		   default_minutes_decade = temp_decade_minutes;
+	
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0, default_minutes_decade);
+
+	    }
+
+		if(default_minutes_uint !=temp_unit_minutes){
+			
+		   default_minutes_uint =temp_unit_minutes;
 	  
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,temp_unit_minutes);
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
+
+		}
 	
 	   
 
-	   }
+	  
+	 }while(0);
 		 //   __enable_irq();
 
 		gctl_t.test_input_run_write_data ++;
@@ -239,38 +255,54 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 void TFT_Only_Disp_Timing_Hours(void)
 {
 
-//static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
-//static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
+    static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
 
 	static uint8_t temp_decade_hours,temp_unit_hours;
 	static uint8_t  disp_hours =0xff;
+
+	if(gctl_t.gTimer_ctl_disp_second > 59){
+			   gctl_t.gTimer_ctl_disp_second =0;
+			   gctl_t.disp_works_minutes++;
+			   if(gctl_t.disp_works_minutes>59){
+				   gctl_t.disp_works_minutes=0;
+				   gctl_t.disp_works_hours++;
+				   if(gctl_t.disp_works_hours > 99){
+					   gctl_t.disp_works_hours=0;
+				   }
+			   }
+		  }
 
 	
 	    temp_decade_hours = gctl_t.disp_works_hours /10;
 		temp_unit_hours = gctl_t.disp_works_hours % 10;
 
-//		temp_decade_minutes = gctl_t.disp_works_minutes/10;
-//		temp_unit_minutes = gctl_t.disp_works_minutes%10;
 
-        //__disable_irq();
+
+          //__disable_irq();
 		if(disp_hours !=  gctl_t.disp_works_hours){
 		     disp_hours =  gctl_t.disp_works_hours;
 
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,temp_decade_hours);
+		if(default_hours_decade !=temp_decade_hours){
+			
+		   default_hours_decade =temp_decade_hours;
+
+		   TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,default_hours_decade);
+
+		}
+
+		if(default_hours_uint !=temp_decade_hours){
+			
+		   default_hours_uint =temp_decade_hours;
 	
-		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,temp_unit_hours);
+	
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0, default_hours_uint);
+	
+
+		}
 
 		}
 		
-//	    if(disp_minutes !=gctl_t.disp_works_minutes){
-//			disp_minutes =gctl_t.disp_works_minutes;
-//	//	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
-//		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0,temp_decade_minutes);
-//	 
-//		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,temp_unit_minutes);
-//	 //   __enable_irq();
-//
-//	    }
+
 
 		gctl_t.test_input_run_write_data ++;
 
@@ -280,6 +312,8 @@ void TFT_Only_Disp_Timing_Hours(void)
 
 void TFT_Only_Disp_Timing_Minutes(void)
 {
+
+   static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
 
 	static uint8_t  temp_decade_minutes,temp_unit_minutes;
 	static uint8_t	disp_minutes = 0xff;
@@ -305,14 +339,26 @@ void TFT_Only_Disp_Timing_Minutes(void)
 	
 		//	__disable_irq();
 		
+		
+
+			if(default_minutes_decade != temp_decade_minutes){
 			
-			if(disp_minutes !=gctl_t.disp_works_minutes){
-				disp_minutes =gctl_t.disp_works_minutes;
-		//	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
-			TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0,temp_decade_minutes);
-		  
-			TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,temp_unit_minutes);
-			}
+		   default_minutes_decade = temp_decade_minutes;
+	
+				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0, default_minutes_decade);
+
+			    }
+
+				if(default_minutes_uint !=temp_unit_minutes){
+					
+				   default_minutes_uint =temp_unit_minutes;
+			  
+				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
+
+				}
+	
+	
+			
 			
 		//    __enable_irq();
 	
@@ -363,6 +409,19 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
    static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
    static uint8_t set_timer_hours=0xff,set_timer_minutes = 0xff,disp_timer_words=0xff;
 
+   
+	if(gctl_t.gTimer_ctl_disp_second > 59){
+			   gctl_t.gTimer_ctl_disp_second =0;
+			   gctl_t.disp_works_minutes++;
+			   if(gctl_t.disp_works_minutes>59){
+				   gctl_t.disp_works_minutes=0;
+				   gctl_t.disp_works_hours++;
+				   if(gctl_t.disp_works_hours > 99){
+					   gctl_t.disp_works_hours=0;
+				   }
+			   }
+		  }
+
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
 
@@ -401,13 +460,26 @@ void TFT_Disp_Set_TimerTime_Init(void)
 
    static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
    static uint8_t set_timer_hours=0xff,disp_timer_words=0xff;
-  
+
+   if(gctl_t.gTimer_ctl_disp_second > 59){
+			   gctl_t.gTimer_ctl_disp_second =0;
+			   gctl_t.disp_works_minutes++;
+			   if(gctl_t.disp_works_minutes>59){
+				   gctl_t.disp_works_minutes=0;
+				   gctl_t.disp_works_hours++;
+				   if(gctl_t.disp_works_hours > 99){
+					   gctl_t.disp_works_hours=0;
+				   }
+			   }
+		  }
 
     timer_decade_hours = gctl_t.gSet_timer_hours /10;
 	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
 
-	timer_decade_minutes=0;
-	timer_unit_minutes =0;
+
+
+	timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;
+    timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
 
 
     if(disp_timer_words != gctl_t.timer_timing_words_changed_flag){

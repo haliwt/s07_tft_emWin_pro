@@ -501,6 +501,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 case pro_disp_works_time://3 //display works times and timer timing .
 
 		Wifi_Fast_Led_Blink();
+	 disp_works_time_refresh();
 		switch(pro_t.key_input_model_timer_or_timing){
 
 			case timer_time: //1= timer_time 
@@ -620,7 +621,7 @@ static void TFT_Pocess_Command_Handler(void)
     case pro_disp_and_set_temperature:
 
        Wifi_Fast_Led_Blink();
-         disp_works_time_refresh();
+        disp_works_time_refresh();
 	
           if(gctl_t.gTimer_ctl_disp_works_time> 4 && pro_t.key_input_model_timer_or_timing == works_time){//
 					gctl_t.gTimer_ctl_disp_works_time=0;
@@ -645,7 +646,7 @@ static void TFT_Pocess_Command_Handler(void)
 		break;
 
 		case 2:
-		
+		disp_works_time_refresh();
         Ptc_Temperature_Compare_Value();
 
 		
@@ -777,10 +778,10 @@ static void TFT_Pocess_Command_Handler(void)
 
 
 	   }
-	   // pro_t.run_process_step=pro_disp_works_or_timer_time;
+	    pro_t.run_process_step=pro_disp_works_or_timer_time;
 
 		
-	  pro_t.run_process_step=pro_disp_dht11_value;
+	 // pro_t.run_process_step=pro_disp_dht11_value;
 
 	  break;
 
