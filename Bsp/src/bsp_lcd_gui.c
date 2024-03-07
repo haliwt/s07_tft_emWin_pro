@@ -171,7 +171,7 @@ static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_m
 static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
 static uint8_t default_hours_decade=0xff,default_hours_uint=0xff;
 
-static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
+static uint8_t  disp_hours =0xff, disp_minutes = 0xff,disp_unit_time=0;
 
       do{
       if(gctl_t.gTimer_ctl_disp_second > 59){
@@ -232,9 +232,10 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 
 	    }
 
-		if(default_minutes_uint !=temp_unit_minutes){
+		if(default_minutes_uint !=temp_unit_minutes ||(disp_unit_time < 5 && disp_unit_time !=0)){
 			
 		   default_minutes_uint =temp_unit_minutes;
+		   disp_unit_time++;
 	  
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
 
@@ -244,6 +245,14 @@ static uint8_t  disp_hours =0xff, disp_minutes = 0xff;
 
 	  
 	 }while(0);
+
+
+	 if(disp_unit_time > 4 && disp_unit_time !=0){
+          disp_unit_time=0;
+
+
+
+	 }
 		 //   __enable_irq();
 
 		gctl_t.test_input_run_write_data ++;
@@ -316,7 +325,7 @@ void TFT_Only_Disp_Timing_Minutes(void)
    static uint8_t  default_minutes_decade=0xff,default_minutes_uint=0xff;
 
 	static uint8_t  temp_decade_minutes,temp_unit_minutes;
-	static uint8_t	disp_minutes = 0xff;
+	static uint8_t	disp_minutes = 0xff,disp_times_uint;
 
 
 	
@@ -335,7 +344,7 @@ void TFT_Only_Disp_Timing_Minutes(void)
 		
 	
 			temp_decade_minutes = gctl_t.disp_works_minutes/10;
-			temp_unit_minutes = gctl_t.disp_works_minutes%10;
+			
 	
 		//	__disable_irq();
 		
@@ -343,19 +352,29 @@ void TFT_Only_Disp_Timing_Minutes(void)
 
 			if(default_minutes_decade != temp_decade_minutes){
 			
-		   default_minutes_decade = temp_decade_minutes;
+		   		default_minutes_decade = temp_decade_minutes;
 	
 				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0, default_minutes_decade);
 
-			    }
+			}
 
-				if(default_minutes_uint !=temp_unit_minutes){
+			temp_unit_minutes = gctl_t.disp_works_minutes%10;
+
+			if(default_minutes_uint !=temp_unit_minutes ||  (disp_times_uint< 5 && disp_times_uint !=0) ){
 					
 				   default_minutes_uint =temp_unit_minutes;
+				   disp_times_uint ++;
 			  
 				TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,default_minutes_uint);
 
-				}
+			}
+
+
+			if(disp_times_uint > 4 &&  disp_times_uint !=0){
+
+                disp_times_uint =0;
+
+			}
 	
 	
 			
