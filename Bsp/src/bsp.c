@@ -538,9 +538,10 @@ static void TFT_Pocess_Command_Handler(void)
 						pro_t.gPower_On = power_off;
 
 					}
+				   TFT_Disp_Set_TimerTime(0);
 				}
 
-				TFT_Disp_Set_TimerTime(0);
+				//TFT_Disp_Set_TimerTime(0);
 				TFT_DonnotDisp_Works_Time();
 			break;
 
@@ -555,6 +556,8 @@ static void TFT_Pocess_Command_Handler(void)
 			break;
 
 			case timer_set_time:
+
+			
 
 			if(pro_t.gTimer_pro_mode_key_timer > 3){
                     

@@ -44,7 +44,10 @@ extern const uint8_t font2424_timer_time[4][72];
 
 extern const uint8_t font_pic_time_value[10][116];
 
-extern const uint8_t font4848_works_time_value[11][144];
+//extern const uint8_t font4848_works_time_value[11][144];
+
+extern const uint8_t font_colon_symbol[1][144];
+
 
 
 
@@ -53,10 +56,7 @@ extern const uint8_t font2020_temp[2][60];
 
 extern const uint8_t font2020_humidity[2][60];
 
-//extern const uint8_t font90120_num[4][720];
 
-
-//extern const uint8_t font110110_num[4][770];
 
 extern const uint8_t font_pic_num[10][413];
 

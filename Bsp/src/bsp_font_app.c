@@ -873,7 +873,8 @@ void TFT_Disp_Time_Split_Symbol(uint16_t x,uint16_t y,uint8_t dat)
 	for(t = 0; t < 144; t++)	/*遍历打印所有像素点到LCD */
 	{   
 	
-		temp = font4848_works_time_value[10][t]; 
+		//temp = font4848_works_time_value[10][t]; 
+		  temp = font_colon_symbol[0][t];
 		
 		for(tbit = 0; tbit < 8; tbit++)	/* 打印一个像素点到液晶 */
 		{	
