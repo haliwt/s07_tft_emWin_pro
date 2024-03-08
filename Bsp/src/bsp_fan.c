@@ -22,7 +22,7 @@ void Fan_Stop(void)
 }
 /********************************************************************************************
 	*
-	*Function Name:void Ptc_Pro_Handler(void)
+	*Function Name:void Temperature_Ptc_Pro_Handler(void)
 	*Function: 
 	*Input Ref:NO
 	*Return Ref:NO

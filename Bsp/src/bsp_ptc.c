@@ -40,13 +40,13 @@ void Ptc_OnOff_Handler(void)
 
 /********************************************************************************************
 	*
-	*Function Name:void Ptc_Pro_Handler(void)
+	*Function Name:void Temperature_Ptc_Pro_Handler(void)
 	*Function: 
 	*Input Ref:NO
 	*Return Ref:NO
 	*
 ********************************************************************************************/
-void Ptc_Pro_Handler(void)
+void Temperature_Ptc_Pro_Handler(void)
 {
    switch(gctl_t.ptc_warning){
 
@@ -136,6 +136,7 @@ void Ptc_Pro_Handler(void)
 			   pro_t.gTimer_pro_temp_delay= 65;
 			   pro_t.mode_key_confirm_flag = 0xff;
 			   gctl_t.gSet_temperature_value_flag= disp_set_temp_value_item;
+			   pro_t.gTimer_pro_tft =30; //at once display sensor of temperature value 
 
 		   }
 

@@ -20,7 +20,7 @@ typedef enum{
 
 typedef enum{
 
-   ptc_fun=0,
+   ptc_fun=0x01,
    plasma_fun,
    rat_fun
 
@@ -36,6 +36,7 @@ typedef struct _bsp_ctl{
 	uint8_t ptc_flag;
 	uint8_t plasma_flag;
 	uint8_t ultrasonic_flag;
+	uint8_t mode_key_long_time_flag;
    
 
 	uint8_t ptc_warning;

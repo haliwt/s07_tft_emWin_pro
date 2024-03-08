@@ -6,30 +6,20 @@ uint8_t led_blink_times;
 uint8_t update_step;
 uint8_t fan_continuce_run_flag;
 
-
-
 static void Key_Speical_Power_Fun_Handler(void);
 static void Key_Speical_Mode_Fun_Handler(void);
-
-
-
 static void mode_key_fun_handler(void);
-
-
-
 static void TFT_Pocess_Command_Handler(void);
 
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
 
-
-static void TFT_Donnot_Set_Timer_Time(void);
 //static void ADD_Key_Fun(void);
 //static void DEC_Key_Fun(void);
 static void Key_Interrup_Handler(void);
 
-static uint16_t mode_key_long_flag;
+
 
 
 void bsp_Init(void);
@@ -124,10 +114,7 @@ void TFT_Process_Handler(void)
 		break;
 
 	case power_off:
-
-	
-   	
-   	if(pro_t.power_off_flag == 1){
+	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
 	    wifi_t.power_off_step=0; 
 	    fan_continuce_flag =1;
@@ -307,8 +294,8 @@ static void Key_Speical_Mode_Fun_Handler(void)
 		pro_t.mode_key_confirm_flag = mode_key_select;
 	    pro_t.mode_key_select_flag =1;
 		gctl_t.select_main_fun_numbers++; // 0,1,2
-		if(gctl_t.select_main_fun_numbers > 2){
-		  gctl_t.select_main_fun_numbers = 0;
+		if(gctl_t.select_main_fun_numbers > 3){
+		  gctl_t.select_main_fun_numbers = 1;
 		}
 		
         
@@ -334,42 +321,8 @@ static void mode_key_fun_handler(void)
 
   switch(pro_t.mode_key_confirm_flag){
 
-//      case mode_key_temp:
-//
-//          if(pro_t.gTimer_pro_mode_key_timer < 4){
-//		  	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-//          }
-//		  else{
-//
-//                  if(pro_t.gTimer_pro_set_tem_value_blink < 5){
-//
-//					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
-//
-//
-//				  }
-//				  else{
-//
-//					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
-//                    pro_t.gTimer_pro_set_tem_value_blink=0;
-//                    led_blink_times++;
-//				  }
-//
-//                  if(led_blink_times ==1){
-//				  	led_blink_times=0;
-//					  pro_t.mode_key_confirm_flag = 0xff;
-//					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
-//					  pro_t.set_temperature_value_flag= 1;
-//					  
-//
-//                  }
-//
-//			}
-//			   
-//			
-//			break;
 
-
-			case mode_key_select:
+             case mode_key_select:
 
 		     if(pro_t.gTimer_pro_mode_key_timer < 4){ //exit of rule
 
@@ -388,7 +341,7 @@ static void mode_key_fun_handler(void)
 		   break;
 
 
-		   case mode_key_confirm:
+		   case mode_key_confirm: //as "+" and "-" key  confirm ation
 			    Device_Action_Led_OnOff_Handler();
                 Mode_Key_Confirm_Fun();
 				pro_t.mode_key_confirm_flag = 0xff;
@@ -412,11 +365,7 @@ static void mode_key_fun_handler(void)
 static void TFT_Pocess_Command_Handler(void)
 {
    
-	static uint8_t timer_blink_times,fan_2_hours_stop;
-
-  
-
-   if(power_on_state() == power_on){
+	if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
 
@@ -478,116 +427,18 @@ static void TFT_Pocess_Command_Handler(void)
 	 case pro_disp_works_time: //display works times and timer timing .
 
 		Wifi_Fast_Led_Blink();
-		switch(pro_t.timer_mode_flag){
-
-			case timer_time: //timer_time 
-				if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
-					gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-
-                    gctl_t.gSet_timer_minutes --;
-
-					if(gctl_t.gSet_timer_minutes <0){
-					   gctl_t.gSet_timer_minutes =59;
-                       gctl_t.gSet_timer_hours --;
-					   
-
-					}
-					if(gctl_t.gSet_timer_hours < 0){
-
-						pro_t.gPower_On = power_off;
-						pro_t.power_off_flag=1;
-					    pro_t.run_process_step=0xff;
-
-					}
-				   TFT_Disp_Set_TimerTime(0);
-				}
-
-				//TFT_Disp_Set_TimerTime(0);
-				TFT_DonnotDisp_Works_Time();
-			break;
-
-			case works_time:
-
-			if(gctl_t.gTimer_ctl_disp_second > 59){
-				TFT_Display_WorksTime();
-			}
-
-			TFT_Donnot_Set_Timer_Time();
-    
-			break;
-
-			case timer_set_time:
-
+	
+	
+	    TimeTimer_Pro_Handler();
 			
 
-			if(pro_t.gTimer_pro_mode_key_timer > 3){
-                    
-                    if(pro_t.gTimer_pro_set_timer_time < 6){
-					     TFT_Disp_Set_TimerTime(1);//1-don't display numbers 0-display numbers
-                    }
-					else {
-
-						TFT_Disp_Set_TimerTime(0); //1-don't display numbers, 0-display numbers //turn off disp timer time
-                        timer_blink_times++;
-					    
-					}
-					
-			        if(timer_blink_times > 0 && mode_key_long_flag >0){
-						timer_blink_times =0;
-						if(gctl_t.gSet_timer_hours >0 ){
-
-							pro_t.timer_mode_flag = timer_time;
-							pro_t.mode_key_confirm_flag =0xff;
-							gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-							gctl_t.timer_time_define_flag = 1;
-							gctl_t.gSet_timer_minutes =0;
-							mode_key_long_flag=0;
-							
-							
-							
-
-						}
-						else{
-							mode_key_long_flag=0;
-							gctl_t.timer_time_define_flag = 0;
-							pro_t.mode_key_confirm_flag =0xff;
-							pro_t.timer_mode_flag = works_time;
-						    TFT_Display_WorksTime();
-							
-						  
-
-						}
-					}
-
-					if(timer_blink_times > 0 && mode_key_long_flag ==0){ //add key and dec key don't be pressed key
-						timer_blink_times =0;
-						if(gctl_t.timer_time_define_flag ==1){
-							pro_t.timer_mode_flag = timer_time;
-							pro_t.mode_key_confirm_flag =0xff;
-						   
-
-						}
-						else{
-							pro_t.mode_key_confirm_flag =0xff;
-							pro_t.timer_mode_flag = works_time;
-							TFT_Display_WorksTime();
-						}
-					}
-
-			}
-				
-			TFT_DonnotDisp_Works_Time();
-					
-
-			break;
-		}
 		pro_t.run_process_step=pro_set_temperature;
 
 
     case pro_set_temperature:
 
 
-	   Ptc_Pro_Handler();
+	   Temperature_Ptc_Pro_Handler();
 		
     
       pro_t.run_process_step=pro_disp_wifi_led;
@@ -730,7 +581,7 @@ static void Power_On_Fun(void)
      pro_t.timer_mode_flag=works_time;
 	 gctl_t.gSet_timer_hours =0;
 	 gctl_t.gSet_timer_minutes =0;
-	 mode_key_long_flag=0;
+	 gctl_t.mode_key_long_time_flag=0;
 
 
 
@@ -835,10 +686,10 @@ void ADD_Key_Fun(void)
 
 		case mode_key_timer_time:
            pro_t.buzzer_sound_flag = 1;
-			mode_key_long_flag++;
+			gctl_t.mode_key_long_time_flag++;
 			gctl_t.gSet_timer_minutes=0;
 			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
-			if(gctl_t.gSet_timer_hours  > 23){ //if(pro_t.dispTime_minutes > 59){
+			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
 
 			gctl_t.gSet_timer_hours =0;//pro_t.dispTime_hours =0;
 
@@ -899,12 +750,12 @@ void DEC_Key_Fun(void)
 			case mode_key_timer_time: //timer timing set "decrease -down"
 			   
 			    pro_t.buzzer_sound_flag = 1;
-	            mode_key_long_flag++;
+	            gctl_t.mode_key_long_time_flag++;
 				gctl_t.gSet_timer_minutes=0;
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
 				if(gctl_t.gSet_timer_hours  < 0){//if(pro_t.dispTime_minutes < 0){
 
-				    gctl_t.gSet_timer_hours  =23;//pro_t.dispTime_hours --;
+				    gctl_t.gSet_timer_hours  =24;//pro_t.dispTime_hours --;
 					
 					
 				}
@@ -965,40 +816,7 @@ wifi_led: if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
   }
 }
 	
-/**********************************************************************************************************
-    **
-    *Function Name:TFT_Donnot_Set_Timer_Time();
-    *Function : 记录设置的定时时间，
-    *Input Ref:
-    *Return Ref:NO
-    *
-*********************************************************************************************************/
-static void TFT_Donnot_Set_Timer_Time(void)
-{
-    if(gctl_t.timer_time_define_flag == 1){
 
-	if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
-		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-
-		gctl_t.gSet_timer_minutes --;
-
-		if(gctl_t.gSet_timer_minutes <0){
-		gctl_t.gSet_timer_minutes =59;
-		gctl_t.gSet_timer_hours --;
-
-
-		}
-		if(gctl_t.gSet_timer_hours < 0){
-
-			pro_t.gPower_On = power_off;
-
-		}
-
-	}
-
-   }
-
-}
 /**********************************************************************************************************
     **
     *Function Name:TFT_Donnot_Set_Timer_Time();

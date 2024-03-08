@@ -58,16 +58,7 @@
 
 
 
-typedef enum TIMING_T{
 
-   works_time,
-   timer_time,
-   timer_set_time,
-   timing_success ,
-   /// @brief ：select function "ptc,kill,rat"
-   fun_selection
-   
-}timing_t;
 
 typedef enum set_temp{
 

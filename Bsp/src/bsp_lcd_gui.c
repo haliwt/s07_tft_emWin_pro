@@ -52,7 +52,8 @@ void TFT_Display_Handler(void)
 ***********************************************************************************************/
 void TFT_Display_Temp_Symbol(void)
 {
-   TFT_Disp_Temp_Symbol_24_24(130,40); //temp symbol 
+   //TFT_Disp_Temp_Symbol_24_24(130,40); //temp symbol 
+   TFT_Disp_Temp_Symbol_24_24(123,40); //temp symbol “°C”
 #if TFT_DISP_TEMP_24
 	TFT_Disp_Temp_24_24_onBlack(122,10,2); //temp symbol 
 
@@ -76,6 +77,7 @@ void TFT_Display_Humidity_Symbol(void)
 {
 
     TFT_Disp_Humidity_Symbol_24_24(292,40);//(286,40);
+    TFT_Disp_Humidity_Symbol_24_24(285,40);//(286,40);//humidity symbol %
     
 #if TFT_DISP_TEMP_24 
 	TFT_Disp_Humidity_24_24_onBlack(286,10,2); //humidity symbol %
@@ -180,7 +182,7 @@ static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_m
 void TFT_DonnotDisp_Works_Time(void)
 {
 
-  
+   
 	if(gctl_t.gTimer_ctl_disp_second > 59){
 		   gctl_t.gTimer_ctl_disp_second =0;
 		   gctl_t.disp_works_minutes++;

@@ -687,10 +687,16 @@ void Mode_Key_Select_Fun(void)
    }
 
 }
+/**************************************************************************
+ * 
+ * Function Name: void Mode_Key_Confirm_Fun(void)
+ * Function : "+" and "-" of key as confirm of key be used to 
+ * Input Ref:NO
+ * Return Ref:NO
+ * 
+**************************************************************************/
 void Mode_Key_Confirm_Fun(void)
 {
-
-
    Device_Action_Led_OnOff_Handler();
    switch(gctl_t.select_main_fun_numbers){
 
@@ -700,12 +706,19 @@ void Mode_Key_Confirm_Fun(void)
 				LED_PTC_ICON_ON(); 
 			    Ptc_On();
 				gctl_t.ptc_flag = 1;
-
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 		    }
 			else{
 				LED_PTC_ICON_OFF() ;
 				Ptc_Off();
 				gctl_t.ptc_flag = 0;
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 
 			}
 			
@@ -720,41 +733,45 @@ void Mode_Key_Confirm_Fun(void)
 				gctl_t.plasma_flag=1;
 			     LED_KILL_ICON_ON() ;
 			      Plasma_On();
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 
 	        }
      	    else{
 			  gctl_t.plasma_flag=0;
 			  LED_KILL_ICON_OFF() ;
 			  Plasma_Off();
+			  gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			  }
 
      	    }
-			
-	 
-     
-       
 	  break;
 
-	  case rat_fun: //cat
-
-	  //ULTRSONIC ICO LED
+	  case rat_fun: //ball cat-black
 
 	   if(gctl_t.ultrasonic_flag ==0){ //30x10ms=300ms
 	   	    gctl_t.ultrasonic_flag=1;
 			LED_RAT_ICON_ON(); 
 		    Ultrasonic_Pwm_Output();
+			gctl_t.select_main_fun_numbers--;
+			if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			}
 	   	}
 		else{	
 		   gctl_t.ultrasonic_flag=0;
 		   LED_RAT_ICON_OFF();
 		   Ultrasonic_Pwm_Stop();
+		   gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			}
 		}
-	   
-	  
-	  
-	
-
-
-	  break;
+	   break;
 
 	 }
    
