@@ -32,6 +32,8 @@
 #include "bsp_tft_font.h"
 #include "bsp_font.h"
 #include "bsp_font_app.h"
+#include "bsp_split_time.h"
+
 
 
 //wifi
@@ -67,6 +69,16 @@ typedef enum TIMING_T{
    
 }timing_t;
 
+typedef enum set_temp{
+
+   normal_disp_item,
+   disp_set_temp_value_item,
+   set_temp_value_item,
+   
+
+
+}set_temp_item;
+
 typedef enum{
   mode_key_temp,
   mode_key_select ,
@@ -74,6 +86,15 @@ typedef enum{
   mode_key_timer_time
 
 }mode_key_state;
+
+
+typedef enum _ptc_warning{
+
+    ptc_no_warning,
+	ptc_waning
+
+
+}waning_t;
 
 typedef enum{
 
@@ -149,7 +170,7 @@ typedef struct{
 
   	//timer timing function
   	uint8_t gTimer_pro_feed_dog;
-	uint8_t gTimer_pro_temp ;
+
 	uint8_t gTimer_pro_temp_delay ;
 	
 	
@@ -159,7 +180,7 @@ typedef struct{
 
   uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
-  uint8_t gTimer_pro_key_select_fun;
+
 	uint8_t gTime_pro_run_voice_time;
 	uint8_t gTimer_pro_tft;
 	uint8_t gTimer_pro_time_split_symbol;

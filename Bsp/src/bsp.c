@@ -10,7 +10,7 @@ uint8_t fan_continuce_run_flag;
 
 static void Key_Speical_Power_Fun_Handler(void);
 static void Key_Speical_Mode_Fun_Handler(void);
-static void Ptc_Temperature_Compare_Value(void);
+
 
 
 static void mode_key_fun_handler(void);
@@ -163,7 +163,7 @@ void TFT_Process_Handler(void)
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	
-	TFT_DonnotDisp_Works_Time();
+	Power_Off_Retain_Beijing_Time();
 	
 	Breath_Led();
 
@@ -264,10 +264,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			 //pro_t.gKey_value = power_key_id;
 			 buzzer_sound();
 			 pro_t.power_off_flag=1;
-			// TFT_BACKLIGHT_OFF();
-		    // Power_Off_Fun();
 			
-            // wifi_t.power_off_step=0; 
 	        pro_t.long_key_flag =0;
 			 
 			pro_t.gPower_On = power_off;   
@@ -436,7 +433,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 
          pro_t.run_process_step=1;
-		 pro_t.gTimer_pro_key_select_fun =10;
+	
 		 pro_t.gTimer_pro_tft = 30;
 
 		TFT_BACKLIGHT_ON();
@@ -471,48 +468,10 @@ static void TFT_Pocess_Command_Handler(void)
 	   
 	case pro_run_main_fun: //02
 	
-      pro_t.run_process_step=0xf2;
+   
 	  Wifi_Fast_Led_Blink();
 
-	  switch(gctl_t.time_out_flag){
-
-	  	case 0:
-		
-	      if(pro_t.gTimer_pro_key_select_fun > 8 ){ //8s
-			 pro_t.gTimer_pro_key_select_fun =0;
-			
-			 Wifi_Fast_Led_Blink();
-             fan_2_hours_stop=0;
-			 Device_Action_Handler();
-             
-	      }
-	   break;
-
-	   case 1:
-          Device_stop_Action_Fun();
-		  if(fan_continuce_run_flag ==1){
-             if(fan_2_hours_stop==0){
-			 	fan_2_hours_stop++;
-                pro_t.gTimer_pro_fan=0;
-
-			 }
-
-			 if(pro_t.gTimer_pro_fan < 61 && fan_2_hours_stop==1){
-
-                   Fan_Run();
-			 }
-			 else{
-
-				 fan_2_hours_stop++;
-				 Fan_Stop();
-
-			 }
-
-		  }
-	        
-
-	   break;
-	  }
+	   Fan_Pro_Handler();
 	    pro_t.run_process_step=pro_disp_works_time;
 	 break;
 
@@ -536,6 +495,8 @@ static void TFT_Pocess_Command_Handler(void)
 					if(gctl_t.gSet_timer_hours < 0){
 
 						pro_t.gPower_On = power_off;
+						pro_t.power_off_flag=1;
+					    pro_t.run_process_step=0xff;
 
 					}
 				   TFT_Disp_Set_TimerTime(0);
@@ -583,6 +544,7 @@ static void TFT_Pocess_Command_Handler(void)
 							mode_key_long_flag=0;
 							
 							
+							
 
 						}
 						else{
@@ -591,6 +553,7 @@ static void TFT_Pocess_Command_Handler(void)
 							pro_t.mode_key_confirm_flag =0xff;
 							pro_t.timer_mode_flag = works_time;
 						    TFT_Display_WorksTime();
+							
 						  
 
 						}
@@ -605,9 +568,9 @@ static void TFT_Pocess_Command_Handler(void)
 
 						}
 						else{
-						pro_t.mode_key_confirm_flag =0xff;
-						pro_t.timer_mode_flag = works_time;
-						TFT_Display_WorksTime();
+							pro_t.mode_key_confirm_flag =0xff;
+							pro_t.timer_mode_flag = works_time;
+							TFT_Display_WorksTime();
 						}
 					}
 
@@ -622,11 +585,12 @@ static void TFT_Pocess_Command_Handler(void)
 
 
     case pro_set_temperature:
-		
-        Ptc_Temperature_Compare_Value();
 
-	
-	    pro_t.run_process_step=pro_disp_wifi_led;
+
+	   Ptc_Pro_Handler();
+		
+    
+      pro_t.run_process_step=pro_disp_wifi_led;
 
 	break;
 
@@ -722,19 +686,9 @@ static void TFT_Pocess_Command_Handler(void)
 	       pro_t.run_process_step=pro_disp_dht11_value;
 	        wifi_t.runCommand_order_lable = wifi_publish_update_tencent_cloud_data;
       }
-
-	  if( update_step==5){
-	  	  pro_t.run_process_step=pro_disp_dht11_value;
-		  
-	   }
       }
-	   else{
-
-		   pro_t.run_process_step=pro_disp_dht11_value;
-	
-
-
-	   }
+	  
+	  pro_t.run_process_step=pro_disp_dht11_value;
 
 	  break;
 
@@ -936,11 +890,13 @@ void DEC_Key_Fun(void)
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
+			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
 
 			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
+			   
 			    pro_t.buzzer_sound_flag = 1;
 	            mode_key_long_flag++;
 				gctl_t.gSet_timer_minutes=0;
@@ -959,6 +915,7 @@ void DEC_Key_Fun(void)
 
 			 case mode_key_select:
 			 	pro_t.buzzer_sound_flag = 1;
+			
 				pro_t.mode_key_confirm_flag = mode_key_confirm;
 			break;
 
@@ -967,78 +924,8 @@ void DEC_Key_Fun(void)
 	   	  }
 		}
 }
-/**********************************************************************************************************
-    **
-    *Function Name:static void Ptc_Temperature_Compare_Value(void)
-    *Function : 
-    *Input Ref:lightNum--LED ,filterNum -filter number, unionNum - smart menu number
-    *Return Ref:NO
-    *
-*********************************************************************************************************/
-static void Ptc_Temperature_Compare_Value(void)
-{
-   
-      switch(gctl_t.gSet_temperature_value_flag){
-
-      case 1:
-	  
-	    if(pro_t.gTimer_pro_temp_delay> 61 && gctl_t.ptc_warning==0){
-               pro_t.gTimer_pro_temp_delay =0;
-		 
-		  
-		  if(set_temp_value() <= dht11_temp_value()|| dht11_temp_value() >40){//envirment temperature
-	  
-				gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;
-			    Ptc_Off();
-		        LED_PTC_ICON_OFF();
-                 
-
-            }
-			else if((set_temp_value() -2) > dht11_temp_value()){
-	  
-		         gctl_t.ptc_flag = 1;//run_t.gDry = 1;
-		       //  Ptc_On();
-			     LED_PTC_ICON_ON();
-			    
-            }
-				 
-	   }
-	
-       break;
 
 
-       case 0:
-           
-           if(pro_t.gTimer_pro_temp_delay > 66  && gctl_t.ptc_warning==0 ){ //WT.EDIT 2023.07.27 over 40 degree shut of ptc off
-                pro_t.gTimer_pro_temp_delay=0;
-
-             if(dht11_temp_value() >40){//envirment temperature
-               
-                gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;
-			    Ptc_Off();
-		        LED_PTC_ICON_OFF();
-              
-                
-           
-               }
-               else if(dht11_temp_value() <38){
-               
-				 gctl_t.ptc_flag = 1;//run_t.gDry = 1;
-		       //  Ptc_On();
-			     LED_PTC_ICON_ON();
-                
-                
-                 
-                }
-
-            }
-          
-
-        break;
-        
-     }
-
-}
 /**********************************************************************************************************
     **
     *Function Name:void Power_Key_Detected(void)

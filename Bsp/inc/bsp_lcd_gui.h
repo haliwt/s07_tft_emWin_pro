@@ -55,6 +55,7 @@ void TFT_Only_Disp_Timing(void);
 void TFT_Disp_Set_TimerTime(uint8_t bc);
 void TFT_Disp_Set_TimerTime_Init(void);
 
+void Power_Off_Retain_Beijing_Time(void);
 
 
 void TFT_DonnotDisp_Works_Time(void);

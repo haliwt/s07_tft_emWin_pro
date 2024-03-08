@@ -94,6 +94,7 @@ static void RunWifi_Command_Handler(void)
 {
   
    static uint8_t  update_data_to_tencent_cloud_flag;
+   static uint8_t receive_beijing_time;
 
 
    switch(wifi_t.runCommand_order_lable){
@@ -171,7 +172,7 @@ static void RunWifi_Command_Handler(void)
 
 	case wifi_publish_update_tencent_cloud_data://04
 
-	if(power_on_state() ==power_on && wifi_t.gTimer_get_beijing_time > 180 && (wifi_link_net_state()==1 && wifi_t.get_rx_auto_repeat_net_enable==0)){
+	if(power_on_state() ==power_on && wifi_t.gTimer_get_beijing_time > 200 && (wifi_link_net_state()==1 && wifi_t.get_rx_auto_repeat_net_enable==0)){
 		wifi_t.beijing_time_flag =1;
 		wifi_t.gTimer_auto_detected_net_state_times =0;
 		wifi_t.gTimer_get_beijing_time=0;
@@ -195,11 +196,18 @@ static void RunWifi_Command_Handler(void)
 	if(wifi_t.real_hours < 25 && wifi_t.real_minutes < 61 && beijing_step ==3){
 
 		beijing_step ++;
-		gctl_t.disp_works_hours   = wifi_t.real_hours;
+		if(receive_beijing_time==0){
 
-		gctl_t.disp_works_minutes = wifi_t.real_minutes;
+			 receive_beijing_time++;
 
-		gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
+	     }
+		else{
+			gctl_t.disp_works_hours   = wifi_t.real_hours;
+
+			gctl_t.disp_works_minutes = wifi_t.real_minutes;
+
+			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
+		}
 		
 
 	}

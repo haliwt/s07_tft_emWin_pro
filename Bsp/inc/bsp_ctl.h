@@ -68,6 +68,8 @@ typedef struct _bsp_ctl{
    uint8_t gTimer_ctl_set_timer_time_senconds;
    uint8_t gTimer_ctl_select_led;
    uint8_t gTimer_ctl_total_continue_time;
+   uint8_t gTimer_ctl_ptc_adc_times;
+   uint8_t gTimer_ctl_fan_adc_times ;
    
 
 }bsp_ctl;
@@ -132,6 +134,8 @@ void Device_Action_Led_OnOff_Handler(void);
 
 void Device_stop_Action_Fun(void);
 void Device_NoAction_Power_Off(void);
+
+void Device_Action_No_Wifi_Handler(void);
 
 
 #endif 

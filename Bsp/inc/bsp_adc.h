@@ -3,7 +3,7 @@
 #include "main.h"
 
 
-void Judge_PTC_Temperature_Value(void);
+
 void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times);
 
 

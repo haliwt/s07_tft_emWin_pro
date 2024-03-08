@@ -27,8 +27,8 @@ void TFT_Display_Handler(void)
 
 	TFT_Display_Humidity_Symbol();
 	
-	lcd_draw_rectangle(157,35,163,110,WHITE);
-	TFT_St7789_FillBlock(157,35,6,75,WHITE);
+	//lcd_draw_rectangle(157,35,163,110,WHITE);  //display veritcal "I"
+	//TFT_St7789_FillBlock(157,35,6,75,WHITE);
 
 	TFT_Display_WorksTime();
 
@@ -179,6 +179,8 @@ static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_m
 
 void TFT_DonnotDisp_Works_Time(void)
 {
+
+  
 	if(gctl_t.gTimer_ctl_disp_second > 59){
 		   gctl_t.gTimer_ctl_disp_second =0;
 		   gctl_t.disp_works_minutes++;
@@ -189,8 +191,8 @@ void TFT_DonnotDisp_Works_Time(void)
 				   gctl_t.disp_works_hours=0;
 			   }
 		   }
-	  }
-
+	 }
+   
 	if(gctl_t.gTimer_ctl_total_continue_time > 119 && gctl_t.gTimer_ctl_total_continue_time < 131){
 
 	      gctl_t.time_out_flag =1;
@@ -203,6 +205,35 @@ void TFT_DonnotDisp_Works_Time(void)
 	}
 
 }
+
+/********************************************************************************
+ * 
+ * Function Name: static void TFT_Disp_Set_TimerTime(void)
+ * Function: set timer time of TFT of numbers blink.
+ * Input Ref: bc : 1-don't display numbers, 0-display numbers
+ * Return Ref:
+ * 
+*********************************************************************************/
+void Power_Off_Retain_Beijing_Time(void)
+{
+
+   if(wifi_link_net_state()==1){
+	if(gctl_t.gTimer_ctl_disp_second > 59){
+		   gctl_t.gTimer_ctl_disp_second =0;
+		   gctl_t.disp_works_minutes++;
+		   if(gctl_t.disp_works_minutes>59){
+			   gctl_t.disp_works_minutes=0;
+			   gctl_t.disp_works_hours++;
+			   if(gctl_t.disp_works_hours > 99){
+				   gctl_t.disp_works_hours=0;
+			   }
+		   }
+	 }
+   }
+   
+
+}
+
 /********************************************************************************
  * 
  * Function Name: static void TFT_Disp_Set_TimerTime(void)
