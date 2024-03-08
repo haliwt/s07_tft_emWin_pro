@@ -288,7 +288,14 @@ void TFT_Disp_Set_TimerTime(uint8_t bc)
 	}
 	
   }
-
+/****************************************************************************************************
+	*
+	*Function Name:void TFT_Disp_Set_TimerTime_Init(void)
+	*Function: display set up timer timing value how meny value 
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+****************************************************************************************************/
 void TFT_Disp_Set_TimerTime_Init(void)
 {
 

@@ -1,7 +1,7 @@
 #include "bsp_ptc.h"
 #include "bsp.h"
 
-
+static void display_warning_words(uint8_t disp);
 void Ptc_On(void)
 {
 
@@ -63,6 +63,19 @@ void Temperature_Ptc_Pro_Handler(void)
 		  break;
 
 		  case ptc_waning:
+			PTC_SetLow();
+			LED_PTC_ICON_OFF();
+			gctl_t.ptc_flag =0;
+		   
+			if(gctl_t.gTimer_ctl_warning_time < 3){
+			    display_warning_words(0);
+			}
+			else if(gctl_t.gTimer_ctl_warning_time > 2 && gctl_t.gTimer_ctl_warning_time < 6){
+			    display_warning_words(1);
+			}
+			else{
+				gctl_t.gTimer_ctl_warning_time =0;
+			}
 
 		  
 
@@ -148,4 +161,23 @@ void Temperature_Ptc_Pro_Handler(void)
 
 }
 
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_WorksTime(void)
+	*Function : display of works time value 
+	*Input: NO
+	*Return: NO 
+	*
+*************************************************************************************************/
+static void display_warning_words(uint8_t disp)
+{
+    //  TFT_Disp_Pic_Warnign_Words(100,188,disp,0);//“高”
+	//  TFT_Disp_Pic_Warnign_Words(136,188,disp,1);//“温”
+	//  TFT_Disp_Pic_Warnign_Words(172,188,disp,2);//“警”
+	//  TFT_Disp_Pic_Warnign_Words(208,188,disp,3);//“告”
 
+      TFT_Disp_Pic_Warnign_Words(100,120,disp,0);//“高”
+	  TFT_Disp_Pic_Warnign_Words(136,120,disp,1);//“温”
+	  TFT_Disp_Pic_Warnign_Words(172,120,disp,2);//“警”
+	  TFT_Disp_Pic_Warnign_Words(208,120,disp,3);//“告”
+}

@@ -233,7 +233,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
 	   gctl_t.gTimer_ctl_ptc_adc_times++;
 	   gctl_t.gTimer_ctl_fan_adc_times ++;
-	    gctl_t.gTimer_ctl_disp_second++;
+	   gctl_t.gTimer_ctl_disp_second++;
+	   gctl_t.gTimer_ctl_warning_time++;
 	  //wifi counter 
 	 
 	  wifi_t.gTimer_login_tencent_times++;

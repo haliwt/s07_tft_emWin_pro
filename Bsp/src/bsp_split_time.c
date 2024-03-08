@@ -9,7 +9,7 @@ void TimeTimer_Pro_Handler(void)
   switch(pro_t.timer_mode_flag){
 
 	case timer_time: //timer_time 
-		if(gctl_t.gTimer_ctl_set_timer_time_senconds >59){
+		if(gctl_t.gTimer_ctl_set_timer_time_senconds >59 ){
 			gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 
 			gctl_t.gSet_timer_minutes --;
@@ -32,11 +32,13 @@ void TimeTimer_Pro_Handler(void)
 
 		//TFT_Disp_Set_TimerTime(0);
 		TFT_DonnotDisp_Works_Time();
+
+		
 	break;
 
 	case works_time:
 
-		if(gctl_t.gTimer_ctl_disp_second > 59){
+		if(gctl_t.gTimer_ctl_disp_second > 59 ){
 			TFT_Display_WorksTime();
 		}
 
