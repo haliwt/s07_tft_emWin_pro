@@ -94,7 +94,7 @@ int main(void)
   MX_ADC1_Init();
   MX_IWDG_Init();
   MX_SPI1_Init();
-  MX_TIM1_Init();
+ // MX_TIM1_Init();
   MX_TIM14_Init();
   MX_TIM17_Init();
   MX_USART1_UART_Init();
@@ -107,7 +107,6 @@ int main(void)
   LCD_GPIO_Reset();
   TFT_BACKLIGHT_OFF();
   TFT_LCD_Init();
-  bsp_Init();
   
   //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
@@ -127,28 +126,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
-	
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
-	disp_works_time_refresh();
-	
- 
-
-	#if 0
-	TFT_BACKLIGHT_ON();
-		
-	
-	TFT_Display_WorksTime();
-
-	Ptc_On();
-	Fan_Run();
-	Power_On_Led_Init();
-	HAL_Delay(5000);
-	Ptc_Off();
-	HAL_Delay(5000);
-	#endif
-	
   }
   /* USER CODE END 3 */
 }

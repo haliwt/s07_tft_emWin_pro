@@ -146,7 +146,7 @@ void Voice_Decoder_Handler(void)
 	
 	if(result ==0){
 		v_t.voice_sound_enable =1;
-		//pro_t.buzzer_sound_flag =1;
+		pro_t.buzzer_sound_flag =1;
 		
 	    
 	}
@@ -157,12 +157,12 @@ void Voice_Decoder_Handler(void)
 	   	if(pro_t.gPower_On == power_on){
 			
 			//v_t.voice_to_buzzer_flag =1;
-            //pro_t.buzzer_sound_flag =1;
+            pro_t.buzzer_sound_flag =1;
             
         }
 		else{
 
-		   // buzzer_sound();
+		    buzzer_sound();
 		    pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
@@ -211,7 +211,7 @@ void Voice_Decoder_Handler(void)
 	if(input_set_timer_timing_flag ==1 && pro_t.gTimer_pro_mode_key_timer > 3){
 
 		input_set_timer_timing_flag =0;
-		pro_t.key_input_model_timer_or_timing = timer_time;
+		pro_t.timer_mode_flag = timer_time;
 		pro_t.mode_key_confirm_flag =0xff;
 		gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 		gctl_t.timer_time_define_flag = 1;
@@ -241,13 +241,15 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	case voice_power_off:
 		if(pro_t.gPower_On == power_off){
-			//	buzzer_sound();
+				buzzer_sound();
 
 		}
 		else{
-			//buzzer_sound();
+			buzzer_sound();
 		    pro_t.power_off_flag=1;
 			pro_t.gPower_On = power_off;   
+		
+			
 		}
 	break;
 
@@ -260,10 +262,10 @@ static void voice_cmd_fun(uint8_t cmd)
 			wifi_t.wifi_config_net_lable= wifi_set_restor;
 			wifi_t.gTimer_login_tencent_times=0;
 			wifi_t.gTimer_linking_tencent_duration=0; //166s -2分7秒
-           // buzzer_sound();
+            buzzer_sound();
 		}
 		else{
-          // buzzer_sound();
+           buzzer_sound();
           
 		}
 
@@ -273,11 +275,14 @@ static void voice_cmd_fun(uint8_t cmd)
 	case voice_open_ptc:
 
      if(ptc_state()==1){
-       //buzzer_sound();
+       buzzer_sound();
 	 }
 	 else{
+		// SendData_Set_Command(VOICE_DRY_ON);
+		// ctl_t.gPtc_flag =1;
+		buzzer_sound();
 		gctl_t.ptc_flag =1;
-		Ptc_On();
+		//Ptc_On();
 	    LED_PTC_ICON_ON();
 
 	 }
@@ -287,11 +292,11 @@ static void voice_cmd_fun(uint8_t cmd)
 	case voice_close_ptc:
 		 if(ptc_state() == 0){
           
-          //  buzzer_sound();
+            buzzer_sound();
 
 		 }
 		 else{
-			
+			buzzer_sound();
 			gctl_t.ptc_flag =0;
 			Ptc_Off();
 		    LED_PTC_ICON_OFF();
@@ -300,12 +305,12 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	case voice_open_plasma:
 		 if(plasma_state()==1){
-		//	buzzer_sound();//SendData_Buzzer();
+			buzzer_sound();//SendData_Buzzer();
 			
 		}
 		else{
 
-		// buzzer_sound();//SendData_Buzzer();
+		 buzzer_sound();//SendData_Buzzer();
 		 gctl_t.plasma_flag=1;
 		 Plasma_On();
 		 LED_KILL_ICON_ON() ;
@@ -314,11 +319,11 @@ static void voice_cmd_fun(uint8_t cmd)
 	break;
    case voice_close_plasma:
    	 if(plasma_state()==0){
-		/// buzzer_sound();//SendData_Buzzer();
+		 buzzer_sound();//SendData_Buzzer();
 
 	 }
 	 else{
-   	    /// buzzer_sound();
+   	     buzzer_sound();
 	     gctl_t.plasma_flag=0;
 		 Plasma_Off();
 		 LED_KILL_ICON_OFF() ;
@@ -327,11 +332,11 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	case voice_open_rat:
 		 if(ultrasonic_state() ==1){
-			//buzzer_sound();//SendData_Buzzer();
+			buzzer_sound();//SendData_Buzzer();
 
          }
 		 else{
-			///buzzer_sound();
+			buzzer_sound();
             gctl_t.ultrasonic_flag =1;
 			Ultrasonic_Pwm_Output();
 		    LED_RAT_ICON_ON();
@@ -339,11 +344,11 @@ static void voice_cmd_fun(uint8_t cmd)
 	break;
 	case voice_close_rat:
 		if(ultrasonic_state() ==0){
-		///	buzzer_sound();//SendData_Buzzer();
+			buzzer_sound();//SendData_Buzzer();
 
 		}
 		else{
-	   //  buzzer_sound();
+	     buzzer_sound();
 		  gctl_t.ultrasonic_flag =0;
 		 Ultrasonic_Pwm_Stop();
 		 LED_RAT_ICON_OFF();
@@ -366,12 +371,10 @@ static void voice_cmd_fun(uint8_t cmd)
 static void  voice_set_temperature_value(uint8_t value)
 {
 		value = 10+value;
-		//pro_t.buzzer_sound_flag =1;
+		pro_t.buzzer_sound_flag =1;
 		gctl_t.gSet_temperature_value = value;
 
-		//pro_t.gTimer_pro_mode_key_timer =0;
-		gctl_t.set_temperature_value_flag=1;
-		pro_t.gTimer_pro_set_tem_value_blink =0;
+		pro_t.gTimer_pro_mode_key_timer =0;
 
        TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value); 
 
@@ -388,7 +391,7 @@ static void voice_set_timer_timing_value(uint8_t time)
 {
     
 	     pro_t.mode_key_pressed_flag =0;
-	  //   Buzzer_KeySound();
+	     Buzzer_KeySound();
 		 pro_t.gTimer_pro_mode_key_timer = 0; 
 		 pro_t.gTimer_pro_set_timer_time=0;
 		 
@@ -396,14 +399,18 @@ static void voice_set_timer_timing_value(uint8_t time)
 		 Mode_Long_Key_Fun();
 
 }
-/***********************************************************************************
+	
+	
+		
+
+/***********************************************************
  *  *
     *Function Name: static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
     *Function: from small to big sort
     *Input Ref: *pta is array ,look up key data
     *Return Ref:  NO
     * 
-**************************************************************************************/
+***********************************************************/
 static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
 {
    static uint8_t n;
@@ -437,6 +444,13 @@ static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
    return -1;
 
 }
-
+/**********************************************************************************
+ *  *
+    *Function Name: void Voice_Hello_Word_Handler(uint8_t(*hello_handler)(void))
+    *Function: decoder to command 
+    *Input Ref: NO
+    *Return Ref:  NO
+    * 
+***********************************************************************************/
 
 

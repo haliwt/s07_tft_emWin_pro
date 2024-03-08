@@ -32,7 +32,7 @@ typedef enum{
 typedef struct _bsp_ctl{
 
     
-	uint8_t model_AI_flag;
+	uint8_t mode_flag;
 	uint8_t ptc_flag;
 	uint8_t plasma_flag;
 	uint8_t ultrasonic_flag;
@@ -41,14 +41,12 @@ typedef struct _bsp_ctl{
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
 	uint8_t time_out_flag;
-	uint8_t set_temperature_value_flag ;
    
     //time
    uint8_t disp_works_hours;
    uint8_t timer_time_define_flag;
    uint8_t timer_timing_words_changed_flag;
    uint8_t timing_words_changed_flag;
- 
 
    
  
@@ -64,14 +62,12 @@ typedef struct _bsp_ctl{
 
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
-   
-   //timer timing 
+   uint8_t gSet_temperature_value_flag;
+
    uint8_t gTimer_ctl_disp_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
    uint8_t gTimer_ctl_select_led;
    uint8_t gTimer_ctl_total_continue_time;
-   uint8_t gTimer_ctl_det_dth11 ;
-   uint8_t gTimer_ctl_disp_works_time;
    
 
 }bsp_ctl;
@@ -107,7 +103,7 @@ extern uint8_t (*fan_error_state)(void);
 
 
 void bsp_ctl_init(void);
-void Device_Action_Publish_Handler(void);
+void Device_Action_Handler(void);
 
 
 void Wifi_State_Handler(uint8_t(*wifi_handler)(void));
@@ -136,10 +132,6 @@ void Device_Action_Led_OnOff_Handler(void);
 
 void Device_stop_Action_Fun(void);
 void Device_NoAction_Power_Off(void);
-
-
-void Device_Action_No_Wifi_Handler(void);
-
 
 
 #endif 

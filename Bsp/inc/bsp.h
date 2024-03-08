@@ -79,12 +79,11 @@ typedef enum{
 
   pro_init,
   pro_disp_dht11_value,
-  pro_run_continue_two_hours,
+  pro_run_main_fun,
   pro_disp_works_time,
-  pro_disp_and_set_temperature,
+  pro_set_temperature,
   pro_disp_wifi_led,
   pro_mode_key_fun,
-  pro_disp_works_or_timer_time,
   pro_wifi_init
   
 
@@ -120,7 +119,6 @@ typedef struct{
   
    //time
    uint8_t mode_key_select_flag ;
-  
    
 
    //wifi info
@@ -128,7 +126,7 @@ typedef struct{
  
    //modke key
    uint8_t mode_key_pressed_flag;
-   uint8_t key_input_model_timer_or_timing;
+   uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
    uint8_t mode_key_special_fun;
  
@@ -168,15 +166,13 @@ typedef struct{
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
 	//uint8_t gTimer_pro_long_key_timer_flag;
- 
+  uint8_t gTimer_pro_timer_mode_times;
   uint8_t gTimer_pro_mode_key_timer;
   uint8_t gTimer_pro_set_tem_value_blink;
   uint8_t gTimer_pro_set_timer_time;
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
-  uint8_t gTimer_pro_disp_tempe_value;
-  uint8_t gTimer_pro_display_timer_timing;
 	
 
 }PRO_T;
@@ -184,10 +180,6 @@ typedef struct{
 
 extern PRO_T pro_t;
 
-
-extern void (*disp_works_time_refresh)(void);
-
-void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void));
 
 void bsp_Init(void);
 
