@@ -825,7 +825,7 @@ void TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(uint16_t x,uint16_t y,uint8_t sel
 					  color = BLACK;
 	
 				}
-				
+				else color = BLACK;
 				
 				TFT_DrawPoint(x, y,color);
 				
