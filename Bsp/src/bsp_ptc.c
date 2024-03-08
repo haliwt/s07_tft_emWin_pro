@@ -129,11 +129,12 @@ void Ptc_Pro_Handler(void)
 		   break;
 
 		   case set_temp_value_item:
-
-		   if(pro_t.gTimer_pro_set_tem_value_blink > 2){
-
+	    
+		   if(pro_t.gTimer_pro_set_tem_value_blink > 3){
+			
                pro_t.gTimer_pro_set_tem_value_blink =0;
 			   pro_t.gTimer_pro_temp_delay= 65;
+			   pro_t.mode_key_confirm_flag = 0xff;
 			   gctl_t.gSet_temperature_value_flag= disp_set_temp_value_item;
 
 		   }

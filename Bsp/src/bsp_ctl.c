@@ -698,7 +698,7 @@ void Mode_Key_Confirm_Fun(void)
     
             if(gctl_t.ptc_flag==0){
 				LED_PTC_ICON_ON(); 
-			   // Ptc_On();
+			    Ptc_On();
 				gctl_t.ptc_flag = 1;
 
 		    }

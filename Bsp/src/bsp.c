@@ -334,39 +334,39 @@ static void mode_key_fun_handler(void)
 
   switch(pro_t.mode_key_confirm_flag){
 
-      case mode_key_temp:
-
-          if(pro_t.gTimer_pro_mode_key_timer < 4){
-		  	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-          }
-		  else{
-
-                  if(pro_t.gTimer_pro_set_tem_value_blink < 5){
-
-					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
-
-
-				  }
-				  else{
-
-					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
-                    pro_t.gTimer_pro_set_tem_value_blink=0;
-                    led_blink_times++;
-				  }
-
-                  if(led_blink_times ==1){
-				  	led_blink_times=0;
-					  pro_t.mode_key_confirm_flag = 0xff;
-					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
-					  pro_t.set_temperature_value_flag= 1;
-					  
-
-                  }
-
-			}
-			   
-			
-			break;
+//      case mode_key_temp:
+//
+//          if(pro_t.gTimer_pro_mode_key_timer < 4){
+//		  	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+//          }
+//		  else{
+//
+//                  if(pro_t.gTimer_pro_set_tem_value_blink < 5){
+//
+//					 TFT_Disp_Temp_Value(1,gctl_t.gSet_temperature_value);  //1-don't display temp value , 0-display numbers 
+//
+//
+//				  }
+//				  else{
+//
+//					TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);  //0-display numbers 
+//                    pro_t.gTimer_pro_set_tem_value_blink=0;
+//                    led_blink_times++;
+//				  }
+//
+//                  if(led_blink_times ==1){
+//				  	led_blink_times=0;
+//					  pro_t.mode_key_confirm_flag = 0xff;
+//					  pro_t.gTimer_pro_tft =30; //at once display dht11 sensor temperature value 
+//					  pro_t.set_temperature_value_flag= 1;
+//					  
+//
+//                  }
+//
+//			}
+//			   
+//			
+//			break;
 
 
 			case mode_key_select:
@@ -820,7 +820,8 @@ void ADD_Key_Fun(void)
 			pro_t.mode_key_confirm_flag=mode_key_temp;
 
 		case mode_key_temp: //set temperature value add number
-			pro_t.buzzer_sound_flag = 1;
+			//pro_t.buzzer_sound_flag = 1;
+			Buzzer_KeySound();
 			gctl_t.gSet_temperature_value ++;
 			if( gctl_t.gSet_temperature_value < 20)gctl_t.gSet_temperature_value=20;
 			
@@ -829,7 +830,7 @@ void ADD_Key_Fun(void)
              pro_t.gTimer_pro_set_tem_value_blink =0;
 			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
 
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
+			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
 
 		case mode_key_timer_time:
@@ -883,7 +884,8 @@ void DEC_Key_Fun(void)
 		 	pro_t.mode_key_confirm_flag= mode_key_temp;
 
 		   case mode_key_temp:  //default tempearture value 
-	         pro_t.buzzer_sound_flag = 1;
+	        // pro_t.buzzer_sound_flag = 1;
+	        Buzzer_KeySound();
 			 gctl_t.gSet_temperature_value--;
 			if( gctl_t.gSet_temperature_value<20)  gctl_t.gSet_temperature_value=40;
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
@@ -891,7 +893,7 @@ void DEC_Key_Fun(void)
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
 			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
 
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
