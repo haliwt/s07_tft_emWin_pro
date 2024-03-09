@@ -60,6 +60,9 @@ static uint8_t wifi_link_default_fun(void)
 ***************************************************************************************/
 void Wifi_Pro_Runing_Init(void)
 {
+	
+	static uint8_t update_step ;
+	
 	if(wifi_link_net_state() ==1 && wifi_t.smartphone_app_power_on_flag==0){
 	   if(wifi_link_net_state() ==1 && wifi_t.repeat_login_tencent_cloud_init_ref ==0 ){
 	   	  wifi_t.repeat_login_tencent_cloud_init_ref ++;

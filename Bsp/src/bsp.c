@@ -339,6 +339,10 @@ static void mode_key_fun_handler(void)
                 
                 pro_t.mode_key_confirm_flag = 0xff; //
                 pro_t.mode_key_select_flag =0;
+			    gctl_t.select_main_fun_numbers--; //return back the first confirm item 
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 				
                 Device_Action_Led_OnOff_Handler();
 			 }
