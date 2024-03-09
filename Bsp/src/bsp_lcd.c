@@ -40,9 +40,9 @@ void LCD_GPIO_Reset(void)
 
     
 	LCD_RST_SetHigh();
-	 HAL_Delay(200);
+	 HAL_Delay(100);
 	LCD_RST_SetLow();
-    HAL_Delay(200);
+    HAL_Delay(300);
     LCD_RST_SetHigh();
 	HAL_Delay(100);
 

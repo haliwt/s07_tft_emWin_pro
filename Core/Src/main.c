@@ -104,9 +104,11 @@ int main(void)
   bsp_ctl_init();
   Wifi_Init();
   HAL_TIM_Base_Start_IT(&htim17);
-  LCD_GPIO_Reset();
+  
   TFT_BACKLIGHT_OFF();
+  LCD_GPIO_Reset();
   TFT_LCD_Init();
+  
   
   //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
  // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
