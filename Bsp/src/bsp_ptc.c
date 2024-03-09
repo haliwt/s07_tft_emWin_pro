@@ -70,56 +70,68 @@ void Temperature_Ptc_Pro_Handler(void)
           if(fan_error_state()==0){
 				turn_off_ptc_function();
 			
-				if(gctl_t.gTimer_ctl_warning_time < 3){
+				if(gctl_t.gTimer_ctl_warning_time < 4){
 					display_high_temp_words(0);
 				}
-				else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 6){
+				else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 5){
 					display_high_temp_words(1);
 				}
 				else{
 					gctl_t.gTimer_ctl_warning_time =0;
 				}
 			}
-			else { //fan and ptc is both error 
+			else{ //fan and ptc is both error 
 			 
 				turn_off_ptc_function();
+
+			    if(error_flag == 0){
 			 
-				if(gctl_t.gTimer_ctl_warning_time < 4){
-					if(error_flag ==1){
- 
-                    	Display_Fan_Notworking_Words(1); //turn off fan error words
-						display_high_temp_words(0); //display ptc error words
-					}
-					else{
-                        error_flag=0;
-                        display_high_temp_words(1); //display ptc error words
-						Display_Fan_Notworking_Words(0); //turn off fan error words
-					}
-				}
-				else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 8){
-					if(error_flag ==1){
-				    display_high_temp_words(1); //display ptc error words
-                    Display_Fan_Notworking_Words(0); //turn off fan error words
+					if(gctl_t.gTimer_ctl_warning_time < 4){
+						
+	 
+	                    	Display_Fan_Notworking_Words(1); //turn off fan error words
+							display_high_temp_words(0); //display ptc error words
 						
 					}
+					else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 5){
+						
+					    display_high_temp_words(1); //display ptc error words
+	                    Display_Fan_Notworking_Words(0); //turn off fan error words
+							
+					
+					}
 					else{
-                        error_flag=0;
-                        
+						gctl_t.gTimer_ctl_warning_time =0;
+						error_flag ++;
+					    
+					}
+			    }
+				else{
+
+					
+					if(gctl_t.gTimer_ctl_warning_time < 4){
+						
+	 						display_high_temp_words(1); //display ptc error words
+	                    	Display_Fan_Notworking_Words(0); //turn off fan error words
+							
+						
+					}
+					else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 5){
+						
 						Display_Fan_Notworking_Words(1); //turn off fan error words
 						display_high_temp_words(0); //display ptc error words
+	                   
 					}
-				}
-				else{
-					gctl_t.gTimer_ctl_warning_time =0;
-					error_flag ++;
-				    
+					else{
+						gctl_t.gTimer_ctl_warning_time =0;
+						if(error_flag > 0)error_flag=0;
+					    
+					}
 				}
 			}
 
-		  
-
-		  break;
-	    }
+		 break;
+	}
 
 
    if(ptc_error_state() == 0){
@@ -202,7 +214,6 @@ void Temperature_Ptc_Pro_Handler(void)
    }
 
 }
-
 /***********************************************************************************************
 	*
 	*Function Name:void TFT_Display_WorksTime(void)
