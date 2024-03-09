@@ -325,10 +325,8 @@ void TFT_Disp_Set_TimerTime_Init(void)
 	    
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,bc,timer_decade_hours);
 		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,bc,timer_unit_hours);
-//	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(160,180,10); //时间分割符号
 
-	
-	}
+     }
 
 	if(gctl_t.timer_time_define_flag == 1){
         timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;

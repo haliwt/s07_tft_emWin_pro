@@ -55,15 +55,15 @@ void bsp_Init(void)
 */
 void bsp_Idle(void)
 {
-	static uint8_t power_on_first;
-	if(power_on_first ==0){
-       power_on_first ++;
-	   gctl_t.gTimer_ctl_disp_second=0;
-	   TFT_BACKLIGHT_OFF();
-	   Update_DHT11_Value();
-       TFT_Display_Handler();
-
-	}
+//	static uint8_t power_on_first;
+//	if(power_on_first ==0){
+//       power_on_first ++;
+//	   gctl_t.gTimer_ctl_disp_second=0;
+//	   TFT_BACKLIGHT_OFF();
+//	   Update_DHT11_Value();
+//       TFT_Display_Handler();
+//
+//	}
 	
 	/* --- 喂狗 */
     if(pro_t.gTimer_pro_feed_dog > 3){ //16s
@@ -359,11 +359,7 @@ static void mode_key_fun_handler(void)
 			break;
 
 	    }
-
-
 }
-
-
 /******************************************************************************
 	*
 	*Function Name:void TFT_Pocess_Command_Handler(void)
@@ -383,26 +379,14 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	
 		pro_t.gKey_value =0XFF;
-	    
+	    TFT_Display_Handler();
 		Power_On_Fun();
 	    Fan_Run();
-		gctl_t.gTimer_ctl_total_continue_time =0;
-        gctl_t.timer_time_define_flag =0;
-		gctl_t.gTimer_ctl_disp_second=0;
-		pro_t.long_key_flag =0;
-
-         pro_t.run_process_step=1;
-	
-		 pro_t.gTimer_pro_tft = 30;
+		
 
 		TFT_BACKLIGHT_ON();
 		
-		pro_t.long_key_flag =0;
-		TFT_Display_WorksTime();
-
-		//gctl_t.ptc_warning=1;
-		//gctl_t.fan_warning =1;
-		
+		pro_t.run_process_step=pro_disp_dht11_value;
 		
 	 break;
 
@@ -411,8 +395,8 @@ static void TFT_Pocess_Command_Handler(void)
 	   Wifi_Fast_Led_Blink();
 	
 
-	   if(pro_t.gTimer_pro_tft > 28 &&  pro_t.wifi_led_fast_blink_flag==0){
-	   	   pro_t.gTimer_pro_tft=0;
+	   if(pro_t.gTimer_pro_display_dht11_value > 28 &&  pro_t.wifi_led_fast_blink_flag==0){
+	   	   pro_t.gTimer_pro_display_dht11_value=0;
          
 		    Update_DHT11_Value();
 		
@@ -529,11 +513,11 @@ static void TFT_Pocess_Command_Handler(void)
 ************************************************************************/
 static void Power_On_Fun(void)
 {
-   
+  //led on 
   LED_Mode_Key_On();
   LED_Power_Key_On();
   Power_On_Led_Init();
-
+  //smart phone control power on 
   if(wifi_t.smartphone_app_power_on_flag==0){
 	  gctl_t.ptc_flag = 1;
       gctl_t.plasma_flag = 1;
@@ -542,15 +526,24 @@ static void Power_On_Fun(void)
    
    gctl_t.gSet_temperature_value =40;
 
-   pro_t.mode_key_confirm_flag=0xff;
+ 
+   //timer timing
    gctl_t.mode_flag = works_time;
    gctl_t.timer_time_define_flag = 0;
-   //timer timing
-     pro_t.timer_mode_flag=works_time;
+    pro_t.timer_mode_flag=works_time;
 	 gctl_t.gSet_timer_hours =0;
 	 gctl_t.gSet_timer_minutes =0;
-	 gctl_t.mode_key_long_time_flag=0;
 
+	//mode key long times 
+	  pro_t.mode_key_confirm_flag=0xff;
+	 gctl_t.mode_key_long_time_flag=0;
+	 pro_t.long_key_flag =0;
+    
+     //works time
+	gctl_t.gTimer_ctl_total_continue_time =0; //works total is two hours recoder.
+	gctl_t.gTimer_ctl_disp_second=0; //works time seconds 
+    pro_t.gTimer_pro_display_dht11_value = 30; //powe on display sensoe dht11 of value .
+	
 
 
 }

@@ -173,7 +173,7 @@ typedef struct{
 	uint8_t gTimer_usart_error;
 
 	uint8_t gTime_pro_run_voice_time;
-	uint8_t gTimer_pro_tft;
+	uint8_t gTimer_pro_display_dht11_value;
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;

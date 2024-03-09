@@ -719,12 +719,8 @@ void Mode_Key_Confirm_Fun(void)
 				if(gctl_t.select_main_fun_numbers == 0){
 					gctl_t.select_main_fun_numbers = 5;
 				}
-
-			}
-			
-       
- 
-      break;
+            }
+	  break;
 
 	  case plasma_fun:
 	  	//KILL ICON LED

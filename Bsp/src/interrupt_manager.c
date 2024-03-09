@@ -214,7 +214,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	 pro_t.gTimer_pro_feed_dog++;
 	
-     pro_t.gTimer_pro_tft++;
+     pro_t.gTimer_pro_display_dht11_value++;
 	
 	 pro_t.gTimer_pro_fan++;  //fan continuce counter 60s
 	 /*******************************************/

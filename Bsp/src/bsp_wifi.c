@@ -208,10 +208,8 @@ static void RunWifi_Command_Handler(void)
 
 			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
 		}
-		
-
 	}
-
+	
 	if(wifi_t.gTimer_auto_detected_net_state_times > 90){
 
 		wifi_t.gTimer_auto_detected_net_state_times=0;
