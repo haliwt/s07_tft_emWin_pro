@@ -145,7 +145,8 @@ void TFT_Process_Handler(void)
       
 
 	}
-      
+    gctl_t.ptc_warning=0;
+	gctl_t.fan_warning =0;
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
@@ -216,6 +217,8 @@ static void Key_Interrup_Handler(void)
 static void Key_Speical_Power_Fun_Handler(void)
 {
 	//be pressed long time key of function that link tencent cloud funtion 
+
+	 if(ptc_error_state()==0 && fan_error_state()==0){
 	 if(pro_t.key_power_be_pressed_flag==1){
          if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
             pro_t.key_power_be_pressed_flag =0;
@@ -233,6 +236,9 @@ static void Key_Speical_Power_Fun_Handler(void)
 			
 			 
         }
+
+	 }
+	 }
 	//sort time key of fun
 		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
 
@@ -259,7 +265,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 			  
 			 }
 		  }
-     }
+    
 }
 /******************************************************************************
 	*
@@ -391,11 +397,9 @@ static void TFT_Pocess_Command_Handler(void)
 		TFT_Display_WorksTime();
 
 		gctl_t.ptc_warning=1;
+		gctl_t.fan_warning =1;
 		
 		
-	  
-		
-
 	 break;
 
 	 case pro_disp_dht11_value: //1 //display works time + "temperature value " + "humidity value"
@@ -423,7 +427,7 @@ static void TFT_Pocess_Command_Handler(void)
 	  Wifi_Fast_Led_Blink();
 
 	   Fan_Pro_Handler();
-	    pro_t.run_process_step=pro_disp_works_time;
+	   pro_t.run_process_step=pro_disp_works_time;
 	 break;
 
 	 case pro_disp_works_time: //display works times and timer timing .

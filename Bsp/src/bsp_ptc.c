@@ -2,7 +2,8 @@
 #include "bsp.h"
 
 static void display_high_temp_words(uint8_t disp);
-static void turn_off_all_function(void);
+static void turn_off_ptc_function(void);
+
 void Ptc_On(void)
 {
 
@@ -49,6 +50,8 @@ void Ptc_OnOff_Handler(void)
 ********************************************************************************************/
 void Temperature_Ptc_Pro_Handler(void)
 {
+  
+   static uint8_t error_flag;
    switch(gctl_t.ptc_warning){
 
 		  case ptc_no_warning:
@@ -64,16 +67,54 @@ void Temperature_Ptc_Pro_Handler(void)
 		  break;
 
 		  case ptc_waning:
-		    Device_NoAction_Power_Off();
-		   
-			if(gctl_t.gTimer_ctl_warning_time < 3){
-			    display_high_temp_words(0);
+          if(fan_error_state()==0){
+				turn_off_ptc_function();
+			
+				if(gctl_t.gTimer_ctl_warning_time < 3){
+					display_high_temp_words(0);
+				}
+				else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 6){
+					display_high_temp_words(1);
+				}
+				else{
+					gctl_t.gTimer_ctl_warning_time =0;
+				}
 			}
-			else if(gctl_t.gTimer_ctl_warning_time > 2 && gctl_t.gTimer_ctl_warning_time < 6){
-			    display_high_temp_words(1);
-			}
-			else{
-				gctl_t.gTimer_ctl_warning_time =0;
+			else { //fan and ptc is both error 
+			 
+				turn_off_ptc_function();
+			 
+				if(gctl_t.gTimer_ctl_warning_time < 4){
+					if(error_flag ==1){
+ 
+                    	Display_Fan_Notworking_Words(1); //turn off fan error words
+						display_high_temp_words(0); //display ptc error words
+					}
+					else{
+                        error_flag=0;
+                        display_high_temp_words(1); //display ptc error words
+						Display_Fan_Notworking_Words(0); //turn off fan error words
+					}
+				}
+				else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 8){
+					if(error_flag ==1){
+				    display_high_temp_words(1); //display ptc error words
+                    Display_Fan_Notworking_Words(0); //turn off fan error words
+						
+					}
+					else{
+                        error_flag=0;
+                        
+						Display_Fan_Notworking_Words(1); //turn off fan error words
+						display_high_temp_words(0); //display ptc error words
+					}
+				}
+				else{
+					gctl_t.gTimer_ctl_warning_time =0;
+					error_flag ++;
+				    
+				}
+				}
 			}
 
 		  
@@ -184,10 +225,14 @@ static void display_high_temp_words(uint8_t disp)
 	  TFT_Disp_Pic_Warnign_Words(208,120,disp,3);//“告”
 }
 
-static void turn_off_all_function(void)
+static void turn_off_ptc_function(void)
 {
 
-
+    Ptc_Off();
+	LED_PTC_ICON_OFF(); 
+	if(fan_error_state()==1){
+           Fan_Stop();
+	}
 
 
 }

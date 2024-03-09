@@ -177,38 +177,11 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 	     pro_t.key_power_be_pressed_flag =1;
 		 pro_t.gTimer_pro_power_key_adjust=0;
 
-		#if 0
-	     if(POWER_KEY_VALUE() ==KEY_DOWN){
-            if( pro_t.gPower_On == power_off){
-	
-			 pro_t.gPower_On = power_on;   
-            pro_t.long_key_flag =0;
-            pro_t.run_process_step=0;
-			 pro_t.buzzer_sound_flag = 1;
-
-			 pro_t.gKey_value= power_key_id;
-			
-		  }
-		  else{
-		  	 pro_t.buzzer_sound_flag = 1;
-  
-	         pro_t.long_key_flag =0;
-			 
-			 pro_t.gPower_On = power_off;   
-	         pro_t.gKey_value= power_key_id;
-			   
-			pro_t.run_process_step=0xff;
-			  
-			 }
-		  }
-		  #endif 
-	    
-		
     break;
 
 	case KEY_MODE_Pin:
 
-      if(pro_t.gPower_On == power_on){   
+      if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){   
 
   	  pro_t.mode_key_pressed_flag =1;
       pro_t.gTimer_pro_mode_key_adjust =0;
@@ -220,7 +193,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 	break;
 
 	case KEY_DEC_Pin:
-	if(pro_t.gPower_On == power_on){  
+	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){  
 	//pro_t.buzzer_sound_flag = 1;
      pro_t.gKey_value = dec_key_id;
 	//DEC_Key_Fun();
@@ -230,7 +203,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 
 	case KEY_ADD_Pin:
-	if(pro_t.gPower_On == power_on){  
+	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){  
 	 // pro_t.buzzer_sound_flag = 1;
       pro_t.gKey_value = add_key_id;
 	//ADD_Key_Fun();

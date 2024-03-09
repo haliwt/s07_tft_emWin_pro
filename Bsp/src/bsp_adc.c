@@ -107,7 +107,7 @@ static void Judge_PTC_Temperature_Value(uint16_t adc_ptc)
 		HAL_Delay(200);  
         
 		MqttData_Publish_SetPtc(0);
-		HAL_Delay(50);  
+		HAL_Delay(100);  
 		
 		Buzzer_Ptc_Error_Sound();
 		
@@ -156,10 +156,10 @@ static void Judge_Fan_State(uint16_t adc_value)
 		  gctl_t.fan_warning = 1;
 
 		  Publish_Data_Warning(fan_warning,warning);
-	      HAL_Delay(50);
+	      HAL_Delay(200);
 
 		   MqttData_Publis_SetFan(0);
-	       HAL_Delay(50);
+	       HAL_Delay(100);
 
 		  Buzzer_Fan_Error_Sound();
 
