@@ -129,7 +129,7 @@ void Mode_State_Handler(uint8_t(*mode_handler)(void))
 
 static uint8_t Mode_Default_Handler(void)
 {
-      if(gctl_t.model_AI_flag==1)return 1;
+      if(gctl_t.mode_flag==1)return 1;
 	  else return 0;
 
 }
@@ -317,26 +317,24 @@ uint8_t Fan_Error_Default_Handler(void)
 
 /*****************************************************************************
  * 
- * Function Name: void Device_Action_Publish_Handler(void)
+ * Function Name: void Device_Action_Handler(void)
  * Function:
  * Input Ref: NO
  * Return Ref: NO
  * 
 *****************************************************************************/
-void Device_Action_Publish_Handler(void)
+void Device_Action_Handler(void)
 {
 
-   
-  static uint8_t wifi_publis_item;
+
+   Fan_Run();
 
    if(wifi_link_net_state() == 1){
       LED_WIFI_ICON_ON();
 
    }
    
-  switch(wifi_publis_item){
 
-  case 0:
   if(ptc_state()== 1){
 
     // Ptc_On();
@@ -346,38 +344,32 @@ void Device_Action_Publish_Handler(void)
 
   }
   else{
-   // Ptc_Off();
+    Ptc_Off();
 	LED_PTC_ICON_OFF();
     MqttData_Publish_SetPtc(0); 
 	HAL_Delay(30);//350
 
 
   }
-  wifi_publis_item=1;
-  break;
-
-  case 1:
+   
 
    if(plasma_state() == 1){
-      // Plasma_On();
+       Plasma_On();
 	   LED_KILL_ICON_ON();
        MqttData_Publish_SetPlasma(0x01);
 	   HAL_Delay(30);
    }
    else{
-     // Plasma_Off();
+      Plasma_Off();
 	  LED_KILL_ICON_OFF();
       MqttData_Publish_SetPlasma(0);
 	  HAL_Delay(30);
 
    }
-    wifi_publis_item=2;
-  break;
 
-  case 2:
    if(ultrasonic_state()==1){
 
-     // Ultrasonic_Pwm_Output();
+      Ultrasonic_Pwm_Output();
 	  LED_RAT_ICON_ON();
       MqttData_Publish_SetUltrasonic(1);
 	  HAL_Delay(30);
@@ -385,20 +377,24 @@ void Device_Action_Publish_Handler(void)
    }
    else{
 
-	 // Ultrasonic_Pwm_Stop();
+	  Ultrasonic_Pwm_Stop();
 	  LED_RAT_ICON_OFF();
       MqttData_Publish_SetUltrasonic(0);
 	  HAL_Delay(30);
 
    }
-    wifi_publis_item=0;
-   break;
-  }
+
 
 
 }
-
-
+/*****************************************************************************
+ * 
+ * Function Name: void Device_Action_No_Wifi_Handler(void)
+ * Function:
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+*****************************************************************************/
 void Device_Action_No_Wifi_Handler(void)
 {
 
@@ -691,10 +687,16 @@ void Mode_Key_Select_Fun(void)
    }
 
 }
+/**************************************************************************
+ * 
+ * Function Name: void Mode_Key_Confirm_Fun(void)
+ * Function : "+" and "-" of key as confirm of key be used to 
+ * Input Ref:NO
+ * Return Ref:NO
+ * 
+**************************************************************************/
 void Mode_Key_Confirm_Fun(void)
 {
-
-
    Device_Action_Led_OnOff_Handler();
    switch(gctl_t.select_main_fun_numbers){
 
@@ -704,17 +706,24 @@ void Mode_Key_Confirm_Fun(void)
 				LED_PTC_ICON_ON(); 
 			    Ptc_On();
 				gctl_t.ptc_flag = 1;
-
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 		    }
 			else{
 				LED_PTC_ICON_OFF() ;
 				Ptc_Off();
 				gctl_t.ptc_flag = 0;
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 
 			}
 			
        
-        pro_t.gTimer_pro_key_select_fun=0;
+ 
       break;
 
 	  case plasma_fun:
@@ -724,43 +733,49 @@ void Mode_Key_Confirm_Fun(void)
 				gctl_t.plasma_flag=1;
 			     LED_KILL_ICON_ON() ;
 			      Plasma_On();
+				gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
 
 	        }
      	    else{
 			  gctl_t.plasma_flag=0;
 			  LED_KILL_ICON_OFF() ;
 			  Plasma_Off();
+			  gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			  }
 
      	    }
-			
-	 
-     
-        pro_t.gTimer_pro_key_select_fun=0;
 	  break;
 
-	  case rat_fun: //cat
-
-	  //ULTRSONIC ICO LED
+	  case rat_fun: //ball cat-black
 
 	   if(gctl_t.ultrasonic_flag ==0){ //30x10ms=300ms
 	   	    gctl_t.ultrasonic_flag=1;
 			LED_RAT_ICON_ON(); 
 		    Ultrasonic_Pwm_Output();
+			gctl_t.select_main_fun_numbers--;
+			if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			}
 	   	}
 		else{	
 		   gctl_t.ultrasonic_flag=0;
 		   LED_RAT_ICON_OFF();
 		   Ultrasonic_Pwm_Stop();
+		   gctl_t.select_main_fun_numbers--;
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+			}
 		}
-	   
-	  
-	  
-	  pro_t.gTimer_pro_key_select_fun=0;
-
-
-	  break;
+	   break;
 
 	 }
    
 }
+
+
 

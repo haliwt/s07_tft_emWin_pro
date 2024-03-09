@@ -5,7 +5,12 @@ static uint16_t Get_Adc_Channel(uint32_t ch) ;
 
 static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times);
 
+static void Judge_PTC_Temperature_Value(uint16_t adc_ptc);
 
+static void Judge_Fan_State(uint16_t adc_value);
+
+uint16_t ptc_temp_voltage;
+uint16_t fan_detect_voltage;
 /*****************************************************************
 *
 	*Function Name: static uint16_t Get_Adc(uint32_t ch)  
@@ -57,27 +62,59 @@ static uint16_t Get_Adc_Average(uint32_t ch,uint8_t times)
 
 void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 {
-    uint16_t adcx,ptc_temp_voltage;
+    static uint8_t times_i;
+	uint16_t adcx;
 	
 	adcx = Get_Adc_Average(channel,times);
 
     ptc_temp_voltage  =(uint16_t)((adcx * 3300)/4096); //amplification 100 ,3.11V -> 311
 
-
+    if(times_i < 3){
+	    times_i++;
+	    ptc_temp_voltage=500;
+	
+	}
 	#ifdef DEBUG
       printf("ptc= %d",gctl_t.ptc_temp_voltage);
 	#endif 
 
-	if(ptc_temp_voltage < 373 || ptc_temp_voltage ==373){ //87 degree
-  
-	    gctl_t.plasma_flag = 0; //turn off
-	  //  Ptc_On(); //turn off
-        Buzzer_Ptc_Error_Sound();
-   	      
-   }
+	 Judge_PTC_Temperature_Value(ptc_temp_voltage);
 }
 
 
+/*****************************************************************
+	*
+	*Function Name: void Judge_PTC_Temperature_Value(void)
+	*Function: PTC adc read voltage
+	*Input Ref: NO
+	*Return Ref: No
+	*
+	*
+*****************************************************************/
+static void Judge_PTC_Temperature_Value(uint16_t adc_ptc)
+{
+  
+	
+   if(adc_ptc < 373 || adc_ptc ==373){ //90 degree
+
+
+		gctl_t.ptc_flag=0 ;
+		PTC_SetLow(); //turn off
+		LED_PTC_ICON_OFF();
+        gctl_t.ptc_warning =1;
+
+		Publish_Data_Warning(ptc_temp_warning,warning);
+		HAL_Delay(200);  
+        
+		MqttData_Publish_SetPtc(0);
+		HAL_Delay(50);  
+		
+		Buzzer_Ptc_Error_Sound();
+		
+			  
+				
+	   	}
+}
 
 /*****************************************************************
 	*
@@ -90,7 +127,7 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 *****************************************************************/
 void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
 {
-	uint16_t adc_fan_hex,fan_detect_voltage;
+	uint16_t adc_fan_hex;
 	
 	static uint8_t detect_error_times;
 	
@@ -99,19 +136,30 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
     fan_detect_voltage  =(uint16_t)((adc_fan_hex * 3300)/4096); //amplification 1000 ,3.111V -> 3111
 	HAL_Delay(5);
 
-	if(fan_detect_voltage >300 &&  fan_detect_voltage < 1400){
-           detect_error_times=0;
-		   #ifdef DEBUG
-             printf("adc= %d",gctl_t.fan_detect_voltage);
-		   #endif 
-           gctl_t.fan_warning = 0;
-    }
-	else{
 
+	Judge_Fan_State(fan_detect_voltage);
+
+
+    
+}
+
+
+static void Judge_Fan_State(uint16_t adc_value)
+{
+
+  static uint8_t detect_error_times;
+   if(adc_value <500){
+         detect_error_times++;
 	          
 		if(detect_error_times >0){
 			detect_error_times=0;
-		 gctl_t.fan_warning = 1;
+		  gctl_t.fan_warning = 1;
+
+		  Publish_Data_Warning(fan_warning,warning);
+	      HAL_Delay(50);
+
+		   MqttData_Publis_SetFan(0);
+	       HAL_Delay(50);
 
 		  Buzzer_Fan_Error_Sound();
 
@@ -120,8 +168,10 @@ void Get_Fan_Adc_Fun(uint32_t channel,uint8_t times)
 		detect_error_times++;
 
      }
-}
 
+
+
+}
 
 
 

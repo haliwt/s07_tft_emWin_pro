@@ -536,14 +536,14 @@ void Tencent_Cloud_Rx_Handler(void)
 	
     if(strstr((char *)wifi_t.wifi_data,"state\":1")){
            if(power_on_state() ==power_on){
-            gctl_t.model_AI_flag=works_time;
+            gctl_t.mode_flag=works_time;
 			wifi_t.response_wifi_signal_label = STATE_AI_MODEL_ITEM;
         	}
 		  
     }
     else if(strstr((char *)wifi_t.wifi_data,"state\":2")){
             if(power_on_state() ==power_on){
-            gctl_t.model_AI_flag=timer_time;
+            gctl_t.mode_flag=timer_time;
 			wifi_t.response_wifi_signal_label = STATE_TIMER_MODEL_ITEM;
             }
 			
@@ -624,8 +624,8 @@ void Json_Parse_Command_Fun(void)
 	  break;
 
 	  case PTC_ON_ITEM:
-	  if(power_on_state() ==power_on){
-	    if(gctl_t.ptc_warning ==0){
+	  if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
+	    if(ptc_error_state() ==0){
 			
 		 buzzer_sound()	;
 		// Ptc_On();
@@ -647,7 +647,7 @@ void Json_Parse_Command_Fun(void)
 	   break;
 
 	  case PTC_OFF_ITEM:
-	  	if(power_on_state() ==power_on){
+	  	if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 		 buzzer_sound()	;
 		 Ptc_Off();
 	     LED_PTC_ICON_OFF();
@@ -666,7 +666,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case ANION_OFF_ITEM: //"杀菌" //5
-	  	if(power_on_state() ==power_on){
+	  	if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 			buzzer_sound();
 		    Plasma_Off();
 	        LED_KILL_ICON_OFF();
@@ -682,7 +682,7 @@ void Json_Parse_Command_Fun(void)
 	   break;
 		
 	  case ANION_ON_ITEM: //plasma 
-	  	if(power_on_state() ==power_on){
+	  	if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 			buzzer_sound();
 			Plasma_On();
 	        LED_KILL_ICON_ON();
@@ -701,7 +701,7 @@ void Json_Parse_Command_Fun(void)
 	    break;
 
 	  case SONIC_OFF_ITEM://ultransonic off
-        if(power_on_state() ==power_on){
+        if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
             buzzer_sound();
 			Ultrasonic_Pwm_Stop();
 	        LED_RAT_ICON_OFF();
@@ -720,7 +720,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case SONIC_ON_ITEM://ultransonic on
-	    if(power_on_state() ==power_on){
+	    if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 			buzzer_sound();
 			LED_RAT_ICON_ON();
 			Ultrasonic_Pwm_Output();
@@ -737,19 +737,19 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case STATE_TIMER_MODEL_ITEM: //display timer timing of value  
-	  if(power_on_state() ==power_on){
+	  if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 	  	    buzzer_sound();
-	        gctl_t.model_AI_flag=timer_time;
+	        gctl_t.mode_flag=timer_time;
             MqttData_Publish_SetState(2); //timer model  = 2
 			HAL_Delay(50);
             //do someting
-			if(pro_t.key_input_model_timer_or_timing == timer_time){
+			if(pro_t.timer_mode_flag == timer_time){
 				gctl_t.timer_timing_words_changed_flag++;
 				TFT_Disp_Set_TimerTime(0);
 			}
 			else{
      
-				pro_t.key_input_model_timer_or_timing=timer_set_time;
+				pro_t.timer_mode_flag=timer_set_time;
 				pro_t.gTimer_pro_mode_key_timer =4;
 			}
 			
@@ -762,13 +762,13 @@ void Json_Parse_Command_Fun(void)
 	  break;
 		
 	  case STATE_AI_MODEL_ITEM: //display works timing 
-	  	 if(power_on_state() ==power_on){
+	  	 if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 		    buzzer_sound();
-		    gctl_t.model_AI_flag=works_time;
+		    gctl_t.mode_flag=works_time;
             MqttData_Publish_SetState(1); //beijing timing = 1
 			HAL_Delay(50);
 			//do something
-			 pro_t.key_input_model_timer_or_timing=works_time;//0
+			 pro_t.timer_mode_flag=works_time;//0
 			 gctl_t.timing_words_changed_flag++;
 			 TFT_Display_WorksTime();
           
@@ -781,7 +781,7 @@ void Json_Parse_Command_Fun(void)
 	  	break;
 
 	  case TEMPERATURE_ITEM:
-	   if(power_on_state() ==power_on){
+	   if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 		
 			buzzer_sound();
             temp_decade=wifi_t.wifi_data[14]-0x30;
@@ -791,7 +791,7 @@ void Json_Parse_Command_Fun(void)
             if(gctl_t.gSet_temperature_value <20 )   gctl_t.gSet_temperature_value=20;
             MqttData_Publis_SetTemp(gctl_t.gSet_temperature_value);
 			HAL_Delay(50);//350
-			gctl_t.set_temperature_value_flag=2;
+			gctl_t.gSet_temperature_value_flag =1;
 			pro_t.gTimer_pro_temp_delay= 100;
 			pro_t.gTimer_pro_mode_key_timer = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
@@ -803,7 +803,7 @@ void Json_Parse_Command_Fun(void)
 	  break;
 
 	  case FAN_ITEM:
-	    if(power_on_state() ==power_on){
+	    if(power_on_state() ==power_on && ptc_error_state()==0 && fan_error_state()==0){
 			buzzer_sound();
 
 		     if(gctl_t.fan_warning ==0){
@@ -995,9 +995,10 @@ static void smartphone_app_timer_power_on_handler(void)
 
    static uint8_t app_step;
 
-    if(app_step==0){
 
-	   app_step++;
+    if(app_step==0 ){
+
+	   app_step=1;
     if(strstr((char *)TCMQTTRCVPUB,"open\":1")){
 		wifi_t.smartphone_app_power_on_flag=1;
      }
@@ -1043,7 +1044,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	
 		buzzer_sound();
 
-		Device_Action_Publish_Handler();
+		Device_Action_Handler();
 		pro_t.gPower_On = power_on;   
 		pro_t.long_key_flag =0;
 		pro_t.run_process_step=0;
@@ -1053,13 +1054,15 @@ static void smartphone_app_timer_power_on_handler(void)
 		
 		HAL_Delay(300);//
 
-		pro_t.gTimer_pro_key_select_fun =0;
+	
 	
 
        
 		app_step=0;
 
 	}
+
+
     
 }
       

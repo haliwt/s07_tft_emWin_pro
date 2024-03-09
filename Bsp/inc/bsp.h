@@ -32,6 +32,8 @@
 #include "bsp_tft_font.h"
 #include "bsp_font.h"
 #include "bsp_font_app.h"
+#include "bsp_split_time.h"
+
 
 
 //wifi
@@ -56,16 +58,17 @@
 
 
 
-typedef enum TIMING_T{
 
-   works_time,
-   timer_time,
-   timer_set_time,
-   timing_success ,
-   /// @brief ：select function "ptc,kill,rat"
-   fun_selection
+
+typedef enum set_temp{
+
+   normal_disp_item,
+   disp_set_temp_value_item,
+   set_temp_value_item,
    
-}timing_t;
+
+
+}set_temp_item;
 
 typedef enum{
   mode_key_temp,
@@ -75,16 +78,24 @@ typedef enum{
 
 }mode_key_state;
 
+
+typedef enum _ptc_warning{
+
+    ptc_no_warning,
+	ptc_waning
+
+
+}waning_t;
+
 typedef enum{
 
   pro_init,
   pro_disp_dht11_value,
-  pro_run_continue_two_hours,
+  pro_run_main_fun,
   pro_disp_works_time,
-  pro_disp_and_set_temperature,
+  pro_set_temperature,
   pro_disp_wifi_led,
   pro_mode_key_fun,
-  pro_disp_works_or_timer_time,
   pro_wifi_init
   
 
@@ -120,7 +131,6 @@ typedef struct{
   
    //time
    uint8_t mode_key_select_flag ;
-  
    
 
    //wifi info
@@ -128,7 +138,7 @@ typedef struct{
  
    //modke key
    uint8_t mode_key_pressed_flag;
-   uint8_t key_input_model_timer_or_timing;
+   uint8_t timer_mode_flag;
    uint8_t mode_key_confirm_flag;
    uint8_t mode_key_special_fun;
  
@@ -151,7 +161,7 @@ typedef struct{
 
   	//timer timing function
   	uint8_t gTimer_pro_feed_dog;
-	uint8_t gTimer_pro_temp ;
+
 	uint8_t gTimer_pro_temp_delay ;
 	
 	
@@ -161,22 +171,20 @@ typedef struct{
 
   uint8_t gTimer_pro_fan;
 	uint8_t gTimer_usart_error;
-  uint8_t gTimer_pro_key_select_fun;
+
 	uint8_t gTime_pro_run_voice_time;
 	uint8_t gTimer_pro_tft;
 	uint8_t gTimer_pro_time_split_symbol;
 	uint8_t gTimer_pro_wifi_led;
 	uint8_t gTimer_pro_wifi_fast_led;
 	//uint8_t gTimer_pro_long_key_timer_flag;
- 
+  uint8_t gTimer_pro_timer_mode_times;
   uint8_t gTimer_pro_mode_key_timer;
   uint8_t gTimer_pro_set_tem_value_blink;
   uint8_t gTimer_pro_set_timer_time;
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
-  uint8_t gTimer_pro_disp_tempe_value;
-  uint8_t gTimer_pro_display_timer_timing;
 	
 
 }PRO_T;
@@ -184,10 +192,6 @@ typedef struct{
 
 extern PRO_T pro_t;
 
-
-extern void (*disp_works_time_refresh)(void);
-
-void Display_Works_Time_Refresh_Handler(void(*works_time_handler)(void));
 
 void bsp_Init(void);
 

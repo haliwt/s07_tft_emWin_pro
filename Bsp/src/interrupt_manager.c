@@ -70,7 +70,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      
 	}
 
-	#if 1  //voice sound communcation
+	#if 1 //voice sound communcation
 	if(huart->Instance==USART1) // Motor Board receive data (filter)
 	{
 		
@@ -207,36 +207,34 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		tm0=0;
 		tm2++;
 
-	 pro_t.gTimer_pro_key_select_fun ++;
+
 	
 	 pro_t.gTimer_pro_temp_delay++;
-	 pro_t.gTimer_pro_temp++;
+	
 
 	 pro_t.gTimer_pro_feed_dog++;
 	
      pro_t.gTimer_pro_tft++;
-	 gctl_t.gTimer_ctl_disp_second++;
+	
 	 pro_t.gTimer_pro_fan++;  //fan continuce counter 60s
 	 /*******************************************/
 	  pro_t.gTimer_pro_time_split_symbol++;
 	  pro_t.gTimer_pro_wifi_led++;
 
-	
+	  pro_t.gTimer_pro_timer_mode_times++;
 	  pro_t.gTimer_pro_mode_key_timer++;
 	  pro_t.gTimer_pro_set_tem_value_blink++;
 	 
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
-	  pro_t.gTimer_pro_disp_tempe_value++;
-	  pro_t.gTimer_pro_display_timer_timing++;
 
-      //control timer 
-      gctl_t.gTimer_ctl_det_dth11 ++ ;
-	  gctl_t.gTimer_ctl_set_timer_time_senconds++;
-      gctl_t.gTimer_ctl_disp_works_time++;
- 
-	  
+	  //gctl_t 
+	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
+	   gctl_t.gTimer_ctl_ptc_adc_times++;
+	   gctl_t.gTimer_ctl_fan_adc_times ++;
+	   gctl_t.gTimer_ctl_disp_second++;
+	   gctl_t.gTimer_ctl_warning_time++;
 	  //wifi counter 
 	 
 	  wifi_t.gTimer_login_tencent_times++;
@@ -245,10 +243,11 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_get_beijing_time++;
 	  wifi_t.gTimer_read_beijing_time++;
 	
+	  
+	 
 	  wifi_t.gTimer_linking_tencent_duration;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
-	  wifi_t.gTimer_publish_action_item ++;
 	  
 
 	  if(tm2 > 59){//1 minute

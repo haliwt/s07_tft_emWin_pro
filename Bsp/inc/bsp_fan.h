@@ -15,8 +15,7 @@ void Fan_Run(void);
  
 void Fan_Stop(void);
 
-
-
+void Fan_Pro_Handler(void);
 
 #endif
 

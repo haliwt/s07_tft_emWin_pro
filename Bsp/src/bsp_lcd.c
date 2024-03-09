@@ -451,9 +451,9 @@ void TFT_LCD_Init(void)
 	
     LCD_Write_Cmd(0x36);//修改此处，可以改变屏幕的显示方向，横屏，竖屏等
     //LCD_Write_Data(0x00);  //竖屏
-    //LCD_Write_Data(0x60); //横屏
-    LCD_Write_Data(0xA0);  //横屏镜像操作,2024.3.04
-	
+  //  LCD_Write_Data(0x60); //横屏
+    LCD_Write_Data(0xA0); //横屏
+
  
     LCD_Write_Cmd(0xa0);
     /* RGB 5-6-5-bit格式  */
