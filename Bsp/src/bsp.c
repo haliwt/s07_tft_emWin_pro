@@ -396,7 +396,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.long_key_flag =0;
 		TFT_Display_WorksTime();
 
-		gctl_t.ptc_warning=1;
+		//gctl_t.ptc_warning=1;
 		gctl_t.fan_warning =1;
 		
 		

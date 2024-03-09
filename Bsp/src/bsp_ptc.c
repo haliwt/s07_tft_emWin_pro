@@ -114,7 +114,6 @@ void Temperature_Ptc_Pro_Handler(void)
 					error_flag ++;
 				    
 				}
-				}
 			}
 
 		  
