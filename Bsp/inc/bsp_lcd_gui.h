@@ -60,6 +60,7 @@ void Power_Off_Retain_Beijing_Time(void);
 
 void TFT_DonnotDisp_Works_Time(void);
 
+void TFT_Disp_Voice_Set_TimerTime_Init(void);
 
 
 

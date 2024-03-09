@@ -55,7 +55,7 @@ void  LCD_WriteCommand(uint c)
      int i;
 	TFT_BACKLIGHT_ON();
     TFT_DCX_CMD(); //write command 
-    LCD_NSS_SetLow();
+   // LCD_NSS_SetLow();
      for(i=0;i<8;i++)
      {
      if(c &0x80)
@@ -68,7 +68,7 @@ void  LCD_WriteCommand(uint c)
      c <<=1;
      }
 	 
-     LCD_NSS_SetHigh();	
+   //  LCD_NSS_SetHigh();	
 }
 
 //========================================================
@@ -78,7 +78,7 @@ void LCD_WriteData(uint dat)
       int i;
 	  TFT_BACKLIGHT_ON();
       TFT_DCX_DATA(); //write data
-     LCD_NSS_SetLow();
+    // LCD_NSS_SetLow();
       for(i=0;i<8;i++)
       {
       if(dat&0x80)
@@ -91,7 +91,7 @@ void LCD_WriteData(uint dat)
       dat<<=1;
       }
 	 
-      LCD_NSS_SetHigh();
+    //  LCD_NSS_SetHigh();
 }
 //========================================================
 void LCD_Write_Data(uint dat16)
@@ -105,7 +105,7 @@ void LCD_Write_Data1(uchar dat1,uchar dat2)
 {
  int i,j;
       TFT_DCX_DATA();
-     LCD_NSS_SetLow();
+     //LCD_NSS_SetLow();
       for(i=0;i<8;i++)
       {
       if(dat1&0x80)
@@ -117,9 +117,9 @@ void LCD_Write_Data1(uchar dat1,uchar dat2)
       SCL_SetHigh();
       dat1<<=1;
       }
-	LCD_NSS_SetHigh(); //CHIP SELECT 
+	//LCD_NSS_SetHigh(); //CHIP SELECT 
 
-	 LCD_NSS_SetLow();
+	// LCD_NSS_SetLow();
 	  for(j=0;j<8;j++)
       {
       if(dat2&0x80)
@@ -131,7 +131,7 @@ void LCD_Write_Data1(uchar dat1,uchar dat2)
       SCL_SetHigh();
       dat2<<=1;
       }
-	 LCD_NSS_SetHigh();
+	// LCD_NSS_SetHigh();
      
   
 }
