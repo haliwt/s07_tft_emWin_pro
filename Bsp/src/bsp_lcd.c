@@ -57,7 +57,7 @@ void LCD_GPIO_Reset(void)
 ***********************************************************************************/
 void LCD_Write_Cmd(uint8_t cmd)
 {
-   // LCD_NSS_SetLow();
+    LCD_NSS_SetLow();
     TFT_DCX_CMD();
     pro_t.spi_error_flag=SPI_WriteByte(&cmd,1);
 
@@ -66,7 +66,7 @@ void LCD_Write_Cmd(uint8_t cmd)
 void LCD_Write_Data(uint8_t data)
 {
     //LCD_NSS_SetHigh(); //To write data to TFT is high level
-    //LCD_NSS_SetLow();
+    LCD_NSS_SetLow();
 	TFT_DCX_DATA();
     SPI_WriteByte(&data,1);
 }
@@ -284,19 +284,19 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
       //A0=1;
      // CSB=0;
      TFT_DCX_DATA();
-    // LCD_NSS_SetLow();
+     LCD_NSS_SetLow();
 	 SPI_WriteByte(&dat1,1);
       
 	//CSB=1;
-	//LCD_NSS_SetHigh();
+	LCD_NSS_SetHigh();
 
 	 // CSB=0;
-	//LCD_NSS_SetLow();
+	LCD_NSS_SetLow();
 	 
      SPI_WriteByte(&dat2,1);
      
 	// CSB=1;
-	// LCD_NSS_SetHigh();
+	 LCD_NSS_SetHigh();
      
   
 }
@@ -317,7 +317,7 @@ void DISPLAY_image(void)
 
 	
 	TFT_DCX_DATA();
-   // LCD_NSS_SetLow();
+    LCD_NSS_SetLow();
 	DISP_WINDOWS();
 //   	for(i=0;i<80;i++)
 //	{
@@ -655,4 +655,5 @@ LCD_Write_Cmd( 0x29);
 
 }
 #endif 
+
 
