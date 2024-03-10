@@ -71,7 +71,7 @@ typedef enum set_temp{
 }set_temp_item;
 
 typedef enum{
-  mode_key_temp,
+  mode_key_temp=0x01,
   mode_key_select ,
   mode_key_confirm,
   mode_key_timer_time

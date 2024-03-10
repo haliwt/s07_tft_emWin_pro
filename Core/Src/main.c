@@ -117,6 +117,7 @@ int main(void)
   
   HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
   pro_t.buzzer_sound_flag=1;
+  pro_t.mode_key_confirm_flag=  mode_key_temp; 
   /* USER CODE END 2 */
  
   /* Infinite loop */
@@ -129,8 +130,8 @@ int main(void)
 	
 	bsp_Idle();
 	Key_Speical_Power_Fun_Handler();
-	 Key_Speical_Mode_Fun_Handler();
-    	Key_Interrup_Handler();
+	Key_Speical_Mode_Fun_Handler();
+    Key_Interrup_Handler();
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();

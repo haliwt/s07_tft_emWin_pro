@@ -8,6 +8,17 @@ void TimeTimer_Pro_Handler(void)
   
   switch(pro_t.timer_mode_flag){
 
+
+   case works_time://0
+
+		if(gctl_t.gTimer_ctl_disp_second > 59 ){
+			TFT_Display_WorksTime();
+		}
+
+		TFT_Donnot_Set_Timer_Time();
+
+	break;
+
 	case timer_time: //01 ->timer_time 
 		if(gctl_t.gTimer_ctl_set_timer_time_senconds >59  || v_t.voice_input_timer_flag==2){
 
@@ -42,17 +53,9 @@ void TimeTimer_Pro_Handler(void)
 		
 	break;
 
-	case works_time:
+	
 
-		if(gctl_t.gTimer_ctl_disp_second > 59 ){
-			TFT_Display_WorksTime();
-		}
-
-		TFT_Donnot_Set_Timer_Time();
-
-	break;
-
-	case timer_set_time:
+	case timer_set_time://02
 
 		if(pro_t.gTimer_pro_mode_key_timer > 3){
             pro_t.gTimer_pro_mode_key_timer =0;
@@ -70,8 +73,7 @@ void TimeTimer_Pro_Handler(void)
 		
 		}
         else{
-		if(timer_blink_times > 0 && gctl_t.mode_key_long_time_flag >0){
-			timer_blink_times =0;
+
 			if(gctl_t.gSet_timer_hours >0 ){
 
 				pro_t.timer_mode_flag = timer_time;
@@ -94,22 +96,7 @@ void TimeTimer_Pro_Handler(void)
 			}
 		}
 
-		if(timer_blink_times > 0 && gctl_t.mode_key_long_time_flag ==0){ //add key and dec key don't be pressed key
-			timer_blink_times =0;
-			if(gctl_t.timer_time_define_flag ==1){
-				pro_t.timer_mode_flag = timer_time;
-				pro_t.mode_key_confirm_flag =0xff;
-
-
-				}
-				else{
-				pro_t.mode_key_confirm_flag =0xff;
-				pro_t.timer_mode_flag = works_time;
-				TFT_Display_WorksTime();
-				}
-			}
-
-		}
+		
 		}
 
 		TFT_DonnotDisp_Works_Time();

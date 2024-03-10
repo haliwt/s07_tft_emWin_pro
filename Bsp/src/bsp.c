@@ -147,6 +147,8 @@ void TFT_Process_Handler(void)
 	}
     gctl_t.ptc_warning=0;
 	gctl_t.fan_warning =0;
+    pro_t.timer_mode_flag=works_time;
+	gctl_t.timer_time_define_flag = 0;
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
@@ -242,6 +244,8 @@ void Key_Speical_Power_Fun_Handler(void)
 	//sort time key of fun
 		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
 
+		   
+
             pro_t.key_power_be_pressed_flag=0;
             if( pro_t.gPower_On == power_off){
 				
@@ -265,7 +269,7 @@ void Key_Speical_Power_Fun_Handler(void)
 			  
 			 }
 		  }
-    
+		
 }
 /******************************************************************************
 	*
@@ -379,10 +383,10 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	
 		pro_t.gKey_value =0XFF;
-	    //TFT_Display_Handler();
+        TFT_Display_WorksTime();
 		Power_On_Fun();
 	    Fan_Run();
-		
+		Device_Action_No_Wifi_Handler();
 
 		TFT_BACKLIGHT_ON();
 		

@@ -167,19 +167,21 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 {
  
     
-   if(!pro_t.gTimer_pro_detect_key_ms) return ;
-
-	pro_t.gTimer_pro_detect_key_ms=0;
 	switch(GPIO_Pin){
 
 	case KEY_POWER_Pin:
 
-	     pro_t.key_power_be_pressed_flag =1;
-		 pro_t.gTimer_pro_power_key_adjust=0;
+         if(POWER_KEY_VALUE() ==KEY_DOWN){
+		     pro_t.key_power_be_pressed_flag =1;
+			 pro_t.gTimer_pro_power_key_adjust=0;
+
+         }
 
     break;
 
 	case KEY_MODE_Pin:
+
+	  if(MODE_KEY_VALUE()  ==KEY_DOWN){
 
       if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){   
 
@@ -188,12 +190,12 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 	  pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
      }
-
+	  }
 	
 	break;
 
 	case KEY_DEC_Pin:
-	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){  
+	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0 && DEC_KEY_VALUE()==KEY_DOWN){  
 	//pro_t.buzzer_sound_flag = 1;
      pro_t.gKey_value = dec_key_id;
 	//DEC_Key_Fun();
@@ -203,7 +205,7 @@ void HAL_GPIO_EXTI_Falling_Callback(uint16_t GPIO_Pin)
 
 
 	case KEY_ADD_Pin:
-	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){  
+	if(pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0 && ADD_KEY_VALUE()==KEY_DOWN){  
 	 // pro_t.buzzer_sound_flag = 1;
       pro_t.gKey_value = add_key_id;
 	//ADD_Key_Fun();

@@ -56,7 +56,7 @@ void Temperature_Ptc_Pro_Handler(void)
 
 		  case ptc_no_warning:
 
-		   if(gctl_t.gTimer_ctl_ptc_adc_times > 9 ){
+		   if(gctl_t.gTimer_ctl_ptc_adc_times > 12){
               gctl_t.gTimer_ctl_ptc_adc_times =0;
 
 			 Get_PTC_Temperature_Voltage(ADC_CHANNEL_1,5); //Modify :2023.09.03 Get_PTC_Temperature_Voltage(ADC_CHANNEL_1,10);
