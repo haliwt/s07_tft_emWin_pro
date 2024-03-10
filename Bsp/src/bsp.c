@@ -55,15 +55,17 @@ void bsp_Init(void)
 */
 void bsp_Idle(void)
 {
-//	static uint8_t power_on_first;
-//	if(power_on_first ==0){
-//       power_on_first ++;
-//	   gctl_t.gTimer_ctl_disp_second=0;
-//	   TFT_BACKLIGHT_OFF();
-//	   Update_DHT11_Value();
-//       TFT_Display_Handler();
-//
-//	}
+	static uint8_t power_on_first;
+	if(power_on_first ==0){
+       power_on_first ++;
+	   gctl_t.gTimer_ctl_disp_second=0;
+	   TFT_BACKLIGHT_OFF();
+	   Update_DHT11_Value();
+	   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
+       TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
+       TFT_Display_Handler();
+
+	}
 	
 	/* --- 喂狗 */
     if(pro_t.gTimer_pro_feed_dog > 3){ //16s
@@ -379,7 +381,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	
 		pro_t.gKey_value =0XFF;
-	    TFT_Display_Handler();
+	    //TFT_Display_Handler();
 		Power_On_Fun();
 	    Fan_Run();
 		
