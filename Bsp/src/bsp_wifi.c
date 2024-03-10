@@ -123,6 +123,9 @@ static void RunWifi_Command_Handler(void)
 
 	if(power_on_state() == power_on){
 
+	
+		wifi_t.gTimer_get_beijing_time=0;
+
 		Wifi_Fast_Led_Blink(); 
 		Wifi_SoftAP_Config_Handler();
 		SmartPhone_LinkTencent_Cloud();
@@ -134,11 +137,13 @@ static void RunWifi_Command_Handler(void)
 		wifi_t.gTimer_publish_dht11=0;
 		wifi_t.gTimer_auto_detected_net_state_times =0;
 		step_flag=1;
+		
 
 		}
 	}
 
 	if(wifi_link_net_state()==0){
+		wifi_t.gTimer_get_beijing_time=0;
 		if(wifi_t.gTimer_linking_tencent_duration < 166){
 		wifi_t.runCommand_order_lable = wifi_link_tencent_cloud;
 	}
@@ -155,6 +160,7 @@ static void RunWifi_Command_Handler(void)
 
 	if(step_flag==1){
 		step_flag++;
+		wifi_t.gTimer_get_beijing_time=0;
 		Update_Dht11_Totencent_Value();
 		wifi_t.gTimer_publish_dht11=0;
 	}

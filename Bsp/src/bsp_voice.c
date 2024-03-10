@@ -372,7 +372,7 @@ static void  voice_set_temperature_value(uint8_t value)
 	//	pro_t.buzzer_sound_flag =1;
 		gctl_t.gSet_temperature_value = value;
 		pro_t.gTimer_pro_set_tem_value_blink=0;
-		gctl_t.gSet_temperature_value_flag=set_temp_value_item;
+		gctl_t.gSet_temperature_value_item=set_temp_value_item;
         v_t.voice_set_temperature_value_flag=1;
        TFT_Disp_Voice_Temp_Value(0,gctl_t.gSet_temperature_value); 
 
@@ -396,13 +396,10 @@ static void voice_set_timer_timing_value(uint8_t time)
     
 	gctl_t.gSet_timer_hours = v_t.voice_set_timer_timing_value ;
 	v_t.voice_input_timer_flag =1;
-	//Mode_Long_Key_Fun();
-	//gctl_t.timing_words_changed_flag++;
-	
 
-	 pro_t.mode_key_confirm_flag = mode_key_timer_time;
+	pro_t.mode_key_confirm_flag = mode_key_timer_time;
 	pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
-	//to switch works or timer item flag
+	//to switch works or timer item flag  dis chines words
 	 gctl_t.timer_timing_words_changed_flag ++;
 	 gctl_t.timing_words_changed_flag++;
 	 /*************************************/

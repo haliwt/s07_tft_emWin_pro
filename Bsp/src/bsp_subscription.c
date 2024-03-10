@@ -791,7 +791,8 @@ void Json_Parse_Command_Fun(void)
             if(gctl_t.gSet_temperature_value <20 )   gctl_t.gSet_temperature_value=20;
             MqttData_Publis_SetTemp(gctl_t.gSet_temperature_value);
 			HAL_Delay(50);//350
-			gctl_t.gSet_temperature_value_flag =1;
+			gctl_t.gSet_temperature_value_item =set_temp_value_item;
+		    pro_t.gTimer_pro_set_tem_value_blink=0;
 			pro_t.gTimer_pro_temp_delay= 100;
 			pro_t.gTimer_pro_mode_key_timer = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);

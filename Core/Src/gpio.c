@@ -51,7 +51,9 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOD_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, TFT_BACKLIGHT_Pin|TFT_DCX_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, TFT_DCX_Pin, GPIO_PIN_RESET);
+
+  HAL_GPIO_WritePin(GPIOB, TFT_BACKLIGHT_Pin,GPIO_PIN_SET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, WIFI_EN_Pin|LED_KEY_TIM_Pin|LED_POWER_Pin|PLASMA_CTL_Pin
@@ -67,7 +69,7 @@ void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOD, FAN_CTL_2_Pin|FAN_CTL_1_Pin|TEMP_SENSOR_Pin|TFT_RESET_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PCPin PCPin */
-  GPIO_InitStruct.Pin = TFT_BACKLIGHT_Pin|TFT_DCX_Pin;
+  GPIO_InitStruct.Pin =  TFT_DCX_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -81,6 +83,14 @@ void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+
+   /*Configure GPIO pins : PCPin PCPin */
+  GPIO_InitStruct.Pin =  TFT_BACKLIGHT_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;  //GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin
                            PBPin */

@@ -57,10 +57,13 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
-#define TFT_BACKLIGHT_Pin GPIO_PIN_13
-#define TFT_BACKLIGHT_GPIO_Port GPIOC
-#define TFT_DCX_Pin GPIO_PIN_15
-#define TFT_DCX_GPIO_Port GPIOC
+//TFT backlight GPIO
+#define TFT_BACKLIGHT_Pin 								GPIO_PIN_6
+#define TFT_BACKLIGHT_GPIO_Port 						GPIOB
+
+#define TFT_DCX_Pin 									GPIO_PIN_15
+#define TFT_DCX_GPIO_Port 								GPIOC
+
 //ADC
 #define ADC_FAN_Pin GPIO_PIN_0
 #define ADC_FAN_GPIO_Port GPIOA

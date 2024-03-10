@@ -48,6 +48,7 @@ typedef struct _bsp_ctl{
    uint8_t timer_time_define_flag;
    uint8_t timer_timing_words_changed_flag;
    uint8_t timing_words_changed_flag;
+   uint8_t gSet_temperature_value_item;
 
    
  
