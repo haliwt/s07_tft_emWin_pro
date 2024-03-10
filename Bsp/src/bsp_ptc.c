@@ -171,7 +171,10 @@ void Temperature_Ptc_Pro_Handler(void)
 		  if(pro_t.gTimer_pro_temp_delay> 61 && ptc_error_state()==0){
                pro_t.gTimer_pro_temp_delay =0;
 		 
-		  
+		       Update_DHT11_Value();
+			   if(pro_t.mode_key_confirm_flag != mode_key_temp){
+			    TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
+                }
 		  if(set_temp_value() <= dht11_temp_value()|| dht11_temp_value() >40){//envirment temperature
 	  
 				gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;

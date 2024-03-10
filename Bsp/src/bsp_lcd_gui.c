@@ -429,14 +429,15 @@ void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value)
 
    temp_unit= temp_value%10; 
   
-   if(refresh_one != temp_decade){
+   if(refresh_one != temp_decade || v_t.voice_set_temperature_value_flag==2){
    	refresh_one = temp_decade;
    	TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
 
    }
 
-   if(refresh_two != temp_unit){
+   if(refresh_two != temp_unit || v_t.voice_set_temperature_value_flag==2){
    	  refresh_two = temp_unit;
+	   v_t.voice_set_temperature_value_flag++;
    TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
    }
 
