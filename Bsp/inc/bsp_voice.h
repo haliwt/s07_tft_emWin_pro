@@ -39,6 +39,7 @@ typedef struct{
 	uint8_t voice_plasma_flag;
 	uint8_t voice_bug_flag;
 	uint8_t voice_set_timer_timing_value ;
+	uint8_t voice_set_temperature_value_flag;
 	
    
 	uint8_t RxStatus;

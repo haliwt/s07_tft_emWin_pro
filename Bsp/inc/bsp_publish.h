@@ -34,4 +34,6 @@ void Publish_Data_ToTencent_Update_Data(void);
 
 void Publish_Data_Warning(warning_item whichone,uint8_t warning);
 
+void TFT_Disp_Voice_Temp_Value(uint8_t bc,uint8_t temp_value);
+
 #endif 

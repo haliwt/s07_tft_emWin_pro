@@ -442,6 +442,27 @@ void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value)
 
 
 }
+
+void TFT_Disp_Voice_Temp_Value(uint8_t bc,uint8_t temp_value)
+{
+
+   static uint8_t temp_unit,temp_decade,refresh_one=0xff,refresh_two=0xff;
+
+   temp_decade = temp_value /10;
+
+   temp_unit= temp_value%10; 
+  
+   
+   	TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
+
+ 
+
+
+   TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
+   
+
+
+}
 /***********************************************************************************************
 	*
 	*Function Name:void TFT_Disp_Humidity_Value(uint8_t hum_value)

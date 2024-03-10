@@ -288,7 +288,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 			pro_t.mode_key_pressed_flag =0;
             Buzzer_KeySound();
 			pro_t.gTimer_pro_mode_key_timer = 0; 
-			pro_t.gTimer_pro_set_timer_time=0;
+
 			pro_t.mode_key_select_flag =0;
 			Mode_Long_Key_Fun();
 
@@ -601,7 +601,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 		  gctl_t.timer_timing_words_changed_flag ++;
 		  gctl_t.timing_words_changed_flag++;
 		  pro_t.gTimer_pro_mode_key_timer=0;
-		  pro_t.gTimer_pro_set_timer_time=0;
+
 
 	     TFT_Disp_Set_TimerTime_Init();
 
@@ -659,7 +659,7 @@ void ADD_Key_Fun(void)
 
 			}
 			pro_t.gTimer_pro_mode_key_timer = 0; //counter starts after 4 seconds ,cancel this function
-			pro_t.gTimer_pro_set_timer_time=0; //TFT set the timer time blinking
+	
 			TFT_Disp_Set_TimerTime(0);
 
 		break;
@@ -723,7 +723,7 @@ void DEC_Key_Fun(void)
 					
 				}
 			 pro_t.gTimer_pro_mode_key_timer = 0;
-			 pro_t.gTimer_pro_set_timer_time=0;
+		
 			 	
 			TFT_Disp_Set_TimerTime(0);
 			break;

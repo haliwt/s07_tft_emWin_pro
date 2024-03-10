@@ -202,7 +202,11 @@ void Temperature_Ptc_Pro_Handler(void)
 			   pro_t.mode_key_confirm_flag = 0xff;
 			   gctl_t.gSet_temperature_value_flag= disp_set_temp_value_item;
 			   pro_t.gTimer_pro_display_dht11_value =30; //at once display sensor of temperature value 
-
+               if(v_t.voice_set_temperature_value_flag==1){
+			   	 v_t.voice_set_temperature_value_flag++;
+			     TFT_Disp_Voice_Temp_Value(0,gctl_t.gSet_temperature_value);
+               }
+			   
 		   }
 
 

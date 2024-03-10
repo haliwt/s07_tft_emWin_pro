@@ -181,7 +181,7 @@ typedef struct{
   uint8_t gTimer_pro_timer_mode_times;
   uint8_t gTimer_pro_mode_key_timer;
   uint8_t gTimer_pro_set_tem_value_blink;
-  uint8_t gTimer_pro_set_timer_time;
+  
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
