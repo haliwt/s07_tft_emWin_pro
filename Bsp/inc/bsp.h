@@ -206,7 +206,11 @@ void ADD_Key_Fun(void);
 void DEC_Key_Fun(void);
 void Wifi_Fast_Led_Blink(void);
 
-void Mode_Long_Key_Fun(void);;
+void Mode_Long_Key_Fun(void);
+
+void Key_Speical_Power_Fun_Handler(void);
+void Key_Speical_Mode_Fun_Handler(void);
+void Key_Interrup_Handler(void);
 
 
 

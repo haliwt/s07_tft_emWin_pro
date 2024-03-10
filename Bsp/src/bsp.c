@@ -6,8 +6,7 @@ uint8_t led_blink_times;
 uint8_t update_step;
 uint8_t fan_continuce_run_flag;
 
-static void Key_Speical_Power_Fun_Handler(void);
-static void Key_Speical_Mode_Fun_Handler(void);
+
 static void mode_key_fun_handler(void);
 static void TFT_Pocess_Command_Handler(void);
 
@@ -17,7 +16,7 @@ static void Power_Off_Fun(void);
 
 //static void ADD_Key_Fun(void);
 //static void DEC_Key_Fun(void);
-static void Key_Interrup_Handler(void);
+
 
 
 
@@ -103,14 +102,13 @@ void TFT_Process_Handler(void)
 		Buzzer_KeySound();
 	}
 	
-	Key_Speical_Power_Fun_Handler();
+	
 
 	switch(pro_t.gPower_On){
 	
 	case power_on:
 		
-	    Key_Speical_Mode_Fun_Handler();
-    	Key_Interrup_Handler();
+	   
 	    TFT_Pocess_Command_Handler();
 
 		break;
@@ -172,7 +170,7 @@ void TFT_Process_Handler(void)
 	*Return Ref:NO
 	*
 ******************************************************************************/
-static void Key_Interrup_Handler(void)
+void Key_Interrup_Handler(void)
 {
      switch(pro_t.gKey_value){
 
@@ -216,7 +214,7 @@ static void Key_Interrup_Handler(void)
 	*Return Ref:NO
 	*
 ******************************************************************************/
-static void Key_Speical_Power_Fun_Handler(void)
+void Key_Speical_Power_Fun_Handler(void)
 {
 	//be pressed long time key of function that link tencent cloud funtion 
 
@@ -277,7 +275,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 	*Return Ref:NO
 	*
 ******************************************************************************/
-static void Key_Speical_Mode_Fun_Handler(void)
+void Key_Speical_Mode_Fun_Handler(void)
 {
  //modke _key_long_time
 	if(pro_t.mode_key_pressed_flag ==1){

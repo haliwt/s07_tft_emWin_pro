@@ -128,6 +128,9 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	
 	bsp_Idle();
+	Key_Speical_Power_Fun_Handler();
+	 Key_Speical_Mode_Fun_Handler();
+    	Key_Interrup_Handler();
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
