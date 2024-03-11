@@ -176,14 +176,7 @@ static void Key_Interrup_Handler(void)
 {
      switch(pro_t.gKey_value){
 
-	  case power_key_id:
-	  	
-        Buzzer_KeySound();
-	    pro_t.gKey_value =0XFF;
-
-	 break;
-
-       case add_key_id:
+        case add_key_id:
 		 	
 		 	
 			 DEC_Key_Fun();
@@ -247,11 +240,11 @@ static void Key_Speical_Power_Fun_Handler(void)
 		
           pro_t.key_power_be_pressed_flag=0;
             if( pro_t.gPower_On == power_off){
-				
+			buzzer_sound();	
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
-		    pro_t.gKey_value = power_key_id;
+		   
 
 		
 			
@@ -260,11 +253,10 @@ static void Key_Speical_Power_Fun_Handler(void)
 			 //pro_t.gKey_value = power_key_id;
 			 buzzer_sound();
 			 pro_t.power_off_flag=1;
-			
-	        pro_t.long_key_flag =0;
-			 
-			pro_t.gPower_On = power_off;   
+			 pro_t.long_key_flag =0;
 			pro_t.run_process_step=0xff;
+			pro_t.gPower_On = power_off;   
+		
 			  
 			 }
 		  }
