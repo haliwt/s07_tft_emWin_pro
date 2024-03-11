@@ -409,13 +409,13 @@ void Device_Action_No_Wifi_Handler(void)
 
   if(ptc_state()== 1){
 
-      Ptc_On();
+    //  Ptc_On();
 	 LED_PTC_ICON_ON();
    
 
   }
   else{
-    Ptc_Off();
+   // Ptc_Off();
 	LED_PTC_ICON_OFF();
    
 
@@ -452,7 +452,71 @@ void Device_Action_No_Wifi_Handler(void)
 
 
 }
+/*****************************************************************************
+ * 
+ * Function Name: void Device_Action_No_Wifi_Handler(void)
+ * Function:
+ * Input Ref: NO
+ * Return Ref: NO
+ * 
+*****************************************************************************/
+void Device_Action_No_Wifi_Power_On_Handler(void)
+{
 
+
+   Fan_Run();
+
+   if(wifi_link_net_state() == 1){
+      LED_WIFI_ICON_ON();
+
+   }
+   
+
+  if(ptc_state()== 1){
+
+     // Ptc_On();
+	 LED_PTC_ICON_ON();
+   
+
+  }
+  else{
+   // Ptc_Off();
+	LED_PTC_ICON_OFF();
+   
+
+
+  }
+   
+
+   if(plasma_state() == 1){
+       Plasma_On();
+	   LED_KILL_ICON_ON();
+      
+   }
+   else{
+      Plasma_Off();
+	  LED_KILL_ICON_OFF();
+     
+
+   }
+
+   if(ultrasonic_state()==1){
+
+      Ultrasonic_Pwm_Output();
+	  LED_RAT_ICON_ON();
+     
+   }
+   else{
+
+	  Ultrasonic_Pwm_Stop();
+	  LED_RAT_ICON_OFF();
+     
+
+   }
+
+
+
+}
 
 
 void Device_NoAction_Power_Off(void)

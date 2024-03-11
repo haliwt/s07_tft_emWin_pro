@@ -228,6 +228,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
+	   pro_t.gTimer_pro_power_on_key_time++;
 
 	  //gctl_t 
 	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
@@ -248,6 +249,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  wifi_t.gTimer_linking_tencent_duration;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
+	 
 	  
 
 	  if(tm2 > 59){//1 minute

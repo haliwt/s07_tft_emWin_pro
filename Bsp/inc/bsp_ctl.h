@@ -139,7 +139,7 @@ void Device_NoAction_Power_Off(void);
 
 void Device_Action_No_Wifi_Handler(void);
 
-
+void Device_Action_No_Wifi_Power_On_Handler(void);
 
 
 #endif 

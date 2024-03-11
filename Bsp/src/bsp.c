@@ -55,15 +55,17 @@ void bsp_Init(void)
 */
 void bsp_Idle(void)
 {
-//	static uint8_t power_on_first;
-//	if(power_on_first ==0){
-//       power_on_first ++;
-//	   gctl_t.gTimer_ctl_disp_second=0;
-//	   TFT_BACKLIGHT_OFF();
-//	   Update_DHT11_Value();
-//       TFT_Display_Handler();
-//
-//	}
+	static uint8_t power_on_first;
+	if(power_on_first ==0){
+       power_on_first ++;
+	   gctl_t.gTimer_ctl_disp_second=0;
+	   TFT_BACKLIGHT_OFF();
+	   Update_DHT11_Value();
+	   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
+       TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
+       TFT_Display_Handler();
+
+	}
 	
 	/* --- 喂狗 */
     if(pro_t.gTimer_pro_feed_dog > 3){ //16s
@@ -217,7 +219,7 @@ static void Key_Interrup_Handler(void)
 static void Key_Speical_Power_Fun_Handler(void)
 {
 	//be pressed long time key of function that link tencent cloud funtion 
-
+    static uint8_t delay_pw,pw_flag;
 	 if(ptc_error_state()==0 && fan_error_state()==0){
 	 if(pro_t.key_power_be_pressed_flag==1){
          if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
@@ -240,10 +242,13 @@ static void Key_Speical_Power_Fun_Handler(void)
 	 }
 	 }
 	//sort time key of fun
-		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
-
+		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1 && delay_pw==0){
+            delay_pw =1;
+			pro_t.gTimer_pro_power_on_key_time =0;
             pro_t.key_power_be_pressed_flag=0;
-            if( pro_t.gPower_On == power_off){
+			pw_flag  = pw_flag ^ 0x01;
+		   if(pw_flag ==1){
+          //  if( pro_t.gPower_On == power_off){
 				
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
@@ -251,20 +256,59 @@ static void Key_Speical_Power_Fun_Handler(void)
 		    pro_t.gKey_value = power_key_id;
 
 		
-			
+//			
+//		  }
+//		  else{
+//			 //pro_t.gKey_value = power_key_id;
+//			 buzzer_sound();
+//			 pro_t.power_off_flag=1;
+//			
+//	        pro_t.long_key_flag =0;
+//			 
+//			pro_t.gPower_On = power_off;   
+//			pro_t.run_process_step=0xff;
+//			  
+//			 }
 		  }
-		  else{
-			 //pro_t.gKey_value = power_key_id;
-			 buzzer_sound();
-			 pro_t.power_off_flag=1;
-			
-	        pro_t.long_key_flag =0;
-			 
-			pro_t.gPower_On = power_off;   
-			pro_t.run_process_step=0xff;
-			  
-			 }
-		  }
+         else{
+
+		 
+//			 if( pro_t.gPower_On == power_off){
+//							
+//						pro_t.gPower_On = power_on;   
+//						pro_t.long_key_flag =0;
+//						pro_t.run_process_step=0;
+//						pro_t.gKey_value = power_key_id;
+//			 
+//					
+//						
+//					  }
+//					  else{
+						 //pro_t.gKey_value = power_key_id;
+						// buzzer_sound();
+						 pro_t.power_off_flag=1;
+						
+						pro_t.long_key_flag =0;
+						 
+						pro_t.gPower_On = power_off;   
+						pro_t.run_process_step=0xff;
+						  
+						 }
+					  }
+//
+
+
+
+
+		 
+
+		if(delay_pw ==1 && pro_t.gTimer_pro_power_on_key_time > 1){
+
+			delay_pw =0;
+			pro_t.gTimer_pro_power_on_key_time=0;
+
+
+		}
     
 }
 /******************************************************************************
@@ -370,7 +414,7 @@ static void mode_key_fun_handler(void)
 ******************************************************************************/
 static void TFT_Pocess_Command_Handler(void)
 {
-   
+   static uint8_t ptc_first_on;
 	if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
@@ -379,10 +423,11 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	
 		pro_t.gKey_value =0XFF;
-	    TFT_Display_Handler();
+	    pro_t.gTimer_pro_power_on_key_time =0;
+		TFT_Display_WorksTime();
 		Power_On_Fun();
 	    Fan_Run();
-		
+		Device_Action_No_Wifi_Power_On_Handler();
 
 		TFT_BACKLIGHT_ON();
 		
@@ -487,8 +532,21 @@ static void TFT_Pocess_Command_Handler(void)
 		  
       // handler of wifi 
 	  case pro_wifi_init: //7
-	 
+	   if(ptc_first_on==0 &&  pro_t.gTimer_pro_power_on_key_time > 5){
+	   	ptc_first_on++;
+		HAL_Delay(1000); 
+		if(ptc_state()== 1){
 
+		Ptc_On();
+		LED_PTC_ICON_ON();
+
+
+		}
+		else{
+		Ptc_Off();
+		LED_PTC_ICON_OFF();
+		}
+	   }
       Wifi_Pro_Runing_Init();
 	  
 	  pro_t.run_process_step=pro_disp_dht11_value;
