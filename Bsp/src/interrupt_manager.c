@@ -228,7 +228,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
-	   pro_t.gTimer_pro_power_on_key_time++;
+	 
 
 	  //gctl_t 
 	   gctl_t.gTimer_ctl_set_timer_time_senconds++;

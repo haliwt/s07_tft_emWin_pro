@@ -343,6 +343,47 @@ void TFT_Disp_Set_TimerTime_Init(void)
 
 
   }
+void TFT_Disp_Voice_Set_TimerTime_Init(void)
+{
+
+   static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
+   static uint8_t set_timer_hours=0xff,disp_timer_words=0xff;
+   static uint8_t bc;
+
+   bc = 0;
+
+    timer_decade_hours = gctl_t.gSet_timer_hours /10;
+	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
+
+	
+	    timer_decade_minutes=0;
+	    timer_unit_minutes =0;
+
+
+    if(disp_timer_words != gctl_t.timer_timing_words_changed_flag){
+		disp_timer_words = gctl_t.timer_timing_words_changed_flag;
+    //display works of words of chinese 
+    TFT_Disp_WorksTime_24_24_onBlack(112,150,1,0);//works one "定"
+	TFT_Disp_WorksTime_24_24_onBlack(136,150,1,1);//"时"
+	TFT_Disp_WorksTime_24_24_onBlack(160,150,1,2);//“时”
+	TFT_Disp_WorksTime_24_24_onBlack(184,150,1,3);//“间”
+
+    }
+	
+
+	    
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,bc,timer_decade_hours);
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,bc,timer_unit_hours);
+
+
+    
+        TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,bc,timer_decade_minutes);
+        TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,bc,timer_unit_minutes);
+    
+
+
+  }
+
 
 /********************************************************************************
  * 
@@ -379,25 +420,47 @@ void TFT_Disp_Timer_Split_Symbol(void)
 void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value)
 {
 
+  static uint8_t temp_unit,temp_decade,refresh_one=0xff,refresh_two=0xff;
+
+   temp_decade = temp_value /10;
+
+   temp_unit= temp_value%10; 
+  
+   if(refresh_one != temp_decade || v_t.voice_set_temperature_value_flag==2){
+   	refresh_one = temp_decade;
+   	TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
+
+   }
+
+   if(refresh_two != temp_unit || v_t.voice_set_temperature_value_flag==2){
+   	  refresh_two = temp_unit;
+	   v_t.voice_set_temperature_value_flag++;
+   TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
+   }
+
+}
+
+void TFT_Disp_Voice_Temp_Value(uint8_t bc,uint8_t temp_value)
+{
+
    static uint8_t temp_unit,temp_decade,refresh_one=0xff,refresh_two=0xff;
 
    temp_decade = temp_value /10;
 
    temp_unit= temp_value%10; 
   
-   if(refresh_one != temp_decade){
-   	refresh_one = temp_decade;
+   
    	TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
 
-   }
+ 
 
-   if(refresh_two != temp_unit){
-   	  refresh_two = temp_unit;
+
    TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
-   }
+   
 
 
 }
+
 /***********************************************************************************************
 	*
 	*Function Name:void TFT_Disp_Humidity_Value(uint8_t hum_value)

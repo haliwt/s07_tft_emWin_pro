@@ -242,13 +242,11 @@ static void Key_Speical_Power_Fun_Handler(void)
 	 }
 	 }
 	//sort time key of fun
-		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1 && delay_pw==0){
-            delay_pw =1;
-			pro_t.gTimer_pro_power_on_key_time =0;
-            pro_t.key_power_be_pressed_flag=0;
-			pw_flag  = pw_flag ^ 0x01;
-		   if(pw_flag ==1){
-          //  if( pro_t.gPower_On == power_off){
+		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
+        
+		
+          pro_t.key_power_be_pressed_flag=0;
+            if( pro_t.gPower_On == power_off){
 				
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
@@ -256,60 +254,20 @@ static void Key_Speical_Power_Fun_Handler(void)
 		    pro_t.gKey_value = power_key_id;
 
 		
-//			
-//		  }
-//		  else{
-//			 //pro_t.gKey_value = power_key_id;
-//			 buzzer_sound();
-//			 pro_t.power_off_flag=1;
-//			
-//	        pro_t.long_key_flag =0;
-//			 
-//			pro_t.gPower_On = power_off;   
-//			pro_t.run_process_step=0xff;
-//			  
-//			 }
+			
 		  }
-         else{
-
-		 
-//			 if( pro_t.gPower_On == power_off){
-//							
-//						pro_t.gPower_On = power_on;   
-//						pro_t.long_key_flag =0;
-//						pro_t.run_process_step=0;
-//						pro_t.gKey_value = power_key_id;
-//			 
-//					
-//						
-//					  }
-//					  else{
-						 //pro_t.gKey_value = power_key_id;
-						// buzzer_sound();
-						 pro_t.power_off_flag=1;
-						
-						pro_t.long_key_flag =0;
-						 
-						pro_t.gPower_On = power_off;   
-						pro_t.run_process_step=0xff;
-						  
-						 }
-					  }
-//
-
-
-
-
-		 
-
-		if(delay_pw ==1 && pro_t.gTimer_pro_power_on_key_time > 1){
-
-			delay_pw =0;
-			pro_t.gTimer_pro_power_on_key_time=0;
-
-
-		}
-    
+		  else{
+			 //pro_t.gKey_value = power_key_id;
+			 buzzer_sound();
+			 pro_t.power_off_flag=1;
+			
+	        pro_t.long_key_flag =0;
+			 
+			pro_t.gPower_On = power_off;   
+			pro_t.run_process_step=0xff;
+			  
+			 }
+		  }
 }
 /******************************************************************************
 	*
@@ -404,6 +362,7 @@ static void mode_key_fun_handler(void)
 
 	    }
 }
+
 /******************************************************************************
 	*
 	*Function Name:void TFT_Pocess_Command_Handler(void)
@@ -423,7 +382,7 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	
 		pro_t.gKey_value =0XFF;
-	    pro_t.gTimer_pro_power_on_key_time =0;
+	 
 		TFT_Display_WorksTime();
 		Power_On_Fun();
 	    Fan_Run();
@@ -532,7 +491,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
       // handler of wifi 
 	  case pro_wifi_init: //7
-	   if(ptc_first_on==0 &&  pro_t.gTimer_pro_power_on_key_time > 5){
+	   if(ptc_first_on==1){
 	   	ptc_first_on++;
 		HAL_Delay(1000); 
 		if(ptc_state()== 1){
@@ -698,7 +657,7 @@ void ADD_Key_Fun(void)
             if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
 
              pro_t.gTimer_pro_set_tem_value_blink =0;
-			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
+			 gctl_t.gSet_temperature_value_item = set_temp_value_item;
             select_flag=1;
 		//	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
@@ -767,7 +726,7 @@ void DEC_Key_Fun(void)
 	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
              pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
-			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
+			 gctl_t.gSet_temperature_value_item = set_temp_value_item;
              select_flag= 1;
 		//	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;

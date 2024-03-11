@@ -136,7 +136,7 @@ void Temperature_Ptc_Pro_Handler(void)
 
    if(ptc_error_state() == 0){
 
-	    switch(gctl_t.gSet_temperature_value_flag){
+	    switch(gctl_t.gSet_temperature_value_item){
 
            case normal_disp_item:
 
@@ -200,8 +200,13 @@ void Temperature_Ptc_Pro_Handler(void)
                pro_t.gTimer_pro_set_tem_value_blink =0;
 			   pro_t.gTimer_pro_temp_delay= 65;
 			   pro_t.mode_key_confirm_flag = 0xff;
-			   gctl_t.gSet_temperature_value_flag= disp_set_temp_value_item;
+			   gctl_t.gSet_temperature_value_item= disp_set_temp_value_item;
 			   pro_t.gTimer_pro_display_dht11_value =30; //at once display sensor of temperature value 
+
+			    if(v_t.voice_set_temperature_value_flag==1){
+			   	 v_t.voice_set_temperature_value_flag++;
+			     TFT_Disp_Voice_Temp_Value(0,gctl_t.gSet_temperature_value);
+               }
 
 		   }
 

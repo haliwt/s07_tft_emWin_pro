@@ -63,7 +63,7 @@ typedef struct _bsp_ctl{
 
    uint8_t dht11_hum_value;
    uint8_t dht11_temp_value;
-   uint8_t gSet_temperature_value_flag;
+   uint8_t gSet_temperature_value_item;
 
    uint8_t gTimer_ctl_disp_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
