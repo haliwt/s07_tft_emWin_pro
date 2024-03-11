@@ -617,7 +617,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 ************************************************************************/
 void ADD_Key_Fun(void)
 {
- 
+    static uint8_t select_flag;
  if(power_on_state()==power_on){
 
 	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0){
@@ -641,8 +641,8 @@ void ADD_Key_Fun(void)
 
              pro_t.gTimer_pro_set_tem_value_blink =0;
 			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
-
-			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
+            select_flag=1;
+		//	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
 		break;
 
 		case mode_key_timer_time:
@@ -674,6 +674,12 @@ void ADD_Key_Fun(void)
 		}
 	}
 
+	  if(select_flag ==1){
+			select_flag ++;
+		TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+
+		}
+
 }
 /************************************************************************
 	*
@@ -685,7 +691,7 @@ void ADD_Key_Fun(void)
 ************************************************************************/
 void DEC_Key_Fun(void)
 {
-
+    static uint8_t select_flag ;
 	if(power_on_state() ==power_on){
 	   	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0){
 	   	
@@ -704,8 +710,8 @@ void DEC_Key_Fun(void)
              pro_t.gTimer_pro_mode_key_timer = 0;
 			 pro_t.gTimer_pro_set_tem_value_blink =0;
 			 gctl_t.gSet_temperature_value_flag = set_temp_value_item;
-
-			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+             select_flag= 1;
+		//	TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 			break;
 
 			case mode_key_timer_time: //timer timing set "decrease -down"
@@ -735,6 +741,11 @@ void DEC_Key_Fun(void)
 
 	    	}
 	   	  }
+		}
+        if(select_flag ==1){
+			select_flag ++;
+		TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+
 		}
 }
 
