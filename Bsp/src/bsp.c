@@ -486,21 +486,7 @@ static void TFT_Pocess_Command_Handler(void)
 		  
       // handler of wifi 
 	  case pro_wifi_init: //7
-	   if(ptc_first_on==1){
-	   	ptc_first_on++;
-		HAL_Delay(1000); 
-		if(ptc_state()== 1){
-
-		Ptc_On();
-		LED_PTC_ICON_ON();
-
-
-		}
-		else{
-		Ptc_Off();
-		LED_PTC_ICON_OFF();
-		}
-	   }
+	   
       Wifi_Pro_Runing_Init();
 	  
 	  pro_t.run_process_step=pro_disp_dht11_value;
