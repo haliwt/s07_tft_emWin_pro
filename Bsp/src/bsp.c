@@ -179,7 +179,7 @@ static void Key_Interrup_Handler(void)
         case add_key_id:
 		 	
 		 	
-			 DEC_Key_Fun();
+			ADD_Key_Fun();//DEC_Key_Fun();
 
 			  pro_t.gKey_value =0XFF;
 
@@ -187,7 +187,7 @@ static void Key_Interrup_Handler(void)
 
 		case dec_key_id:
 
-			ADD_Key_Fun();
+			DEC_Key_Fun();//ADD_Key_Fun();
 
 			 pro_t.gKey_value =0XFF;
 

@@ -446,7 +446,7 @@ void TFT_LCD_Init(void)
     /* 关闭睡眠模式 */
 	//LCD_GPIO_Reset();
 
-	TFT_BACKLIGHT_ON();
+	//TFT_BACKLIGHT_ON();
     LCD_Write_Cmd(0x11);
 	HAL_Delay(20);
     #if 1
@@ -546,13 +546,14 @@ void TFT_LCD_Init(void)
 	//LCD_Write_Cmd(0x21); // Display Inversion On
 	LCD_Write_Cmd(0x20); // Display Inversion Off
     LCD_Write_Cmd(0x29); // display on 
-    //LCD_Write_Cmd(0x28);  // display off 
+    //LCD_Write_Cmd(0x28);  // display off ---WT.EDIT  
 
     /* 清屏为白色 */
     LCD_Clear(BLACK);
+	
 
     /*打开显示*/
-    LCD_Display_BacklightOn();
+  //  LCD_Display_BacklightOn();
     #endif 
 }
 
