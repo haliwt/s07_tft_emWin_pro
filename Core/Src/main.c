@@ -127,11 +127,12 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	
+
 	bsp_Idle();
     Voice_Decoder_Handler();
 	TFT_Process_Handler();
     WIFI_Process_Handler();
+	USART_Cmd_Error_Handler();
   }
   /* USER CODE END 3 */
 }

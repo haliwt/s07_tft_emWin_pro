@@ -77,10 +77,10 @@ static uint8_t const voice_timer_array[24]={
 };
 
 #endif 
-
+//算法是:data4 + data6 = element
 static uint8_t const voice_sound_data[55]={
 
-	0x22,0x24,0x26,0x28,0x2a,
+	0x22,0x24,0x26,0x28,0x2a, //0x24 = power_on ,0x26= power_off
 	0x2c,0x2e,0x30,0x32,0x34,
     0x36,0x38,0x3a,0x3c,0x3e,
 	0x40,0x42,0x44,0x46,0x48,
@@ -136,57 +136,25 @@ void Rx_Voice_Data_Handler(void(*rx_voice_handler)(uint8_t data))
 void Voice_Decoder_Handler(void)
 {
    
- if(v_t.rx_voice_data_enable ==1){
+	if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
+
+
+    if(v_t.rx_voice_data_enable==1){
 
 	v_t.rx_voice_data_enable =0;
 	
-	key= v_t.RxBuf[0] + v_t.RxBuf[1];
+	key= v_t.RxBuf[0] + v_t.RxBuf[1]; //key= data4+ data6 = ; //A5 FA 00 81 01 00 21 FB 
 
 	result = BinarySearch_Voice_Data(voice_sound_data,key);
-	
-	if(result ==0){
-		v_t.voice_sound_enable =1;
-		pro_t.buzzer_sound_flag =1;
-		
-	    
-	}
 
-	
-	if(v_t.voice_sound_enable ==1){
-       if(result ==1){
-	   	if(pro_t.gPower_On == power_on){
-			
-			//v_t.voice_to_buzzer_flag =1;
-            pro_t.buzzer_sound_flag =1;
-            
-        }
-		else{
+	v_t.RxBuf[0]=0;
+    v_t.RxBuf[1]=0;
 
-		    buzzer_sound();
-		    pro_t.gPower_On = power_on;   
-            pro_t.long_key_flag =0;
-            pro_t.run_process_step=0;
+    if(result < 0x0A){
+	   voice_cmd_fun(result);
 
-			gctl_t.ptc_warning =0;
-		    gctl_t.fan_warning =0;
-			
-		}
-		
-		
-	}
-
-	}
-
-    if(v_t.voice_sound_enable ==1 && pro_t.gPower_On == power_on && ptc_error_state()==0 && fan_error_state()==0){
-
-	if(result >1 && result < 10){ //command 
-	   
-		  voice_cmd_fun(result);
-		 
-		
-
-	}
-	else if(result > 9 && result < 31){ //set temperature value 
+    }
+    else if(result > 9 && result < 31){ //set temperature value 
 		   
             voice_set_temperature_value(result);
 			
@@ -203,20 +171,18 @@ void Voice_Decoder_Handler(void)
 	 }
     }
 
-	
+   
+	}
+
+
+    if(v_t.gTimer_voice_time > 14){
+
+       v_t.rx_voice_cmd_enable =0;
 	}
 
   
   
-	// if(input_set_timer_timing_flag ==1 && pro_t.gTimer_pro_mode_key_timer > 3){
-
-	// 	input_set_timer_timing_flag =0;
-	// 	pro_t.timer_mode_flag = timer_time;
-	// 	pro_t.mode_key_confirm_flag =0xff;
-	// 	gctl_t.gTimer_ctl_set_timer_time_senconds =0;
-	// 	gctl_t.timer_time_define_flag = 1;
-	// 	gctl_t.gSet_timer_minutes =0;
-	// }
+	
     
 	
 }
@@ -235,13 +201,35 @@ static void voice_cmd_fun(uint8_t cmd)
 	
 	switch(cmd){
 
+	case voice_power_on:
+	  
+	   	if(pro_t.gPower_On == power_on){
+			
+           v_t.voice_soun_output_enable = 1;
+		   VOICE_SOUND_OUTPUT();
+            
+        }
+		else{
+            v_t.voice_soun_output_enable = 1;
+		    VOICE_SOUND_OUTPUT();
+		    pro_t.gPower_On = power_on;   
+            pro_t.long_key_flag =0;
+            pro_t.run_process_step=0;
+
+			gctl_t.ptc_warning =0;
+		    gctl_t.fan_warning =0;
+			
+		}
+		
+	break;
+
 	case voice_power_off:
 		if(pro_t.gPower_On == power_off){
-			//	buzzer_sound();
+			v_t.voice_soun_output_enable = 0;
 
 		}
 		else{
-			//buzzer_sound();
+			v_t.voice_soun_output_enable = 0;
 		    pro_t.power_off_flag=1;
 			pro_t.gPower_On = power_off;   
 		
@@ -250,6 +238,7 @@ static void voice_cmd_fun(uint8_t cmd)
 	break;
 
 	case voice_link_wifi:
+		if(v_t.voice_soun_output_enable ==1){
 		if(wifi_link_net_state()==0){
 		    
 		    wifi_t.link_tencent_step_counter=0;
@@ -261,17 +250,21 @@ static void voice_cmd_fun(uint8_t cmd)
 			wifi_t.gTimer_linking_tencent_duration=0; //166s -2分7秒
            
 		}
-		else{
-          // buzzer_sound();
-          
 		}
+		else{
+
+			VOICE_SOUND_DISABLE();
+
+		}
+		
 
 	
 	break;
 
 	case voice_open_ptc:
-    
-     if(ptc_state()==1){
+
+	if(v_t.voice_soun_output_enable ==1){
+     if(ptc_state()==1 ){
       // buzzer_sound();
 	 }
 	 else{
@@ -282,13 +275,17 @@ static void voice_cmd_fun(uint8_t cmd)
 	    LED_PTC_ICON_ON();
 
 	 }
+	}
+	else{
+		VOICE_SOUND_DISABLE();
+     }
 
      
    
     break;
 
 	case voice_close_ptc:
-		
+		if(v_t.voice_soun_output_enable ==1){
 		 if(ptc_state() == 0){
           
           //  buzzer_sound();
@@ -300,9 +297,15 @@ static void voice_cmd_fun(uint8_t cmd)
 			Ptc_Off();
 		    LED_PTC_ICON_OFF();
 		 }
+		}
+		else{
+			VOICE_SOUND_DISABLE();
+
+		}
 	break;
 
 	case voice_open_plasma:
+		if(v_t.voice_soun_output_enable ==1){
 		 if(plasma_state()==1){
 			//buzzer_sound();//SendData_Buzzer();
 			
@@ -314,9 +317,15 @@ static void voice_cmd_fun(uint8_t cmd)
 		 Plasma_On();
 		 LED_KILL_ICON_ON() ;
 		}
+		}
+		else{
+          VOICE_SOUND_DISABLE();
+
+		}
   
 	break;
    case voice_close_plasma:
+   	if(v_t.voice_soun_output_enable ==1){
    	 if(plasma_state()==0){
 		// buzzer_sound();//SendData_Buzzer();
 
@@ -327,9 +336,15 @@ static void voice_cmd_fun(uint8_t cmd)
 		 Plasma_Off();
 		 LED_KILL_ICON_OFF() ;
 	 }
+   	}
+	else{
+     VOICE_SOUND_DISABLE();
+
+	}
 	break;
 
 	case voice_open_rat:
+		if(v_t.voice_soun_output_enable ==1){
 		 if(ultrasonic_state() ==1){
 		//	buzzer_sound();//SendData_Buzzer();
 
@@ -340,8 +355,14 @@ static void voice_cmd_fun(uint8_t cmd)
 			Ultrasonic_Pwm_Output();
 		    LED_RAT_ICON_ON();
 		 }
+		}
+		else{
+          VOICE_SOUND_DISABLE();
+
+		}
 	break;
 	case voice_close_rat:
+		if(v_t.voice_soun_output_enable ==1){
 		if(ultrasonic_state() ==0){
 		//	buzzer_sound();//SendData_Buzzer();
 
@@ -351,6 +372,12 @@ static void voice_cmd_fun(uint8_t cmd)
 		  gctl_t.ultrasonic_flag =0;
 		 Ultrasonic_Pwm_Stop();
 		 LED_RAT_ICON_OFF();
+		}
+		}
+		else{
+          VOICE_SOUND_DISABLE();
+
+
 		}
 	break;
 	
@@ -369,13 +396,20 @@ static void voice_cmd_fun(uint8_t cmd)
 *************************************************************************************/
 static void  voice_set_temperature_value(uint8_t value)
 {
-		value = 10+value;
-	//	pro_t.buzzer_sound_flag =1;
-		gctl_t.gSet_temperature_value = value;
-		pro_t.gTimer_pro_set_tem_value_blink=0;
-		gctl_t.gSet_temperature_value_item=set_temp_value_item;
-        v_t.voice_set_temperature_value_flag=1;
-       TFT_Disp_Voice_Temp_Value(0,gctl_t.gSet_temperature_value); 
+        if(v_t.voice_soun_output_enable ==1){
+			value = 10+value;
+		//	pro_t.buzzer_sound_flag =1;
+			gctl_t.gSet_temperature_value = value;
+			pro_t.gTimer_pro_set_tem_value_blink=0;
+			gctl_t.gSet_temperature_value_item=set_temp_value_item;
+	        v_t.voice_set_temperature_value_flag=1;
+	       TFT_Disp_Voice_Temp_Value(0,gctl_t.gSet_temperature_value); 
+
+        }
+		else{
+           VOICE_SOUND_DISABLE();
+   
+		}
 
 }
 /***********************************************************
@@ -388,7 +422,7 @@ static void  voice_set_temperature_value(uint8_t value)
 ***********************************************************/
 static void voice_set_timer_timing_value(uint8_t time)
 {
-    
+    if(v_t.voice_soun_output_enable ==1){
 	pro_t.mode_key_pressed_flag =0;
 //	Buzzer_KeySound();
 	pro_t.gTimer_pro_mode_key_timer = 0; 
@@ -408,6 +442,11 @@ static void voice_set_timer_timing_value(uint8_t time)
 	
 
 	TFT_Disp_Voice_Set_TimerTime_Init();
+    }
+	else{
+       VOICE_SOUND_DISABLE();
+
+	}
 
 }
 /****************************************************************************************

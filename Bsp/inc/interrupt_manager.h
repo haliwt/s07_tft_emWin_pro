@@ -3,6 +3,7 @@
 #include "main.h"
 
 
+void USART_Cmd_Error_Handler(void);
 
 
 #endif

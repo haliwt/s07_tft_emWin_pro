@@ -146,6 +146,13 @@ void Error_Handler(void);
 #define VOICE_TX_GPIO_Port GPIOA
 #define VOICE_RX_Pin GPIO_PIN_10
 #define VOICE_RX_GPIO_Port GPIOA
+
+#define VOICE_SOUND_Pin 						GPIO_PIN_13
+#define VOICE_SOUND_GPIO_Port 					GPIOC
+
+
+
+
 //TFT SCREEN
 #define TFT_NSS_Pin GPIO_PIN_15
 #define TFT_NSS_GPIO_Port GPIOA

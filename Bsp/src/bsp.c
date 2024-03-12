@@ -121,10 +121,12 @@ void TFT_Process_Handler(void)
 	    wifi_t.power_off_step=0; 
 	    fan_continuce_flag =1;
 		pro_t.gTimer_pro_fan =0;
+		//LCD_Clear(BLACK);
 		TFT_BACKLIGHT_OFF();
 		Power_Off_Fun();
 		Device_NoAction_Power_Off();
 		LED_Mode_Key_Off();
+		
 		
    	}
 	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 50){
@@ -156,6 +158,7 @@ void TFT_Process_Handler(void)
 	Power_Off_Retain_Beijing_Time();
 	
 	Breath_Led();
+	
 
   
 	break;

@@ -553,11 +553,11 @@ void TFT_LCD_Init(void)
 	
 
     /*打开显示*/
-  //  LCD_Display_BacklightOn();
-    #endif 
+ 
 }
-
 #endif 
+
+
 //void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 //{
 //
@@ -667,3 +667,4 @@ LCD_Write_Cmd( 0x29);
 //	HAL_SPI_Transmit_DMA(&hspi1,spi_it_tx,1);
 
 //}
+#endif 

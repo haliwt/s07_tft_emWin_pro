@@ -4,7 +4,8 @@
 
 #define  RX_BUF_SIZE  10
 
-
+#define VOICE_SOUND_OUTPUT()       HAL_GPIO_WritePin(VOICE_SOUND_GPIO_Port,VOICE_SOUND_Pin,GPIO_PIN_RESET) 
+#define VOICE_SOUND_DISABLE()      HAL_GPIO_WritePin(VOICE_SOUND_GPIO_Port,VOICE_SOUND_Pin,GPIO_PIN_SET) 
 
 
 extern uint8_t voice_inputBuf[1];
@@ -25,14 +26,19 @@ typedef enum{
 
 
 
+
+
+
 typedef struct{
 
-    uint8_t voice_sound_enable;
+    
 	uint8_t voice_ctl_flag;
 	uint8_t RxBuf[RX_BUF_SIZE];
 	uint8_t rx_voice_data_enable;
 	uint8_t rxCounter;
 	uint8_t voice_to_buzzer_flag ;
+	uint8_t voice_soun_output_enable;
+	uint8_t rx_voice_cmd_enable;
 
 	//voice ctl display function "icon" 
 	uint8_t voice_ptc_flag;
@@ -44,6 +50,7 @@ typedef struct{
    
 	uint8_t RxStatus;
 	uint8_t voice_input_timer_flag;
+	uint8_t gTimer_voice_time;
 	
 }voice_sound_t;
 
