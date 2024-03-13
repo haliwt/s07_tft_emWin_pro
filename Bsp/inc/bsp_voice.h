@@ -41,7 +41,6 @@ typedef struct{
 	uint8_t rx_voice_cmd_enable;
 	uint8_t voice_cmd_power_off_flag;
 	uint8_t recoder_cmd_counter;
-	uint8_t voice_deteceted_no_cmd_flag;
 	
 
 	//voice ctl display function "icon" 
@@ -55,7 +54,7 @@ typedef struct{
 	uint8_t RxStatus;
 	uint8_t voice_input_timer_flag;
 	uint8_t gTimer_voice_time;
-	uint8_t gTimer_vt_det_time;
+
 	
 }voice_sound_t;
 

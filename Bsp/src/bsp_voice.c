@@ -139,6 +139,7 @@ void Voice_Decoder_Handler(void)
    static uint8_t voice_cmd_flag;
 
   if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
+  	   Voice_GPIO_Dir_Iniput_Init();
 		
 		voice_cmd_flag=1;
 	if(v_t.rx_voice_data_enable==1){
@@ -150,7 +151,7 @@ void Voice_Decoder_Handler(void)
 	result = BinarySearch_Voice_Data(voice_sound_data,key);
 
 
-    if(result < 0x0A){
+    if(result < 0x0A && result > 0){
 	   voice_cmd_fun(result);
 
     }
@@ -180,8 +181,7 @@ void Voice_Decoder_Handler(void)
 
        v_t.rx_voice_cmd_enable =0;
 	   v_t.recoder_cmd_counter++;
-	   v_t.voice_deteceted_no_cmd_flag=1;
-	   v_t.gTimer_vt_det_time=0;
+
 	   Voice_GPIO_Dir_Output_Init();
 	}
 
