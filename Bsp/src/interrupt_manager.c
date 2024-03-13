@@ -53,7 +53,7 @@ void USART_Cmd_Error_Handler(void)
 *******************************************************************************/
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    static uint8_t state=0,state_uart1;
+    static uint8_t state=0,state_uart1,voice_cmd_time = 0xff;
     uint32_t temp ;
     //wifi usart2
     if(huart->Instance==USART2)
@@ -231,8 +231,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	  case 8:
 	      if(voice_inputBuf[0]==0xFB) //hex : 41 -'A'	-fixed master
 		   {
+
                v_t.rx_voice_cmd_enable = 1;
-			   v_t.gTimer_voice_time =0;
+			   //v_t.gTimer_voice_time =0;
+			   if(voice_cmd_time != v_t.recoder_cmd_counter){
+			   	    
+				   voice_cmd_time = v_t.recoder_cmd_counter;
+
+				   v_t.gTimer_voice_time =0;
+
+			   }
 			  
 			   state_uart1=0; 
 

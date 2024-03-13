@@ -177,6 +177,8 @@ void Voice_Decoder_Handler(void)
     if(v_t.gTimer_voice_time > 14){
 
        v_t.rx_voice_cmd_enable =0;
+	   v_t.recoder_cmd_counter++;
+	   VOICE_SOUND_DISABLE();
 	}
 
  
