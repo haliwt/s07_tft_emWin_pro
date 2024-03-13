@@ -78,6 +78,7 @@ void Temperature_Ptc_Pro_Handler(void)
 				}
 				else{
 					gctl_t.gTimer_ctl_warning_time =0;
+					Buzzer_Ptc_Error_Sound();
 				}
 			}
 			else{ //fan and ptc is both error 
@@ -103,6 +104,7 @@ void Temperature_Ptc_Pro_Handler(void)
 					else{
 						gctl_t.gTimer_ctl_warning_time =0;
 						error_flag ++;
+					    Buzzer_Ptc_Error_Sound();
 					    
 					}
 			    }
@@ -125,6 +127,7 @@ void Temperature_Ptc_Pro_Handler(void)
 					else{
 						gctl_t.gTimer_ctl_warning_time =0;
 						if(error_flag > 0)error_flag=0;
+						Buzzer_Ptc_Error_Sound();
 					    
 					}
 				}

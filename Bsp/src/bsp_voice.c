@@ -138,8 +138,9 @@ void Voice_Decoder_Handler(void)
 
    static uint8_t voice_cmd_flag;
 
-  if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
+  if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 18){
   	   Voice_GPIO_Dir_Iniput_Init();
+	   v_t.rx_enable_voice_output=0xff;
 		
 		voice_cmd_flag=1;
 	if(v_t.rx_voice_data_enable==1){
@@ -176,7 +177,7 @@ void Voice_Decoder_Handler(void)
 	}
 
 
-    if(v_t.gTimer_voice_time > 14 && voice_cmd_flag==1){
+    if(v_t.gTimer_voice_time > 17 && voice_cmd_flag==1){
 	   voice_cmd_flag++;
 
        v_t.rx_voice_cmd_enable =0;
@@ -184,6 +185,61 @@ void Voice_Decoder_Handler(void)
 
 	   Voice_GPIO_Dir_Output_Init();
 	}
+
+	
+
+	
+
+	if(pro_t.gPower_On == power_on &&  voice_cmd_flag==2){
+
+	    switch(v_t.rx_enable_voice_output){
+
+		 case 1:
+		   Voice_GPIO_Dir_Iniput_Init();
+
+
+		 break;
+
+
+
+         case 2:
+		 
+	       if(v_t.gTimer_voice_sound_input_time< 10){
+		   	
+			 Voice_GPIO_Dir_Output_Init();
+
+            }
+		    else{
+				v_t.rx_enable_voice_output=3;
+
+
+			}
+           
+			
+			
+		 break;
+
+		 case 3:
+    	
+		    v_t.gTimer_voice_sound_input_time=0;
+			Voice_GPIO_Dir_Iniput_Init();
+
+		 break;
+
+		 case 0xff:
+			Voice_GPIO_Dir_Iniput_Init();
+
+		 break;
+
+		 
+
+		  }
+
+	   }
+
+
+	
+
 
   
 	

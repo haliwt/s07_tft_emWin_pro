@@ -69,9 +69,9 @@ void Get_PTC_Temperature_Voltage(uint32_t channel,uint8_t times)
 
     ptc_temp_voltage  =(uint16_t)((adcx * 3300)/4096); //amplification 100 ,3.11V -> 311
 
-    if(times_i < 3){
+    if(times_i < 2){
 	    times_i++;
-	    ptc_temp_voltage=500;
+	    ptc_temp_voltage=2000;
 	
 	}
 	#ifdef DEBUG
@@ -95,7 +95,8 @@ static void Judge_PTC_Temperature_Value(uint16_t adc_ptc)
 {
   
 	
-   if(adc_ptc < 373 || adc_ptc ==373){ //90 degree
+  // if(adc_ptc < 373 || adc_ptc ==373){ //90 degree
+  if(adc_ptc < 970 || adc_ptc == 970){   //50 degree
 
 
 		gctl_t.ptc_flag=0 ;
