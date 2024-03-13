@@ -210,12 +210,12 @@ static void voice_cmd_fun(uint8_t cmd)
 	   	if(pro_t.gPower_On == power_on){
 			
            v_t.voice_soun_output_enable = 1;
-		   VOICE_SOUND_OUTPUT();
+	
             
         }
 		else{
             v_t.voice_soun_output_enable = 1;
-		    VOICE_SOUND_OUTPUT();
+	
 		    pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
@@ -257,11 +257,7 @@ static void voice_cmd_fun(uint8_t cmd)
            
 		}
 		}
-		else{
-
-			VOICE_SOUND_DISABLE();
-
-		}
+		
 		
 
 	
@@ -282,10 +278,7 @@ static void voice_cmd_fun(uint8_t cmd)
 
 	 }
 	}
-	else{
-		VOICE_SOUND_DISABLE();
-     }
-
+	
      
    
     break;
@@ -304,10 +297,7 @@ static void voice_cmd_fun(uint8_t cmd)
 		    LED_PTC_ICON_OFF();
 		 }
 		}
-		else{
-			VOICE_SOUND_DISABLE();
-
-		}
+		
 	break;
 
 	case voice_open_plasma:
@@ -324,10 +314,7 @@ static void voice_cmd_fun(uint8_t cmd)
 		 LED_KILL_ICON_ON() ;
 		}
 		}
-		else{
-          VOICE_SOUND_DISABLE();
-
-		}
+	
   
 	break;
    case voice_close_plasma:
@@ -343,10 +330,7 @@ static void voice_cmd_fun(uint8_t cmd)
 		 LED_KILL_ICON_OFF() ;
 	 }
    	}
-	else{
-     VOICE_SOUND_DISABLE();
-
-	}
+	
 	break;
 
 	case voice_open_rat:
@@ -362,10 +346,7 @@ static void voice_cmd_fun(uint8_t cmd)
 		    LED_RAT_ICON_ON();
 		 }
 		}
-		else{
-          VOICE_SOUND_DISABLE();
-
-		}
+		
 	break;
 	case voice_close_rat:
 		if(v_t.voice_soun_output_enable ==1){
@@ -380,17 +361,12 @@ static void voice_cmd_fun(uint8_t cmd)
 		 LED_RAT_ICON_OFF();
 		}
 		}
-		else{
-          VOICE_SOUND_DISABLE();
-
-
-		}
+		
 	break;
 	
 
 	}
 }
-
 
 /***********************************************************************************
  *  *

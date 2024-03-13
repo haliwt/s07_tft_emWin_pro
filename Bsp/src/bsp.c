@@ -113,7 +113,7 @@ void TFT_Process_Handler(void)
     	Key_Interrup_Handler();
 	    TFT_Pocess_Command_Handler();
 		v_t.voice_soun_output_enable = 1;
-		VOICE_SOUND_OUTPUT();
+
 
 	
 
@@ -130,12 +130,9 @@ void TFT_Process_Handler(void)
 		Power_Off_Fun();
 		Device_NoAction_Power_Off();
 		LED_Mode_Key_Off();
-		v_t.rx_voice_cmd_enable =0;
-		v_t.voice_soun_output_enable = 0;
 		
 		
-		
-   	}
+	}
 	if(wifi_link_net_state() ==1  && wifi_t.gTimer_main_pro_times > 50){
 		wifi_t.gTimer_main_pro_times=0;	
 		MqttData_Publish_PowerOff_Ref();
@@ -403,7 +400,8 @@ static void TFT_Pocess_Command_Handler(void)
 		Device_Action_No_Wifi_Power_On_Handler();
 
 		TFT_BACKLIGHT_ON();
-		
+
+		v_t.voice_soun_output_enable = 1;
 		pro_t.run_process_step=pro_disp_dht11_value;
 		
 	 break;
