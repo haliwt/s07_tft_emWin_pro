@@ -109,11 +109,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
      
 	}
 
-	#if 1 //voice sound communcation
-	if(huart->Instance==USART1) // Motor Board receive data (filter)
-	{
-		
-	#if 1	
+
+  if(huart->Instance==USART1){
+
 		switch(state_uart1)
 		{
 		case 0:  //#0
@@ -134,8 +132,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		   {
 			   state_uart1=3; 
 		   }
-		   else
+		   else{
 			  state_uart1=0; 
+			   v_t.gTimer_vt_det_time=0;
+			  
+
+		   }
 
 
 	   break;
@@ -145,8 +147,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		   {
 			   state_uart1=4; 
 		   }
-		   else
+		   else{
 			  state_uart1=0; 
+			 
+
+		   }
 
 
 	   break;
@@ -154,13 +159,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	   case 4:
 
 	     if(voice_inputBuf[0]==0x01){
-		 	 VOICE_SOUND_OUTPUT();
+		 	Voice_GPIO_Dir_Iniput_Init();
 			  v_t.RxBuf[0]=voice_inputBuf[0];
+		      v_t.voice_deteceted_no_cmd_flag=0;
 		      state_uart1=5; 
 
          }
-		 
-		  if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0){
+		 else if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0){
 	      if(voice_inputBuf[0] >0 && voice_inputBuf[0] < 0x38) //hex : 41 -'A'	-fixed master
 		   {
                v_t.RxBuf[0]=voice_inputBuf[0]; //voice data4 + data6
@@ -172,12 +177,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			  state_uart1=0; 
 
 		  }
+		  else{
+		  	 state_uart1=0; 
+			 v_t.gTimer_vt_det_time=0;
+             v_t.voice_deteceted_no_cmd_flag =1;
+		    
+         }
 
-		
-
-
-
-	   break;
+	  break;
 
 	   case 5:
 	      if(voice_inputBuf[0]==0x00) //hex : 41 -'A'	-fixed master
@@ -192,12 +199,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	   case 6:
          if(voice_inputBuf[0] ==0x21){
-           
+            v_t.voice_deteceted_no_cmd_flag=0;
 			v_t.RxBuf[1]=voice_inputBuf[0];
 			state_uart1=8; 
          }
-
-	     if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0 ){
+         else if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0 ){
 	      if(voice_inputBuf[0] >0x21 && voice_inputBuf[0] < 0x58) //hex : 41 -'A'	-fixed master
 		   {
                v_t.RxBuf[1]=voice_inputBuf[0];
@@ -206,6 +212,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		   else
 			  state_uart1=0; 
 	     }
+		 else{
+		  	 state_uart1=0;
+			 v_t.gTimer_vt_det_time=0;
+             v_t.voice_deteceted_no_cmd_flag =1;
+		 	 
+         }
 
 		
 
@@ -226,6 +238,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		  }
 		  
 	   	  }
+		  else{
+		  	 state_uart1=0; 
+             v_t.voice_deteceted_no_cmd_flag =1;
+		     
+         }
      break;
 
 	  case 8:
@@ -251,21 +268,20 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	 
 	  }
-	#endif 
-	HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//UART receive data interrupt 1 byte
 
-	  
+			HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//UART receive data interrupt 1 byte
+
+	}
+	
+}
+
+  
+ 
+
 //	__HAL_UART_CLEAR_NEFLAG(&huart1);
 //	__HAL_UART_CLEAR_FEFLAG(&huart1);
 //	__HAL_UART_CLEAR_OREFLAG(&huart1);
 //	__HAL_UART_CLEAR_TXFECF(&huart1);
-
-	}
-	
-    #endif 
-  
- }
-
 
 /*******************************************************************************
 	*
@@ -346,6 +362,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 
 	  //voice sound 
 	  v_t.gTimer_voice_time++;
+	  v_t.gTimer_vt_det_time++;
 	  
 
 	  if(tm2 > 59){//1 minute

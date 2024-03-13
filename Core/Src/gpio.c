@@ -54,7 +54,7 @@ void MX_GPIO_Init(void)
 
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC,TFT_DCX_Pin|VOICE_SOUND_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC,TFT_DCX_Pin, GPIO_PIN_RESET);
   
    HAL_GPIO_WritePin(GPIOB, TFT_BACKLIGHT_Pin,GPIO_PIN_SET);
 
@@ -73,8 +73,8 @@ void MX_GPIO_Init(void)
 
     /*Configure GPIO pins : PCPin PCPin */
   GPIO_InitStruct.Pin = VOICE_SOUND_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;//GPIO_MODE_OUTPUT_PP;
+
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 

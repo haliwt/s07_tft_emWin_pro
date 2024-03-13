@@ -136,13 +136,14 @@ void Rx_Voice_Data_Handler(void(*rx_voice_handler)(uint8_t data))
 void Voice_Decoder_Handler(void)
 {
 
-  
+   static uint8_t voice_cmd_flag;
 
-    if(v_t.rx_voice_data_enable==1){
+  if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
+		
+		voice_cmd_flag=1;
+	if(v_t.rx_voice_data_enable==1){
 		
 		v_t.rx_voice_data_enable =0;
-		
-	if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
 
 	key= v_t.RxBuf[0] + v_t.RxBuf[1]; //key= data4+ data6 = ; //A5 FA 00 81 01 00 21 FB 
 
@@ -174,14 +175,16 @@ void Voice_Decoder_Handler(void)
 	}
 
 
-    if(v_t.gTimer_voice_time > 14){
+    if(v_t.gTimer_voice_time > 14 && voice_cmd_flag==1){
+	   voice_cmd_flag++;
 
        v_t.rx_voice_cmd_enable =0;
 	   v_t.recoder_cmd_counter++;
-	   VOICE_SOUND_DISABLE();
+	   v_t.voice_deteceted_no_cmd_flag=1;
+	   v_t.gTimer_vt_det_time=0;
+	   Voice_GPIO_Dir_Output_Init();
 	}
 
- 
   
 	
     
@@ -501,6 +504,43 @@ static int8_t BinarySearch_Voice_Data(const uint8_t *pta,uint8_t key)
     *Return Ref:  NO
     * 
 ***********************************************************************************/
+void Voice_GPIO_Dir_Output_Init(void)
+{
+GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+/* GPIO Ports Clock Enable */
+__HAL_RCC_GPIOC_CLK_ENABLE();
+
+
+/*Configure GPIO pin Output Level */
+HAL_GPIO_WritePin(GPIOC,VOICE_SOUND_Pin,GPIO_PIN_RESET);
 
 
 
+  /*Configure GPIO pins : PCPin PCPin */
+GPIO_InitStruct.Pin = VOICE_SOUND_Pin;
+GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+ GPIO_InitStruct.Pull = GPIO_NOPULL;
+GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+
+}
+
+void Voice_GPIO_Dir_Iniput_Init(void)
+{
+
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+
+/*Configure GPIO pins : PCPin PCPin */
+  GPIO_InitStruct.Pin = VOICE_SOUND_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;//GPIO_MODE_OUTPUT_PP;
+
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+
+}

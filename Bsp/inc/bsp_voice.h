@@ -41,6 +41,8 @@ typedef struct{
 	uint8_t rx_voice_cmd_enable;
 	uint8_t voice_cmd_power_off_flag;
 	uint8_t recoder_cmd_counter;
+	uint8_t voice_deteceted_no_cmd_flag;
+	
 
 	//voice ctl display function "icon" 
 	uint8_t voice_ptc_flag;
@@ -53,6 +55,7 @@ typedef struct{
 	uint8_t RxStatus;
 	uint8_t voice_input_timer_flag;
 	uint8_t gTimer_voice_time;
+	uint8_t gTimer_vt_det_time;
 	
 }voice_sound_t;
 
@@ -65,8 +68,10 @@ void Voice_Decoder_Handler(void);
 
 
 
+void Voice_GPIO_Dir_Output_Init(void);
 
 
+void Voice_GPIO_Dir_Iniput_Init(void);
 
 
 
