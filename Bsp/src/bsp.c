@@ -112,6 +112,10 @@ void TFT_Process_Handler(void)
 	    Key_Speical_Mode_Fun_Handler();
     	Key_Interrup_Handler();
 	    TFT_Pocess_Command_Handler();
+		v_t.voice_soun_output_enable = 1;
+		VOICE_SOUND_OUTPUT();
+
+	
 
 		break;
 
@@ -126,6 +130,9 @@ void TFT_Process_Handler(void)
 		Power_Off_Fun();
 		Device_NoAction_Power_Off();
 		LED_Mode_Key_Off();
+		v_t.rx_voice_cmd_enable =0;
+		v_t.voice_soun_output_enable = 0;
+		
 		
 		
    	}
@@ -149,9 +156,21 @@ void TFT_Process_Handler(void)
       
 
 	}
+	if(v_t.voice_cmd_power_off_flag ==1){
+		v_t.voice_cmd_power_off_flag ++;;
+
+        v_t.gTimer_voice_time=0;
+
+
+	}
+	if(v_t.gTimer_voice_time > 2 && v_t.voice_cmd_power_off_flag==2){
+		v_t.voice_cmd_power_off_flag++;
+		VOICE_SOUND_DISABLE();
+    }
     gctl_t.ptc_warning=0;
 	gctl_t.fan_warning =0;
 	wifi_t.repeat_login_tencent_cloud_init_ref=0;
+	
 
 	wifi_t.smartphone_app_power_on_flag=0; //手机定时关机和开机，设置参数的标志位
 	

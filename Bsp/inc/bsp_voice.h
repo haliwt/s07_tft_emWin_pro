@@ -39,6 +39,7 @@ typedef struct{
 	uint8_t voice_to_buzzer_flag ;
 	uint8_t voice_soun_output_enable;
 	uint8_t rx_voice_cmd_enable;
+	uint8_t voice_cmd_power_off_flag;
 
 	//voice ctl display function "icon" 
 	uint8_t voice_ptc_flag;

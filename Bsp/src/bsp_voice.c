@@ -136,6 +136,8 @@ void Rx_Voice_Data_Handler(void(*rx_voice_handler)(uint8_t data))
 void Voice_Decoder_Handler(void)
 {
 
+  
+
     if(v_t.rx_voice_data_enable==1){
 		
 		v_t.rx_voice_data_enable =0;
@@ -177,7 +179,7 @@ void Voice_Decoder_Handler(void)
        v_t.rx_voice_cmd_enable =0;
 	}
 
-  
+ 
   
 	
     
@@ -223,12 +225,14 @@ static void voice_cmd_fun(uint8_t cmd)
 	case voice_power_off:
 		if(pro_t.gPower_On == power_off){
 			v_t.voice_soun_output_enable = 0;
+			
 
 		}
 		else{
 			v_t.voice_soun_output_enable = 0;
 		    pro_t.power_off_flag=1;
-			pro_t.gPower_On = power_off;   
+			pro_t.gPower_On = power_off; 
+			v_t.voice_cmd_power_off_flag =1;
 		
 			
 		}

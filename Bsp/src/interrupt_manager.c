@@ -154,6 +154,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	   case 4:
 
 	     if(voice_inputBuf[0]==0x01){
+		 	 VOICE_SOUND_OUTPUT();
 			  v_t.RxBuf[0]=voice_inputBuf[0];
 		      state_uart1=5; 
 
@@ -163,12 +164,16 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	      if(voice_inputBuf[0] >0 && voice_inputBuf[0] < 0x38) //hex : 41 -'A'	-fixed master
 		   {
                v_t.RxBuf[0]=voice_inputBuf[0]; //voice data4 + data6
-			   state_uart1=5; 
+			   state_uart1=5;
+
+			 
 		   }
 		   else
 			  state_uart1=0; 
 
 		  }
+
+		
 
 
 
@@ -187,12 +192,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 	   case 6:
          if(voice_inputBuf[0] ==0x21){
-            VOICE_SOUND_OUTPUT();
+           
 			v_t.RxBuf[1]=voice_inputBuf[0];
 			state_uart1=8; 
          }
 
-	     if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0){
+	     if(v_t.rx_voice_cmd_enable ==1 && v_t.rx_voice_data_enable ==0 ){
 	      if(voice_inputBuf[0] >0x21 && voice_inputBuf[0] < 0x58) //hex : 41 -'A'	-fixed master
 		   {
                v_t.RxBuf[1]=voice_inputBuf[0];
@@ -201,6 +206,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		   else
 			  state_uart1=0; 
 	     }
+
+		
 
 	   break;
 
