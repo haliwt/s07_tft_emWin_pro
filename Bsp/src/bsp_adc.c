@@ -96,7 +96,7 @@ static void Judge_PTC_Temperature_Value(uint16_t adc_ptc)
   
 	
   // if(adc_ptc < 373 || adc_ptc ==373){ //90 degree
-  if(adc_ptc < 1063 || adc_ptc == 1063){   //46 degree //50 degree
+  if(adc_ptc < 680 || adc_ptc == 680){   //50 degree //50 degree
 
 
 		gctl_t.ptc_flag=0 ;
