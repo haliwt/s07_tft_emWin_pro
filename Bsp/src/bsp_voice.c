@@ -35,14 +35,21 @@
 
 //set temperature of voice command 
 
+#define MAX_BUFFER_SIZE  8
 
          
 
 voice_sound_t v_t;
 uint8_t input_set_timer_timing_flag;
 
+static uint8_t transferSize;
+static uint8_t outputBuf[MAX_BUFFER_SIZE];
+
+
 
 void (*rx_voice_data)(uint8_t data);
+static void sendData_VoiceSound_Warning_Ptc(void);
+
 
 
 uint8_t key;
@@ -574,5 +581,111 @@ void Voice_GPIO_Dir_Iniput_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
+}
+/***********************************************************************************
+ *  *
+    *Function Name: static void voice_cmd_fun(uint8_t cmd)
+    *Function: voice of command 
+    *Input Ref: input command 
+    *Return Ref:  NO
+    * 
+*************************************************************************************/
+void Voice_Warning_Sound_Ptc(void)
+{
+
+  sendData_VoiceSound_Warning_Ptc();
+
 
 }
+
+
+
+/********************************************************************************
+	**
+	*Function Name:sendData_Real_TimeHum(uint8_t hum,uint8_t temp)
+	*Function :
+	*Input Ref: humidity value and temperature value
+	*Return Ref:NO
+	*
+*******************************************************************************/
+static void sendData_VoiceSound_Warning_Ptc(void)
+{
+
+	//crc=0x55;
+	outputBuf[0]=0xA5; //master
+	outputBuf[1]=0XFA; //41
+	outputBuf[2]=0X00; //44	// 'D' data
+	outputBuf[3]=0X03; //	// 'R' rotator motor for select filter
+	outputBuf[4]=0X38; // // one command parameter
+	outputBuf[5]=0X00;
+	outputBuf[6]=0XDA;
+	outputBuf[7]=0XFB;
+	
+	//for(i=3;i<6;i++) crc ^= outputBuf[i];
+	//outputBuf[i]=crc;
+	transferSize=8;
+	if(transferSize)
+	{
+		while(v_t.transOngoingFlag); //UART interrupt transmit flag ,disable one more send data.
+		v_t.transOngoingFlag=1;
+		HAL_UART_Transmit_IT(&huart1,outputBuf,transferSize);
+	}
+
+
+
+}
+
+
+/********************************************************************************
+	**
+	*Function Name:sendData_Real_TimeHum(uint8_t hum,uint8_t temp)
+	*Function :
+	*Input Ref: humidity value and temperature value
+	*Return Ref:NO
+	*
+*******************************************************************************/
+void Voice_Warning_Sound_Fan(void)
+{
+
+
+
+
+
+}
+
+/********************************************************************************
+	**
+	*Function Name:sendData_Real_TimeHum(uint8_t hum,uint8_t temp)
+	*Function :
+	*Input Ref: humidity value and temperature value
+	*Return Ref:NO
+	*
+*******************************************************************************/
+static void sendData_VoiceSound_Warning_Fan(void)
+{
+
+	//crc=0x55;
+	outputBuf[0]=0xA5; //master
+	outputBuf[1]=0XFA; //41
+	outputBuf[2]=0X00; //44	// 'D' data
+	outputBuf[3]=0X03; //	// 'R' rotator motor for select filter
+	outputBuf[4]=0X39; // // one command parameter
+	outputBuf[5]=0X00;
+	outputBuf[6]=0XDA;
+	outputBuf[7]=0XFB;
+	
+	//for(i=3;i<6;i++) crc ^= outputBuf[i];
+	//outputBuf[i]=crc;
+	transferSize=8;
+	if(transferSize)
+	{
+		while(v_t.transOngoingFlag); //UART interrupt transmit flag ,disable one more send data.
+		v_t.transOngoingFlag=1;
+		HAL_UART_Transmit_IT(&huart1,outputBuf,transferSize);
+	}
+
+
+
+}
+
+

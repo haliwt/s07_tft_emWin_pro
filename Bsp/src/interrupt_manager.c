@@ -348,6 +348,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_set_timer_time++;
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
+	  pro_t.gTimer_pro_ptc_delay_time++;
 	 
 
 	  //gctl_t 
@@ -375,6 +376,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  //voice sound 
 	  v_t.gTimer_voice_time++;
 	  v_t.gTimer_voice_sound_input_time++;
+	  	
 
 	  
 
@@ -387,6 +389,29 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	 
    }
   }
+}
+
+/********************************************************************************
+**
+*Function Name:void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+*Function :UART callback function  for UART interrupt for transmit data
+*Input Ref: structure UART_HandleTypeDef pointer
+*Return Ref:NO
+*
+*******************************************************************************/
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart==&huart1) //voice  sound send 
+	{
+		v_t.transOngoingFlag=0; //UART Transmit interrupt flag =0 ,RUN
+	}
+
+//	if(huart== &huart2){
+//
+//       usart2_transOngoingFlag =0;
+//
+//	}
+
 }
 
 

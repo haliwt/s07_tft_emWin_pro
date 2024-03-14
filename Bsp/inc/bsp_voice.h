@@ -12,6 +12,7 @@ extern uint8_t voice_inputBuf[1];
 
 
 
+
 typedef enum{
 	voice_power_on=0x01,
 	voice_power_off=0x02,
@@ -42,6 +43,7 @@ typedef struct{
 	uint8_t voice_cmd_power_off_flag;
 	uint8_t recoder_cmd_counter;
 	uint8_t rx_enable_voice_output ;
+	uint8_t transOngoingFlag;
 	
 
 	//voice ctl display function "icon" 
@@ -74,6 +76,11 @@ void Voice_GPIO_Dir_Output_Init(void);
 
 void Voice_GPIO_Dir_Iniput_Init(void);
 
+
+void Voice_Warning_Sound_Ptc(void);
+
+
+void Voice_Warning_Sound_Fan(void);
 
 
 

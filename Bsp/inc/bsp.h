@@ -155,6 +155,8 @@ typedef struct{
      uint8_t lcd_over_height_flag ;
 	//wifi
 	uint8_t wifi_led_fast_blink_flag;
+	
+	uint8_t ptc_turn_on_doing;
 
 	//usart 2 voice 
 	uint8_t v_usart2_rx_numbers;
@@ -186,6 +188,7 @@ typedef struct{
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
+  uint8_t  gTimer_pro_ptc_delay_time;
   
 	
 

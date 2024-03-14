@@ -120,6 +120,15 @@ void TFT_Process_Handler(void)
 		break;
 
 	case power_off:
+
+	if(pro_t.ptc_turn_on_doing ==1){
+
+
+		pro_t.gPower_On=power_on;
+
+
+	}
+
 	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
 	    wifi_t.power_off_step=0; 
@@ -258,7 +267,7 @@ static void Key_Speical_Power_Fun_Handler(void)
         
 		
           pro_t.key_power_be_pressed_flag=0;
-            if( pro_t.gPower_On == power_off){
+            if( pro_t.gPower_On == power_off || pro_t.ptc_turn_on_doing==1){
 			buzzer_sound();	
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
@@ -268,7 +277,7 @@ static void Key_Speical_Power_Fun_Handler(void)
 		
 			
 		  }
-		  else{
+		  else {
 			 //pro_t.gKey_value = power_key_id;
 			 buzzer_sound();
 			 pro_t.power_off_flag=1;
@@ -307,6 +316,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 		}
        //
        if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
+	   	
 		pro_t.mode_key_pressed_flag =0;
 	   
 		
@@ -403,6 +413,7 @@ static void TFT_Pocess_Command_Handler(void)
 
 		v_t.voice_soun_output_enable = 1;
 		pro_t.run_process_step=pro_disp_dht11_value;
+		pro_t.gTimer_pro_ptc_delay_time=0;
 		
 	 break;
 
@@ -505,6 +516,27 @@ static void TFT_Pocess_Command_Handler(void)
 	  case pro_wifi_init: //7
 	   
       Wifi_Pro_Runing_Init();
+
+
+	   if(pro_t.gTimer_pro_ptc_delay_time > 20){
+		pro_t.gTimer_pro_ptc_delay_time=0;
+
+	    if(ptc_state()== 1){
+
+		      Ptc_On();
+			 LED_PTC_ICON_ON();
+		     pro_t.ptc_turn_on_doing = 1;
+
+		  }
+		  else{
+		    Ptc_Off();
+			LED_PTC_ICON_OFF();
+		   
+
+
+		  }
+
+	   }
 	  
 	  pro_t.run_process_step=pro_disp_dht11_value;
 

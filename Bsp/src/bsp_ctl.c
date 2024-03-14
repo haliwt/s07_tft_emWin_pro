@@ -472,21 +472,21 @@ void Device_Action_No_Wifi_Power_On_Handler(void)
    }
    
 
-  if(ptc_state()== 1){
-
-      Ptc_On();
-	 LED_PTC_ICON_ON();
-   
-
-  }
-  else{
-    Ptc_Off();
-	LED_PTC_ICON_OFF();
-   
-
-
-  }
-   
+//  if(ptc_state()== 1){
+//
+//      Ptc_On();
+//	 LED_PTC_ICON_ON();
+//   
+//
+//  }
+//  else{
+//    Ptc_Off();
+//	LED_PTC_ICON_OFF();
+//   
+//
+//
+//  }
+//   
 
    if(plasma_state() == 1){
        Plasma_On();
