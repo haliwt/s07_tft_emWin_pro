@@ -121,13 +121,14 @@ void TFT_Process_Handler(void)
 
 	case power_off:
 
-	if(pro_t.ptc_turn_on_doing ==1){
-
-
-		pro_t.gPower_On=power_on;
-
-
-	}
+//	if(pro_t.ptc_turn_on_doing ==1){
+//		
+//
+//        pro_t.gTimer_pro_ptc_turn_on_time=0;
+//		pro_t.gPower_On=power_on;
+//
+//
+//	}
 
 	if(pro_t.power_off_flag == 1){
 		pro_t.power_off_flag =0;
@@ -185,7 +186,7 @@ void TFT_Process_Handler(void)
 	Breath_Led();
 	
 
-  
+
 	break;
 
 
@@ -206,18 +207,30 @@ static void Key_Interrup_Handler(void)
 
         case add_key_id:
 		 	
-		 	
-			ADD_Key_Fun();//DEC_Key_Fun();
+		 	if(ADD_KEY_VALUE()==KEY_DOWN){
+				  HAL_Delay(10);
+			  if(ADD_KEY_VALUE()==KEY_DOWN){
+			      ADD_Key_Fun();//DEC_Key_Fun();
+			  }
 
+		 	}
 			  pro_t.gKey_value =0XFF;
 
 		break;
 
 		case dec_key_id:
+           if(DEC_KEY_VALUE()==KEY_DOWN){
+		   	  HAL_Delay(10);
+			  if(DEC_KEY_VALUE()==KEY_DOWN){
+			    DEC_Key_Fun();//ADD_Key_Fun();
+			  }
 
-			DEC_Key_Fun();//ADD_Key_Fun();
+
+           }
 
 			 pro_t.gKey_value =0XFF;
+
+			 
 
 
 		break;
@@ -239,6 +252,7 @@ static void Key_Interrup_Handler(void)
 ******************************************************************************/
 static void Key_Speical_Power_Fun_Handler(void)
 {
+	static uint8_t  power_on_off ;
 	//be pressed long time key of function that link tencent cloud funtion 
     static uint8_t delay_pw,pw_flag;
 	 if(ptc_error_state()==0 && fan_error_state()==0){
@@ -264,10 +278,15 @@ static void Key_Speical_Power_Fun_Handler(void)
 	 }
 	//sort time key of fun
 		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
-        
+               HAL_Delay(10);
+		  if(POWER_KEY_VALUE() ==KEY_UP){
+         
+            power_on_off = power_on_off ^ 0x01;
+			  pro_t.key_power_be_pressed_flag=0;
+		  if(power_on_off==1){
 		
-          pro_t.key_power_be_pressed_flag=0;
-            if( pro_t.gPower_On == power_off || pro_t.ptc_turn_on_doing==1){
+		  
+
 			buzzer_sound();	
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
@@ -288,6 +307,15 @@ static void Key_Speical_Power_Fun_Handler(void)
 			  
 			 }
 		  }
+		}
+
+		if(pro_t.ptc_turn_on_doing==1 && pro_t.gTimer_pro_ptc_turn_on_time > 3){
+
+			pro_t.ptc_turn_on_doing=0;
+
+
+
+		}
 }
 /******************************************************************************
 	*
@@ -394,14 +422,14 @@ static void mode_key_fun_handler(void)
 ******************************************************************************/
 static void TFT_Pocess_Command_Handler(void)
 {
-   static uint8_t ptc_first_on;
+   static uint8_t ptc_first_on ,ptc_on_flag;;
 	if(power_on_state() == power_on){
   
     switch(pro_t.run_process_step){
 
 
 	 case 0:
-	 	
+	 	ptc_on_flag =1;
 		pro_t.gKey_value =0XFF;
 	 
 		TFT_Display_WorksTime();
@@ -518,12 +546,15 @@ static void TFT_Pocess_Command_Handler(void)
       Wifi_Pro_Runing_Init();
 
 
-	   if(pro_t.gTimer_pro_ptc_delay_time > 20){
+	   if(pro_t.gTimer_pro_ptc_delay_time > 4 && ptc_on_flag ==1){
 		pro_t.gTimer_pro_ptc_delay_time=0;
+
+	   ptc_on_flag++;
 
 	    if(ptc_state()== 1){
 
-		      Ptc_On();
+		     Ptc_On();
+			 HAL_Delay(50);
 			 LED_PTC_ICON_ON();
 		     pro_t.ptc_turn_on_doing = 1;
 

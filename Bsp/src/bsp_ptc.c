@@ -6,9 +6,9 @@ static void turn_off_ptc_function(void);
 
 void Ptc_On(void)
 {
-
+   
    PTC_SetHigh();
-
+   pro_t.ptc_turn_on_doing =1;
 
 }
 
@@ -150,7 +150,9 @@ void Temperature_Ptc_Pro_Handler(void)
                
                 gctl_t.ptc_flag = 0 ;//run_t.gDry = 0;
 			    Ptc_Off();
+			    HAL_Delay(50);
 		        LED_PTC_ICON_OFF();
+				
               
                 
            
@@ -159,6 +161,7 @@ void Temperature_Ptc_Pro_Handler(void)
                
 				 gctl_t.ptc_flag = 1;//run_t.gDry = 1;
 		         Ptc_On();
+			     HAL_Delay(50);
 			     LED_PTC_ICON_ON();
                 
                 }
