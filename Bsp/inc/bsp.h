@@ -191,6 +191,7 @@ typedef struct{
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
   uint8_t  gTimer_pro_ptc_delay_time;
+  uint8_t gTimer_pro_confir_delay;
  
   uint8_t gTimer_pro_mode_long_key;
   

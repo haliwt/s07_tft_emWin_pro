@@ -8,7 +8,7 @@ uint8_t fan_continuce_run_flag;
 
 static void Key_Speical_Power_Fun_Handler(void);
 static void Key_Speical_Mode_Fun_Handler(void);
-static void mode_key_fun_handler(void);
+static void mode_key_config_fun_handler(void);
 static void TFT_Pocess_Command_Handler(void);
 
 static void Power_On_Fun(void);
@@ -26,7 +26,7 @@ void bsp_Init(void);
 
 uint16_t power_off_counter;
 
-volatile uint8_t confirm_key_flag;
+
 
 
 /*
@@ -232,7 +232,7 @@ static void Key_Interrup_Handler(void)
 
 	 }
 
-	 mode_key_fun_handler();
+	 mode_key_config_fun_handler();
 
    
 }
@@ -354,52 +354,7 @@ static void Key_Speical_Mode_Fun_Handler(void)
 		
 	}
 }
-/******************************************************************************
-	*
-	*Function Name:static void mode_key_fun_handler(void)
-	*Funcion: speical of mode key fun
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************************/
-static void mode_key_fun_handler(void)
-{
 
-  switch(pro_t.mode_key_confirm_flag){
-
-
-             case mode_key_select:
-
-		     if(pro_t.gTimer_pro_mode_key_be_select < 4){ //exit of rule
-
-				Mode_Key_Select_Fun();
-				
-             }
-			 else{
-                
-                pro_t.mode_key_confirm_flag = 0xff; //
-                pro_t.mode_key_select_flag =0;
-			    gctl_t.select_main_fun_numbers--; //return back the first confirm item 
-				if(gctl_t.select_main_fun_numbers == 0){
-					gctl_t.select_main_fun_numbers = 5;
-				}
-				
-                Device_Action_Led_OnOff_Handler();
-			 }
-             
-
-		   break;
-
-
-		   case mode_key_confirm: //as "+" and "-" key  confirm ation
-			    Device_Action_Led_OnOff_Handler();
-                Mode_Key_Confirm_Fun();
-				pro_t.mode_key_confirm_flag = 0xff;
-
-			break;
-
-	    }
-}
 
 /******************************************************************************
 	*
@@ -650,6 +605,59 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 	  	 
       }
 }
+/******************************************************************************
+	*
+	*Function Name:static void mode_key_config_fun_handler(void)
+	*Funcion: speical of mode key fun
+	*Input Ref:NO
+	*Return Ref:NO
+	*
+******************************************************************************/
+static void mode_key_config_fun_handler(void)
+{
+  static  uint8_t confirm_key_flag;
+  switch(pro_t.mode_key_confirm_flag){
+
+
+             case mode_key_select:
+
+		     if(pro_t.gTimer_pro_mode_key_be_select < 4){ //exit of rule
+
+				Mode_Key_Select_Fun();
+				
+             }
+			 else{
+                
+                pro_t.mode_key_confirm_flag = 0xff; //
+                pro_t.mode_key_select_flag =0;
+			    gctl_t.select_main_fun_numbers--; //return back the first confirm item 
+				if(gctl_t.select_main_fun_numbers == 0){
+					gctl_t.select_main_fun_numbers = 5;
+				}
+				
+                Device_Action_Led_OnOff_Handler();
+			 }
+             
+
+		   break;
+
+
+		   case mode_key_confirm: //as "+" and "-" key  confirm ation
+			    Device_Action_Led_OnOff_Handler();
+                Mode_Key_Confirm_Fun();
+		        confirm_key_flag =1;
+				pro_t.gTimer_pro_confir_delay=0;
+
+			break;
+
+	    }
+       if( confirm_key_flag ==1 && pro_t.gTimer_pro_confir_delay > 0){
+		   confirm_key_flag ++;
+		   pro_t.mode_key_confirm_flag = 0xff;
+
+         }
+}
+
 /************************************************************************
 	*
 	*Function Name: static void Power_On_Fun(void)
@@ -712,10 +720,7 @@ void ADD_Key_Fun(void)
 			pro_t.buzzer_sound_flag = 1;
 			pro_t.mode_key_select_flag =0;
 			pro_t.mode_key_confirm_flag = mode_key_confirm;
-            
-		
-
-
+           
 		break;
 
 
@@ -786,7 +791,7 @@ void DEC_Key_Fun(void)
 			 	pro_t.buzzer_sound_flag = 1;
 			    pro_t.mode_key_select_flag =0;
 				pro_t.mode_key_confirm_flag = mode_key_confirm;
-				confirm_key_flag=1;
+				
 
 			
 			break;

@@ -349,6 +349,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  pro_t.gTimer_pro_mode_key_adjust ++;
 	  pro_t.gTimer_pro_power_key_adjust++;
 	  pro_t.gTimer_pro_ptc_delay_time++;
+	   pro_t.gTimer_pro_confir_delay++;
 	
 	  pro_t.gTimer_pro_mode_long_key++;
 	 
@@ -371,7 +372,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	
 	  
 	 
-	  wifi_t.gTimer_linking_tencent_duration;
+	  wifi_t.gTimer_linking_tencent_duration++;
 	  wifi_t.gTimer_power_first_link_tencent ++;
 	  wifi_t.gTimer_main_pro_times++;
 
