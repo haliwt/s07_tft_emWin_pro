@@ -477,7 +477,7 @@ static void voice_set_timer_timing_value(uint8_t time)
 	gctl_t.gSet_timer_hours = v_t.voice_set_timer_timing_value ;
 	v_t.voice_input_timer_flag =1;
 
-	pro_t.mode_key_confirm_flag = mode_key_timer_time;
+	pro_t.mode_key_run_item_step = mode_key_timer_time;
 	pro_t.timer_mode_flag=timer_set_time; //set timer mode enable
 	//to switch works or timer item flag  dis chines words
 	 gctl_t.timer_timing_words_changed_flag ++;

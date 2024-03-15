@@ -64,7 +64,7 @@ void TimeTimer_Pro_Handler(void)
         if(v_t.voice_input_timer_flag ==1){
 			v_t.voice_input_timer_flag++;
 			pro_t.timer_mode_flag = timer_time;
-			pro_t.mode_key_confirm_flag =0xff;
+			pro_t.mode_key_run_item_step =0xff;
 			gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 			gctl_t.timer_time_define_flag = 1;
 			gctl_t.gSet_timer_minutes =0;
@@ -77,7 +77,7 @@ void TimeTimer_Pro_Handler(void)
 			if(gctl_t.gSet_timer_hours >0 ){
 
 				pro_t.timer_mode_flag = timer_time;
-				pro_t.mode_key_confirm_flag =0xff;
+				pro_t.mode_key_run_item_step =0xff;
 				gctl_t.gTimer_ctl_set_timer_time_senconds =0;
 				gctl_t.timer_time_define_flag = 1;
 				gctl_t.gSet_timer_minutes =0;
@@ -87,7 +87,7 @@ void TimeTimer_Pro_Handler(void)
 			else{
 				gctl_t.mode_key_long_time_flag=0;
 				gctl_t.timer_time_define_flag = 0;
-				pro_t.mode_key_confirm_flag =0xff;
+				pro_t.mode_key_run_item_step =0xff;
 				pro_t.timer_mode_flag = works_time;
 				TFT_Display_WorksTime();
 

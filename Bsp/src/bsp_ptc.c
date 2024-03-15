@@ -205,7 +205,7 @@ void Temperature_Ptc_Pro_Handler(void)
 			
                pro_t.gTimer_pro_set_tem_value_blink =0;
 			   pro_t.gTimer_pro_temp_delay= 65;
-			   pro_t.mode_key_confirm_flag = 0xff;
+			   pro_t.mode_key_run_item_step = 0xff;
 			   gctl_t.gSet_temperature_value_item= disp_set_temp_value_item;
 			   pro_t.gTimer_pro_display_dht11_value =30; //at once display sensor of temperature value 
 
