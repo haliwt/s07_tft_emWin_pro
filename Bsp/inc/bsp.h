@@ -75,7 +75,8 @@ typedef enum{
   mode_key_temp,
   mode_key_select ,
   mode_key_confirm,
-  mode_key_timer_time
+  mode_key_timer_time,
+  
 
 }mode_key_state;
 
@@ -156,7 +157,8 @@ typedef struct{
 	//wifi
 	uint8_t wifi_led_fast_blink_flag;
 	
-	uint8_t ptc_turn_on_doing;
+
+  uint8_t key_mode_long_time_over_flag;
 
 	//usart 2 voice 
 	uint8_t v_usart2_rx_numbers;
@@ -182,14 +184,15 @@ typedef struct{
 	uint8_t gTimer_pro_wifi_fast_led;
 	//uint8_t gTimer_pro_long_key_timer_flag;
   uint8_t gTimer_pro_timer_mode_times;
-  uint8_t gTimer_pro_mode_key_timer;
+  uint8_t gTimer_pro_mode_key_be_select;
   uint8_t gTimer_pro_set_tem_value_blink;
-  uint8_t gTimer_pro_set_timer_time;
+
   uint8_t gTimer_pro_detect_key_ms ;
   uint8_t gTimer_pro_mode_key_adjust;
   uint8_t gTimer_pro_power_key_adjust;
   uint8_t  gTimer_pro_ptc_delay_time;
-  uint8_t gTimer_pro_ptc_turn_on_time;
+ 
+  uint8_t gTimer_pro_mode_long_key;
   
 	
 

@@ -750,7 +750,7 @@ void Json_Parse_Command_Fun(void)
 			else{
      
 				pro_t.timer_mode_flag=timer_set_time;
-				pro_t.gTimer_pro_mode_key_timer =4;
+				pro_t.gTimer_pro_mode_key_be_select =4;
 			}
 			
 			
@@ -793,7 +793,7 @@ void Json_Parse_Command_Fun(void)
 			HAL_Delay(50);//350
 			gctl_t.gSet_temperature_value_item =1;
 			pro_t.gTimer_pro_temp_delay= 100;
-			pro_t.gTimer_pro_mode_key_timer = 0;
+			pro_t.gTimer_pro_mode_key_be_select = 0;
 			TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 		}
       wifi_t.response_wifi_signal_label = 0xff;

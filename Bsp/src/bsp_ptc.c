@@ -8,7 +8,7 @@ void Ptc_On(void)
 {
    
    PTC_SetHigh();
-   pro_t.ptc_turn_on_doing =1;
+   
 
 }
 

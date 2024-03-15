@@ -470,7 +470,7 @@ static void voice_set_timer_timing_value(uint8_t time)
     if(v_t.voice_soun_output_enable ==1){
 	pro_t.mode_key_pressed_flag =0;
 //	Buzzer_KeySound();
-	pro_t.gTimer_pro_mode_key_timer = 0; 
+	pro_t.gTimer_pro_mode_key_be_select = 0; 
 
     v_t.voice_set_timer_timing_value = time - 30;
     

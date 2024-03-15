@@ -57,8 +57,8 @@ void TimeTimer_Pro_Handler(void)
 
 	case timer_set_time://02
 
-		if(pro_t.gTimer_pro_mode_key_timer > 3){
-            pro_t.gTimer_pro_mode_key_timer =0;
+		if(pro_t.gTimer_pro_mode_long_key > 3){
+            	  pro_t.gTimer_pro_mode_long_key =0;
 		
 
         if(v_t.voice_input_timer_flag ==1){
@@ -94,6 +94,7 @@ void TimeTimer_Pro_Handler(void)
 
 
 			}
+			pro_t.key_mode_long_time_over_flag =0;
 		}
 
 		
