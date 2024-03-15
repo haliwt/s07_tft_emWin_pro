@@ -145,7 +145,7 @@ void Voice_Decoder_Handler(void)
 
    static uint8_t voice_cmd_flag;
 
-  if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 18){
+  if(v_t.rx_voice_cmd_enable ==1 && v_t.gTimer_voice_time < 15){
   	   Voice_GPIO_Dir_Iniput_Init();
 	   v_t.rx_enable_voice_output=0xff;
 		
@@ -184,7 +184,7 @@ void Voice_Decoder_Handler(void)
 	}
 
 
-    if(v_t.gTimer_voice_time > 17 && voice_cmd_flag==1){
+    if(v_t.gTimer_voice_time > 14 && voice_cmd_flag==1){
 	   voice_cmd_flag++;
 
        v_t.rx_voice_cmd_enable =0;

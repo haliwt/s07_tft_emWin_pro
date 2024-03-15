@@ -109,11 +109,6 @@ int main(void)
   LCD_GPIO_Reset();
   TFT_LCD_Init();
   
- // __HAL_SPI_ENABLE(&hspi1) ;
- //  __HAL_SPI_ENABLE_IT(&hspi1, SPI_IT_TXE);
-  //HAL_DMA_Start(&hdma_spi1_tx, uint32_t SrcAddress, uint32_t DstAddress, uint32_t DataLength);
- // HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer, 1);
- // UART_Start_Receive_IT(&huart1,inputBuf,1);
   HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
   
   HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
