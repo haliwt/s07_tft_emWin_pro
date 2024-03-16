@@ -51,7 +51,7 @@ void Ptc_OnOff_Handler(void)
 void Temperature_Ptc_Pro_Handler(void)
 {
   
-   static uint8_t error_flag;
+   static uint8_t error_flag,error_ptc,error_fan;
    switch(gctl_t.ptc_warning){
 
 		  case ptc_no_warning:
@@ -79,6 +79,7 @@ void Temperature_Ptc_Pro_Handler(void)
 				else{
 					gctl_t.gTimer_ctl_warning_time =0;
 					Buzzer_Ptc_Error_Sound();
+				    Voice_Warning_Sound_Ptc();
 				}
 			}
 			else{ //fan and ptc is both error 
@@ -92,19 +93,25 @@ void Temperature_Ptc_Pro_Handler(void)
 	 
 	                    	Display_Fan_Notworking_Words(1); //turn off fan error words
 							display_high_temp_words(0); //display ptc error words
+							if(gctl_t.gTimer_ctl_warning_time==3 && error_ptc ==0){
+								error_ptc++;
+							   Voice_Warning_Sound_Ptc();
+
+							}
 						
 					}
 					else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 5){
 						
-					    display_high_temp_words(1); //display ptc error words
-	                    Display_Fan_Notworking_Words(0); //turn off fan error words
-							
-					
-					}
+					    display_high_temp_words(1); //display ptc error words tunr off 
+	                    Display_Fan_Notworking_Words(0); //turn on fan error words
+	                   
+				   }
 					else{
 						gctl_t.gTimer_ctl_warning_time =0;
 						error_flag ++;
+					    error_ptc=0;
 					    Buzzer_Ptc_Error_Sound();
+						
 					    
 					}
 			    }
@@ -114,20 +121,27 @@ void Temperature_Ptc_Pro_Handler(void)
 					if(gctl_t.gTimer_ctl_warning_time < 4){
 						
 	 						display_high_temp_words(1); //display ptc error words
-	                    	Display_Fan_Notworking_Words(0); //turn off fan error words
+	                    	Display_Fan_Notworking_Words(0); //turn on an error words
+	                    	if(gctl_t.gTimer_ctl_warning_time==3 && error_fan==0){
+								error_fan++;
+	                    	  Voice_Warning_Sound_Fan();
+	                    	}
 							
 						
 					}
 					else if(gctl_t.gTimer_ctl_warning_time > 3 && gctl_t.gTimer_ctl_warning_time < 5){
 						
 						Display_Fan_Notworking_Words(1); //turn off fan error words
-						display_high_temp_words(0); //display ptc error words
+						display_high_temp_words(0); //display ptc error words turn on
+						
 	                   
 					}
 					else{
 						gctl_t.gTimer_ctl_warning_time =0;
 						if(error_flag > 0)error_flag=0;
-						Buzzer_Ptc_Error_Sound();
+						error_fan=0;
+						Buzzer_Fan_Error_Sound();
+					
 					    
 					}
 				}

@@ -339,6 +339,10 @@ static void TFT_Pocess_Command_Handler(void)
 		v_t.voice_soun_output_enable = 1;
 		pro_t.run_process_step=pro_disp_dht11_value;
 		pro_t.gTimer_pro_ptc_delay_time=0;
+
+		//test item 
+		gctl_t.ptc_warning=1;
+		gctl_t.fan_warning = 1;
 		
 	 break;
 

@@ -83,7 +83,7 @@ void Fan_Pro_Handler(void)
 	  }
 
    }
-   else if(fan_error_state()==1){
+   else if(fan_error_state()==1 && ptc_error_state()==0){
 
         if(ptc_error_state()==0){
 
@@ -98,6 +98,8 @@ void Fan_Pro_Handler(void)
 			}
 			else{
 				gctl_t.gTimer_ctl_warning_time =0;
+				Buzzer_Fan_Error_Sound();
+				Voice_Warning_Sound_Fan();
 			}
 
 

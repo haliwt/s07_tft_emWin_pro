@@ -45,10 +45,10 @@ uint8_t input_set_timer_timing_flag;
 static uint8_t transferSize;
 static uint8_t outputBuf[MAX_BUFFER_SIZE];
 
-
-
 void (*rx_voice_data)(uint8_t data);
+
 static void sendData_VoiceSound_Warning_Ptc(void);
+static void sendData_VoiceSound_Warning_Fan(void);
 
 
 
@@ -647,6 +647,8 @@ static void sendData_VoiceSound_Warning_Ptc(void)
 void Voice_Warning_Sound_Fan(void)
 {
 
+	
+	sendData_VoiceSound_Warning_Fan();
 
 
 
@@ -671,7 +673,7 @@ static void sendData_VoiceSound_Warning_Fan(void)
 	outputBuf[3]=0X03; //	// 'R' rotator motor for select filter
 	outputBuf[4]=0X39; // // one command parameter
 	outputBuf[5]=0X00;
-	outputBuf[6]=0XDA;
+	outputBuf[6]=0XDB;
 	outputBuf[7]=0XFB;
 	
 	//for(i=3;i<6;i++) crc ^= outputBuf[i];
