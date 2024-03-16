@@ -272,12 +272,13 @@ static void Key_Speical_Mode_Fun_Handler(void)
 	if(pro_t.mode_key_pressed_flag ==1){
 
 		//mode key be pressed long times
-		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 2){
+		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 1){
 			
 			pro_t.mode_key_pressed_flag =0;
-            Buzzer_KeySound();
-		
 			pro_t.mode_key_select_flag =0;
+            Buzzer_KeySound();
+		    pro_t.gTimer_pro_mode_long_key=0;
+		    pro_t.key_mode_long_time_over_flag=1;
 			Mode_Long_Key_Fun();
 
 		   
@@ -484,15 +485,24 @@ static void Power_On_Fun(void)
 	 gctl_t.gSet_timer_hours =0;
 	 gctl_t.gSet_timer_minutes =0;
 
-	//mode key long times 
+	 //mode key long times 
 	  pro_t.mode_key_run_item_step=0xff;
 	 gctl_t.mode_key_long_time_flag=0;
 	 pro_t.long_key_flag =0;
+
+
     
      //works time
 	gctl_t.gTimer_ctl_total_continue_time =0; //works total is two hours recoder.
 	gctl_t.gTimer_ctl_disp_second=0; //works time seconds 
     pro_t.gTimer_pro_display_dht11_value = 30; //powe on display sensoe dht11 of value .
+    if(wifi_link_net_state()==0){
+		 gctl_t.disp_works_hours =0;
+	     gctl_t.disp_works_minutes=0;
+
+   }
+
+    
 	
 
 
@@ -596,7 +606,7 @@ void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
 		  gctl_t.timer_timing_words_changed_flag ++;
 		  gctl_t.timing_words_changed_flag++;
 		  pro_t.gTimer_pro_mode_long_key=0;
-		  pro_t.key_mode_long_time_over_flag=1;
+		 
 
 
 	     TFT_Disp_Set_TimerTime_Init();
@@ -630,6 +640,7 @@ static void mode_key_config_fun_handler(void)
                 
                 pro_t.mode_key_run_item_step = 0xff; //
                 pro_t.mode_key_select_flag =0;
+                pro_t.key_mode_long_time_over_flag =0;//pro_t.mode_key_select_flag
 			    gctl_t.select_main_fun_numbers--; //return back the first confirm item 
 				if(gctl_t.select_main_fun_numbers == 0){
 					gctl_t.select_main_fun_numbers = 5;
@@ -680,7 +691,7 @@ static void mode_key_config_fun_handler(void)
 ************************************************************************/
 void ADD_Key_Fun(void)
 {
-    static uint8_t select_flag,disp_temp_value;
+    static uint8_t select_flag,disp_temp_value,timer_timing_flag;
  if(power_on_state()==power_on){
 
 	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0){
@@ -713,8 +724,10 @@ void ADD_Key_Fun(void)
 		break;
 
 		case mode_key_timer_time:
-           pro_t.buzzer_sound_flag = 1;
+            pro_t.buzzer_sound_flag = 1;
+		    pro_t.gTimer_pro_mode_long_key=0;
 			gctl_t.mode_key_long_time_flag++;
+			
 			gctl_t.gSet_timer_minutes=0;
 			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
 			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
@@ -723,9 +736,11 @@ void ADD_Key_Fun(void)
 
 
 			}
-			pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing 
-		
-			TFT_Disp_Set_TimerTime(0);
+
+		   pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing
+			timer_timing_flag=1;
+		 
+			
 
 		break;
 
@@ -748,6 +763,12 @@ void ADD_Key_Fun(void)
     TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 
     }
+    if(timer_timing_flag ==1){
+		timer_timing_flag=0;
+	  TFT_Disp_Set_TimerTime(0);
+
+
+    }
    
 	 
 
@@ -762,7 +783,7 @@ void ADD_Key_Fun(void)
 ************************************************************************/
 void DEC_Key_Fun(void)
 {
-    static uint8_t disp_temp_value;
+    static uint8_t disp_temp_value,timer_timing_flag;
 	if(power_on_state() ==power_on){
 	   	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0 ){
 	   	
@@ -793,6 +814,7 @@ void DEC_Key_Fun(void)
 			   
 			    pro_t.buzzer_sound_flag = 1;
 	            gctl_t.mode_key_long_time_flag++;
+			
 				gctl_t.gSet_timer_minutes=0;
 				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
 				if(gctl_t.gSet_timer_hours  < 0){//if(pro_t.dispTime_minutes < 0){
@@ -802,9 +824,10 @@ void DEC_Key_Fun(void)
 					
 				}
 		
-		     pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing 
+		     pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing
+		     timer_timing_flag=1;
 			 	
-			TFT_Disp_Set_TimerTime(0);
+			//TFT_Disp_Set_TimerTime(0);
 			break;
 
 			 case mode_key_select:
@@ -824,9 +847,15 @@ void DEC_Key_Fun(void)
 		}
        if(disp_temp_value ==1){
 		disp_temp_value =0;
-    TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
+    		TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 
-    }
+    	}
+	    if(timer_timing_flag ==1){
+		   timer_timing_flag=0;
+	     TFT_Disp_Set_TimerTime(0);
+
+  
+       }
 }
 
 

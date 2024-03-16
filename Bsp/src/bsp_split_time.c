@@ -57,7 +57,7 @@ void TimeTimer_Pro_Handler(void)
 
 	case timer_set_time://02
 
-		if(pro_t.gTimer_pro_mode_long_key > 3){
+		if(pro_t.gTimer_pro_mode_long_key > 4){
             	  pro_t.gTimer_pro_mode_long_key =0;
 		
 
@@ -70,6 +70,10 @@ void TimeTimer_Pro_Handler(void)
 			gctl_t.gSet_timer_minutes =0;
 			gctl_t.mode_key_long_time_flag=0;
 			gctl_t.gSet_timer_hours = v_t.voice_set_timer_timing_value ;
+
+			TFT_Only_Disp_Set_Timer_Blink();
+			HAL_Delay(100);
+			TFT_Disp_Onley_Set_TimerTime_Value();
 		
 		}
         else{
@@ -82,6 +86,10 @@ void TimeTimer_Pro_Handler(void)
 				gctl_t.timer_time_define_flag = 1;
 				gctl_t.gSet_timer_minutes =0;
 				gctl_t.mode_key_long_time_flag=0;
+				TFT_Only_Disp_Set_Timer_Blink();
+				HAL_Delay(100);
+				TFT_Disp_Onley_Set_TimerTime_Value();
+				
 
 			}
 			else{
@@ -95,6 +103,8 @@ void TimeTimer_Pro_Handler(void)
 
 			}
 			pro_t.key_mode_long_time_over_flag =0;
+			pro_t.mode_key_select_flag =0;
+               
 		}
 
 		

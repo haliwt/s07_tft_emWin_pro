@@ -126,7 +126,10 @@ void TFT_Display_WorksTime(void)
 	//gctl_t.timer_timing_words_changed_flag++ ; //表示要进入切换状态
 
     //display works of words of chines
-    if(disp_work_time != gctl_t.timing_words_changed_flag){
+    if(pro_t.timer_mode_flag ==timer_time || pro_t.timer_mode_flag==timer_set_time ){
+                //do something 
+    }
+    else if(disp_work_time != gctl_t.timing_words_changed_flag){
 		disp_work_time = gctl_t.timing_words_changed_flag;
 	    TFT_Disp_WorksTime_24_24_onBlack(112,150,0,0);//works one "工"
 		TFT_Disp_WorksTime_24_24_onBlack(136,150,0,1);//works tow "作"
@@ -155,7 +158,14 @@ void TFT_Display_WorksTime(void)
 	}
 
 }
-
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Only_Disp_Timing(void)
+	*Function : display of works time value 
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_Only_Disp_Timing(void)
 {
 
@@ -179,6 +189,68 @@ static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_m
 
 }
 
+void TFT_Only_Disp_Set_Timer_Blink(void)
+{
+
+static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
+	
+	    temp_decade_hours = gctl_t.disp_works_hours /10;
+		temp_unit_hours = gctl_t.disp_works_hours % 10;
+
+		temp_decade_minutes = gctl_t.disp_works_minutes/10;
+		temp_unit_minutes = gctl_t.disp_works_minutes%10;
+
+
+	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,1,temp_decade_hours);
+	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,1,temp_unit_hours);
+    //symbol colon
+	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,1,temp_decade_minutes);
+	TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,1,temp_unit_minutes);
+
+
+
+
+}
+
+void TFT_Disp_Onley_Set_TimerTime_Value(void)
+{
+
+   static uint8_t timer_decade_hours,timer_unit_hours,timer_decade_minutes,timer_unit_minutes;
+   static uint8_t set_timer_hours=0xff,disp_timer_words=0xff;
+  
+
+  
+
+    timer_decade_hours = gctl_t.gSet_timer_hours /10;
+	timer_unit_hours = gctl_t.gSet_timer_hours % 10;
+
+
+   
+	    
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(100,188,0,timer_decade_hours);
+		TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(134,188,0,timer_unit_hours);
+
+    
+
+	
+        timer_decade_minutes= gctl_t.gSet_timer_minutes / 10;
+	    timer_unit_minutes = gctl_t.gSet_timer_minutes % 10;
+        TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(186,188,0,timer_decade_minutes);
+        TFT_Disp_Pic_WorkTime_Value_48_48_onBlack(220,188,0,timer_unit_minutes);
+    
+    
+
+
+  }
+
+/***********************************************************************************************
+	*
+	*Function Name:void TFT_Display_WorksTime(void)
+	*Function : display of works time value 
+	*Input: NO
+	*Return: NO 
+	*
+***********************************************************************************************/
 void TFT_DonnotDisp_Works_Time(void)
 {
 

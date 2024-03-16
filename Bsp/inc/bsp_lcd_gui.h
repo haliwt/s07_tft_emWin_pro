@@ -65,6 +65,11 @@ void TFT_Disp_Voice_Temp_Value(uint8_t bc,uint8_t temp_value);
 
 void TFT_Disp_Voice_Set_TimerTime_Init(void);
 
+void TFT_Disp_Onley_Set_TimerTime_Value(void);
+
+void TFT_Only_Disp_Set_Timer_Blink(void);
+
+
 
 
 #endif
