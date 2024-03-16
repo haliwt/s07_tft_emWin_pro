@@ -341,8 +341,8 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.gTimer_pro_ptc_delay_time=0;
 
 		//test item 
-		gctl_t.ptc_warning=1;
-		gctl_t.fan_warning = 1;
+		//gctl_t.ptc_warning=1;
+		//gctl_t.fan_warning = 1;
 		
 	 break;
 
