@@ -65,7 +65,7 @@ typedef struct _bsp_ctl{
    uint8_t dht11_temp_value;
    uint8_t gSet_temperature_value_item;
 
-   uint8_t gTimer_ctl_disp_second;
+   uint8_t gTimer_ctl_disp_works_time_second;
    uint8_t gTimer_ctl_set_timer_time_senconds;
    uint8_t gTimer_ctl_select_led;
    uint8_t gTimer_ctl_total_continue_time;
@@ -109,7 +109,7 @@ extern uint8_t (*fan_error_state)(void);
 
 
 void bsp_ctl_init(void);
-void Device_Action_Handler(void);
+void Device_Action_Publish_Handler(void);
 
 
 void Wifi_State_Handler(uint8_t(*wifi_handler)(void));

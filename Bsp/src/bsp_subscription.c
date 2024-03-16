@@ -1044,7 +1044,7 @@ static void smartphone_app_timer_power_on_handler(void)
 	
 		buzzer_sound();
 
-		Device_Action_Handler();
+		Device_Action_Publish_Handler();
 		pro_t.gPower_On = power_on;   
 		pro_t.long_key_flag =0;
 		pro_t.run_process_step=0;

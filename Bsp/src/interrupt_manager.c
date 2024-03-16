@@ -352,13 +352,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	   pro_t.gTimer_pro_confir_delay++;
 	
 	  pro_t.gTimer_pro_mode_long_key++;
+	  pro_t.gTimer_pro_action_publis++;
 	 
 
 	  //gctl_t 
 	   gctl_t.gTimer_ctl_set_timer_time_senconds++;
 	   gctl_t.gTimer_ctl_ptc_adc_times++;
 	   gctl_t.gTimer_ctl_fan_adc_times ++;
-	   gctl_t.gTimer_ctl_disp_second++;
+	   gctl_t.gTimer_ctl_disp_works_time_second++;
 	   gctl_t.gTimer_ctl_warning_time++;
 	   gctl_t.gTimer_ctl_usart1_error++; 
 	   gctl_t.gTimer_ctl_usart2_error++; 

@@ -11,7 +11,7 @@ void TimeTimer_Pro_Handler(void)
 
    case works_time://0
 
-		if(gctl_t.gTimer_ctl_disp_second > 59 ){
+		if(gctl_t.gTimer_ctl_disp_works_time_second > 59 ){
 			TFT_Display_WorksTime();
 		}
 

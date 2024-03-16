@@ -62,7 +62,6 @@ void bsp_Idle(void)
 	static uint8_t power_on_first;
 	if(power_on_first ==0){
        power_on_first ++;
-	   gctl_t.gTimer_ctl_disp_second=0;
 	   TFT_BACKLIGHT_OFF();
 	   Update_DHT11_Value();
 	   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
@@ -359,6 +358,11 @@ static void TFT_Pocess_Command_Handler(void)
 			TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
 
 	   }
+       if(pro_t.gTimer_pro_action_publis > 4 && wifi_link_net_state()==1){
+	   	  pro_t.gTimer_pro_action_publis=0;
+	       Device_Action_Publish_Handler();
+
+       }
 	   
 	   pro_t.run_process_step=pro_run_main_fun;
 	   
@@ -494,11 +498,12 @@ static void Power_On_Fun(void)
     
      //works time
 	gctl_t.gTimer_ctl_total_continue_time =0; //works total is two hours recoder.
-	gctl_t.gTimer_ctl_disp_second=0; //works time seconds 
+	gctl_t.gTimer_ctl_disp_works_time_second=0; //works time seconds 
     pro_t.gTimer_pro_display_dht11_value = 30; //powe on display sensoe dht11 of value .
     if(wifi_link_net_state()==0){
 		 gctl_t.disp_works_hours =0;
 	     gctl_t.disp_works_minutes=0;
+	     gctl_t.gTimer_ctl_disp_works_time_second=0;
 
    }
 
@@ -530,6 +535,11 @@ static void Power_Off_Fun(void)
 
 	gctl_t.ptc_warning = 0;
 	gctl_t.fan_warning=0;
+	if(wifi_link_net_state()==0){
+		 gctl_t.disp_works_hours =0;
+	     gctl_t.disp_works_minutes=0;
+
+   }
 	//clear set timer timing value and flag 
 }
 void power_off_fan_run(void)

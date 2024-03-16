@@ -106,8 +106,8 @@ void TFT_Display_WorksTime(void)
     static uint8_t temp_decade_hours,temp_unit_hours,temp_decade_minutes,temp_unit_minutes;
 	static uint8_t disp_work_time=0xff;
 
-    if(gctl_t.gTimer_ctl_disp_second > 59){
-        gctl_t.gTimer_ctl_disp_second =0;
+    if(gctl_t.gTimer_ctl_disp_works_time_second > 59){
+        gctl_t.gTimer_ctl_disp_works_time_second =0;
         gctl_t.disp_works_minutes++;
         if(gctl_t.disp_works_minutes>59){
             gctl_t.disp_works_minutes=0;
@@ -255,8 +255,8 @@ void TFT_DonnotDisp_Works_Time(void)
 {
 
    
-	if(gctl_t.gTimer_ctl_disp_second > 59){
-		   gctl_t.gTimer_ctl_disp_second =0;
+	if(gctl_t.gTimer_ctl_disp_works_time_second > 59){
+		   gctl_t.gTimer_ctl_disp_works_time_second =0;
 		   gctl_t.disp_works_minutes++;
 		   if(gctl_t.disp_works_minutes>59){
 			   gctl_t.disp_works_minutes=0;
@@ -292,8 +292,8 @@ void Power_Off_Retain_Beijing_Time(void)
 {
 
    if(wifi_link_net_state()==1){
-	if(gctl_t.gTimer_ctl_disp_second > 59){
-		   gctl_t.gTimer_ctl_disp_second =0;
+	if(gctl_t.gTimer_ctl_disp_works_time_second > 59){
+		   gctl_t.gTimer_ctl_disp_works_time_second =0;
 		   gctl_t.disp_works_minutes++;
 		   if(gctl_t.disp_works_minutes>59){
 			   gctl_t.disp_works_minutes=0;

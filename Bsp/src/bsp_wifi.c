@@ -206,7 +206,7 @@ static void RunWifi_Command_Handler(void)
 
 			gctl_t.disp_works_minutes = wifi_t.real_minutes;
 
-			gctl_t.gTimer_ctl_disp_second= wifi_t.real_seconds;
+			gctl_t.gTimer_ctl_disp_works_time_second= wifi_t.real_seconds;
 		}
 	}
 	

@@ -317,56 +317,60 @@ uint8_t Fan_Error_Default_Handler(void)
 
 /*****************************************************************************
  * 
- * Function Name: void Device_Action_Handler(void)
+ * Function Name: void Device_Action_Publish_Handler(void)
  * Function:
  * Input Ref: NO
  * Return Ref: NO
  * 
 *****************************************************************************/
-void Device_Action_Handler(void)
+void Device_Action_Publish_Handler(void)
 {
 
 
-   Fan_Run();
+  static uint8_t ptc_flag =0xff,plasma_flag=0xff,ultr_flag=0xff;
 
-   if(wifi_link_net_state() == 1){
-      LED_WIFI_ICON_ON();
+  if(ptc_flag != ptc_state()){
+  	   ptc_flag = ptc_state();
+ 
+	  if(ptc_state()== 1){
 
-   }
-   
+	     Ptc_On();
+		 LED_PTC_ICON_ON();
+	     MqttData_Publish_SetPtc(0x01);  
+		 HAL_Delay(30);//350
 
-  if(ptc_state()== 1){
-
-     Ptc_On();
-	 LED_PTC_ICON_ON();
-     MqttData_Publish_SetPtc(0x01);  
-	 HAL_Delay(30);//350
-
-  }
-  else{
-    Ptc_Off();
-	LED_PTC_ICON_OFF();
-    MqttData_Publish_SetPtc(0); 
-	HAL_Delay(30);//350
+	  }
+	  else{
+	    Ptc_Off();
+		LED_PTC_ICON_OFF();
+	    MqttData_Publish_SetPtc(0); 
+		HAL_Delay(30);//350
 
 
+	  }
   }
    
+  if(plasma_flag != plasma_state()){
+  	   plasma_flag = plasma_state();
+	   if(plasma_state() == 1){
+	       Plasma_On();
+		   LED_KILL_ICON_ON();
+	       MqttData_Publish_SetPlasma(0x01);
+		   HAL_Delay(30);
+	   }
+	   else{
+	      Plasma_Off();
+		  LED_KILL_ICON_OFF();
+	      MqttData_Publish_SetPlasma(0);
+		  HAL_Delay(30);
 
-   if(plasma_state() == 1){
-       Plasma_On();
-	   LED_KILL_ICON_ON();
-       MqttData_Publish_SetPlasma(0x01);
-	   HAL_Delay(30);
-   }
-   else{
-      Plasma_Off();
-	  LED_KILL_ICON_OFF();
-      MqttData_Publish_SetPlasma(0);
-	  HAL_Delay(30);
+	   }
 
-   }
+  }
 
+  if(ultr_flag != ultrasonic_state()){
+  	
+  	 ultr_flag = ultrasonic_state();
    if(ultrasonic_state()==1){
 
       Ultrasonic_Pwm_Output();
@@ -383,6 +387,8 @@ void Device_Action_Handler(void)
 	  HAL_Delay(30);
 
    }
+
+  }
 
 
 
