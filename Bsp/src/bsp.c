@@ -59,14 +59,17 @@ void bsp_Init(void)
 */
 void bsp_Idle(void)
 {
-	static uint8_t power_on_first;
-	if(power_on_first ==0){
-       power_on_first ++;
-	   TFT_BACKLIGHT_OFF();
-	   Update_DHT11_Value();
-	   TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
-       TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
-       TFT_Display_Handler();
+
+	if(pro_t.power_on_first ==0){
+      
+	    LCD_GPIO_Reset();
+        TFT_LCD_Init();
+	
+	    Update_DHT11_Value();
+	    TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
+        TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
+        TFT_Display_Handler();
+		 pro_t.power_on_first =1;
 
 	}
 	
@@ -101,7 +104,7 @@ void TFT_Process_Handler(void)
 {
 	
    static uint8_t fan_continuce_flag;
-	if(pro_t.buzzer_sound_flag ==1){
+	if(pro_t.buzzer_sound_flag ==1 && pro_t.power_on_first==1){
 		pro_t.buzzer_sound_flag=0;
 		Buzzer_KeySound();
 	}
@@ -116,11 +119,7 @@ void TFT_Process_Handler(void)
     	Key_Interrup_Handler();
 	    TFT_Pocess_Command_Handler();
 		v_t.voice_soun_output_enable = 1;
-
-
-	
-
-		break;
+	break;
 
 	case power_off:
 
@@ -328,7 +327,6 @@ static void TFT_Pocess_Command_Handler(void)
 	 case 0:
 	 	ptc_on_flag =1;
 		pro_t.gKey_value =0XFF;
-	 
 		TFT_Display_WorksTime();
 		Power_On_Fun();
 	    Fan_Run();
@@ -339,6 +337,7 @@ static void TFT_Pocess_Command_Handler(void)
 		v_t.voice_soun_output_enable = 1;
 		pro_t.run_process_step=pro_disp_dht11_value;
 		pro_t.gTimer_pro_ptc_delay_time=0;
+		pro_t.gTimer_pro_display_dht11_value=30; //at once display dht11 value
 
 		//test item 
 		//gctl_t.ptc_warning=1;
@@ -511,11 +510,7 @@ static void Power_On_Fun(void)
 
    }
 
-    
-	
-
-
-}
+ }
      
 
 

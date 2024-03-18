@@ -96,7 +96,7 @@ static void Judge_PTC_Temperature_Value(uint16_t adc_ptc)
   
 	
   // if(adc_ptc < 373 || adc_ptc ==373){ //90 degree
-  if(adc_ptc < 680 || adc_ptc == 680){   //50 degree //50 degree
+  if(adc_ptc < 295 || adc_ptc == 295){   //50 degree //50 degree
 
 
 		gctl_t.ptc_flag=0 ;
@@ -150,7 +150,7 @@ static void Judge_Fan_State(uint16_t adc_value)
 {
 
   static uint8_t detect_error_times;
-   if(adc_value <500){
+   if(adc_value <300){ //500
          detect_error_times++;
 	          
 		if(detect_error_times >0){

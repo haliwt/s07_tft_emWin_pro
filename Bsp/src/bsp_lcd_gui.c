@@ -30,13 +30,13 @@ void TFT_Display_Handler(void)
 	//lcd_draw_rectangle(157,35,163,110,WHITE);  //display veritcal "I"
 	//TFT_St7789_FillBlock(157,35,6,75,WHITE);
 
-	TFT_Display_WorksTime();
-
    //temperature value 
    TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
    //huimidity value
 
    TFT_Disp_Humidity_Value(gctl_t.dht11_hum_value);
+
+   TFT_Display_WorksTime();
  
 
 
@@ -468,6 +468,8 @@ void TFT_Disp_Voice_Set_TimerTime_Init(void)
 void TFT_Disp_Timer_Split_Symbol(void)
 {
     if(pro_t.gPower_On==power_on){  
+
+	
           if(  pro_t.gTimer_pro_time_split_symbol > 1 && pro_t.gTimer_pro_time_split_symbol< 3){
              
               TFT_Disp_Time_Split_Symbol(160,173,0); //时间分割符号,turn on
@@ -477,8 +479,8 @@ void TFT_Disp_Timer_Split_Symbol(void)
 		        TFT_Disp_Time_Split_Symbol(160,173,1); //时间分割符号 turn off
 
 		  }
-		
-	}
+
+     }
 }
 
 /***********************************************************************************************
@@ -500,19 +502,19 @@ void TFT_Disp_Temp_Value(uint8_t bc,uint8_t temp_value)
   
    if(refresh_one != temp_decade || v_t.voice_set_temperature_value_flag==2){
    	refresh_one = temp_decade;
-	__disable_irq();
+	//__disable_irq();
    	TFT_Disp_Numbers_Pic_413(5,40,bc,temp_decade); //间隔58
-   	__enable_irq();
+   //	__enable_irq();
 
    }
 
    if(refresh_two != temp_unit || v_t.voice_set_temperature_value_flag==2){
    	  refresh_two = temp_unit;
 	   v_t.voice_set_temperature_value_flag++;
-   __disable_irq();
+   //__disable_irq();
    TFT_Disp_Numbers_Pic_413(63,40,bc,temp_unit);
 
-   	__enable_irq();
+   //	__enable_irq();
    }
 
 }
