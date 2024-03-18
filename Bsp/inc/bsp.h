@@ -34,6 +34,7 @@
 #include "bsp_font_app.h"
 #include "bsp_split_time.h"
 #include "interrupt_manager.h"
+#include "bsp_key_app.h"
 
 
 
@@ -133,7 +134,7 @@ typedef struct{
    uint8_t buzzer_sound_flag;
   
    //time
-   uint8_t mode_key_select_flag ;
+   uint8_t mode_key_select_label ;
    
 
    //wifi info
@@ -213,8 +214,7 @@ void TFT_Process_Handler(void);
 
 
 
-void ADD_Key_Fun(void);
-void DEC_Key_Fun(void);
+
 void Wifi_Fast_Led_Blink(void);
 
 void Mode_Long_Key_Fun(void);;

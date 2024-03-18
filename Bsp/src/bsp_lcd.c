@@ -378,60 +378,7 @@ void DISPLAY_image(void)
 	//HOLD_DISP ();
 }
 
-/*******************************************************************************
- * 
- * Function Name: void Frame(void)
- * Function : display TFT color
- * Input Ref: NO
- * Return Ref: NO
- * 
-********************************************************************************/
-//void Frame(void)
-//{
-//	int i,j,k;
-// 	DISP_WINDOWS();
-//    for (i=LCD_Width;i>0;i--)
-//	{
-//    LCD_Write_Data(WHITE);
-//	}
-//	for (j=LCD_Height-2;j>0;j--)
-//	{
-//    LCD_Write_Data(WHITE);
-//    for (k=LCD_Width-2;k>0;k--)
-//	{
-//    LCD_Write_Data(BLACK);
-//	}
-//	LCD_Write_Data(WHITE);
-//	}
-//	for (i=LCD_Width;i>0;i--)
-//	{
-//    LCD_Write_Data(WHITE);
-//	}
-//	//HOLD_DISP ();
-//}
 
-#if 0
-static void LCD_set_Window_Horizon(uint16_t sx, uint16_t sy, uint16_t width, uint16_t height)
-{
-	uint16_t twidth, theight;
-    twidth = sx + width - 1;
-    theight = sy + height - 1;
-
-	LCD_Write_Cmd(0x2A);;
-	LCD_Write_Data(sx >> 8);
-	LCD_Write_Data(sx & 0XFF);
-	LCD_Write_Data(twidth >> 8);
-	LCD_Write_Data(twidth & 0XFF);
-    LCD_Write_Cmd(0x2B);;
-	LCD_Write_Data(sy >> 8);
-	LCD_Write_Data(sy & 0XFF);
-	LCD_Write_Data(theight >> 8);
-	LCD_Write_Data(theight & 0XFF);
-
-
-
-}
-#endif 
 /*******************************************************************************
  * 
  * Function Name: static void LCD_Clear(uint16_t color)
@@ -468,7 +415,7 @@ void TFT_LCD_Init(void)
     LCD_Write_Data(0x0C);//< Front porch in normal mode
     LCD_Write_Data(0x00);//< Disable separate porch control
     LCD_Write_Data(0x33);//< Back and front porch in idle mode
-    LCD_Write_Data(0x33);//< Back and front porch in partial mode
+   // LCD_Write_Data(0x33);//< Back and front porch in partial mode
     /* VGH设置 */
     LCD_Write_Cmd(0xB7);
     LCD_Write_Data(0x72);

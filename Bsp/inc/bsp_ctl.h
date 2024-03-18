@@ -42,6 +42,7 @@ typedef struct _bsp_ctl{
 	uint8_t ptc_warning;
 	uint8_t fan_warning;
 	uint8_t time_out_flag;
+	uint8_t memory_confimr_key_done;
    
     //time
    uint8_t disp_works_hours;
@@ -131,8 +132,8 @@ void Set_Temp_Handler(uint8_t(*set_temp_value_handler)(void));
 void  Ptc_error_state_Handler(uint8_t(*error_handler)(void));
 void  Fan_error_state_Handler(uint8_t(*fan_error_handler)(void));
 
-void Mode_Key_Select_Fun(void);
-void Mode_Key_Confirm_Fun(void);
+
+
 
 void Device_Action_Led_OnOff_Handler(void);
 

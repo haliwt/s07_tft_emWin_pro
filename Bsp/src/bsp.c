@@ -6,17 +6,14 @@ uint8_t led_blink_times;
 uint8_t update_step;
 uint8_t fan_continuce_run_flag;
 
-static void Key_Speical_Power_Fun_Handler(void);
-static void Key_Speical_Mode_Fun_Handler(void);
-static void mode_key_config_fun_handler(void);
+
 static void TFT_Pocess_Command_Handler(void);
 
 static void Power_On_Fun(void);
 static void Power_Off_Fun(void);
 
 
-//static void ADD_Key_Fun(void);
-//static void DEC_Key_Fun(void);
+
 static void Key_Interrup_Handler(void);
 
 
@@ -187,125 +184,7 @@ void TFT_Process_Handler(void)
 	
 }
 
-/******************************************************************************
-	*
-	*Function Name:static void Key_Speical_Power_Fun_Handler(void)
-	*Funcion: speical of power key function
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************************/
-static void Key_Speical_Power_Fun_Handler(void)
-{
-	static uint8_t  power_on_off ;
-	//be pressed long time key of function that link tencent cloud funtion 
-    static uint8_t delay_pw,pw_flag;
-	 if(ptc_error_state()==0 && fan_error_state()==0){
-	 if(pro_t.key_power_be_pressed_flag==1){
-         if(POWER_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_power_key_adjust > 2 &&  pro_t.gPower_On == power_on){
-            pro_t.key_power_be_pressed_flag =0;
-			pro_t.gTimer_pro_wifi_led =0;
-            pro_t.wifi_led_fast_blink_flag=1;
-			
-			//WIFI CONNCETOR process
-			wifi_t.link_tencent_step_counter=0;
-			wifi_t.esp8266_login_cloud_success =0;
-			wifi_t.runCommand_order_lable=wifi_link_tencent_cloud;
-			wifi_t.wifi_config_net_lable= wifi_set_restor;
-			wifi_t.gTimer_login_tencent_times=0;
-			wifi_t.gTimer_linking_tencent_duration=0; //166s -2分7秒
-			buzzer_sound();
-			
-			 
-        }
 
-	 }
-	 }
-	//sort time key of fun
-		if(POWER_KEY_VALUE() ==KEY_UP && pro_t.key_power_be_pressed_flag ==1){
-               HAL_Delay(10);
-		  if(POWER_KEY_VALUE() ==KEY_UP){
-         
-            power_on_off = power_on_off ^ 0x01;
-			  pro_t.key_power_be_pressed_flag=0;
-		  if(power_on_off==1){
-		
-		  
-
-			buzzer_sound();	
-			pro_t.gPower_On = power_on;   
-            pro_t.long_key_flag =0;
-            pro_t.run_process_step=0;
-		   
-
-		
-			
-		  }
-		  else {
-			 //pro_t.gKey_value = power_key_id;
-			 buzzer_sound();
-			 pro_t.power_off_flag=1;
-			 pro_t.long_key_flag =0;
-			pro_t.run_process_step=0xff;
-			pro_t.gPower_On = power_off;   
-		
-			  
-			 }
-		  }
-		}
-
-	
-}
-/******************************************************************************
-	*
-	*Function Name:static void Key_Speical_Mode_Fun_Handler(void)
-	*Funcion: speical of mode key fun
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************************/
-static void Key_Speical_Mode_Fun_Handler(void)
-{
- //modke _key_long_time
-	if(pro_t.mode_key_pressed_flag ==1){
-
-		//mode key be pressed long times
-		if(MODE_KEY_VALUE() ==KEY_DOWN && pro_t.gTimer_pro_mode_key_adjust > 1){
-			
-			pro_t.mode_key_pressed_flag =0;
-			pro_t.mode_key_select_flag =0;
-            Buzzer_KeySound();
-		    pro_t.gTimer_pro_mode_long_key=0;
-		    pro_t.key_mode_long_time_over_flag=1;
-			Mode_Long_Key_Fun();
-
-		   
-		}
-       //select mode key 
-       if(MODE_KEY_VALUE() ==KEY_UP && pro_t.mode_key_pressed_flag ==1){
-			HAL_Delay(10);
-	   	 if(MODE_KEY_VALUE() ==KEY_UP){
-		pro_t.mode_key_pressed_flag =0;
-	   
-		
-		pro_t.mode_key_run_item_step = mode_key_select;
-	    pro_t.mode_key_select_flag =mode_key_select;
-		gctl_t.select_main_fun_numbers++; // 0,1,2
-		if(gctl_t.select_main_fun_numbers > 3){
-		  gctl_t.select_main_fun_numbers = 1;
-		}
-		
-        
-		pro_t.buzzer_sound_flag =1;
-
-		pro_t.gTimer_pro_mode_key_be_select = 0; //counter starts after 4 seconds ,cancel this function
-		gctl_t.gTimer_ctl_select_led =0;
-	   	 }
-	   }
-		
-		
-	}
-}
 
 
 /******************************************************************************
@@ -403,7 +282,7 @@ static void TFT_Pocess_Command_Handler(void)
 	
 		  if(wifi_link_net_state() ==0){
 		  
-			if(pro_t.mode_key_select_flag ==1){
+			if(pro_t.mode_key_select_label ==1){
 
 				LED_WIFI_ICON_OFF();
 
@@ -593,279 +472,11 @@ static void Key_Interrup_Handler(void)
 
 	 }
 
-	 mode_key_config_fun_handler();
+	// Mode_Key_Config_Fun_Handler();
 
    
 }
 
-/************************************************************************
-	*
-	*Function Name: static void Mode_Long_Key_Fun(void) 
-	*Function : set timer timing is enable 
-	*Input Ref:NO
-	*Return Ref:No
-	*
-************************************************************************/
-void Mode_Long_Key_Fun(void)  //MODE_KEY_LONG_TIME_KEY://case model_long_key:
-{
-	  if(power_on_state() ==power_on){
-	   if(gctl_t.fan_warning ==0 && ptc_error_state() ==0){
-	  	  pro_t.mode_key_run_item_step = mode_key_timer_time;
-		  pro_t.timer_mode_flag=timer_set_time; //set timer mode enable,
-		  gctl_t.timer_timing_words_changed_flag ++;
-		  gctl_t.timing_words_changed_flag++;
-		  pro_t.gTimer_pro_mode_long_key=0;
-		 
-
-
-	     TFT_Disp_Set_TimerTime_Init();
-
-	   }
-	  	 
-      }
-}
-/******************************************************************************
-	*
-	*Function Name:static void mode_key_config_fun_handler(void)
-	*Funcion: speical of mode key fun
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************************/
-static void mode_key_config_fun_handler(void)
-{
-  static uint8_t confirm_data;
-  switch(pro_t.mode_key_run_item_step){
-
-
-             case mode_key_select: //02
-
-		     if(pro_t.gTimer_pro_mode_key_be_select < 4){ //exit of rule
-
-				Mode_Key_Select_Fun();
-				
-             }
-			 else{
-                
-                pro_t.mode_key_run_item_step = 0xff; //
-                pro_t.mode_key_select_flag =0;
-                pro_t.key_mode_long_time_over_flag =0;//pro_t.mode_key_select_flag
-			    gctl_t.select_main_fun_numbers--; //return back the first confirm item 
-				if(gctl_t.select_main_fun_numbers == 0){
-					gctl_t.select_main_fun_numbers = 5;
-				}
-				
-                Device_Action_Led_OnOff_Handler();
-			 }
-             
-
-		   break;
-
-
-		   case mode_key_confirm: //03//as "+" and "-" key  confirm ation
-			    Device_Action_Led_OnOff_Handler();
-                Mode_Key_Confirm_Fun();
-		    
-				if(confirm_data==0){
-					confirm_data++;
-					pro_t.gTimer_pro_confir_delay=0;
-
-				}
-
-				if(confirm_data==1 && pro_t.gTimer_pro_confir_delay>0){
-					confirm_data=0;
-					pro_t.gTimer_pro_confir_delay=0;
-				 	pro_t.mode_key_select_flag=0;
-				   pro_t.mode_key_run_item_step = 0xff;
-           
-				}
-			
-
-			break;
-
-	    }
-
-
-       
-     
-}
-
-/************************************************************************
-	*
-	*Function Name: static void Power_On_Fun(void)
-	*Function : power on
-	*Input Ref:NO
-	*Return Ref:No
-	*
-************************************************************************/
-void ADD_Key_Fun(void)
-{
-    static uint8_t select_flag,disp_temp_value,timer_timing_flag;
- if(power_on_state()==power_on){
-
-	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0){
-
-
-
-		switch(pro_t.mode_key_run_item_step){
-
-		case 0xff:
-            if(pro_t.key_mode_long_time_over_flag ==0 && pro_t.mode_key_select_flag==0){
-			   pro_t.mode_key_run_item_step=mode_key_temp;
-
-            }
-
-		case mode_key_temp: //set temperature value add number
-			//pro_t.buzzer_sound_flag = 1;
-			if(pro_t.key_mode_long_time_over_flag ==0 && pro_t.mode_key_select_flag ==0){
-			Buzzer_KeySound();
-			gctl_t.gSet_temperature_value ++;
-			if( gctl_t.gSet_temperature_value < 20)gctl_t.gSet_temperature_value=20;
-			
-            if(gctl_t.gSet_temperature_value > 40) gctl_t.gSet_temperature_value= 20;
-
-             pro_t.gTimer_pro_set_tem_value_blink =0;
-			 gctl_t.gSet_temperature_value_item = set_temp_value_item;
-        
-			disp_temp_value =1;
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);	
-			}
-		break;
-
-		case mode_key_timer_time:
-            pro_t.buzzer_sound_flag = 1;
-		    pro_t.gTimer_pro_mode_long_key=0;
-			gctl_t.mode_key_long_time_flag++;
-			
-			gctl_t.gSet_timer_minutes=0;
-			gctl_t.gSet_timer_hours ++ ;//disp_t.disp_timer_time_hours++ ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes + 60;
-			if(gctl_t.gSet_timer_hours  > 24){ //if(pro_t.dispTime_minutes > 59){
-
-			gctl_t.gSet_timer_hours =0;//pro_t.dispTime_hours =0;
-
-
-			}
-
-		   pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing
-			timer_timing_flag=1;
-		 
-			
-
-		break;
-
-		case mode_key_select:
-			
-			pro_t.buzzer_sound_flag = 1;
-		
-			pro_t.mode_key_run_item_step = mode_key_confirm;
-			
-		
-           
-		break;
-
-
-		}	
-		}
-	}
-    if(disp_temp_value ==1){
-		disp_temp_value =0;
-    TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-
-    }
-    if(timer_timing_flag ==1){
-		timer_timing_flag=0;
-	  TFT_Disp_Set_TimerTime(0);
-
-
-    }
-   
-	 
-
-}
-/************************************************************************
-	*
-	*Function Name: static void DEC_Key_Fun(void)
-	*Function : KEY OF decrease
-	*Input Ref:NO
-	*Return Ref:No
-	*
-************************************************************************/
-void DEC_Key_Fun(void)
-{
-    static uint8_t disp_temp_value,timer_timing_flag;
-	if(power_on_state() ==power_on){
-	   	if(gctl_t.ptc_warning ==0 && ptc_error_state() ==0 ){
-	   	
-	     switch(pro_t.mode_key_run_item_step ){
-
-		   case 0xff:
-            if(pro_t.key_mode_long_time_over_flag ==0 && pro_t.mode_key_select_flag ==0){
-		 	 pro_t.mode_key_run_item_step= mode_key_temp;
-            }
-
-		   case mode_key_temp:  //default tempearture value 
-	        // pro_t.buzzer_sound_flag = 1;
-	        if(pro_t.key_mode_long_time_over_flag ==0 && pro_t.mode_key_select_flag ==0){
-	        Buzzer_KeySound();
-			 gctl_t.gSet_temperature_value--;
-			if( gctl_t.gSet_temperature_value<20)  gctl_t.gSet_temperature_value=40;
-	        if( gctl_t.gSet_temperature_value >40) gctl_t.gSet_temperature_value=40;
-   
-			 pro_t.gTimer_pro_set_tem_value_blink =0;
-			 gctl_t.gSet_temperature_value_item = set_temp_value_item;
-             disp_temp_value =1;
-	        
-			//TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-	        }
-			break;
-
-			case mode_key_timer_time: //timer timing set "decrease -down"
-			   
-			    pro_t.buzzer_sound_flag = 1;
-	            gctl_t.mode_key_long_time_flag++;
-			
-				gctl_t.gSet_timer_minutes=0;
-				gctl_t.gSet_timer_hours --;//disp_t.disp_timer_time_hours -- ;//pro_t.dispTime_minutes = pro_t.dispTime_minutes - 1;
-				if(gctl_t.gSet_timer_hours  < 0){//if(pro_t.dispTime_minutes < 0){
-
-				    gctl_t.gSet_timer_hours  =24;//pro_t.dispTime_hours --;
-					
-					
-				}
-		
-		     pro_t.gTimer_pro_mode_long_key=0 ; //long key for mode timing
-		     timer_timing_flag=1;
-			 	
-			//TFT_Disp_Set_TimerTime(0);
-			break;
-
-			 case mode_key_select:
-			 
-			 	pro_t.buzzer_sound_flag = 1;
-	
-				pro_t.mode_key_run_item_step = mode_key_confirm;
-				
-
-			   
-			
-			break;
-
-
-	    	}
-	   	  }
-		}
-       if(disp_temp_value ==1){
-		disp_temp_value =0;
-    		TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
-
-    	}
-	    if(timer_timing_flag ==1){
-		   timer_timing_flag=0;
-	     TFT_Disp_Set_TimerTime(0);
-
-  
-       }
-}
 
 
 /**********************************************************************************************************
@@ -907,13 +518,5 @@ wifi_led: if(pro_t.gTimer_pro_wifi_led < 166){//2'46s
 }
 	
 
-/**********************************************************************************************************
-    **
-    *Function Name:TFT_Donnot_Set_Timer_Time();
-    *Function : 记录设置的定时时间，
-    *Input Ref:
-    *Return Ref:NO
-    *
-*********************************************************************************************************/
 
 

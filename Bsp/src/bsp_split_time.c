@@ -103,7 +103,7 @@ void TimeTimer_Pro_Handler(void)
 
 			}
 			pro_t.key_mode_long_time_over_flag =0;
-			pro_t.mode_key_select_flag =0;
+			pro_t.mode_key_select_label =0;
                
 		}
 
