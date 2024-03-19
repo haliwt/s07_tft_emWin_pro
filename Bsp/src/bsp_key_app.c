@@ -66,9 +66,7 @@ void Key_Speical_Power_Fun_Handler(void)
 			  
 			 }
 		  }
-		}
-
-	
+	}
 }
 /******************************************************************************
 	*
@@ -297,12 +295,8 @@ void ADD_Key_Fun(void)
         break; 
 		
 
-
-		
-
-
 		}	
-		}
+	}
 	
     if(disp_temp_value ==1){
 		disp_temp_value =0;
@@ -392,8 +386,7 @@ void DEC_Key_Fun(void)
 
 	    	}
 	   	  }
-		}
-       if(disp_temp_value ==1){
+		if(disp_temp_value ==1){
 		disp_temp_value =0;
     		TFT_Disp_Temp_Value(0,gctl_t.gSet_temperature_value);
 
@@ -404,6 +397,8 @@ void DEC_Key_Fun(void)
 
   
        }
+	}
+       
 }
 
 /*****************************************************************************
