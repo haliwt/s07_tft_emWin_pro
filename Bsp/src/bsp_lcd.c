@@ -32,7 +32,12 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     //spi_tx_buffer[0] = *txdata;
     //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-     return  HAL_SPI_Transmit(&hspi1,txdata,1,500);
+    __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
+    __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
+    __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
+    __HAL_SPI_CLEAR_FREFLAG(&hspi1);
+  
+     return  HAL_SPI_Transmit(&hspi1,txdata,1,0xffff);
 	//HAL_SPI_Receive_DMA
 	//return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
 	//txdata = spi_it_tx;
@@ -615,3 +620,4 @@ LCD_Write_Cmd( 0x29);
 
 //}
 #endif 
+
