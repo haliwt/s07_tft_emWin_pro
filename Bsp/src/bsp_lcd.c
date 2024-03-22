@@ -37,7 +37,7 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
     __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
     __HAL_SPI_CLEAR_FREFLAG(&hspi1);
   
-     return  HAL_SPI_Transmit(&hspi1,txdata,1,0xffff);
+     return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
 	//HAL_SPI_Receive_DMA
 	//return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
 	//txdata = spi_it_tx;
