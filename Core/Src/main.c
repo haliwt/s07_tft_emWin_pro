@@ -24,6 +24,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "dma.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -107,8 +108,8 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim17);
   
   TFT_BACKLIGHT_OFF();
- // LCD_GPIO_Reset();
- // TFT_LCD_Init();
+  LCD_GPIO_Reset();
+  TFT_LCD_Init();
   
   HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
   

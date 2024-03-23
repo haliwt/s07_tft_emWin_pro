@@ -59,8 +59,7 @@ void bsp_Idle(void)
 
 	if(pro_t.power_on_first ==0){
       
-	    LCD_GPIO_Reset();
-        TFT_LCD_Init();
+	 
 	
 	    Update_DHT11_Value();
 	    TFT_Disp_Temp_Value(0,gctl_t.dht11_temp_value);
