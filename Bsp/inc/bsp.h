@@ -6,7 +6,7 @@
 #include <stdio.h>
 
 #include "adc.h"
-//#include "dma.h"
+#include "dma.h"
 #include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
