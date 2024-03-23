@@ -452,7 +452,7 @@ static void  voice_set_temperature_value(uint8_t value)
 
         }
 		else{
-           VOICE_SOUND_DISABLE();
+          // VOICE_SOUND_DISABLE();
    
 		}
 
@@ -489,7 +489,7 @@ static void voice_set_timer_timing_value(uint8_t time)
 	TFT_Disp_Voice_Set_TimerTime_Init();
     }
 	else{
-       VOICE_SOUND_DISABLE();
+       //VOICE_SOUND_DISABLE();
 
 	}
 

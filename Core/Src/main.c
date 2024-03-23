@@ -19,11 +19,13 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "dma.h"
 #include "iwdg.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -91,14 +93,15 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_IWDG_Init();
   MX_SPI1_Init();
   MX_TIM1_Init();
-  MX_TIM14_Init();
   MX_TIM17_Init();
   MX_USART1_UART_Init();
   MX_USART2_UART_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
   delay_init(64); 
   bsp_ctl_init();
@@ -106,15 +109,16 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim17);
   
   TFT_BACKLIGHT_OFF();
- // LCD_GPIO_Reset();
- // TFT_LCD_Init();
+  LCD_GPIO_Reset();
+  TFT_LCD_Init();
+ 
   
   HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
   
   HAL_UART_Receive_IT(&huart1,voice_inputBuf,1);//HAL_UART_Receive_IT(&huart1,voice_inputBuf,8);
   pro_t.buzzer_sound_flag=1;
   /* USER CODE END 2 */
- 
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -122,7 +126,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
+  
 	bsp_Idle();
     Voice_Decoder_Handler();
 	TFT_Process_Handler();

@@ -7,7 +7,7 @@
 //#define LCD_Buf_Size 1152
 
 uint8_t spi_tx_buffer[1];
-
+uint8_t spi_tx_data[1];
 
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
 //static uint8_t lcd_buf[LCD_Buf_Size];
@@ -32,10 +32,14 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     //spi_tx_buffer[0] = *txdata;
     //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-     return  HAL_SPI_Transmit(&hspi1,txdata,1,500);
+    // return  HAL_SPI_Transmit(&hspi1,txdata,1,500);
 	//HAL_SPI_Receive_DMA
-	//return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-	//txdata = spi_it_tx;
+	__HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
+    __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
+    __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
+    __HAL_SPI_CLEAR_FREFLAG(&hspi1);
+	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
+	
 
 }
 void LCD_GPIO_Reset(void)
@@ -615,3 +619,17 @@ LCD_Write_Cmd( 0x29);
 
 //}
 #endif 
+
+/**
+  * º¯Êý¹¦ÄÜ: SPIÍ¨ÐÅÖÐ¶Ï»Øµ÷º¯Êý
+  * ÊäÈë²ÎÊý: hspi| SPI¾ä±ú
+  * ·µ »Ø Öµ: ÎÞ
+  * Ëµ    Ã÷: spiÍ¨ÐÅÖÐ¶Ï£¬±¾Àý³ÌÎª·¢ËÍÖÐ¶Ï´¦Àí·¢ËÍÍêÒ»¸ö×Ö½ÚÖ®ºó¼ÌÐø·¢ËÍ
+  */
+//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+//{
+// // redata_flag=1;
+
+//  //HAL_SPI_Transmit_DMA(&hspi1, &Tx_Buffer[0], 1);  
+//	SPI_WriteByte(spi_tx_data,1);
+//}

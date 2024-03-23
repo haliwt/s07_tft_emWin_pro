@@ -467,20 +467,20 @@ void TFT_Disp_Voice_Set_TimerTime_Init(void)
 *********************************************************************************/
 void TFT_Disp_Timer_Split_Symbol(void)
 {
-    if(pro_t.gPower_On==power_on){  
+   // if(pro_t.gPower_On==power_on){  
 
 	
           if(  pro_t.gTimer_pro_time_split_symbol > 1 && pro_t.gTimer_pro_time_split_symbol< 3){
              
               TFT_Disp_Time_Split_Symbol(160,173,0); //时间分割符号,turn on
 		  }
-		  else if(pro_t.gTimer_pro_time_split_symbol >3 ||  pro_t.gTimer_pro_time_split_symbol ==3){
+		  else if(pro_t.gTimer_pro_time_split_symbol >3){
                 pro_t.gTimer_pro_time_split_symbol=0;
 		        TFT_Disp_Time_Split_Symbol(160,173,1); //时间分割符号 turn off
 
 		  }
 
-     }
+   //  }
 }
 
 /***********************************************************************************************

@@ -40,21 +40,14 @@ void Key_Speical_Power_Fun_Handler(void)
                HAL_Delay(10);
 		  if(POWER_KEY_VALUE() ==KEY_UP){
          
-            power_on_off = power_on_off ^ 0x01;
+    power_on_off = power_on_off ^ 0x01;
 			  pro_t.key_power_be_pressed_flag=0;
 		  if(power_on_off==1){
-		
-		  
-
-			buzzer_sound();	
+	        buzzer_sound();	
 			pro_t.gPower_On = power_on;   
             pro_t.long_key_flag =0;
             pro_t.run_process_step=0;
-		   
-
-		
-			
-		  }
+		    }
 		  else {
 			 //pro_t.gKey_value = power_key_id;
 			 buzzer_sound();
@@ -62,10 +55,8 @@ void Key_Speical_Power_Fun_Handler(void)
 			 pro_t.long_key_flag =0;
 			pro_t.run_process_step=0xff;
 			pro_t.gPower_On = power_off;   
-		
-			  
-			 }
-		  }
+			}
+		}
 	}
 }
 /******************************************************************************
