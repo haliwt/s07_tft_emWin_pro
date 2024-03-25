@@ -30,14 +30,13 @@ uint8_t spi_it_tx[1];
 ***********************************************************************************/
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
-    //spi_tx_buffer[0] = *txdata;
-    //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
+    
     __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
-    __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
-    __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
-    __HAL_SPI_CLEAR_FREFLAG(&hspi1);
+   // __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
+   // __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
+   /// __HAL_SPI_CLEAR_FREFLAG(&hspi1);
   
-     //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
+    //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
 	//HAL_SPI_Receive_DMA
 	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
 	// hspi1.Instance->DR = *txdata; 
@@ -49,11 +48,11 @@ void LCD_GPIO_Reset(void)
 
     
 	LCD_RST_SetHigh();
-	HAL_Delay(100);
+	HAL_Delay(20);
 	LCD_RST_SetLow();
-    HAL_Delay(200);
+    HAL_Delay(300);
     LCD_RST_SetHigh();
-	HAL_Delay(100);
+	HAL_Delay(20);
 
 }
 /*******************************************************************************
@@ -86,32 +85,6 @@ void LCD_Write_16bit_Data(uint16_t data)
     LCD_Write_Data(data >> 8);
     LCD_Write_Data(data);
     
-
-}
-
-void LCD_Clear_Screen(uint16_t color)
-{
-   
-
-}
-
-/*******************************************************************************
- * 
- * Function Name: void LCD_Display_BacklightOn(void)
- * Function : turn on TFT LCD back light
- * Input Ref: NO
- * Return Ref: NO
- * 
-***********************************************************************************/
-void LCD_Display_BacklightOn(void)
-{
-   
-
-}
-
-void LCD_Display_BacklightOff(void)
-{
-
 
 }
 

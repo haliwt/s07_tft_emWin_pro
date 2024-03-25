@@ -443,30 +443,25 @@ static void Key_Interrup_Handler(void)
         case add_key_id:
 		 	
 		 	if(ADD_KEY_VALUE()==KEY_DOWN){
-			
+			    HAL_Delay(10);
+			if(ADD_KEY_VALUE()==KEY_DOWN)
 			      ADD_Key_Fun();//DEC_Key_Fun();
 			  
 
 		 	}
-			  pro_t.gKey_value =0XFF;
+			 pro_t.gKey_value =0XFF;
 
 		break;
 
 		case dec_key_id:
            if(DEC_KEY_VALUE()==KEY_DOWN){
-	
+			 HAL_Delay(10);
+			if(DEC_KEY_VALUE()==KEY_DOWN)
 			    DEC_Key_Fun();//ADD_Key_Fun();
-			 
-
-
-           }
+			 }
 
 			 pro_t.gKey_value =0XFF;
-
-			 
-
-
-		break;
+        break;
 
 
 	 }
