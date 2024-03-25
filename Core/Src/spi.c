@@ -25,8 +25,7 @@
 /* USER CODE END 0 */
 
 SPI_HandleTypeDef hspi1;
-DMA_HandleTypeDef hdma_spi1_rx;
-DMA_HandleTypeDef hdma_spi1_tx;
+
 
 /* SPI1 init function */
 void MX_SPI1_Init(void)
