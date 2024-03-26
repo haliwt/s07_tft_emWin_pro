@@ -31,15 +31,24 @@ uint8_t spi_it_tx[1];
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     
-    __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
+  //  __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
    // __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
    // __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
    /// __HAL_SPI_CLEAR_FREFLAG(&hspi1);
   
-    //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
+    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TE);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NO_XFER);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TIMEOUT);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_PARAM);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_BUSY);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NOT_SUPPORTED);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_SYNC);
+	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_REQGEN);
+	
+	
 	//HAL_SPI_Receive_DMA
 	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-	// hspi1.Instance->DR = *txdata; 
+	 //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
 	
 
 }
@@ -48,11 +57,11 @@ void LCD_GPIO_Reset(void)
 
     
 	LCD_RST_SetHigh();
-	HAL_Delay(20);
+	HAL_Delay(50);
 	LCD_RST_SetLow();
-    HAL_Delay(300);
+    HAL_Delay(100);
     LCD_RST_SetHigh();
-	HAL_Delay(20);
+	HAL_Delay(50);
 
 }
 /*******************************************************************************
