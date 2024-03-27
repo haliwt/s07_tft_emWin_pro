@@ -42,26 +42,26 @@ void USART_Cmd_Error_Handler(void)
 		
      }
 
-	 if(gctl_t.gTimer_ctl_dma1_error > 2){
-
-	   gctl_t.gTimer_ctl_dma1_error=0;
-
-	    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TE);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NO_XFER);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TIMEOUT);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_PARAM);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_BUSY);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NOT_SUPPORTED);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_SYNC);
-		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_REQGEN);
-
-//	  __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
-//     __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
-//      __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
-//       __HAL_SPI_CLEAR_FREFLAG(&hspi1);
-
-
-	 }
+//	 if(gctl_t.gTimer_ctl_dma1_error > 2){
+//
+//	   gctl_t.gTimer_ctl_dma1_error=0;
+//
+//	    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TE);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NO_XFER);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TIMEOUT);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_PARAM);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_BUSY);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NOT_SUPPORTED);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_SYNC);
+//		__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_REQGEN);
+//
+////	  __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
+////     __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
+////      __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
+////       __HAL_SPI_CLEAR_FREFLAG(&hspi1);
+//
+//
+//	 }
 		  
 }
 /********************************************************************************
