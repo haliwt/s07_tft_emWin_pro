@@ -104,6 +104,7 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
     }
 
     __HAL_LINKDMA(spiHandle,hdmatx,hdma_spi1_tx);
+	__HAL_DMA_ENABLE(&hdma_spi1_tx) ;
 
   /* USER CODE BEGIN SPI1_MspInit 1 */
 

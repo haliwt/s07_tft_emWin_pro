@@ -31,22 +31,9 @@ uint8_t spi_it_tx[1];
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
     
-  //  __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
-   // __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
-   // __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
-   /// __HAL_SPI_CLEAR_FREFLAG(&hspi1);
-  
-    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TE);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NO_XFER);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TIMEOUT);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_PARAM);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_BUSY);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NOT_SUPPORTED);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_SYNC);
-	__HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_REQGEN);
-	
-	
+
 	//HAL_SPI_Receive_DMA
+	
 	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
 	 //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
 	
@@ -403,7 +390,7 @@ void TFT_LCD_Init(void)
     LCD_Write_Data(0x0C);//< Front porch in normal mode
     LCD_Write_Data(0x00);//< Disable separate porch control
     LCD_Write_Data(0x33);//< Back and front porch in idle mode
-   // LCD_Write_Data(0x33);//< Back and front porch in partial mode
+    LCD_Write_Data(0x33);//< Back and front porch in partial mode
     /* VGH设置 */
     LCD_Write_Cmd(0xB7);
     LCD_Write_Data(0x72);
@@ -463,17 +450,17 @@ void TFT_LCD_Init(void)
     LCD_Write_Data(0x23);
 
 
-	 LCD_Write_Cmd(0x2A);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x01);
-     LCD_Write_Data(0x3f);
-
-     LCD_Write_Cmd(0x2B);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0xef);
+//	 LCD_Write_Cmd(0x2A);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x01);
+//     LCD_Write_Data(0x3f);
+//
+//     LCD_Write_Cmd(0x2B);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0xef);
 
 
 	
@@ -483,7 +470,7 @@ void TFT_LCD_Init(void)
     LCD_Write_Cmd(0x29); // display on 
     //LCD_Write_Cmd(0x28);  // display off ---WT.EDIT  
 
-    /* 清屏为白色 */
+    /* 设置背景色 */
     LCD_Clear(BLACK);
 	
 
