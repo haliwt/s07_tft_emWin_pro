@@ -75,7 +75,7 @@ typedef struct _bsp_ctl{
    uint8_t gTimer_ctl_warning_time;
    uint8_t gTimer_ctl_usart1_error ;
    uint8_t gTimer_ctl_usart2_error; 
-   uint8_t gTimer_ctl_dma1_error;
+
 
 }bsp_ctl;
 

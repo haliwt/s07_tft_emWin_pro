@@ -384,7 +384,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	   gctl_t.gTimer_ctl_warning_time++;
 	   gctl_t.gTimer_ctl_usart1_error++; 
 	   gctl_t.gTimer_ctl_usart2_error++; 
-	   gctl_t.gTimer_ctl_dma1_error++;
+	
 	  //wifi counter 
 	 
 	  wifi_t.gTimer_login_tencent_times++;

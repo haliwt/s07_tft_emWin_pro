@@ -216,7 +216,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.run_process_step=pro_disp_dht11_value;
 		pro_t.gTimer_pro_ptc_delay_time=0;
 		pro_t.gTimer_pro_display_dht11_value=30; //at once display dht11 value
-		gctl_t.gTimer_ctl_dma1_error=0;
+		
 
 		//test item 
 		//gctl_t.ptc_warning=1;
