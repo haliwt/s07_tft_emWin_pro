@@ -41,6 +41,17 @@ void USART_Cmd_Error_Handler(void)
 		     HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
 		
      }
+
+	 if(gctl_t.gTimer_ctl_spi_error > 4){
+
+		 gctl_t.gTimer_ctl_spi_error=0;
+		__HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
+	    //__HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
+	    //__HAL_SPI_CLEAR_MODFFLAG(&hspi1);
+	    __HAL_SPI_CLEAR_FREFLAG(&hspi1);
+
+
+	 }
 		  
 }
 /********************************************************************************
@@ -363,6 +374,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	   gctl_t.gTimer_ctl_warning_time++;
 	   gctl_t.gTimer_ctl_usart1_error++; 
 	   gctl_t.gTimer_ctl_usart2_error++; 
+	   gctl_t.gTimer_ctl_spi_error++;
 	  //wifi counter 
 	 
 	  wifi_t.gTimer_login_tencent_times++;

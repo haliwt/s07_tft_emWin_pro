@@ -30,14 +30,11 @@ uint8_t spi_it_tx[1];
 ***********************************************************************************/
 static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 {
-    //spi_tx_buffer[0] = *txdata;
-    //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-    __HAL_SPI_CLEAR_OVRFLAG(&hspi1) ;
-    __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
-    __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
-    __HAL_SPI_CLEAR_FREFLAG(&hspi1);
-  
-     return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
+    //no interrupt SPI
+	HAL_SPI_Transmit(&hspi1,txdata,1,0xFFFF);
+    
+    //interrupt SPI
+    // return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
 	//HAL_SPI_Receive_DMA
 	//return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
 	//txdata = spi_it_tx;
@@ -392,16 +389,15 @@ void DISPLAY_image(void)
  * Return Ref: NO
  * 
 ***********************************************************************************/
-#if 1
 void TFT_LCD_Init(void)
 {
-    /* 关闭睡眠模式 */
-	//LCD_GPIO_Reset();
+    
+	LCD_GPIO_Reset();
 
-	//TFT_BACKLIGHT_ON();
+	
     LCD_Write_Cmd(0x11);
 	HAL_Delay(20);
-    #if 1
+  
     /* 开始设置显存扫描模式，数据格式等 */
 	
     LCD_Write_Cmd(0x36);//修改此处，可以改变屏幕的显示方向，横屏，竖屏等
@@ -420,7 +416,7 @@ void TFT_LCD_Init(void)
     LCD_Write_Data(0x0C);//< Front porch in normal mode
     LCD_Write_Data(0x00);//< Disable separate porch control
     LCD_Write_Data(0x33);//< Back and front porch in idle mode
-   // LCD_Write_Data(0x33);//< Back and front porch in partial mode
+    LCD_Write_Data(0x33);//< Back and front porch in partial mode
     /* VGH设置 */
     LCD_Write_Cmd(0xB7);
     LCD_Write_Data(0x72);
@@ -449,175 +445,63 @@ void TFT_LCD_Init(void)
     /* 电压设置 */
     LCD_Write_Cmd(0xE0);
     LCD_Write_Data(0xD0);
-    LCD_Write_Data(0x04);
+    LCD_Write_Data(0x03);
     LCD_Write_Data(0x0D);
-    LCD_Write_Data(0x11);
-    LCD_Write_Data(0x13);
-    LCD_Write_Data(0x2B);
-    LCD_Write_Data(0x3F);
-    LCD_Write_Data(0x54);
-    LCD_Write_Data(0x4C);
+    LCD_Write_Data(0x0D);
+    LCD_Write_Data(0x3D);
+    LCD_Write_Data(0x2A);
+    LCD_Write_Data(0x45);
+    LCD_Write_Data(0x3E);
+    LCD_Write_Data(0x0F);
+    LCD_Write_Data(0x1C);
     LCD_Write_Data(0x18);
-    LCD_Write_Data(0x0D);
-    LCD_Write_Data(0x0B);
-    LCD_Write_Data(0x1F);
-    LCD_Write_Data(0x23);
+    LCD_Write_Data(0x0E);
+    LCD_Write_Data(0x10);
+
     /* 电压设置 */
     LCD_Write_Cmd(0xE1);
     LCD_Write_Data(0xD0);
-    LCD_Write_Data(0x04);
-    LCD_Write_Data(0x0C);
-    LCD_Write_Data(0x11);
-    LCD_Write_Data(0x13);
-    LCD_Write_Data(0x2C);
+    LCD_Write_Data(0x00);
+    LCD_Write_Data(0x00);
+    LCD_Write_Data(0x02);
+    LCD_Write_Data(0x02);
+    LCD_Write_Data(0x02);
+    LCD_Write_Data(0x2A);
+    LCD_Write_Data(0x55);
     LCD_Write_Data(0x3F);
-    LCD_Write_Data(0x44);
-    LCD_Write_Data(0x51);
-    LCD_Write_Data(0x2F);
-    LCD_Write_Data(0x1F);
-    LCD_Write_Data(0x1F);
-    LCD_Write_Data(0x20);
-    LCD_Write_Data(0x23);
+    LCD_Write_Data(0x28);
+    LCD_Write_Data(0x13);
+    LCD_Write_Data(0x15);
+    LCD_Write_Data(0x11);
+    LCD_Write_Data(0x14);
 
 
-	 LCD_Write_Cmd(0x2A);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x01);
-     LCD_Write_Data(0x3f);
-
-     LCD_Write_Cmd(0x2B);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0x00);
-     LCD_Write_Data(0xef);
+//	 LCD_Write_Cmd(0x2A);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x01);
+//     LCD_Write_Data(0x3f);
+//
+//     LCD_Write_Cmd(0x2B);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0x00);
+//     LCD_Write_Data(0xef);
 
 
 	
     /* 显示开 */
 	//LCD_Write_Cmd(0x21); // Display Inversion On
-	LCD_Write_Cmd(0x20); // Display Inversion Off
-    LCD_Write_Cmd(0x29); // display on 
-    //LCD_Write_Cmd(0x28);  // display off ---WT.EDIT  
-
-    /* 清屏为白色 */
-    LCD_Clear(BLACK);
 	
-
-    /*打开显示*/
+    LCD_Write_Cmd(0x29); // display on 
+    LCD_Write_Cmd(0x2C); // Display Inversion Off
+    //屏的背景颜色
+    LCD_Clear(BLACK);
  
 }
-#endif 
-
-
-//void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
-//{
-//
-//  
-//
-//	HAL_SPI_Transmit_DMA(&hspi1,spi_tx_buffer,1);  
-//
-//
-//}
-#if 0
-void TFT_LCD_Init(void)
-{
-
-
-TFT_BACKLIGHT_ON();
-
-LCD_GPIO_Reset();
-
-
-LCD_Write_Cmd(0x11);     
-
-//Delay(120); //ms
-HAL_Delay(100);
-
-LCD_Write_Cmd( 0x36);     
-LCD_Write_Data( 0x00);   
-
-LCD_Write_Cmd( 0x3A);     
-LCD_Write_Data( 0x06);   
-
-LCD_Write_Cmd( 0xB2);     
-LCD_Write_Data( 0x0C);   
-LCD_Write_Data( 0x0C);   
-LCD_Write_Data( 0x00);   
-LCD_Write_Data( 0x33);   
-LCD_Write_Data( 0x33);   
-
-LCD_Write_Cmd( 0xB7);     
-LCD_Write_Data( 0x75); //VGH=14.97V, VGL=-10.43V  
-
-LCD_Write_Cmd( 0xBB);   //VCOM  
-LCD_Write_Data( 0x1F);   
-
-LCD_Write_Cmd( 0xC0);     
-LCD_Write_Data( 0x2C);   
-
-LCD_Write_Cmd( 0xC2);     
-LCD_Write_Data( 0x01);   
-
-LCD_Write_Cmd( 0xC3);   //GVDD  
-LCD_Write_Data( 0x13);   
-
-LCD_Write_Cmd( 0xC4);     
-LCD_Write_Data( 0x20);   
-
-LCD_Write_Cmd( 0xC6);     
-LCD_Write_Data( 0x0F);   
-
-LCD_Write_Cmd( 0xD0);     
-LCD_Write_Data( 0xA4);   
-LCD_Write_Data( 0xA1);   
-
-LCD_Write_Cmd( 0xE0);     
-LCD_Write_Data( 0xD0);   
-LCD_Write_Data( 0x1A);   
-LCD_Write_Data( 0x1E);   
-LCD_Write_Data( 0x0A);   
-LCD_Write_Data( 0x0A);   
-LCD_Write_Data( 0x27);   
-LCD_Write_Data( 0x3B);   
-LCD_Write_Data( 0x44);   
-LCD_Write_Data( 0x4A);   
-LCD_Write_Data( 0x2B);   
-LCD_Write_Data( 0x16);   
-LCD_Write_Data( 0x15);   
-LCD_Write_Data( 0x1A);   
-LCD_Write_Data( 0x1E);   
-
-LCD_Write_Cmd(0xE1);     
-LCD_Write_Data(0xD0);   
-LCD_Write_Data( 0x1A);   
-LCD_Write_Data( 0x1E);   
-LCD_Write_Data( 0x0A);   
-LCD_Write_Data( 0x0A);   
-LCD_Write_Data( 0x27);   
-LCD_Write_Data( 0x3A);   
-LCD_Write_Data( 0x43);   
-LCD_Write_Data( 0x49);   
-LCD_Write_Data( 0x2B);   
-LCD_Write_Data( 0x16);   
-LCD_Write_Data( 0x15);   
-LCD_Write_Data( 0x1A);   
-LCD_Write_Data( 0x1D);   
-
-LCD_Write_Cmd( 0x29); 
+ 
 
 
 
 
-}
-#endif 
-//void HAL_SPI_RxCpltCallback(SPI_HandleTypeDef *hspi)
-//{
-
-
-//   // HAL_SPI_Receive_DMA(&hspi1,recv_buf,5);
-//	HAL_SPI_Transmit_DMA(&hspi1,spi_it_tx,1);
-
-//}
-#endif 
 
