@@ -44,18 +44,23 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
 		// __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_REQGEN);
   
 
-if (__HAL_DMA_GET_FLAG(&hspi1,DMA_FLAG_TE1))
+if (__HAL_DMA_GET_FLAG(&hspi1,DMA_FLAG_TE1) || __HAL_DMA_GET_FLAG(&hspi1,DMA_FLAG_TE2) )
 {
    __HAL_DMA_CLEAR_FLAG(&hspi1, HAL_DMA_ERROR_TE);
    __HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_TE1);
+   __HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_TE2);
     __HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_TC1);
+    __HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_TC2);
 	__HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_GI1 );
 	__HAL_DMA_CLEAR_FLAG(&hspi1, DMA_FLAG_HT1);
+    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TE);
+    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_TIMEOUT);
+    __HAL_DMA_CLEAR_FLAG(DMA1, HAL_DMA_ERROR_NO_XFER);
    
 }
 	
 	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
-	 //return  HAL_SPI_Transmit_IT(&hspi1,txdata,1);
+	 
 	
 
 }
