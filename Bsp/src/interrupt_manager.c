@@ -14,7 +14,9 @@ uint8_t voice_inputBuf[1];
 *******************************************************************************/
 void USART_Cmd_Error_Handler(void)
 {
-    
+       HAL_DMA_StateTypeDef flag_dma1_tx_state,flag_dma1_rx_state;
+	   DMA_HandleTypeDef hdma_spi1_tx;
+	   DMA_HandleTypeDef hdma_spi1_rx;
 	   uint32_t temp;
        if(gctl_t.gTimer_ctl_usart1_error > 6 ){ //9
 			
@@ -35,15 +37,22 @@ void USART_Cmd_Error_Handler(void)
         
 
           temp = USART2->RDR;
-
-		   //UART_Start_Receive_IT(&huart2,(uint8_t *)UART2_DATA.UART_DataBuf,1);
 		 
-		     HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
+		    HAL_UART_Receive_IT(&huart2,wifi_t.usart2_dataBuf,1);
 		
      }
 
-	//   
-		  
+	 if(gctl_t.gTimer_ctl_dma_state >18){
+           gctl_t.gTimer_ctl_dma_state =0;
+		   flag_dma1_tx_state = HAL_DMA_GetState(&hdma_spi1_tx);
+	      // flag_dma1_rx_state = HAL_DMA_GetState(&hdma_spi1_rx);
+	 
+		   if(flag_dma1_tx_state ==HAL_DMA_STATE_TIMEOUT){
+			   LCD_GPIO_Reset();
+  			   TFT_LCD_Init();
+		       TFT_Display_WorksTime();
+		   }
+	 }
 }
 /********************************************************************************
 	**
@@ -365,6 +374,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	   gctl_t.gTimer_ctl_warning_time++;
 	   gctl_t.gTimer_ctl_usart1_error++; 
 	   gctl_t.gTimer_ctl_usart2_error++; 
+	   gctl_t.gTimer_ctl_dma_state++ ;
 	
 	  //wifi counter 
 	 
