@@ -86,13 +86,16 @@ void Error_Handler(void);
 #define LED_POWER_Pin GPIO_PIN_6
 #define LED_POWER_GPIO_Port GPIOA
 
+//indicator led of blink
 #define LED_PTC_Pin GPIO_PIN_2
 #define LED_PTC_GPIO_Port GPIOB
+
 #define LED_RAT_Pin GPIO_PIN_10
 #define LED_RAT_GPIO_Port GPIOB
 
 #define LED_WIFI_Pin GPIO_PIN_7
 #define LED_WIFI_GPIO_Port GPIOB
+
 #define LED_KILL_Pin GPIO_PIN_9
 #define LED_KILL_GPIO_Port GPIOB
 

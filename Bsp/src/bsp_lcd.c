@@ -86,7 +86,9 @@ void LCD_GPIO_Reset(void)
 ***********************************************************************************/
 void LCD_Write_Cmd(uint8_t cmd)
 {
-  //  LCD_NSS_SetLow();
+    LCD_NSS_SetHigh();
+
+	LCD_NSS_SetLow();
     TFT_DCX_CMD();
     pro_t.spi_error_flag=SPI_WriteByte(&cmd,1);
 
@@ -94,8 +96,10 @@ void LCD_Write_Cmd(uint8_t cmd)
 
 void LCD_Write_Data(uint8_t data)
 {
-    //LCD_NSS_SetHigh(); //To write data to TFT is high level
-   // LCD_NSS_SetLow();
+    LCD_NSS_SetHigh(); //To write data to TFT is high level
+
+
+   	LCD_NSS_SetLow();
 	TFT_DCX_DATA();
     SPI_WriteByte(&data,1);
 }
