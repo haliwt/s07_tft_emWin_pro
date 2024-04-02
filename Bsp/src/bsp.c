@@ -41,7 +41,7 @@ void bsp_Init(void)
 {
 
    pro_t.mode_key_run_item_step=0xff;
-  // Buzzer_Sound_Fun_Init();
+  
 
 
 }
@@ -217,6 +217,7 @@ static void TFT_Pocess_Command_Handler(void)
 		pro_t.gTimer_pro_ptc_delay_time=0;
 		pro_t.gTimer_pro_display_dht11_value=30; //at once display dht11 value
 		gctl_t.gTimer_ctl_dma_state =0;
+		pro_t.add_or_dec_is_cofirm_key_flag =0; //key set example "ptc,kill,driver rat" function. don't compart tempartur value
 
 		//test item 
 		//gctl_t.ptc_warning=1;

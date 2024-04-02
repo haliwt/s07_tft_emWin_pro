@@ -152,6 +152,7 @@ void Mode_Key_Config_Fun_Handler(void)
 				if(gctl_t.select_main_fun_numbers == 0){
 					gctl_t.select_main_fun_numbers = 5;
 				}
+				pro_t.add_or_dec_is_cofirm_key_flag =0;
 				
                 Device_Action_Led_OnOff_Handler();
 			 }
@@ -167,6 +168,7 @@ void Mode_Key_Config_Fun_Handler(void)
 				if(confirm_data==0){
 					confirm_data++;
 					pro_t.gTimer_pro_confir_delay=0;
+				   // pro_t.add_or_dec_is_cofirm_key_flag =0;
 
 				}
 
@@ -174,7 +176,8 @@ void Mode_Key_Config_Fun_Handler(void)
 					confirm_data=0;
 					pro_t.gTimer_pro_confir_delay=0;
 				 	pro_t.mode_key_select_label=0;
-				   pro_t.mode_key_run_item_step = 0xff;
+				    pro_t.mode_key_run_item_step = 0xff;
+				    pro_t.add_or_dec_is_cofirm_key_flag =1;
            
 				}
 			
