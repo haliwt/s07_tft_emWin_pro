@@ -9,7 +9,7 @@
 uint8_t spi_tx_buffer[1];
 uint8_t spi_tx_data[1];
 
-static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size);
+static uint8_t SPI_WriteByte(uint8_t txdata,uint16_t size);
 //static uint8_t lcd_buf[LCD_Buf_Size];
 
 static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2);
@@ -28,7 +28,7 @@ uint8_t spi_it_tx[1];
  * Return Ref: 0--success 1 - fail
  * 
 ***********************************************************************************/
-static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
+static uint8_t SPI_WriteByte(uint8_t txdata,uint16_t size)
 {
     //spi_tx_buffer[0] = *txdata;
     //HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
@@ -38,7 +38,11 @@ static uint8_t SPI_WriteByte(uint8_t *txdata,uint16_t size)
     __HAL_SPI_CLEAR_CRCERRFLAG(&hspi1);
     __HAL_SPI_CLEAR_MODFFLAG(&hspi1);
     __HAL_SPI_CLEAR_FREFLAG(&hspi1);
-	return HAL_SPI_Transmit_DMA(&hspi1,txdata,1);
+	return HAL_SPI_Transmit_DMA(&hspi1,&txdata,1);
+	
+//while ((hspi1.Instance->SR & 1 << 1) == 0);   /* µÈ´ý·¢ËÍÇø¿Õ */
+
+  //  hspi1.Instance->DR = txdata; 
 	
 
 }
@@ -66,7 +70,7 @@ void LCD_Write_Cmd(uint8_t cmd)
 {
   //  LCD_NSS_SetLow();
     TFT_DCX_CMD();
-    pro_t.spi_error_flag=SPI_WriteByte(&cmd,1);
+    pro_t.spi_error_flag=SPI_WriteByte(cmd,1);
 
 }
 
@@ -75,7 +79,7 @@ void LCD_Write_Data(uint8_t data)
     //LCD_NSS_SetHigh(); //To write data to TFT is high level
    // LCD_NSS_SetLow();
 	TFT_DCX_DATA();
-    SPI_WriteByte(&data,1);
+    SPI_WriteByte(data,1);
 }
 
 void LCD_Write_16bit_Data(uint16_t data)
@@ -292,7 +296,7 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
      // CSB=0;
      TFT_DCX_DATA();
     // LCD_NSS_SetLow();
-	 SPI_WriteByte(&dat1,1);
+	 SPI_WriteByte(dat1,1);
       
 	//CSB=1;
 	//LCD_NSS_SetHigh();
@@ -300,7 +304,7 @@ static void LCD_Write_Data1(uint8_t dat1,uint8_t dat2)
 	 // CSB=0;
 	//LCD_NSS_SetLow();
 	 
-     SPI_WriteByte(&dat2,1);
+     SPI_WriteByte(dat2,1);
      
 	// CSB=1;
 	 //LCD_NSS_SetHigh();
